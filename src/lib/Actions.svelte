@@ -8,7 +8,8 @@
 
 <section>
   <span>actions:</span>
-  <button on:click={() => addFeed({ timestamp: newDevDate() })}>🍼</button>
+  <button on:click={() => addFeed({ kind: "bottle", side: null })}>🍼</button>
+  <button on:click={() => addFeed({ kind: "breast", side: "left" })}>🤱</button>
   <button on:click={() => addNap({ timestamp: newDevDate() })}>💤</button>
   <button on:click={() => addPee({ timestamp: newDevDate() })}>💧</button>
   <button on:click={() => addPoop({ timestamp: newDevDate() })}>💩</button>

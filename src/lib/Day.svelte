@@ -17,6 +17,8 @@
 
   <article class="feeds">
     <span>feeds: {day.feeds.length}</span>
+    <span>bottle: {day.feeds.filter((f) => f.kind === "bottle").length}</span>
+    <span>breast: {day.feeds.filter((f) => f.kind === "breast").length}</span>
     <Entries kind="feeds" entries={day.feeds} removeEntry={removeFeed} />
   </article>
 

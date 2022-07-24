@@ -3,6 +3,7 @@ import {
   encodeDayTimestamp,
   newEmptyDay,
   sortDaysByTimestamp,
+  type DayState,
 } from "./days";
 import type { Feed } from "./feeds";
 import type { Nap } from "./naps";
@@ -64,7 +65,11 @@ export const removeEntry = <K extends Kind>(kind: K, timestamp: Date) =>
       return $days;
     }
 
-    $days[ts][kind] = $days[ts][kind].filter((e) => e.timestamp !== timestamp);
+    const entries = $days[ts][kind].filter(
+      (e) => e.timestamp !== timestamp
+    ) as DayState[K];
+
+    $days[ts][kind] = entries;
 
     return sortDaysByTimestamp($days);
   });
