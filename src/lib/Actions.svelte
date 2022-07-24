@@ -8,7 +8,7 @@
 
 <section>
   <span>actions:</span>
-  <button on:click={() => addFeed({ kind: "bottle", side: null })}>🍼</button>
+  <button on:click={() => addFeed({ kind: "bottle" })}>🍼</button>
   <button on:click={() => addFeed({ kind: "breast", side: "L" })}>🤱L</button>
   <button on:click={() => addFeed({ kind: "breast", side: "R" })}>🤱R</button>
   |
