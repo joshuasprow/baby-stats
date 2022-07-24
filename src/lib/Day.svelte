@@ -13,7 +13,7 @@
 </script>
 
 <section>
-  <span class="timestamp">{date}</span>
+  <span class="timestamp">{timestamp}</span>
 
   <article class="feeds">
     <span>feeds: {day.feeds.length}</span>

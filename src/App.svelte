@@ -11,6 +11,7 @@
   <Actions />
 
   <span>days:</span>
+
   {#each Object.entries($days) as [timestamp, day]}
     <Day {timestamp} {day} />
   {/each}

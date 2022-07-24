@@ -1,4 +1,4 @@
-import { writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
 import type { Entry, Kind } from "./entries";
 
 export type DayState = {
@@ -6,10 +6,10 @@ export type DayState = {
 };
 
 export type Days = {
-  [timestamp: number]: DayState;
+  [timestamp: string]: DayState;
 };
 
-const encodeDayTimestamp = (timestamp: Date): number => {
+const encodeDayTimestamp = (timestamp: Date): string => {
   const date = new Date(
     timestamp.getFullYear(),
     timestamp.getMonth(),
@@ -20,7 +20,7 @@ const encodeDayTimestamp = (timestamp: Date): number => {
     0
   );
 
-  return date.getTime();
+  return date.getTime().toString();
 };
 
 const newEmptyDay = (): DayState => ({
@@ -32,6 +32,14 @@ const newEmptyDay = (): DayState => ({
 
 export const days = writable<Days>({});
 
+const sortDaysByTimestamp = ($days: Days): Days =>
+  Object.keys($days)
+    .sort()
+    .reduce((acc, timestamp) => {
+      acc[timestamp] = $days[timestamp];
+      return acc;
+    }, {} as Days);
+
 export const addEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
   days.update(($days) => {
     const ts = encodeDayTimestamp(entry.timestamp);
@@ -42,7 +50,7 @@ export const addEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
 
     $days[ts][kind].push(entry);
 
-    return $days;
+    return sortDaysByTimestamp($days);
   });
 
 export const removeEntry = <K extends Kind>(kind: K, timestamp: Date) =>
@@ -58,5 +66,5 @@ export const removeEntry = <K extends Kind>(kind: K, timestamp: Date) =>
 
     $days[ts][kind] = $days[ts][kind].filter((e) => e.timestamp !== timestamp);
 
-    return $days;
+    return sortDaysByTimestamp($days);
   });
