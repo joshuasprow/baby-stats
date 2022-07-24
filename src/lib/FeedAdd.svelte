@@ -1,7 +1,12 @@
 <script lang="ts">
-  import { addFeed, type FeedKind, type FeedSide } from "./feeds";
+  import {
+    addFeed,
+    isFeedPartial,
+    type FeedKind,
+    type FeedSide,
+  } from "./feeds";
 
-  let open = false;
+  let open = true;
 
   let amount = 1;
   let kind: FeedKind = "bottle";
@@ -20,12 +25,99 @@
 
 <aside class:open on:click={setClosed}>
   <section on:click|stopPropagation>
-    <button on:click={() => addFeed({ kind: "bottle", amount: 1 })}>🍼</button>
-    <button on:click={() => addFeed({ kind: "breast", amount: 1, side: "L" })}>
-      🤱L
-    </button>
-    <button on:click={() => addFeed({ kind: "breast", amount: 1, side: "R" })}>
-      🤱R
+    <article>
+      <label for="amount">
+        amount:
+        <input
+          id="amount"
+          bind:value={amount}
+          type="number"
+          min={0.5}
+          max={6}
+          step={0.5}
+        />
+      </label>
+    </article>
+
+    <article>
+      kind:
+      <label for="bottle">
+        <input
+          type="radio"
+          id="bottle"
+          name="kind"
+          value="bottle"
+          checked={kind === "bottle"}
+          on:change={() => {
+            kind = "bottle";
+            side = undefined;
+          }}
+        />
+        bottle
+      </label>
+
+      <label for="breast">
+        <input
+          type="radio"
+          id="breast"
+          name="kind"
+          value="breast"
+          checked={kind === "breast"}
+          on:change={() => {
+            kind = "breast";
+            side = "L";
+          }}
+        />
+        breast
+      </label>
+    </article>
+
+    {#if kind === "breast"}
+      <article>
+        side:
+        <label for="L">
+          <input
+            type="radio"
+            id="L"
+            name="side"
+            value="L"
+            checked={side === "L"}
+            on:change={() => {
+              side = "L";
+            }}
+          />
+          left
+        </label>
+
+        <label for="R">
+          <input
+            type="radio"
+            id="R"
+            name="side"
+            value="R"
+            checked={side === "R"}
+            on:change={() => {
+              side = "R";
+            }}
+          />
+          right
+        </label>
+      </article>
+    {/if}
+
+    <button
+      on:click={() => {
+        const feed = { amount, kind, side };
+
+        if (!isFeedPartial(feed)) {
+          console.error("invalid feed", feed);
+          return;
+        }
+
+        addFeed(feed);
+      }}
+    >
+      add
     </button>
   </section>
 </aside>
@@ -50,6 +142,7 @@
   }
 
   section {
+    color: #000;
     background: #fff;
     padding: 0.5rem;
   }
