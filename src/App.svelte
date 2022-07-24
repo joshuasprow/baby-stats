@@ -1,3 +1,6 @@
+<script lang="ts" context="module">
+</script>
+
 <script lang="ts">
   import Actions from "./lib/Actions.svelte";
   import Entries from "./lib/Entries.svelte";
@@ -5,15 +8,23 @@
   import { naps, removeNap } from "./lib/naps";
   import { pees, removePee } from "./lib/pees";
   import { poops, removePoop } from "./lib/poops";
+  import { days } from "./lib/days";
 </script>
 
 <main>
   <Actions />
+
   <section class="entries">
     <Entries entries={$feeds} icon="🍼" kind="feed" removeEntry={removeFeed} />
     <Entries entries={$naps} icon="💤" kind="nap" removeEntry={removeNap} />
     <Entries entries={$pees} icon="💧" kind="pee" removeEntry={removePee} />
     <Entries entries={$poops} icon="💩" kind="poop" removeEntry={removePoop} />
+  </section>
+
+  <section>
+    {#each Object.entries($days) as [day, state]}
+      <pre>{JSON.stringify({ day, ...state }, null, 2)}</pre>
+    {/each}
   </section>
 </main>
 

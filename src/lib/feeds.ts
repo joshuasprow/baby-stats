@@ -32,7 +32,3 @@ export const feedsByDay = derived(feeds, ($feeds): Map<Day, Feed[]> => {
 
   return $feedsByDay;
 });
-
-feedsByDay.subscribe(($feedsByDay) => {
-  console.log("feedsByDay", $feedsByDay);
-});
