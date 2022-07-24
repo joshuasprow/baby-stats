@@ -8,9 +8,9 @@
   let icon = "🚫";
 
   $: if (feed.kind === "bottle") {
-    icon = "🍼";
+    icon = `${feed.amount}🍼`;
   } else if (feed.kind === "breast") {
-    icon = "🤱" + (feed as unknown as Feed<"breast">).side;
+    icon = `${feed.amount}🤱${(feed as unknown as Feed<"breast">).side}`;
   }
 </script>
 

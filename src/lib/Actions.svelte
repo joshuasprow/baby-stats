@@ -8,9 +8,13 @@
 
 <section>
   <span>actions:</span>
-  <button on:click={() => addFeed({ kind: "bottle" })}>🍼</button>
-  <button on:click={() => addFeed({ kind: "breast", side: "L" })}>🤱L</button>
-  <button on:click={() => addFeed({ kind: "breast", side: "R" })}>🤱R</button>
+  <button on:click={() => addFeed({ kind: "bottle", amount: 1 })}>🍼</button>
+  <button on:click={() => addFeed({ kind: "breast", amount: 1, side: "L" })}>
+    🤱L
+  </button>
+  <button on:click={() => addFeed({ kind: "breast", amount: 1, side: "R" })}>
+    🤱R
+  </button>
   |
   <button on:click={() => addNap({ timestamp: newDevDate() })}>💤</button>
   |

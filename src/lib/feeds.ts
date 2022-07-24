@@ -12,6 +12,7 @@ export type FeedSide<K extends FeedKind> = K extends "breast"
 export type Feed<K extends FeedKind> = {
   timestamp: Date;
   kind: K;
+  amount: number;
 } & (K extends "breast" ? { side: FeedSide<K> } : {});
 
 export const addFeed = <K extends FeedKind>(feed: Omit<Feed<K>, "timestamp">) =>
