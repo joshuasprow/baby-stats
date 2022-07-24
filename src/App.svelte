@@ -10,7 +10,15 @@
 
   <Actions />
 
+  <span>days:</span>
   {#each Object.entries($days) as [timestamp, day]}
     <Day {timestamp} {day} />
   {/each}
 </main>
+
+<style>
+  span {
+    display: block;
+    text-decoration: underline;
+  }
+</style>

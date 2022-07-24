@@ -42,6 +42,11 @@
     grid-template-areas:
       "t . .  ."
       "f n pe po";
+    margin-bottom: 1rem;
+  }
+
+  article {
+    padding-left: 1rem;
   }
 
   .timestamp {

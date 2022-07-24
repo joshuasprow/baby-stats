@@ -14,4 +14,16 @@
   };
 </script>
 
+<span>date:</span>
 <input on:change={setDevDate} type="date" value={$devDateString} />
+
+<style>
+  span {
+    display: block;
+    text-decoration: underline;
+  }
+
+  input {
+    margin-bottom: 1rem;
+  }
+</style>

@@ -6,9 +6,21 @@
   import { newDevDate } from "./dev-date";
 </script>
 
-<div>
+<section>
+  <span>actions:</span>
   <button on:click={() => addFeed({ timestamp: newDevDate() })}>🍼</button>
   <button on:click={() => addNap({ timestamp: newDevDate() })}>💤</button>
   <button on:click={() => addPee({ timestamp: newDevDate() })}>💧</button>
   <button on:click={() => addPoop({ timestamp: newDevDate() })}>💩</button>
-</div>
+</section>
+
+<style>
+  section {
+    margin-bottom: 1rem;
+  }
+
+  span {
+    display: block;
+    text-decoration: underline;
+  }
+</style>
