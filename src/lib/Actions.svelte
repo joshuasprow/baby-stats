@@ -1,9 +1,8 @@
 <script lang="ts">
   import { addFeed } from "./feeds";
   import { addNap } from "./naps";
-
-  export let addPee: () => void;
-  export let addPoop: () => void;
+  import { addPee } from "./pees";
+  import { addPoop } from "./poops";
 </script>
 
 <div>

@@ -3,24 +3,14 @@
   import Entries from "./lib/Entries.svelte";
   import { feeds, removeFeed } from "./lib/feeds";
   import { naps, removeNap } from "./lib/naps";
-  import Pees from "./lib/Pees.svelte";
-  import Poops from "./lib/Poops.svelte";
-
-  let pees = 0;
-  let poops = 0;
-
-  const addPee = () => {
-    pees++;
-  };
-  const addPoop = () => {
-    poops++;
-  };
+  import { pees, removePee } from "./lib/pees";
+  import { poops, removePoop } from "./lib/poops";
 </script>
 
 <main>
-  <Actions {addPee} {addPoop} />
+  <Actions />
   <Entries entries={$feeds} icon="🍼" kind="feed" removeEntry={removeFeed} />
   <Entries entries={$naps} icon="💤" kind="nap" removeEntry={removeNap} />
-  <Pees count={pees} />
-  <Poops count={poops} />
+  <Entries entries={$pees} icon="💧" kind="pee" removeEntry={removePee} />
+  <Entries entries={$poops} icon="💩" kind="poop" removeEntry={removePoop} />
 </main>

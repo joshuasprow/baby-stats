@@ -1,8 +1,10 @@
 <script lang="ts">
   import type { Feed } from "./feeds";
   import type { Nap } from "./naps";
+  import type { Pee } from "./pees";
+  import type { Poop } from "./poops";
 
-  export let entries: (Feed | Nap)[];
+  export let entries: (Feed | Nap | Pee | Poop)[];
   export let removeEntry: (timestamp: Date) => void;
 
   export let kind: "feed" | "nap" | "pee" | "poop";
