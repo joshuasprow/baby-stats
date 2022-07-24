@@ -49,6 +49,24 @@ export const addEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
     return $days;
   });
 
+export const removeEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
+  days.update(($days) => {
+    const day = encodeTimestamp(entry.timestamp);
+
+    if (!$days[day]) {
+      console.error(
+        `Tried to remove entry from day ${day} but it doesn't exist`
+      );
+      return $days;
+    }
+
+    $days[day][kind] = $days[day][kind].filter(
+      (e) => e.timestamp !== entry.timestamp
+    );
+
+    return $days;
+  });
+
 export const addFeed = (feed: Feed) => addEntry("feeds", feed);
 
 export const removeFeed = (timestamp: Date) =>
