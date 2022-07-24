@@ -6,7 +6,7 @@ const FEED_KINDS = ["bottle", "breast"] as const;
 export type FeedKind = typeof FEED_KINDS[number];
 
 type FeedSide<K extends FeedKind> = K extends "breast"
-  ? "left" | "right"
+  ? "L" | "R"
   : K extends "bottle"
   ? null
   : never;
