@@ -1,6 +1,7 @@
 import { writable } from "svelte/store";
 import type { Entry, Kind } from "./entries";
 import type { Feed } from "./feeds";
+import type { Nap } from "./naps";
 
 export interface Day {
   year: number;
@@ -49,9 +50,9 @@ export const addEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
     return $days;
   });
 
-export const removeEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
+export const removeEntry = <K extends Kind>(kind: K, timestamp: Date) =>
   days.update(($days) => {
-    const day = encodeTimestamp(entry.timestamp);
+    const day = encodeTimestamp(timestamp);
 
     if (!$days[day]) {
       console.error(
@@ -61,7 +62,7 @@ export const removeEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
     }
 
     $days[day][kind] = $days[day][kind].filter(
-      (e) => e.timestamp !== entry.timestamp
+      (e) => e.timestamp !== timestamp
     );
 
     return $days;
@@ -69,17 +70,8 @@ export const removeEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
 
 export const addFeed = (feed: Feed) => addEntry("feeds", feed);
 
-export const removeFeed = (timestamp: Date) =>
-  days.update(($days) => {
-    const day = encodeTimestamp(timestamp);
+export const removeFeed = (timestamp: Date) => removeEntry("feeds", timestamp);
 
-    if (!$days[day]) {
-      return $days;
-    }
+export const addNap = (nap: Nap) => addEntry("naps", nap);
 
-    $days[day].feeds = $days[day].feeds.filter(
-      (feed) => feed.timestamp !== timestamp
-    );
-
-    return $days;
-  });
+export const removeNap = (timestamp: Date) => removeEntry("naps", timestamp);

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { removeFeed, type DayState } from "./days";
+  import { removeFeed, removeNap, type DayState } from "./days";
   import Entries from "./Entries.svelte";
 
   export let day: DayState;
@@ -9,6 +9,9 @@
   <article>
     <span>feeds: {day.feeds.length}</span>
     <Entries icon="🍼" entries={day.feeds} removeEntry={removeFeed} />
+
+    <span>naps: {day.naps.length}</span>
+    <Entries icon="💤" entries={day.naps} removeEntry={removeNap} />
   </article>
 </section>
 
