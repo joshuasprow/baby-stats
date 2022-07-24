@@ -1,4 +1,3 @@
-import { writable } from "svelte/store";
 import { addEntry, removeEntry } from "./days";
 
 export interface Feed {
