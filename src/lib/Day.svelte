@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { DayState } from "./days";
   import Entries from "./Entries.svelte";
-  import { removeFeed } from "./feeds";
+  import Feeds from "./Feeds.svelte";
   import { removeNap } from "./naps";
   import { removePee } from "./pees";
   import { removePoop } from "./poops";
@@ -16,10 +16,7 @@
   <span class="timestamp">{date}</span>
 
   <article class="feeds">
-    <span>feeds: {day.feeds.length}</span>
-    <span>bottle: {day.feeds.filter((f) => f.kind === "bottle").length}</span>
-    <span>breast: {day.feeds.filter((f) => f.kind === "breast").length}</span>
-    <Entries kind="feeds" entries={day.feeds} removeEntry={removeFeed} />
+    <Feeds feeds={day.feeds} />
   </article>
 
   <article class="naps">

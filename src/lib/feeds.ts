@@ -3,7 +3,7 @@ import { addEntry, removeEntry } from "./entries";
 
 const FEED_KINDS = ["bottle", "breast"] as const;
 
-type FeedKind = typeof FEED_KINDS[number];
+export type FeedKind = typeof FEED_KINDS[number];
 
 type FeedSide<K extends FeedKind> = K extends "breast"
   ? "left" | "right"
