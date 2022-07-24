@@ -1,12 +1,12 @@
 <script lang="ts">
   import Actions from "./lib/Actions.svelte";
+  import DatePicker from "./lib/DatePicker.svelte";
   import Day from "./lib/Day.svelte";
   import { days } from "./lib/days";
-  import DevDate from "./lib/DevDate.svelte";
 </script>
 
 <main>
-  <DevDate />
+  <DatePicker />
 
   <Actions />
 
