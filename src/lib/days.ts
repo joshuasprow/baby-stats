@@ -1,36 +1,20 @@
 import { writable } from "svelte/store";
 import type { Entry, Kind } from "./entries";
-import type { Feed } from "./feeds";
-import type { Nap } from "./naps";
-import type { Pee } from "./pees";
-import type { Poop } from "./poops";
-
-export interface Day {
-  year: number;
-  month: number;
-  date: number;
-}
 
 export type DayState = {
   [K in Kind]: Entry<K>[];
 };
 
 export type Days = {
-  [day: string]: DayState;
+  [timestamp: number]: DayState;
 };
 
-export const encodeDay = (day: Day): string =>
-  `${day.year}-${day.month}-${day.date}`;
-
-export const encodeTimestamp = (timestamp: Date): string =>
-  `${timestamp.getFullYear()}-${timestamp.getMonth()}-${timestamp.getDate()}`;
-
-export const decodeDay = (day: string): Day => {
-  const [year, month, date] = day.split("-").map(Number);
-  return { year, month, date };
-};
-
-export const days = writable<Days>({});
+const encodeDayTimestamp = (timestamp: Date): number =>
+  new Date(
+    timestamp.getFullYear(),
+    timestamp.getMonth(),
+    timestamp.getDate()
+  ).getUTCMilliseconds();
 
 const newEmptyDay = (): DayState => ({
   feeds: [],
@@ -39,33 +23,33 @@ const newEmptyDay = (): DayState => ({
   poops: [],
 });
 
+export const days = writable<Days>({});
+
 export const addEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
   days.update(($days) => {
-    const day = encodeTimestamp(entry.timestamp);
+    const ts = encodeDayTimestamp(entry.timestamp);
 
-    if (!$days[day]) {
-      $days[day] = newEmptyDay();
+    if (!$days[ts]) {
+      $days[ts] = newEmptyDay();
     }
 
-    $days[day][kind].push(entry);
+    $days[ts][kind].push(entry);
 
     return $days;
   });
 
 export const removeEntry = <K extends Kind>(kind: K, timestamp: Date) =>
   days.update(($days) => {
-    const day = encodeTimestamp(timestamp);
+    const ts = encodeDayTimestamp(timestamp);
 
-    if (!$days[day]) {
+    if (!$days[ts]) {
       console.error(
-        `Tried to remove entry from day ${day} but it doesn't exist`
+        `Tried to remove ${kind} entry from day ${ts} but it doesn't exist`
       );
       return $days;
     }
 
-    $days[day][kind] = $days[day][kind].filter(
-      (e) => e.timestamp !== timestamp
-    );
+    $days[ts][kind] = $days[ts][kind].filter((e) => e.timestamp !== timestamp);
 
     return $days;
   });
