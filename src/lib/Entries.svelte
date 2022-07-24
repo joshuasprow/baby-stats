@@ -1,11 +1,12 @@
 <script lang="ts">
   import type { Feed } from "./feeds";
+  import type { Nap } from "./naps";
 
-  export let entries: Feed[];
+  export let entries: (Feed | Nap)[];
   export let removeEntry: (timestamp: Date) => void;
 
-  export let kind: "feed";
-  export let icon: "🍼";
+  export let kind: "feed" | "nap" | "pee" | "poop";
+  export let icon: "🍼" | "💤" | "💧" | "💩";
 </script>
 
 <div>

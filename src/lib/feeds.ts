@@ -7,8 +7,9 @@ export interface Feed {
 export const feeds = writable<Feed[]>([]);
 
 export const addFeed = () =>
-  feeds.update((feeds) => [...feeds, { timestamp: new Date() }]);
+  feeds.update(($feeds) => [...$feeds, { timestamp: new Date() }]);
 
-export const removeFeed = (timestamp: Date) => {
-  feeds.update((feeds) => feeds.filter((feed) => feed.timestamp !== timestamp));
-};
+export const removeFeed = (timestamp: Date) =>
+  feeds.update(($feeds) =>
+    $feeds.filter((feed) => feed.timestamp !== timestamp)
+  );
