@@ -10,7 +10,7 @@
       .split("-")
       .map(Number);
 
-    devDate.set({ year, month, date });
+    devDate.set({ year, month: month - 1, date });
   };
 </script>
 
