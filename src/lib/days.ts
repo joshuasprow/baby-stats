@@ -9,12 +9,15 @@ export type Days = {
   [timestamp: number]: DayState;
 };
 
-const encodeDayTimestamp = (timestamp: Date): number =>
-  new Date(
+const encodeDayTimestamp = (timestamp: Date): number => {
+  const date = new Date(
     timestamp.getFullYear(),
     timestamp.getMonth(),
     timestamp.getDate()
-  ).getUTCMilliseconds();
+  );
+
+  return Math.floor(date.getTime() / 1000);
+};
 
 const newEmptyDay = (): DayState => ({
   feeds: [],
