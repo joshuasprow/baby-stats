@@ -2,6 +2,8 @@ import { writable } from "svelte/store";
 import type { Entry, Kind } from "./entries";
 import type { Feed } from "./feeds";
 import type { Nap } from "./naps";
+import type { Pee } from "./pees";
+import type { Poop } from "./poops";
 
 export interface Day {
   year: number;
@@ -75,3 +77,11 @@ export const removeFeed = (timestamp: Date) => removeEntry("feeds", timestamp);
 export const addNap = (nap: Nap) => addEntry("naps", nap);
 
 export const removeNap = (timestamp: Date) => removeEntry("naps", timestamp);
+
+export const addPee = (pee: Pee) => addEntry("pees", pee);
+
+export const removePee = (timestamp: Date) => removeEntry("pees", timestamp);
+
+export const addPoop = (poop: Poop) => addEntry("poops", poop);
+
+export const removePoop = (timestamp: Date) => removeEntry("poops", timestamp);
