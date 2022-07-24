@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { fade } from "svelte/transition";
   import {
     addFeed,
     isFeedPartial,
@@ -6,7 +7,7 @@
     type FeedSide,
   } from "./feeds";
 
-  let open = true;
+  let open = false;
 
   let amount = 1;
   let kind: FeedKind = "bottle";
@@ -24,7 +25,7 @@
 <button on:click={setOpen}>🍼</button>
 
 {#if open}
-  <aside on:click={setClosed}>
+  <aside on:click={setClosed} transition:fade={{ duration: 100 }}>
     <section on:click|stopPropagation>
       <article>
         <label for="amount">
