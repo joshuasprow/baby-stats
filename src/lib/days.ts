@@ -39,3 +39,6 @@ export const sortDaysByTimestamp = ($days: Days): Days =>
       acc[timestamp] = $days[timestamp];
       return acc;
     }, {} as Days);
+
+export const isEmptyDay = (day: DayState): boolean =>
+  !Object.values(day).some((entries) => entries.length > 0);

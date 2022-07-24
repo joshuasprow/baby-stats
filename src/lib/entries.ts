@@ -1,11 +1,12 @@
 import {
   days,
   encodeDayTimestamp,
+  isEmptyDay,
   newEmptyDay,
   sortDaysByTimestamp,
   type DayState,
 } from "./days";
-import type { Feed } from "./feeds";
+import type { Feed, FeedKind } from "./feeds";
 import type { Nap } from "./naps";
 import type { Pee } from "./pees";
 import type { Poop } from "./poops";
@@ -22,7 +23,7 @@ export const ICONS_MAP = {
 export type Kind = typeof KINDS[number];
 
 export type Entry<K extends Kind> = K extends "feeds"
-  ? Feed
+  ? Feed<FeedKind>
   : K extends "naps"
   ? Nap
   : K extends "pees"
@@ -70,6 +71,10 @@ export const removeEntry = <K extends Kind>(kind: K, timestamp: Date) =>
     ) as DayState[K];
 
     $days[ts][kind] = entries;
+
+    if (isEmptyDay($days[ts])) {
+      delete $days[ts];
+    }
 
     return sortDaysByTimestamp($days);
   });
