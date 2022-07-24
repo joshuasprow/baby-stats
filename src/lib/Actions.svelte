@@ -1,5 +1,8 @@
 <script lang="ts">
-  import { addFeed, addNap, addPee, addPoop } from "./days";
+  import { addFeed } from "./feeds";
+  import { addNap } from "./naps";
+  import { addPee } from "./pees";
+  import { addPoop } from "./poops";
 </script>
 
 <div>

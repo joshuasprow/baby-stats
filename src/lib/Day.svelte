@@ -1,12 +1,10 @@
 <script lang="ts">
-  import {
-    removeFeed,
-    removeNap,
-    removePee,
-    removePoop,
-    type DayState,
-  } from "./days";
+  import type { DayState } from "./days";
   import Entries from "./Entries.svelte";
+  import { removeFeed } from "./feeds";
+  import { removeNap } from "./naps";
+  import { removePee } from "./pees";
+  import { removePoop } from "./poops";
 
   export let day: DayState;
 </script>

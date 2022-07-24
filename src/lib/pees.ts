@@ -1,13 +1,9 @@
-import { writable } from "svelte/store";
+import { addEntry, removeEntry } from "./days";
 
 export interface Pee {
   timestamp: Date;
 }
 
-export const pees = writable<Pee[]>([]);
+export const addPee = (pee: Pee) => addEntry("pees", pee);
 
-export const addPee = () =>
-  pees.update(($pees) => [...$pees, { timestamp: new Date() }]);
-
-export const removePee = (timestamp: Date) =>
-  pees.update(($pees) => $pees.filter((nap) => nap.timestamp !== timestamp));
+export const removePee = (timestamp: Date) => removeEntry("pees", timestamp);

@@ -69,19 +69,3 @@ export const removeEntry = <K extends Kind>(kind: K, timestamp: Date) =>
 
     return $days;
   });
-
-export const addFeed = (feed: Feed) => addEntry("feeds", feed);
-
-export const removeFeed = (timestamp: Date) => removeEntry("feeds", timestamp);
-
-export const addNap = (nap: Nap) => addEntry("naps", nap);
-
-export const removeNap = (timestamp: Date) => removeEntry("naps", timestamp);
-
-export const addPee = (pee: Pee) => addEntry("pees", pee);
-
-export const removePee = (timestamp: Date) => removeEntry("pees", timestamp);
-
-export const addPoop = (poop: Poop) => addEntry("poops", poop);
-
-export const removePoop = (timestamp: Date) => removeEntry("poops", timestamp);
