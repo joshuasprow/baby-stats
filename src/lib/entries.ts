@@ -16,9 +16,3 @@ export type Entry<K extends Kind> = K extends "feed"
   : K extends "poop"
   ? Poop
   : never;
-
-export interface Day {
-  year: number;
-  month: number;
-  day: number;
-}
