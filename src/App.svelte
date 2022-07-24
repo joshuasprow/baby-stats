@@ -10,7 +10,7 @@
 
   <Actions />
 
-  {#each Object.entries($days) as [_, day]}
-    <Day {day} />
+  {#each Object.entries($days) as [timestamp, day]}
+    <Day {timestamp} {day} />
   {/each}
 </main>

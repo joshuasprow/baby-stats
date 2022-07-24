@@ -13,10 +13,14 @@ const encodeDayTimestamp = (timestamp: Date): number => {
   const date = new Date(
     timestamp.getFullYear(),
     timestamp.getMonth(),
-    timestamp.getDate()
+    timestamp.getDate(),
+    0,
+    0,
+    0,
+    0
   );
 
-  return Math.floor(date.getTime() / 1000);
+  return date.getTime();
 };
 
 const newEmptyDay = (): DayState => ({
