@@ -9,11 +9,11 @@
   export let timestamp: string;
   export let day: DayState;
 
-  let date = new Intl.DateTimeFormat("en-US").format(parseInt(timestamp));
+  $: date = new Intl.DateTimeFormat("en-US").format(parseInt(timestamp));
 </script>
 
 <section>
-  <span class="timestamp">{timestamp}</span>
+  <span class="timestamp">{date}</span>
 
   <article class="feeds">
     <span>feeds: {day.feeds.length}</span>
@@ -40,8 +40,8 @@
   section {
     display: grid;
     grid-template-areas:
-      "t . .  ."
-      "f n pe po";
+      "ts . .  ."
+      "fe na pe po";
     margin-bottom: 1rem;
   }
 
@@ -50,15 +50,15 @@
   }
 
   .timestamp {
-    grid-area: t;
+    grid-area: ts;
   }
 
   .feeds {
-    grid-area: f;
+    grid-area: fe;
   }
 
   .naps {
-    grid-area: n;
+    grid-area: na;
   }
 
   .pees {

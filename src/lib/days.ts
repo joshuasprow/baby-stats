@@ -32,7 +32,7 @@ const newEmptyDay = (): DayState => ({
 
 export const days = writable<Days>({});
 
-const sortDaysByTimestamp = ($days: Days): Days =>
+export const sortDaysByTimestamp = ($days: Days): Days =>
   Object.keys($days)
     .sort()
     .reduce((acc, timestamp) => {
