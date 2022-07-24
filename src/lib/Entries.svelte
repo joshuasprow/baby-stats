@@ -1,11 +1,13 @@
 <script lang="ts">
-  import type { Entry, Icon, Kind } from "./entries";
+  import { getIconForKind, type Entry, type Kind } from "./entries";
 
-  type K = Kind;
+  type K = $$Generic<Kind>;
 
-  export let icon: Icon<K>;
+  export let kind: K;
   export let entries: Entry<K>[];
   export let removeEntry: (timestamp: Date) => void;
+
+  let icon = getIconForKind(kind);
 </script>
 
 <div>

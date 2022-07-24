@@ -17,22 +17,22 @@
 
   <article class="feeds">
     <span>feeds: {day.feeds.length}</span>
-    <Entries icon="🍼" entries={day.feeds} removeEntry={removeFeed} />
+    <Entries kind="feeds" entries={day.feeds} removeEntry={removeFeed} />
   </article>
 
   <article class="naps">
     <span>naps: {day.naps.length}</span>
-    <Entries icon="💤" entries={day.naps} removeEntry={removeNap} />
+    <Entries kind="naps" entries={day.naps} removeEntry={removeNap} />
   </article>
 
   <article class="pees">
     <span>pees: {day.pees.length}</span>
-    <Entries icon="💧" entries={day.pees} removeEntry={removePee} />
+    <Entries kind="pees" entries={day.pees} removeEntry={removePee} />
   </article>
 
   <article class="poops">
     <span>poops: {day.poops.length}</span>
-    <Entries icon="💩" entries={day.poops} removeEntry={removePoop} />
+    <Entries kind="poops" entries={day.poops} removeEntry={removePoop} />
   </article>
 </section>
 
