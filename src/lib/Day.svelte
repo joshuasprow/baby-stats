@@ -5,13 +5,15 @@
   export let day: DayState;
 </script>
 
-<div>
-  <span>feeds: {day.feeds.length}</span>
-  <Entries kind="feed" icon="🍼" entries={day.feeds} removeEntry={removeFeed} />
-</div>
+<section>
+  <article>
+    <span>feeds: {day.feeds.length}</span>
+    <Entries icon="🍼" entries={day.feeds} removeEntry={removeFeed} />
+  </article>
+</section>
 
 <style>
-  div {
+  section {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
   }

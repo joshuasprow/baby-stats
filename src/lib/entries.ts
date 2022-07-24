@@ -16,3 +16,13 @@ export type Entry<K extends Kind> = K extends "feeds"
   : K extends "poops"
   ? Poop
   : never;
+
+export type Icon<K extends Kind> = K extends "feeds"
+  ? "🍼"
+  : K extends "naps"
+  ? "💤"
+  : K extends "pees"
+  ? "💧"
+  : K extends "poops"
+  ? "💩"
+  : never;
