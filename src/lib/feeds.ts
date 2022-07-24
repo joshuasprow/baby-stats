@@ -5,15 +5,13 @@ const FEED_KINDS = ["bottle", "breast"] as const;
 
 export type FeedKind = typeof FEED_KINDS[number];
 
-export type FeedSide<K extends FeedKind> = K extends "breast"
-  ? "L" | "R"
-  : never;
+export type FeedSide = "L" | "R";
 
 export type Feed<K extends FeedKind> = {
   timestamp: Date;
   kind: K;
   amount: number;
-} & (K extends "breast" ? { side: FeedSide<K> } : {});
+} & (K extends "breast" ? { side: FeedSide } : {});
 
 export const addFeed = <K extends FeedKind>(feed: Omit<Feed<K>, "timestamp">) =>
   addEntry("feeds", { ...feed, timestamp: newDevDate() });
