@@ -9,8 +9,21 @@
 
 <main>
   <Actions />
-  <Entries entries={$feeds} icon="🍼" kind="feed" removeEntry={removeFeed} />
-  <Entries entries={$naps} icon="💤" kind="nap" removeEntry={removeNap} />
-  <Entries entries={$pees} icon="💧" kind="pee" removeEntry={removePee} />
-  <Entries entries={$poops} icon="💩" kind="poop" removeEntry={removePoop} />
+  <section class="entries">
+    <Entries entries={$feeds} icon="🍼" kind="feed" removeEntry={removeFeed} />
+    <Entries entries={$naps} icon="💤" kind="nap" removeEntry={removeNap} />
+    <Entries entries={$pees} icon="💧" kind="pee" removeEntry={removePee} />
+    <Entries entries={$poops} icon="💩" kind="poop" removeEntry={removePoop} />
+  </section>
 </main>
+
+<style>
+  main {
+    width: 100%;
+  }
+  .entries {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+</style>
