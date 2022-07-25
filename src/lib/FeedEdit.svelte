@@ -4,6 +4,7 @@
   import {
     isBreastFeed,
     isFeed,
+    removeFeed,
     updateFeed,
     type Feed,
     type FeedKind,
@@ -116,8 +117,9 @@
           setClosed();
         }}
       >
-        add
+        edit
       </button>
+      <button on:click={() => removeFeed(feed.timestamp)}>remove</button>
     </section>
   </aside>
 {/if}
