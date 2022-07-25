@@ -1,4 +1,5 @@
 import { derived, writable } from "svelte/store";
+import daysData from "./days.data";
 import type { Entry, Kind } from "./entries";
 
 export type DayState = {
@@ -30,7 +31,11 @@ export const newEmptyDay = (): DayState => ({
   poops: [],
 });
 
-export const days = writable<Days>({});
+export const days = writable<Days>(daysData);
+
+days.subscribe(($days) => {
+  console.log($days);
+});
 
 export const sortDaysByTimestamp = ($days: Days): Days =>
   Object.keys($days)
