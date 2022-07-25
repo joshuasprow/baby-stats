@@ -6,7 +6,11 @@
 
   let amount = 1;
   let kind: FeedKind = "bottle";
-  let side: FeedSide = "L";
+  let side: FeedSide | undefined = "L";
+
+  $: if (kind === "bottle") {
+    side = undefined;
+  }
 
   const setOpen = () => {
     open = true;
@@ -61,32 +65,32 @@
         </label>
       </article>
 
-      {#if kind === "breast"}
-        <article>
-          side:
-          <label for="L">
-            <input
-              bind:group={side}
-              type="radio"
-              id="L"
-              name="side"
-              value="L"
-            />
-            left
-          </label>
+      <article>
+        side:
+        <label for="L">
+          <input
+            bind:group={side}
+            disabled={kind !== "breast"}
+            id="L"
+            name="side"
+            type="radio"
+            value="L"
+          />
+          <span>left</span>
+        </label>
 
-          <label for="R">
-            <input
-              bind:group={side}
-              type="radio"
-              id="R"
-              name="side"
-              value="R"
-            />
-            right
-          </label>
-        </article>
-      {/if}
+        <label for="R">
+          <input
+            bind:group={side}
+            disabled={kind !== "breast"}
+            id="R"
+            name="side"
+            type="radio"
+            value="R"
+          />
+          <span>right</span>
+        </label>
+      </article>
 
       <button
         on:click={() => {
@@ -126,5 +130,9 @@
     color: #000;
     background: #fff;
     padding: 0.5rem;
+  }
+
+  input:disabled + span {
+    color: #aaa;
   }
 </style>
