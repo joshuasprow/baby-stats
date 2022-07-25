@@ -1,5 +1,5 @@
 import { newDevDate } from "./dev-date";
-import { addEntry, removeEntry } from "./entries";
+import { addEntry, removeEntry, updateEntry } from "./entries";
 
 const FEED_KINDS = ["bottle", "breast"] as const;
 
@@ -33,7 +33,30 @@ export const isFeedAdd = (
   return true;
 };
 
+export const isFeed = (
+  value: Record<string, unknown>
+): value is Feed<FeedKind> => {
+  if (!isFeedAdd(value)) return false;
+
+  if (!((value as Feed<"breast">).timestamp instanceof Date)) return false;
+
+  return true;
+};
+
+export const isBreastFeed = (
+  value: Record<string, unknown>
+): value is Feed<"breast"> => {
+  if (!isFeed(value)) return false;
+
+  if (value.kind !== "breast") return false;
+
+  return true;
+};
+
 export const addFeed = <K extends FeedKind>(feed: FeedAdd<K>) =>
   addEntry("feeds", { ...feed, timestamp: newDevDate() });
+
+export const updateFeed = <K extends FeedKind>(feed: Feed<K>) =>
+  updateEntry("feeds", feed);
 
 export const removeFeed = (timestamp: Date) => removeEntry("feeds", timestamp);

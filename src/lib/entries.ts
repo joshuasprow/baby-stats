@@ -55,6 +55,26 @@ export const addEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
     return sortDaysByTimestamp($days);
   });
 
+export const updateEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
+  days.update(($days) => {
+    const ts = encodeDayTimestamp(entry.timestamp);
+
+    if (!$days[ts]) {
+      console.error(`No day found for entry: ${entry}`);
+      return $days;
+    }
+
+    const day = $days[ts];
+    const index = day[kind].findIndex(
+      (e) => e.timestamp.getTime() === entry.timestamp.getTime()
+    );
+
+    day[kind][index] = entry;
+    $days[ts] = day;
+
+    return sortDaysByTimestamp($days);
+  });
+
 export const removeEntry = <K extends Kind>(kind: K, timestamp: Date) =>
   days.update(($days) => {
     const ts = encodeDayTimestamp(timestamp);
