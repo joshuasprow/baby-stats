@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Feed from "./Feed.svelte";
-  import type { Feed as FeedType, FeedKind } from "./feeds";
+  import FeedUpdate from "./FeedUpdate.svelte";
+  import type { Feed, FeedKind } from "./feeds";
 
-  export let feeds: FeedType<FeedKind>[];
+  export let feeds: Feed<FeedKind>[];
 </script>
 
 <span>feeds: {feeds.length}</span>
@@ -11,7 +11,7 @@
   <span>🚫</span>
 {:else}
   {#each feeds as feed}
-    <Feed {feed} />
+    <FeedUpdate {feed} />
   {/each}
 {/if}
 
