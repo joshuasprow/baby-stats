@@ -15,33 +15,25 @@ export type Feed<K extends FeedKind> = {
   amount: number;
 } & (K extends "breast" ? { side: FeedSide } : {});
 
-const isBottlePartial = (
+type FeedAdd<K extends FeedKind> = Omit<Feed<K>, "timestamp">;
+
+export const isFeedAdd = (
   value: Record<string, unknown>
-): value is Omit<Feed<"bottle">, "timestamp"> => {
+): value is FeedAdd<FeedKind> => {
   if (typeof value.amount !== "number") return false;
 
-  if (value.kind !== "bottle") return false;
+  if (!FEED_KINDS.includes(value.kind as FeedKind)) return false;
+
+  if (value.kind === "bottle") return true;
+
+  if (value.kind !== "breast") return false;
+
+  if (!FEED_SIDES.includes(value.side as FeedSide)) return false;
 
   return true;
 };
 
-const isBreastPartial = (
-  value: Record<string, unknown>
-): value is Omit<Feed<"breast">, "timestamp"> => {
-  if (typeof value.amount !== "number") return false;
-
-  if (value.kind !== "breast") return false;
-
-  if (FEED_SIDES.some((s) => s === value.side)) return true;
-
-  return false;
-};
-
-export const isFeedPartial = (
-  value: Record<string, unknown>
-): value is Feed<FeedKind> => isBottlePartial(value) || isBreastPartial(value);
-
-export const addFeed = <K extends FeedKind>(feed: Omit<Feed<K>, "timestamp">) =>
+export const addFeed = <K extends FeedKind>(feed: FeedAdd<K>) =>
   addEntry("feeds", { ...feed, timestamp: newDevDate() });
 
 export const removeFeed = (timestamp: Date) => removeEntry("feeds", timestamp);

@@ -1,11 +1,6 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import {
-    addFeed,
-    isFeedPartial,
-    type FeedKind,
-    type FeedSide,
-  } from "./feeds";
+  import { addFeed, isFeedAdd, type FeedKind, type FeedSide } from "./feeds";
 
   let open = false;
 
@@ -97,7 +92,7 @@
         on:click={() => {
           const feed = { amount, kind, side };
 
-          if (!isFeedPartial(feed)) {
+          if (!isFeedAdd(feed)) {
             console.error("invalid feed", feed);
             return;
           }
