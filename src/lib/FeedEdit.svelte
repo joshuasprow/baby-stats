@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-
+  import FeedIcon from "./FeedIcon.svelte";
   import {
     isBreastFeed,
     isFeed,
@@ -23,15 +23,6 @@
   $: if (kind === "bottle") {
     side = undefined;
   }
-
-  let icon = "🚫";
-
-  $: if (feed.kind === "bottle") {
-    icon = `${feed.amount}🍼`;
-  } else if (feed.kind === "breast") {
-    icon = `${feed.amount}🤱${(feed as unknown as Feed<"breast">).side}`;
-  }
-
   const setOpen = () => {
     open = true;
   };
@@ -41,7 +32,7 @@
   };
 </script>
 
-<button on:click={setOpen}>{icon}</button>
+<button on:click={setOpen}><FeedIcon {feed} /></button>
 
 {#if open}
   <aside on:click={setClosed} transition:fade={{ duration: 100 }}>
