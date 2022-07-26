@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let amount: 1 | 2 | 3 = 1;
+  export let amount: 1 | 2 | 3 = 2;
 
   const set = (a: 1 | 2 | 3) => {
     amount = a;
@@ -17,9 +17,10 @@
   span {
     filter: grayscale(100%);
     cursor: pointer;
+    transition: filter 100ms ease-in-out;
   }
 
   .active {
-    filter: none;
+    filter: grayscale(0%);
   }
 </style>
