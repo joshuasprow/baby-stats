@@ -5,6 +5,7 @@
   import { removePoop } from "../stores/poops";
   import Entries from "./Entries.svelte";
   import Feeds from "./Feeds.svelte";
+  import Pees from "./Pees.svelte";
 
   export let timestamp: string;
   export let day: DayState;
@@ -26,7 +27,8 @@
 
   <article class="pees">
     <span>pees: {day.pees.length}</span>
-    <Entries kind="pees" entries={day.pees} removeEntry={removePee} />
+    <Pees pees={day.pees} />
+    <!-- <Entries kind="pees" entries={day.pees} removeEntry={removePee} /> -->
   </article>
 
   <article class="poops">
