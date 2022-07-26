@@ -15,7 +15,7 @@
   };
 </script>
 
-<button on:click={setOpen}>🍼</button>
+<button on:click={setOpen}>💧</button>
 
 {#if open}
   <aside on:click={setClosed} transition:fade={{ duration: 100 }}>

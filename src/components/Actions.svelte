@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { newTimestampWithPickerDate } from "../stores/picker-date";
   import { addNap } from "../stores/naps";
-  import { addPee } from "../stores/pees";
+  import { newTimestampWithPickerDate } from "../stores/picker-date";
   import { addPoop } from "../stores/poops";
   import FeedAdd from "./FeedAdd.svelte";
+  import PeeAdd from "./PeeAdd.svelte";
 </script>
 
 <section>
@@ -15,9 +15,7 @@
     💤
   </button>
 
-  <button on:click={() => addPee({ timestamp: newTimestampWithPickerDate() })}>
-    💧
-  </button>
+  <PeeAdd />
 
   <button on:click={() => addPoop({ timestamp: newTimestampWithPickerDate() })}>
     💩
