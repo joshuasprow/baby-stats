@@ -5,11 +5,11 @@ import {
   newEmptyDay,
   sortDaysByTimestamp,
   type DayState,
-} from "./days";
-import type { Feed, FeedKind } from "./feeds";
-import type { Nap } from "./naps";
-import type { Pee } from "./pees";
-import type { Poop } from "./poops";
+} from "../stores/days";
+import type { Feed, FeedKind } from "../stores/feeds";
+import type { Nap } from "../stores/naps";
+import type { Pee } from "../stores/pees";
+import type { Poop } from "../stores/poops";
 
 export const KINDS = ["feeds", "naps", "pees", "poops"] as const;
 

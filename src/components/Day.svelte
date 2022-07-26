@@ -1,10 +1,10 @@
 <script lang="ts">
-  import type { DayState } from "../lib/days";
+  import type { DayState } from "../stores/days";
+  import { removeNap } from "../stores/naps";
+  import { removePee } from "../stores/pees";
+  import { removePoop } from "../stores/poops";
   import Entries from "./Entries.svelte";
   import Feeds from "./Feeds.svelte";
-  import { removeNap } from "../lib/naps";
-  import { removePee } from "../lib/pees";
-  import { removePoop } from "../lib/poops";
 
   export let timestamp: string;
   export let day: DayState;

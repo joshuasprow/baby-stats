@@ -1,5 +1,5 @@
-import { newDevDate } from "./dev-date";
-import { addEntry, removeEntry, updateEntry } from "./entries";
+import { newDevDate } from "../lib/dev-date";
+import { addEntry, removeEntry, updateEntry } from "../lib/entries";
 
 const FEED_KINDS = ["bottle", "breast"] as const;
 

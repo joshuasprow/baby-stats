@@ -9,7 +9,7 @@
     type Feed,
     type FeedKind,
     type FeedSide,
-  } from "../lib/feeds";
+  } from "../stores/feeds";
 
   type K = $$Generic<FeedKind>;
 

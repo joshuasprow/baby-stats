@@ -2,7 +2,7 @@
   import Actions from "./components/Actions.svelte";
   import DatePicker from "./components/DatePicker.svelte";
   import Day from "./components/Day.svelte";
-  import { days } from "./lib/days";
+  import { days } from "./stores/days";
 </script>
 
 <main>

@@ -5,7 +5,7 @@
     isFeedAdd,
     type FeedKind,
     type FeedSide,
-  } from "../lib/feeds";
+  } from "../stores/feeds";
 
   let open = false;
 

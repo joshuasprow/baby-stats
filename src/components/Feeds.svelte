@@ -1,6 +1,6 @@
 <script lang="ts">
   import FeedUpdate from "./FeedUpdate.svelte";
-  import type { Feed, FeedKind } from "../lib/feeds";
+  import type { Feed, FeedKind } from "../stores/feeds";
 
   export let feeds: Feed<FeedKind>[];
 </script>
