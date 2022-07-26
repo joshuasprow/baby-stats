@@ -1,16 +1,16 @@
 import type { Kind } from "./kind";
 
-export const ICONS_MAP = {
+export const ICONS = {
   feeds: "🍼",
   naps: "💤",
   pees: "💧",
   poops: "💩",
 } as const;
 
-export type Icon<K extends Kind> = typeof ICONS_MAP[K];
+export type Icon<K extends Kind> = typeof ICONS[K];
 
 export const getIconForKind = <K extends Kind>(kind: K): Icon<K> => {
-  const icon = ICONS_MAP[kind];
+  const icon = ICONS[kind];
 
   if (icon) return icon;
 
