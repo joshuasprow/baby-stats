@@ -45,7 +45,14 @@
       >
         edit
       </button>
-      <button on:click={() => removePee(pee.timestamp)}>remove</button>
+      <button
+        on:click={() => {
+          removePee(pee.timestamp);
+          setClosed();
+        }}
+      >
+        remove
+      </button>
     </section>
   </aside>
 {/if}
