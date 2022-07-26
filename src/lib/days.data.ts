@@ -1,4 +1,4 @@
-import type { Days } from "./days";
+import type { Days } from "../stores/days";
 
 const daysData: Days = {
   "1658548800000": {
@@ -11,8 +11,8 @@ const daysData: Days = {
     ],
     naps: [],
     pees: [
-      { timestamp: new Date("2022-07-24T02:17:54.977Z") },
-      { timestamp: new Date("2022-07-24T02:17:55.230Z") },
+      { amount: 1, timestamp: new Date("2022-07-24T02:17:54.977Z") },
+      { amount: 1, timestamp: new Date("2022-07-24T02:17:55.230Z") },
     ],
     poops: [
       { timestamp: new Date("2022-07-24T02:17:53.409Z") },
@@ -30,8 +30,8 @@ const daysData: Days = {
     ],
     naps: [{ timestamp: new Date("2022-07-25T02:18:13.244Z") }],
     pees: [
-      { timestamp: new Date("2022-07-25T02:18:10.094Z") },
-      { timestamp: new Date("2022-07-25T02:18:11.011Z") },
+      { amount: 2, timestamp: new Date("2022-07-25T02:18:10.094Z") },
+      { amount: 2, timestamp: new Date("2022-07-25T02:18:11.011Z") },
     ],
     poops: [{ timestamp: new Date("2022-07-25T02:18:12.144Z") }],
   },
@@ -41,7 +41,7 @@ const daysData: Days = {
       { timestamp: new Date("2022-07-26T02:18:34.111Z") },
       { timestamp: new Date("2022-07-26T02:18:34.394Z") },
     ],
-    pees: [{ timestamp: new Date("2022-07-26T02:18:35.027Z") }],
+    pees: [{ amount: 3, timestamp: new Date("2022-07-26T02:18:35.027Z") }],
     poops: [],
   },
 };
