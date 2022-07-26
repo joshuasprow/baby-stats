@@ -3,7 +3,7 @@ import { newTimestampWithPickerDate } from "./picker-date";
 
 export interface Pee {
   timestamp: Date;
-  amount: number;
+  amount: 1 | 2 | 3;
 }
 
 type PeeAdd = Omit<Pee, "timestamp">;
