@@ -10,7 +10,8 @@
     type FeedKind,
     type FeedSide,
   } from "../stores/feeds";
-  import FeedAmount from "./FeedAmount.svelte";
+  import FeedAmountInput from "./FeedAmountInput.svelte";
+  import FeedKindInput from "./FeedKindInput.svelte";
 
   type K = $$Generic<FeedKind>;
 
@@ -40,32 +41,12 @@
   <aside on:click={setClosed} transition:fade={{ duration: 100 }}>
     <section on:click|stopPropagation>
       <article>
-        <FeedAmount bind:amount />
+        <FeedAmountInput bind:amount />
       </article>
 
       <article>
         kind:
-        <label for="bottle">
-          <input
-            bind:group={kind}
-            type="radio"
-            id="bottle"
-            name="kind"
-            value="bottle"
-          />
-          bottle
-        </label>
-
-        <label for="breast">
-          <input
-            bind:group={kind}
-            type="radio"
-            id="breast"
-            name="kind"
-            value="breast"
-          />
-          breast
-        </label>
+        <FeedKindInput bind:kind />
       </article>
 
       <article>
