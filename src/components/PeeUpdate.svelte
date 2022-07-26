@@ -1,6 +1,6 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import { isPee, removePee, updatePee, type Pee } from "../stores/pees";
+  import { removePee, updatePee, type Pee } from "../stores/pees";
   import PeeAmountInput from "./PeeAmountInput.svelte";
   import PeeIcon from "./PeeIcon.svelte";
 

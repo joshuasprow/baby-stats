@@ -4,7 +4,7 @@
   import PeeAmountInput from "./PeeAmountInput.svelte";
 
   let open = false;
-  let amount: 1 | 2 | 3 = 1;
+  let amount: 1 | 2 | 3 = 2;
 
   const setOpen = () => {
     open = true;
