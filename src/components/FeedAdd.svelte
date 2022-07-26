@@ -6,6 +6,7 @@
     type FeedKind,
     type FeedSide,
   } from "../stores/feeds";
+  import FeedAmount from "./FeedAmount.svelte";
 
   let open = false;
 
@@ -32,17 +33,7 @@
   <aside on:click={setClosed} transition:fade={{ duration: 100 }}>
     <section on:click|stopPropagation>
       <article>
-        <label for="amount">
-          amount:
-          <input
-            id="amount"
-            bind:value={amount}
-            type="number"
-            min={0.5}
-            max={6}
-            step={0.5}
-          />
-        </label>
+        <FeedAmount bind:amount />
       </article>
 
       <article>
