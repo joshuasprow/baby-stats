@@ -2,12 +2,12 @@
   import { fade } from "svelte/transition";
   import { isPee, removePee, updatePee, type Pee } from "../stores/pees";
   import PeeAmountInput from "./PeeAmountInput.svelte";
-  // import PeeIcon from "./PeeIcon.svelte";
+  import PeeIcon from "./PeeIcon.svelte";
   // import PeeSideInput from "./PeeSideInput.svelte";
 
   export let pee: Pee;
 
-  let open = true;
+  let open = false;
   let amount = pee.amount;
 
   const setOpen = () => {
@@ -20,7 +20,7 @@
 </script>
 
 <button on:click={setOpen}>
-  <!-- <PeeIcon feed={pee} /> -->
+  <PeeIcon {pee} />
 </button>
 
 {#if open}
@@ -28,16 +28,6 @@
     <section on:click|stopPropagation>
       <article>
         <PeeAmountInput bind:amount />
-      </article>
-
-      <article>
-        kind:
-        <!-- <PeeKindInput bind:kind /> -->
-      </article>
-
-      <article>
-        side:
-        <!-- <PeeSideInput {kind} bind:side /> -->
       </article>
 
       <button
