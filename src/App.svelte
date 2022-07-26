@@ -1,7 +1,7 @@
 <script lang="ts">
-  import Actions from "./lib/Actions.svelte";
-  import DatePicker from "./lib/DatePicker.svelte";
-  import Day from "./lib/Day.svelte";
+  import Actions from "./components/Actions.svelte";
+  import DatePicker from "./components/DatePicker.svelte";
+  import Day from "./components/Day.svelte";
   import { days } from "./lib/days";
 </script>
 

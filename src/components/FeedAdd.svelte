@@ -1,29 +1,22 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import FeedIcon from "./FeedIcon.svelte";
   import {
-    isBreastFeed,
-    isFeed,
-    removeFeed,
-    updateFeed,
-    type Feed,
+    addFeed,
+    isFeedAdd,
     type FeedKind,
     type FeedSide,
-  } from "./feeds";
-
-  type K = $$Generic<FeedKind>;
-
-  export let feed: Feed<K>;
+  } from "../lib/feeds";
 
   let open = false;
 
-  let amount = feed.amount;
-  let kind: FeedKind = feed.kind;
-  let side: FeedSide | undefined = isBreastFeed(feed) ? feed.side : undefined;
+  let amount = 1;
+  let kind: FeedKind = "bottle";
+  let side: FeedSide | undefined = "L";
 
   $: if (kind === "bottle") {
     side = undefined;
   }
+
   const setOpen = () => {
     open = true;
   };
@@ -33,7 +26,7 @@
   };
 </script>
 
-<button on:click={setOpen}><FeedIcon {feed} /></button>
+<button on:click={setOpen}>🍼</button>
 
 {#if open}
   <aside on:click={setClosed} transition:fade={{ duration: 100 }}>
@@ -106,20 +99,19 @@
 
       <button
         on:click={() => {
-          const f = { amount, kind, side, timestamp: feed.timestamp };
+          const feed = { amount, kind, side };
 
-          if (!isFeed(f)) {
-            console.error("invalid feed", f);
+          if (!isFeedAdd(feed)) {
+            console.error("invalid feed", feed);
             return;
           }
 
-          updateFeed(f);
+          addFeed(feed);
           setClosed();
         }}
       >
-        edit
+        add
       </button>
-      <button on:click={() => removeFeed(feed.timestamp)}>remove</button>
     </section>
   </aside>
 {/if}

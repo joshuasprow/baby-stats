@@ -1,9 +1,8 @@
 <script lang="ts">
-  import { addFeed } from "./feeds";
-  import { addNap } from "./naps";
-  import { addPee } from "./pees";
-  import { addPoop } from "./poops";
-  import { newDevDate } from "./dev-date";
+  import { newDevDate } from "../lib/dev-date";
+  import { addNap } from "../lib/naps";
+  import { addPee } from "../lib/pees";
+  import { addPoop } from "../lib/poops";
   import FeedAdd from "./FeedAdd.svelte";
 </script>
 

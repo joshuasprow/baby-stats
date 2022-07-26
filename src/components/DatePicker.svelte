@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { devDate, devDateString } from "./dev-date";
+  import { devDate, devDateString } from "../lib/dev-date";
 
   const setDevDate = (
     event: Event & {
