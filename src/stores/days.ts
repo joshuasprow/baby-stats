@@ -10,7 +10,7 @@ export type Days = {
   [timestamp: string]: DayState;
 };
 
-export const encodeDayTimestamp = (timestamp: Date): string => {
+const encodeDayTimestamp = (timestamp: Date): string => {
   const date = new Date(
     timestamp.getFullYear(),
     timestamp.getMonth(),
@@ -24,7 +24,7 @@ export const encodeDayTimestamp = (timestamp: Date): string => {
   return date.getTime().toString();
 };
 
-export const newEmptyDay = (): DayState => ({
+const newEmptyDay = (): DayState => ({
   feeds: [],
   naps: [],
   pees: [],
@@ -37,7 +37,7 @@ days.subscribe(($days) => {
   console.log($days);
 });
 
-export const sortDaysByTimestamp = ($days: Days): Days =>
+const sortDaysByTimestamp = ($days: Days): Days =>
   Object.keys($days)
     .sort()
     .reduce((acc, timestamp) => {
@@ -45,5 +45,62 @@ export const sortDaysByTimestamp = ($days: Days): Days =>
       return acc;
     }, {} as Days);
 
-export const isEmptyDay = (day: DayState): boolean =>
+const isEmptyDay = (day: DayState): boolean =>
   !Object.values(day).some((entries) => entries.length > 0);
+
+export const addEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
+  days.update(($days) => {
+    const ts = encodeDayTimestamp(entry.timestamp);
+
+    if (!$days[ts]) {
+      $days[ts] = newEmptyDay();
+    }
+
+    $days[ts][kind].push(entry);
+
+    return sortDaysByTimestamp($days);
+  });
+
+export const updateEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
+  days.update(($days) => {
+    const ts = encodeDayTimestamp(entry.timestamp);
+
+    if (!$days[ts]) {
+      console.error(`No day found for entry: ${entry}`);
+      return $days;
+    }
+
+    const day = $days[ts];
+    const index = day[kind].findIndex(
+      (e) => e.timestamp.getTime() === entry.timestamp.getTime()
+    );
+
+    day[kind][index] = entry;
+    $days[ts] = day;
+
+    return sortDaysByTimestamp($days);
+  });
+
+export const removeEntry = <K extends Kind>(kind: K, timestamp: Date) =>
+  days.update(($days) => {
+    const ts = encodeDayTimestamp(timestamp);
+
+    if (!$days[ts]) {
+      console.error(
+        `Tried to remove ${kind} entry from day ${ts} but it doesn't exist`
+      );
+      return $days;
+    }
+
+    const entries = $days[ts][kind].filter(
+      (e) => e.timestamp !== timestamp
+    ) as DayState[K];
+
+    $days[ts][kind] = entries;
+
+    if (isEmptyDay($days[ts])) {
+      delete $days[ts];
+    }
+
+    return sortDaysByTimestamp($days);
+  });

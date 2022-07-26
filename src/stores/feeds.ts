@@ -1,5 +1,5 @@
 import { newTimestampWithPickerDate } from "./picker-date";
-import { addEntry, removeEntry, updateEntry } from "../lib/entries";
+import { addEntry, removeEntry, updateEntry } from "./days";
 
 const FEED_KINDS = ["bottle", "breast"] as const;
 

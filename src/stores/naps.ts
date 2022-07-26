@@ -1,4 +1,4 @@
-import { addEntry, removeEntry } from "../lib/entries";
+import { addEntry, removeEntry } from "./days";
 
 export interface Nap {
   timestamp: Date;
