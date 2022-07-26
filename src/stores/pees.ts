@@ -1,9 +1,13 @@
 import { addEntry, removeEntry, updateEntry } from "./days";
 import { newTimestampWithPickerDate } from "./picker-date";
 
+const PEE_AMOUNTS = [1, 2, 3] as const;
+
+export type PeeAmount = typeof PEE_AMOUNTS[number];
+
 export interface Pee {
   timestamp: Date;
-  amount: 1 | 2 | 3;
+  amount: PeeAmount;
 }
 
 type PeeAdd = Omit<Pee, "timestamp">;

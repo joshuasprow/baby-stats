@@ -1,10 +1,10 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import { addPee } from "../stores/pees";
+  import { addPee, type PeeAmount } from "../stores/pees";
   import PeeAmountInput from "./PeeAmountInput.svelte";
 
   let open = false;
-  let amount: 1 | 2 | 3 = 2;
+  let amount: PeeAmount = 2;
 
   const setOpen = () => {
     open = true;
