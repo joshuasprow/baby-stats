@@ -1,6 +1,7 @@
-import { derived, writable } from "svelte/store";
+import { writable } from "svelte/store";
 import daysData from "../lib/days.data";
-import type { Entry, Kind } from "../lib/entries";
+import type { Entry } from "../lib/entry";
+import type { Kind } from "../lib/kind";
 
 export type DayState = {
   [K in Kind]: Entry<K>[];

@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { getIconForKind, type Entry, type Kind } from "../lib/entries";
+  import type { Entry } from "../lib/entry";
+  import { getIconForKind } from "../lib/icon";
+  import type { Kind } from "../lib/kind";
 
   type K = $$Generic<Kind>;
 
