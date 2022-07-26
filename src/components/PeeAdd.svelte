@@ -1,13 +1,10 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import { isPee, removePee, updatePee, type Pee } from "../stores/pees";
+  import { addPee } from "../stores/pees";
   import PeeAmountInput from "./PeeAmountInput.svelte";
-  import PeeIcon from "./PeeIcon.svelte";
-
-  export let pee: Pee;
 
   let open = false;
-  let amount = pee.amount;
+  let amount: 1 | 2 | 3 = 1;
 
   const setOpen = () => {
     open = true;
@@ -18,9 +15,7 @@
   };
 </script>
 
-<button on:click={setOpen}>
-  <PeeIcon {pee} />
-</button>
+<button on:click={setOpen}>🍼</button>
 
 {#if open}
   <aside on:click={setClosed} transition:fade={{ duration: 100 }}>
@@ -31,19 +26,11 @@
 
       <button
         on:click={() => {
-          updatePee({ amount, timestamp: pee.timestamp });
+          addPee({ amount });
           setClosed();
         }}
       >
-        edit
-      </button>
-      <button
-        on:click={() => {
-          removePee(pee.timestamp);
-          setClosed();
-        }}
-      >
-        remove
+        add
       </button>
     </section>
   </aside>

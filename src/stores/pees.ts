@@ -15,11 +15,15 @@ export const isPee = (value: unknown): value is Pee => {
   return true;
 };
 
-export const addPee = (pee: PeeAdd) => {
+export const addPee = (peeAdd: PeeAdd) => {
+  const pee = { ...peeAdd, timestamp: newTimestampWithPickerDate() };
   if (!isPee(pee)) throw new Error("Invalid pee");
-  addEntry("pees", { ...pee, timestamp: newTimestampWithPickerDate() });
+  addEntry("pees", pee);
 };
 
-export const updatePee = (pee: Pee) => updateEntry("pees", pee);
+export const updatePee = (pee: Pee) => {
+  if (!isPee(pee)) throw new Error("Invalid pee");
+  updateEntry("pees", pee);
+};
 
 export const removePee = (timestamp: Date) => removeEntry("pees", timestamp);
