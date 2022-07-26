@@ -2,7 +2,7 @@
   import type { FeedKind, FeedSide } from "src/stores/feeds";
 
   export let kind: FeedKind;
-  export let side: FeedSide | undefined;
+  export let side: FeedSide | undefined = undefined;
 
   $: disabled = side === undefined || kind !== "breast";
 </script>

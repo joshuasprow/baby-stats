@@ -26,9 +26,7 @@
   </article>
 
   <article class="pees">
-    <span>pees: {day.pees.length}</span>
     <Pees pees={day.pees} />
-    <!-- <Entries kind="pees" entries={day.pees} removeEntry={removePee} /> -->
   </article>
 
   <article class="poops">
