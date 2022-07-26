@@ -1,6 +1,5 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import FeedIcon from "./FeedIcon.svelte";
   import {
     isBreastFeed,
     isFeed,
@@ -11,7 +10,9 @@
     type FeedSide,
   } from "../stores/feeds";
   import FeedAmountInput from "./FeedAmountInput.svelte";
+  import FeedIcon from "./FeedIcon.svelte";
   import FeedKindInput from "./FeedKindInput.svelte";
+  import FeedSideInput from "./FeedSideInput.svelte";
 
   type K = $$Generic<FeedKind>;
 
@@ -51,29 +52,7 @@
 
       <article>
         side:
-        <label for="L">
-          <input
-            bind:group={side}
-            disabled={kind !== "breast"}
-            id="L"
-            name="side"
-            type="radio"
-            value="L"
-          />
-          <span>left</span>
-        </label>
-
-        <label for="R">
-          <input
-            bind:group={side}
-            disabled={kind !== "breast"}
-            id="R"
-            name="side"
-            type="radio"
-            value="R"
-          />
-          <span>right</span>
-        </label>
+        <FeedSideInput {kind} bind:side />
       </article>
 
       <button
@@ -115,9 +94,5 @@
     color: #000;
     background: #fff;
     padding: 0.5rem;
-  }
-
-  input:disabled + span {
-    color: #aaa;
   }
 </style>
