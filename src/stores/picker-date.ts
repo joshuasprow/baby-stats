@@ -2,7 +2,7 @@ import { derived, get, writable } from "svelte/store";
 
 const now = new Date();
 
-export const devDate = writable({
+export const pickerDate = writable({
   year: now.getFullYear(),
   month: now.getMonth(),
   date: now.getDate(),
@@ -11,7 +11,7 @@ export const devDate = writable({
 const addLeadingZero = (num: number): string =>
   num < 10 ? `0${num}` : `${num}`;
 
-export const devDateString = derived(devDate, ($devDate) => {
+export const pickerDateString = derived(pickerDate, ($devDate) => {
   const y = $devDate.year;
   const m = addLeadingZero($devDate.month + 1);
   const d = addLeadingZero($devDate.date);
@@ -19,10 +19,10 @@ export const devDateString = derived(devDate, ($devDate) => {
   return `${y}-${m}-${d}`;
 });
 
-export const newDevDate = (): Date => {
+export const newTimestampWithPickerDate = (): Date => {
   const d = new Date();
 
-  const { year, month, date } = get(devDate);
+  const { year, month, date } = get(pickerDate);
 
   d.setFullYear(year);
   d.setMonth(month);

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { devDate, devDateString } from "../lib/dev-date";
+  import { pickerDate, pickerDateString } from "../stores/picker-date";
 
   const setDevDate = (
     event: Event & {
@@ -10,12 +10,12 @@
       .split("-")
       .map(Number);
 
-    devDate.set({ year, month: month - 1, date });
+    pickerDate.set({ year, month: month - 1, date });
   };
 </script>
 
 <span>date:</span>
-<input on:change={setDevDate} type="date" value={$devDateString} />
+<input on:change={setDevDate} type="date" value={$pickerDateString} />
 
 <style>
   span {

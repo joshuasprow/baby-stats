@@ -1,4 +1,4 @@
-import { newDevDate } from "../lib/dev-date";
+import { newTimestampWithPickerDate } from "./picker-date";
 import { addEntry, removeEntry, updateEntry } from "../lib/entries";
 
 const FEED_KINDS = ["bottle", "breast"] as const;
@@ -54,7 +54,7 @@ export const isBreastFeed = (
 };
 
 export const addFeed = <K extends FeedKind>(feed: FeedAdd<K>) =>
-  addEntry("feeds", { ...feed, timestamp: newDevDate() });
+  addEntry("feeds", { ...feed, timestamp: newTimestampWithPickerDate() });
 
 export const updateFeed = <K extends FeedKind>(feed: Feed<K>) =>
   updateEntry("feeds", feed);

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { newDevDate } from "../lib/dev-date";
+  import { newTimestampWithPickerDate } from "../stores/picker-date";
   import { addNap } from "../stores/naps";
   import { addPee } from "../stores/pees";
   import { addPoop } from "../stores/poops";
@@ -8,13 +8,20 @@
 
 <section>
   <span>actions:</span>
+
   <FeedAdd />
-  |
-  <button on:click={() => addNap({ timestamp: newDevDate() })}>💤</button>
-  |
-  <button on:click={() => addPee({ timestamp: newDevDate() })}>💧</button>
-  |
-  <button on:click={() => addPoop({ timestamp: newDevDate() })}>💩</button>
+
+  <button on:click={() => addNap({ timestamp: newTimestampWithPickerDate() })}>
+    💤
+  </button>
+
+  <button on:click={() => addPee({ timestamp: newTimestampWithPickerDate() })}>
+    💧
+  </button>
+
+  <button on:click={() => addPoop({ timestamp: newTimestampWithPickerDate() })}>
+    💩
+  </button>
 </section>
 
 <style>
