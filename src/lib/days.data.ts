@@ -28,7 +28,7 @@ const daysData: Days = {
         timestamp: new Date("2022-07-25T02:18:07.126Z"),
       },
     ],
-    naps: [{ timestamp: new Date("2022-07-25T02:18:13.244Z") }],
+    naps: [{ amount: 2, timestamp: new Date("2022-07-25T02:18:13.244Z") }],
     pees: [
       { amount: 2, timestamp: new Date("2022-07-25T02:18:10.094Z") },
       { amount: 2, timestamp: new Date("2022-07-25T02:18:11.011Z") },
@@ -38,8 +38,8 @@ const daysData: Days = {
   "1658721600000": {
     feeds: [],
     naps: [
-      { timestamp: new Date("2022-07-26T02:18:34.111Z") },
-      { timestamp: new Date("2022-07-26T02:18:34.394Z") },
+      { amount: 1.5, timestamp: new Date("2022-07-26T02:18:34.111Z") },
+      { amount: 0.5, timestamp: new Date("2022-07-26T02:18:34.394Z") },
     ],
     pees: [{ amount: 3, timestamp: new Date("2022-07-26T02:18:35.027Z") }],
     poops: [],
