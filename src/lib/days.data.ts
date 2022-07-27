@@ -11,12 +11,12 @@ const daysData: Days = {
     ],
     naps: [],
     pees: [
-      { amount: 1, timestamp: new Date("2022-07-24T02:17:54.977Z") },
+      { amount: 2, timestamp: new Date("2022-07-24T02:17:54.977Z") },
       { amount: 1, timestamp: new Date("2022-07-24T02:17:55.230Z") },
     ],
     poops: [
-      { timestamp: new Date("2022-07-24T02:17:53.409Z") },
-      { timestamp: new Date("2022-07-24T02:17:54.444Z") },
+      { amount: 1, timestamp: new Date("2022-07-24T02:17:53.409Z") },
+      { amount: 2, timestamp: new Date("2022-07-24T02:17:54.444Z") },
     ],
   },
   "1658635200000": {
@@ -30,10 +30,10 @@ const daysData: Days = {
     ],
     naps: [{ amount: 2, timestamp: new Date("2022-07-25T02:18:13.244Z") }],
     pees: [
-      { amount: 2, timestamp: new Date("2022-07-25T02:18:10.094Z") },
+      { amount: 1, timestamp: new Date("2022-07-25T02:18:10.094Z") },
       { amount: 2, timestamp: new Date("2022-07-25T02:18:11.011Z") },
     ],
-    poops: [{ timestamp: new Date("2022-07-25T02:18:12.144Z") }],
+    poops: [{ amount: 3, timestamp: new Date("2022-07-25T02:18:12.144Z") }],
   },
   "1658721600000": {
     feeds: [],
