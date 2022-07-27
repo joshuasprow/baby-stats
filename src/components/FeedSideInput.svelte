@@ -1,10 +1,8 @@
 <script lang="ts">
-  import type { FeedKind, FeedSide } from "src/stores/feeds";
+  import type { FeedSide } from "src/stores/feeds";
 
-  export let kind: FeedKind;
   export let side: FeedSide | undefined = undefined;
-
-  $: disabled = side === undefined || kind !== "breast";
+  export let disabled: boolean;
 </script>
 
 <label for="L">
