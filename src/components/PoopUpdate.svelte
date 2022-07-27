@@ -1,13 +1,13 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
-  import { removeNap, updateNap, type Nap } from "../stores/naps";
-  import NapAmountInput from "./NapAmountInput.svelte";
-  import NapIcon from "./NapIcon.svelte";
+  import { removePoop, updatePoop, type Poop } from "../stores/poops";
+  import PoopAmountInput from "./PoopAmountInput.svelte";
+  import PoopIcon from "./PoopIcon.svelte";
 
-  export let nap: Nap;
+  export let poop: Poop;
 
   let open = false;
-  let amount = nap.amount;
+  let amount = poop.amount;
 
   const setOpen = () => {
     open = true;
@@ -19,19 +19,19 @@
 </script>
 
 <button on:click={setOpen}>
-  <NapIcon {nap} />
+  <PoopIcon {poop} />
 </button>
 
 {#if open}
   <aside on:click={setClosed} transition:fade={{ duration: 100 }}>
     <section on:click|stopPropagation>
       <article>
-        <NapAmountInput bind:amount />
+        <PoopAmountInput bind:amount />
       </article>
 
       <button
         on:click={() => {
-          updateNap({ amount, timestamp: nap.timestamp });
+          updatePoop({ amount, timestamp: poop.timestamp });
           setClosed();
         }}
       >
@@ -39,7 +39,7 @@
       </button>
       <button
         on:click={() => {
-          removeNap(nap.timestamp);
+          removePoop(poop.timestamp);
           setClosed();
         }}
       >

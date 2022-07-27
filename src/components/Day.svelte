@@ -1,11 +1,9 @@
 <script lang="ts">
   import type { DayState } from "../stores/days";
-  import { removeNap } from "../stores/naps";
-  import { removePee } from "../stores/pees";
-  import { removePoop } from "../stores/poops";
-  import Entries from "./Entries.svelte";
   import Feeds from "./Feeds.svelte";
+  import Naps from "./Naps.svelte";
   import Pees from "./Pees.svelte";
+  import Poops from "./Poops.svelte";
 
   export let timestamp: string;
   export let day: DayState;
@@ -21,8 +19,7 @@
   </article>
 
   <article class="naps">
-    <span>naps: {day.naps.length}</span>
-    <Entries kind="naps" entries={day.naps} removeEntry={removeNap} />
+    <Naps naps={day.naps} />
   </article>
 
   <article class="pees">
@@ -30,8 +27,7 @@
   </article>
 
   <article class="poops">
-    <span>poops: {day.poops.length}</span>
-    <Entries kind="poops" entries={day.poops} removeEntry={removePoop} />
+    <Poops poops={day.poops} />
   </article>
 </section>
 

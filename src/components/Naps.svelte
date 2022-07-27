@@ -1,17 +1,17 @@
 <script lang="ts">
-  import PeeUpdate from "./PeeUpdate.svelte";
-  import type { Pee } from "../stores/pees";
+  import NapUpdate from "./NapUpdate.svelte";
+  import type { Nap } from "../stores/naps";
 
-  export let pees: Pee[];
+  export let naps: Nap[];
 </script>
 
-<span>pees: {pees.length}</span>
+<span>naps: {naps.length}</span>
 
-{#if pees.length === 0}
+{#if naps.length === 0}
   <span>🚫</span>
 {:else}
-  {#each pees as pee}
-    <PeeUpdate {pee} />
+  {#each naps as nap}
+    <NapUpdate {nap} />
   {/each}
 {/if}
 
