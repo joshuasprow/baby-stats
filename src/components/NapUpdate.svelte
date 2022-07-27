@@ -1,8 +1,8 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
   import { removeNap, updateNap, type Nap } from "../stores/naps";
-  // import NapAmountInput from "./NapAmountInput.svelte";
-  // import NapIcon from "./NapIcon.svelte";
+  import NapAmountInput from "./NapAmountInput.svelte";
+  import NapIcon from "./NapUpdate.svelte";
 
   export let nap: Nap;
 
@@ -19,14 +19,14 @@
 </script>
 
 <button on:click={setOpen}>
-  <!-- <NapIcon {nap} /> -->
+  <NapIcon {nap} />
 </button>
 
 {#if open}
   <aside on:click={setClosed} transition:fade={{ duration: 100 }}>
     <section on:click|stopPropagation>
       <article>
-        <!-- <NapAmountInput bind:amount /> -->
+        <NapAmountInput bind:amount />
       </article>
 
       <button
