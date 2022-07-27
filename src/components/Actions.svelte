@@ -3,6 +3,7 @@
   import { newTimestampWithPickerDate } from "../stores/picker-date";
   import { addPoop } from "../stores/poops";
   import FeedAdd from "./FeedAdd.svelte";
+  import NapAdd from "./NapAdd.svelte";
   import PeeAdd from "./PeeAdd.svelte";
 </script>
 
@@ -10,11 +11,7 @@
   <span>actions:</span>
 
   <FeedAdd />
-
-  <button on:click={() => addNap({ timestamp: newTimestampWithPickerDate() })}>
-    💤
-  </button>
-
+  <NapAdd />
   <PeeAdd />
 
   <button on:click={() => addPoop({ timestamp: newTimestampWithPickerDate() })}>
