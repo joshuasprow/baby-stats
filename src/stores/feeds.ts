@@ -13,7 +13,8 @@ export type Feed<K extends FeedKind> = {
   timestamp: Date;
   kind: K;
   amount: number;
-} & (K extends "breast" ? { side: FeedSide } : {});
+  side: FeedSide | undefined;
+};
 
 type FeedAdd<K extends FeedKind> = Omit<Feed<K>, "timestamp">;
 
@@ -33,9 +34,9 @@ export const isFeedAdd = (
   return true;
 };
 
-export const isFeed = (
+export const isFeed = <K extends FeedKind>(
   value: Record<string, unknown>
-): value is Feed<FeedKind> => {
+): value is Feed<K> => {
   if (!isFeedAdd(value)) return false;
 
   if (!((value as Feed<"breast">).timestamp instanceof Date)) return false;

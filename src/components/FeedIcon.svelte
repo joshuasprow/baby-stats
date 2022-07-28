@@ -6,10 +6,6 @@
   $: amount = feed.amount;
   $: kind = feed.kind;
   $: side = isBreastFeed(feed) ? feed.side : "";
-
-  $: if (kind === "bottle") {
-    side = "";
-  }
 </script>
 
 {#if kind === "bottle"}
