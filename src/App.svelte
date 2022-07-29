@@ -1,18 +1,19 @@
 <script lang="ts">
-  import Actions from "./components/Actions.svelte";
-  import DatePicker from "./components/DatePicker.svelte";
-  import Day from "./components/Day.svelte";
-  import { days } from "./stores/days";
   import Signup from "./components/Auth.svelte";
+  import FeedUpdate from "./components/FeedUpdate.svelte";
   import { feeds } from "./stores/feeds";
 </script>
 
 <main>
   <Signup />
 
-  {#each $feeds as feed}
-    <pre>{JSON.stringify(feed)}</pre>
-  {/each}
+  {#if !$feeds}
+    <span>🚫</span>
+  {:else}
+    {#each $feeds as feed}
+      <FeedUpdate {feed} />
+    {/each}
+  {/if}
 
   <!-- <DatePicker />
 

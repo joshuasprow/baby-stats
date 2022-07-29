@@ -63,30 +63,36 @@ const createFeeds = () => {
   const { subscribe } = derived<typeof user, Feed[]>(user, ($user, set) => {
     let unsubscribe = () => {};
 
+    if (!$user) {
+      set([]);
+      return unsubscribe;
+    }
+
     const init = async () => {
-      if (!$user) {
-        set([]);
-        return;
-      }
-
-      const _query = query(
+      unsubscribe = onSnapshot(
         query(
-          collection(firestore, `users/${$user.uid}/feeds`),
-          orderBy("timestamp", "desc")
-        )
-      );
+          query(
+            collection(firestore, `users/${$user.uid}/feeds`),
+            orderBy("timestamp", "desc")
+          )
+        ),
+        (snap) => {
+          if (snap.docs.length === 0) {
+            set([]);
+            return;
+          }
 
-      unsubscribe = onSnapshot(_query, (snap) =>
-        set(
-          snap.docs.map((doc) => {
+          const _feeds = snap.docs.map((doc) => {
             const data = doc.data();
             const timestamp = (data.timestamp as Timestamp).toDate();
 
             const feed = FEED.parse({ ...data, timestamp });
 
             return feed;
-          })
-        )
+          });
+
+          set(_feeds);
+        }
       );
     };
 

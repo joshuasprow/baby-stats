@@ -1,5 +1,6 @@
 import {
   GoogleAuthProvider,
+  onAuthStateChanged,
   signInWithPopup,
   signOut,
   type User,
@@ -12,8 +13,6 @@ const createUser = () => {
     let unsubscribe = () => {};
 
     const init = async () => {
-      const { onAuthStateChanged } = await import("firebase/auth");
-
       unsubscribe = onAuthStateChanged(auth, set);
     };
 
