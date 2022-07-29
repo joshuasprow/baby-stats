@@ -4,12 +4,17 @@
   import Day from "./components/Day.svelte";
   import { days } from "./stores/days";
   import Signup from "./components/Auth.svelte";
+  import { feeds } from "./stores/feeds";
 </script>
 
 <main>
   <Signup />
 
-  <DatePicker />
+  {#each $feeds as feed}
+    <pre>{JSON.stringify(feed)}</pre>
+  {/each}
+
+  <!-- <DatePicker />
 
   <Actions />
 
@@ -17,7 +22,7 @@
 
   {#each Object.entries($days) as [timestamp, day]}
     <Day {timestamp} {day} />
-  {/each}
+  {/each} -->
 </main>
 
 <style>

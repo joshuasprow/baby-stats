@@ -1,6 +1,9 @@
 import { newTimestampWithPickerDate } from "./picker-date";
 import { addEntry, removeEntry, updateEntry } from "./days";
 import { z } from "zod";
+import { derived } from "svelte/store";
+import { user } from "./user";
+import type { Timestamp } from "firebase/firestore";
 
 const FEED_KINDS = ["bottle", "breast"] as const;
 const FEED_SIDES = z.enum(["L", "R"]);
@@ -53,3 +56,51 @@ export const updateFeed = async (feed: unknown) => {
 };
 
 export const removeFeed = (timestamp: Date) => removeEntry("feeds", timestamp);
+
+const createFeeds = () => {
+  const { subscribe } = derived<typeof user, Feed[]>(user, ($user, set) => {
+    let unsubscribe = () => {};
+
+    const init = async () => {
+      if (!$user) {
+        set([]);
+        return;
+      }
+
+      const { app } = await import("../lib/firebase");
+      const { getFirestore, collection, query, orderBy, onSnapshot } =
+        await import("firebase/firestore");
+      const firestore = getFirestore(app);
+
+      const _query = query(
+        query(
+          collection(firestore, `users/${$user.uid}/feeds`),
+          orderBy("timestamp", "desc")
+        )
+      );
+
+      unsubscribe = onSnapshot(_query, (snap) =>
+        set(
+          snap.docs.map((doc) => {
+            const data = doc.data();
+
+            const feed = FEED.parse({
+              ...data,
+              timestamp: (data.timestamp as Timestamp).toDate(),
+            });
+
+            return feed;
+          })
+        )
+      );
+    };
+
+    init();
+
+    return unsubscribe;
+  });
+
+  return { subscribe };
+};
+
+export const feeds = createFeeds();
