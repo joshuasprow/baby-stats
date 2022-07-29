@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Actions from "./components/Actions.svelte";
   import Signup from "./components/Auth.svelte";
   import FeedUpdate from "./components/FeedUpdate.svelte";
   import { feeds } from "./stores/feeds";
@@ -6,6 +7,7 @@
 
 <main>
   <Signup />
+  <Actions />
 
   {#if !$feeds}
     <span>🚫</span>

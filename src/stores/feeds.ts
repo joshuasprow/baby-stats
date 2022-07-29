@@ -1,6 +1,14 @@
-import type { Timestamp } from "firebase/firestore";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import { derived } from "svelte/store";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+  Timestamp,
+} from "firebase/firestore";
+import { derived, get } from "svelte/store";
 import { z } from "zod";
 import { firestore } from "../lib/firebase";
 import { addEntry, removeEntry, updateEntry } from "./days";
@@ -59,6 +67,14 @@ export const updateFeed = async (feed: unknown) => {
 
 export const removeFeed = (timestamp: Date) => removeEntry("feeds", timestamp);
 
+const getQuery = (uid: string) =>
+  query(
+    query(
+      collection(firestore, `users/${uid}/feeds`),
+      orderBy("timestamp", "desc")
+    )
+  );
+
 const createFeeds = () => {
   const { subscribe } = derived<typeof user, Feed[]>(user, ($user, set) => {
     let unsubscribe = () => {};
@@ -69,31 +85,24 @@ const createFeeds = () => {
     }
 
     const init = async () => {
-      unsubscribe = onSnapshot(
-        query(
-          query(
-            collection(firestore, `users/${$user.uid}/feeds`),
-            orderBy("timestamp", "desc")
-          )
-        ),
-        (snap) => {
-          if (snap.docs.length === 0) {
-            set([]);
-            return;
-          }
+      const _query = getQuery($user.uid);
 
-          const _feeds = snap.docs.map((doc) => {
-            const data = doc.data();
-            const timestamp = (data.timestamp as Timestamp).toDate();
-
-            const feed = FEED.parse({ ...data, timestamp });
-
-            return feed;
-          });
-
-          set(_feeds);
+      unsubscribe = onSnapshot(_query, (snap) => {
+        if (snap.docs.length === 0) {
+          set([]);
+          return;
         }
-      );
+
+        const _feeds = snap.docs.map((doc) => {
+          const data = doc.data();
+          const timestamp = (data.timestamp as Timestamp).toDate();
+          const feed = FEED.parse({ ...data, timestamp });
+
+          return feed;
+        });
+
+        set(_feeds);
+      });
     };
 
     init();
@@ -101,7 +110,55 @@ const createFeeds = () => {
     return unsubscribe;
   });
 
-  return { subscribe };
+  const add = (value: object) => {
+    const $user = get(user);
+
+    if (!$user) {
+      console.error("No user found");
+      return;
+    }
+
+    const feed = FEED.parse({
+      ...value,
+      timestamp: newTimestampWithPickerDate(),
+    });
+
+    setDoc(
+      doc(firestore, `users/${$user.uid}/feeds/${feed.timestamp.getTime()}`),
+      feed
+    );
+  };
+
+  const update = (value: object) => {
+    const $user = get(user);
+
+    if (!$user) {
+      console.error("No user found");
+      return;
+    }
+
+    const feed = FEED.parse(value);
+
+    setDoc(
+      doc(firestore, `users/${$user.uid}/feeds/${feed.timestamp.getTime()}`),
+      feed
+    );
+  };
+
+  const remove = (timestamp: Date) => {
+    const $user = get(user);
+
+    if (!$user) {
+      console.error("No user found");
+      return;
+    }
+
+    deleteDoc(
+      doc(firestore, `users/${$user.uid}/feeds/${timestamp.getTime()}`)
+    );
+  };
+
+  return { subscribe, add, update, remove };
 };
 
 export const feeds = createFeeds();

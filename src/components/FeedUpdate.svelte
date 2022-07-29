@@ -1,8 +1,8 @@
 <script lang="ts">
   import {
+    feeds,
     isBreastFeed,
     removeFeed,
-    updateFeed,
     type Feed,
     type FeedSide,
   } from "../stores/feeds";
@@ -18,18 +18,16 @@
   let kind = feed.kind;
   let side: FeedSide | null;
 
-  $: if (isBreastFeed(feed)) {
-    side = feed.side;
-  } else if (side === null) {
-    side = "L";
+  $: if (kind === "breast") {
+    side = feed.side || "L";
   } else {
     side = null;
   }
 
   const onUpdateClick = () =>
-    updateFeed({ amount, kind, side, timestamp: feed.timestamp });
+    feeds.update({ amount, kind, side, timestamp: feed.timestamp });
 
-  const onRemoveClick = () => removeFeed(feed.timestamp);
+  const onRemoveClick = () => feeds.remove(feed.timestamp);
 </script>
 
 <EntryModal okText="update" onOk={onUpdateClick} onRemove={onRemoveClick}>
