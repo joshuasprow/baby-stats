@@ -4,7 +4,6 @@
     removeFeed,
     updateFeed,
     type Feed,
-    type FeedKind,
     type FeedSide,
   } from "../stores/feeds";
   import EntryModal from "./EntryModal.svelte";
@@ -13,20 +12,18 @@
   import FeedKindInput from "./FeedKindInput.svelte";
   import FeedSideInput from "./FeedSideInput.svelte";
 
-  type K = $$Generic<FeedKind>;
-
-  export let feed: Feed<K>;
+  export let feed: Feed;
 
   let amount = feed.amount;
   let kind = feed.kind;
-  let side: FeedSide | undefined;
+  let side: FeedSide | null;
 
   $: if (isBreastFeed(feed)) {
     side = feed.side;
-  } else if (side === undefined) {
+  } else if (side === null) {
     side = "L";
   } else {
-    side = undefined;
+    side = null;
   }
 
   const onUpdateClick = () =>

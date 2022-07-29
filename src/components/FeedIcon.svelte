@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { isBreastFeed, type Feed, type FeedKind } from "../stores/feeds";
+  import { isBreastFeed, type Feed } from "../stores/feeds";
 
-  export let feed: Feed<FeedKind>;
+  export let feed: Feed;
 
   $: amount = feed.amount;
   $: kind = feed.kind;

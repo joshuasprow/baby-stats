@@ -1,63 +1,55 @@
 import { newTimestampWithPickerDate } from "./picker-date";
 import { addEntry, removeEntry, updateEntry } from "./days";
+import { z } from "zod";
 
 const FEED_KINDS = ["bottle", "breast"] as const;
+const FEED_SIDES = z.enum(["L", "R"]);
+
+const BOTTLE_FEED = z.object({
+  timestamp: z.date(),
+  kind: z.literal(FEED_KINDS[0]),
+  amount: z.number(),
+  side: z.null(),
+});
+const BREAST_FEED = z.object({
+  timestamp: z.date(),
+  kind: z.literal(FEED_KINDS[1]),
+  amount: z.number(),
+  side: FEED_SIDES,
+});
+
+const FEED = z.discriminatedUnion("kind", [BOTTLE_FEED, BREAST_FEED]);
 
 export type FeedKind = typeof FEED_KINDS[number];
+export type FeedSide = z.infer<typeof FEED_SIDES>;
 
-const FEED_SIDES = ["L", "R"] as const;
+export type Feed = z.infer<typeof FEED>;
 
-export type FeedSide = typeof FEED_SIDES[number];
+type BreastFeed = z.infer<typeof BREAST_FEED>;
 
-export type Feed<K extends FeedKind> = {
-  timestamp: Date;
-  kind: K;
-  amount: number;
-  side: FeedSide | null;
+export const isBreastFeed = (value: unknown): value is BreastFeed => {
+  try {
+    BREAST_FEED.parse(value);
+    return true;
+  } catch {
+    return false;
+  }
 };
 
-type FeedAdd<K extends FeedKind> = Omit<Feed<K>, "timestamp">;
+export const addFeed = async (feed: Omit<Feed, "timestamp">) => {
+  const _feed = FEED.parse({
+    ...feed,
+    timestamp: newTimestampWithPickerDate(),
+  });
 
-export const isFeedAdd = (
-  value: Record<string, unknown>
-): value is FeedAdd<FeedKind> => {
-  if (typeof value.amount !== "number") return false;
-
-  if (!FEED_KINDS.includes(value.kind as FeedKind)) return false;
-
-  if (value.kind === "bottle") return true;
-
-  if (value.kind !== "breast") return false;
-
-  if (!FEED_SIDES.includes(value.side as FeedSide)) return false;
-
-  return true;
+  await addEntry("feeds", _feed);
 };
 
-export const isFeed = <K extends FeedKind>(
-  value: Record<string, unknown>
-): value is Feed<K> => {
-  if (!isFeedAdd(value)) return false;
+// todo: replace unknown with a narrower type
+export const updateFeed = async (feed: unknown) => {
+  const _feed = FEED.parse(feed);
 
-  if (!((value as Feed<"breast">).timestamp instanceof Date)) return false;
-
-  return true;
+  await updateEntry("feeds", _feed);
 };
-
-export const isBreastFeed = (
-  value: Record<string, unknown>
-): value is Feed<"breast"> => {
-  if (!isFeed(value)) return false;
-
-  if (value.kind !== "breast") return false;
-
-  return true;
-};
-
-export const addFeed = <K extends FeedKind>(feed: FeedAdd<K>) =>
-  addEntry("feeds", { ...feed, timestamp: newTimestampWithPickerDate() });
-
-export const updateFeed = <K extends FeedKind>(feed: Feed<K>) =>
-  updateEntry("feeds", feed);
 
 export const removeFeed = (timestamp: Date) => removeEntry("feeds", timestamp);
