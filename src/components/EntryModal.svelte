@@ -1,12 +1,7 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
-
   import { fade } from "svelte/transition";
-  import type { Icon } from "../lib/icon";
-  import type { Kind } from "../lib/kind";
 
-  export let icon: Icon<Kind>;
-
+  export let icon = "😃";
   export let okText: string;
   export let onOk: () => void;
 
@@ -23,7 +18,13 @@
   };
 </script>
 
-<button on:click={setOpen}>{icon}</button>
+<button on:click={setOpen}>
+  {#if $$slots.icon}
+    <slot name="icon" />
+  {:else}
+    {icon}
+  {/if}
+</button>
 
 {#if open}
   <aside on:click={setClosed} transition:fade={{ duration: 100 }}>

@@ -35,13 +35,8 @@
   const onRemoveClick = () => removeFeed(feed.timestamp);
 </script>
 
-<EntryModal
-  icon="🍼"
-  okText="update"
-  onOk={onUpdateClick}
-  onRemove={onRemoveClick}
->
-  <FeedIcon {feed} />
+<EntryModal okText="update" onOk={onUpdateClick} onRemove={onRemoveClick}>
+  <FeedIcon {feed} slot="icon" />
 
   <article>
     <FeedAmountInput bind:amount />
