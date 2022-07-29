@@ -1,9 +1,11 @@
-import { newTimestampWithPickerDate } from "./picker-date";
-import { addEntry, removeEntry, updateEntry } from "./days";
-import { z } from "zod";
-import { derived } from "svelte/store";
-import { user } from "./user";
 import type { Timestamp } from "firebase/firestore";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { derived } from "svelte/store";
+import { z } from "zod";
+import { firestore } from "../lib/firebase";
+import { addEntry, removeEntry, updateEntry } from "./days";
+import { newTimestampWithPickerDate } from "./picker-date";
+import { user } from "./user";
 
 const FEED_KINDS = ["bottle", "breast"] as const;
 const FEED_SIDES = z.enum(["L", "R"]);
@@ -67,11 +69,6 @@ const createFeeds = () => {
         return;
       }
 
-      const { app } = await import("../lib/firebase");
-      const { getFirestore, collection, query, orderBy, onSnapshot } =
-        await import("firebase/firestore");
-      const firestore = getFirestore(app);
-
       const _query = query(
         query(
           collection(firestore, `users/${$user.uid}/feeds`),
@@ -83,11 +80,9 @@ const createFeeds = () => {
         set(
           snap.docs.map((doc) => {
             const data = doc.data();
+            const timestamp = (data.timestamp as Timestamp).toDate();
 
-            const feed = FEED.parse({
-              ...data,
-              timestamp: (data.timestamp as Timestamp).toDate(),
-            });
+            const feed = FEED.parse({ ...data, timestamp });
 
             return feed;
           })

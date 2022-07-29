@@ -1,17 +1,18 @@
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  type User,
+} from "firebase/auth";
 import { readable } from "svelte/store";
-import type { Auth, User } from "firebase/auth";
+import { auth } from "../lib/firebase";
 
 const createUser = () => {
-  let auth: Auth;
-
   const { subscribe } = readable<User | null | undefined>(undefined, (set) => {
     let unsubscribe = () => {};
 
     const init = async () => {
-      const { app } = await import("../lib/firebase");
-      const { getAuth, onAuthStateChanged } = await import("firebase/auth");
-
-      auth = getAuth(app);
+      const { onAuthStateChanged } = await import("firebase/auth");
 
       unsubscribe = onAuthStateChanged(auth, set);
     };
@@ -22,14 +23,10 @@ const createUser = () => {
   });
 
   const sign_in = async () => {
-    const { signInWithPopup, GoogleAuthProvider } = await import(
-      "firebase/auth"
-    );
     await signInWithPopup(auth, new GoogleAuthProvider());
   };
 
   const sign_out = async () => {
-    const { signOut } = await import("firebase/auth");
     await signOut(auth);
   };
 
