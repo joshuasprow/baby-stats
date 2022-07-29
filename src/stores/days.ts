@@ -2,7 +2,6 @@ import { doc, setDoc } from "firebase/firestore";
 import { writable } from "svelte/store";
 import daysData from "../lib/days.data";
 import type { Entry } from "../lib/entry";
-import { auth, firestore } from "../lib/firebase";
 import type { Kind } from "../lib/kind";
 
 export type DayState = {
@@ -59,21 +58,6 @@ export const addEntry = async <K extends Kind>(kind: K, entry: Entry<K>) => {
 
     return sortDaysByTimestamp($days);
   });
-
-  const user = auth.currentUser;
-
-  if (!user) {
-    console.error("User is not logged in");
-    return;
-  }
-
-  try {
-    await setDoc(doc(firestore, `users/${user.uid}/${kind}/${ts}`), entry);
-  } catch (error) {
-    console.error(error);
-
-    console.log(entry);
-  }
 };
 
 export const updateEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
