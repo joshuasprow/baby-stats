@@ -1,13 +1,5 @@
 <script lang="ts">
-  import { user } from "../stores/user";
-
   export let disabled = false;
-
-  if ($user) {
-    disabled = true;
-  } else {
-    disabled = false;
-  }
 </script>
 
 <svg

@@ -9,6 +9,7 @@ onAuthStateChanged(
   auth,
   (u) => {
     user.set(u);
+    console.log(u);
   },
   (error) => {
     user.set(null);

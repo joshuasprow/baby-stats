@@ -1,9 +1,12 @@
 <script lang="ts">
-  import { signInWithPopup } from "firebase/auth";
+  import { signInWithPopup, signOut } from "firebase/auth";
   import GoogleIcon from "../components/GoogleIcon.svelte";
   import { auth, googleProvider } from "../lib/firebase";
+  import { user } from "../stores/user";
 
-  const signIn = async () => {
+  let signInDisabled = !!$user;
+
+  const onSignIn = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
       console.log("signed in/up");
@@ -12,9 +15,9 @@
     }
   };
 
-  const signOut = async () => {
+  const onSignOut = async () => {
     try {
-      await signOut();
+      await signOut(auth);
       console.log("signed out");
     } catch (error) {
       console.error(error);
@@ -22,5 +25,7 @@
   };
 </script>
 
-<button on:click={signIn}><GoogleIcon /></button>
-<button on:click={signOut}>Sign out</button>
+<button disabled={signInDisabled} on:click={onSignIn}>
+  <GoogleIcon disabled={signInDisabled} />
+</button>
+<button on:click={onSignOut}>Sign out</button>
