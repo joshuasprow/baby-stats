@@ -1,3 +1,4 @@
+import { auth } from "../lib/firebase";
 import { writable } from "svelte/store";
 import daysData from "../lib/days.data";
 import type { Entry } from "../lib/entry";
@@ -33,10 +34,6 @@ const newEmptyDay = (): DayState => ({
 });
 
 export const days = writable<Days>(daysData);
-
-days.subscribe(($days) => {
-  console.log($days);
-});
 
 const sortDaysByTimestamp = ($days: Days): Days =>
   Object.keys($days)

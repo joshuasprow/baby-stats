@@ -1,15 +1,32 @@
 <script lang="ts">
-  import { signInWithPopup, signOut } from "firebase/auth";
+  import { signInWithPopup, signOut, type User } from "firebase/auth";
+  import { onDestroy, onMount } from "svelte";
   import GoogleIcon from "../components/GoogleIcon.svelte";
   import { auth, googleProvider } from "../lib/firebase";
-  import { user } from "../stores/user";
 
-  let signInDisabled = !!$user;
+  let user: null | User = null;
+  let loading = true;
+  let unsubscribe: null | (() => void) = null;
+
+  onMount(() => {
+    unsubscribe = auth.onAuthStateChanged(
+      (u) => {
+        loading = false;
+        user = u;
+      },
+      (e) => {
+        console.error(e);
+      }
+    );
+  });
+
+  onDestroy(() => {
+    if (unsubscribe) unsubscribe();
+  });
 
   const onSignIn = async () => {
     try {
       await signInWithPopup(auth, googleProvider);
-      console.log("signed in/up");
     } catch (error) {
       console.error(error);
     }
@@ -18,14 +35,16 @@
   const onSignOut = async () => {
     try {
       await signOut(auth);
-      console.log("signed out");
     } catch (error) {
       console.error(error);
     }
   };
 </script>
 
-<button disabled={signInDisabled} on:click={onSignIn}>
-  <GoogleIcon disabled={signInDisabled} />
+<pre>{user?.uid}</pre>
+
+<button disabled={loading || !!user} on:click={onSignIn}>
+  <GoogleIcon disabled={loading || !!user} />
 </button>
-<button on:click={onSignOut}>Sign out</button>
+
+<button disabled={loading || !user} on:click={onSignOut}>Sign out</button>
