@@ -1,7 +1,14 @@
 <script lang="ts">
   import type { FeedKind } from "src/stores/feeds";
+  import { createEventDispatcher } from "svelte";
 
-  export let kind: FeedKind;
+  export let kind: FeedKind = "bottle";
+
+  const dispatch = createEventDispatcher<{ change: FeedKind }>();
+
+  $: {
+    dispatch("change", kind);
+  }
 </script>
 
 <label for="bottle">

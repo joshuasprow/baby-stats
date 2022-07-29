@@ -1,5 +1,10 @@
 <script lang="ts">
-  import { feeds, type Feed, type FeedSide } from "../stores/feeds";
+  import {
+    feeds,
+    type Feed,
+    type FeedKind,
+    type FeedSide,
+  } from "../stores/feeds";
   import EntryModal from "./EntryModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedIcon from "./FeedIcon.svelte";
@@ -11,6 +16,20 @@
   let amount = feed.amount;
   let kind = feed.kind;
   let side: FeedSide | null = feed.side;
+
+  const handleAmount = (e: CustomEvent<number>) => {
+    amount = e.detail;
+  };
+
+  const handleKind = (e: CustomEvent<FeedKind>) => {
+    kind = e.detail;
+    if (kind === "bottle") {
+      side = null;
+    }
+    if (kind === "breast" && side === null) {
+      side = "L";
+    }
+  };
 
   const handleSide = (e: CustomEvent<FeedSide | null>) => {
     side = e.detail;
@@ -26,12 +45,12 @@
   <FeedIcon {feed} slot="icon" />
 
   <article>
-    <FeedAmountInput bind:amount />
+    <FeedAmountInput on:change={handleAmount} {amount} />
   </article>
 
   <article>
     kind:
-    <FeedKindInput bind:kind />
+    <FeedKindInput on:change={handleKind} {kind} />
   </article>
 
   <article>
