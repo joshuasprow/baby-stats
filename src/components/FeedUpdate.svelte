@@ -1,11 +1,5 @@
 <script lang="ts">
-  import {
-    feeds,
-    isBreastFeed,
-    removeFeed,
-    type Feed,
-    type FeedSide,
-  } from "../stores/feeds";
+  import { feeds, type Feed, type FeedSide } from "../stores/feeds";
   import EntryModal from "./EntryModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedIcon from "./FeedIcon.svelte";
@@ -16,13 +10,11 @@
 
   let amount = feed.amount;
   let kind = feed.kind;
-  let side: FeedSide | null;
+  let side: FeedSide | null = feed.side;
 
-  $: if (kind === "breast") {
-    side = feed.side || "L";
-  } else {
-    side = null;
-  }
+  const handleSide = (e: CustomEvent<FeedSide | null>) => {
+    side = e.detail;
+  };
 
   const onUpdateClick = () =>
     feeds.update({ amount, kind, side, timestamp: feed.timestamp });
@@ -44,6 +36,6 @@
 
   <article>
     side:
-    <FeedSideInput disabled={kind !== "breast"} bind:side />
+    <FeedSideInput disabled={kind !== "breast"} on:change={handleSide} {side} />
   </article>
 </EntryModal>
