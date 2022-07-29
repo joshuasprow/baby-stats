@@ -13,7 +13,7 @@ export type Feed<K extends FeedKind> = {
   timestamp: Date;
   kind: K;
   amount: number;
-  side: FeedSide | undefined;
+  side: FeedSide | null;
 };
 
 type FeedAdd<K extends FeedKind> = Omit<Feed<K>, "timestamp">;

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { FeedSide } from "src/stores/feeds";
 
-  export let side: FeedSide | undefined = undefined;
+  export let side: FeedSide | null = null;
   export let disabled: boolean;
 </script>
 

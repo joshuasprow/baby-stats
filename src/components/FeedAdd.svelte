@@ -13,12 +13,12 @@
 
   let amount = 1;
   let kind: FeedKind = "bottle";
-  let side: FeedSide | undefined = undefined;
+  let side: FeedSide | null = null;
 
   $: if (kind === "bottle") {
-    side = undefined;
+    side = null;
   }
-  $: if (kind === "breast" && side === undefined) {
+  $: if (kind === "breast" && side === null) {
     side = "L";
   }
 
