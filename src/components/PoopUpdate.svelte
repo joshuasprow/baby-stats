@@ -1,72 +1,25 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
-  import { removePoop, updatePoop, type Poop } from "../stores/poops";
+  import { removePoop, updatePoop, type PoopAmount } from "../stores/poops";
+  import EntryModal from "./EntryModal.svelte";
   import PoopAmountInput from "./PoopAmountInput.svelte";
   import PoopIcon from "./PoopIcon.svelte";
 
-  export let poop: Poop;
+  export let timestamp: Date;
+  export let amount: PoopAmount;
 
-  let open = false;
-  let amount = poop.amount;
-
-  const setOpen = () => {
-    open = true;
+  const handleAmount = (e: CustomEvent<PoopAmount>) => {
+    amount = e.detail;
   };
 
-  const setClosed = () => {
-    open = false;
-  };
+  const onUpdateClick = () => updatePoop({ timestamp, amount });
+
+  const onRemoveClick = () => removePoop(timestamp);
 </script>
 
-<button on:click={setOpen}>
-  <PoopIcon {poop} />
-</button>
+<EntryModal okText="update" onOk={onUpdateClick} onRemove={onRemoveClick}>
+  <PoopIcon {amount} slot="icon" />
 
-{#if open}
-  <aside on:click={setClosed} transition:fade={{ duration: 100 }}>
-    <section on:click|stopPropagation>
-      <article>
-        <PoopAmountInput bind:amount />
-      </article>
-
-      <button
-        on:click={() => {
-          updatePoop({ amount, timestamp: poop.timestamp });
-          setClosed();
-        }}
-      >
-        edit
-      </button>
-      <button
-        on:click={() => {
-          removePoop(poop.timestamp);
-          setClosed();
-        }}
-      >
-        remove
-      </button>
-    </section>
-  </aside>
-{/if}
-
-<style>
-  aside {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 100;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  section {
-    color: #000;
-    background: #fff;
-    padding: 0.5rem;
-  }
-</style>
+  <article>
+    <PoopAmountInput on:change={handleAmount} {amount} />
+  </article>
+</EntryModal>

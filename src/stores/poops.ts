@@ -16,17 +16,12 @@ import { firestore } from "../lib/firebase";
 import { newTimestampWithPickerDate } from "./picker-date";
 import { user } from "./user";
 
-const PoopAmount = [1, 2, 3] as const;
-export type PoopAmount = typeof PoopAmount[number];
+const PoopAmount = z.union([z.literal(1), z.literal(2), z.literal(3)]);
+export type PoopAmount = z.infer<typeof PoopAmount>;
 
 const Poop = z.object({
   timestamp: z.date(),
-  amount: z
-    .number()
-    .refine(
-      (amount) => PoopAmount.some((a) => amount === a),
-      `poop amount must be one of: ${PoopAmount.join(", ")}`
-    ),
+  amount: PoopAmount,
 });
 export type Poop = z.infer<typeof Poop>;
 
