@@ -7,8 +7,6 @@
   class:disabled
   xmlns="http://www.w3.org/2000/svg"
   viewBox="0 0 48 48"
-  width="48px"
-  height="48px"
 >
   <path
     fill="#fbc02d"
@@ -30,8 +28,8 @@
 
 <style>
   .google-icon {
-    width: 48px;
-    height: 48px;
+    width: 1rem;
+    height: 1rem;
     filter: grayscale(0%);
   }
   .google-icon.disabled {
