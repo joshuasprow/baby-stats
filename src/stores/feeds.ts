@@ -55,6 +55,7 @@ export const addFeed = async (value: object) => {
 
   const feed = Feed.parse({
     ...value,
+    kind: "feeds",
     timestamp: newTimestampWithPickerDate(),
   });
 
@@ -68,9 +69,13 @@ export const updateFeed = async (value: object) => {
     throw new Error("No user found");
   }
 
-  const feed = Feed.parse(value);
+  try {
+    const feed = Feed.parse({ ...value, kind: "feeds" });
 
-  await setFeedDoc($user.uid, feed);
+    await setFeedDoc($user.uid, feed);
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const removeFeed = async (timestamp: Date) => {

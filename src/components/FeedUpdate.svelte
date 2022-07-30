@@ -30,8 +30,7 @@
     side = e.detail;
   };
 
-  const onUpdateClick = () =>
-    updateFeed({ amount, kind: source, side, timestamp });
+  const onUpdateClick = () => updateFeed({ amount, source, side, timestamp });
 
   const onRemoveClick = () => removeFeed(timestamp);
 </script>
