@@ -18,7 +18,12 @@
 
     <DatePicker />
 
-    <pre>{JSON.stringify($days, null, 2)}</pre>
+    {#each $days as [daystamp, day]}
+      <div>{new Date(daystamp).toDateString()}</div>
+      {#each day as [timestamp, entry]}
+        <pre>{JSON.stringify(entry)}</pre>
+      {/each}
+    {/each}
   {/if}
 </main>
 

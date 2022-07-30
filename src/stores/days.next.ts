@@ -39,7 +39,7 @@ const combineEntries = (
 ) => {
   const combined = [...$feeds, ...$naps, ...$pees, ...$poops];
   const sorted = combined.sort(
-    (a, b) => a.timestamp.getTime() - b.timestamp.getTime()
+    (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
   );
 
   return sorted;
@@ -53,17 +53,17 @@ export const days = derived(
 
     for (const entry of entries) {
       const daystamp = encodeDayTimestamp(entry.timestamp);
-      const dayentry = newDayEntry(entry);
+      const dayEntry = newDayEntry(entry);
 
       const day = days.find(([ds]) => ds === daystamp);
 
       if (day) {
-        day[1].push(dayentry);
+        day[1].push(dayEntry);
         days[daystamp] = day;
         continue;
       }
 
-      days.push([daystamp, [dayentry]]);
+      days.push([daystamp, [dayEntry]]);
     }
 
     return days;
