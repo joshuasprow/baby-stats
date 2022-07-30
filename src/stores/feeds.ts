@@ -1,3 +1,4 @@
+import { firestore } from "$lib/firebase";
 import {
   collection,
   deleteDoc,
@@ -11,7 +12,6 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
-import { firestore } from "../lib/firebase";
 import { Feed } from "./feeds.types";
 import { newTimestampWithPickerDate } from "./picker-date";
 import { user } from "./user";
