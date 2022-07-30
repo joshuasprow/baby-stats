@@ -5,22 +5,24 @@
   import PoopAdd from "./PoopAdd.svelte";
 </script>
 
-<section>
-  <span>actions:</span>
-
+<footer>
   <FeedAdd />
   <NapAdd />
   <PeeAdd />
   <PoopAdd />
-</section>
+</footer>
 
 <style>
-  section {
-    margin-bottom: 1rem;
-  }
-
-  span {
-    display: block;
-    text-decoration: underline;
+  footer {
+    position: fixed;
+    bottom: 0;
+    bottom: env(safe-area-inset-bottom);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+    height: 54px;
+    background: #ddd;
+    z-index: 200;
   }
 </style>

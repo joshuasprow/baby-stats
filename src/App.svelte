@@ -15,7 +15,7 @@
     <SignInButton />
   {:else}
     <SignOutButton />
-    <Actions />
+
     <DatePicker />
 
     {#each Object.entries($days) as [timestamp, day]}
@@ -23,3 +23,5 @@
     {/each}
   {/if}
 </main>
+
+<Actions />
