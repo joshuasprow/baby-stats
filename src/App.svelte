@@ -18,10 +18,10 @@
 
     <DatePicker />
 
-    {#each $days as [daystamp, day]}
+    {#each $days as [daystamp, day] (daystamp)}
       <div>{new Date(daystamp).toDateString()}</div>
-      {#each day as [timestamp, entry]}
-        <Entry {timestamp} {entry} />
+      {#each day as [timestamp, entry] (timestamp)}
+        <Entry {timestamp} entry={{ ...entry }} />
       {/each}
     {/each}
   {/if}

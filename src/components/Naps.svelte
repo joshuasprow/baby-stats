@@ -10,7 +10,7 @@
   {#if naps.length === 0}
     <span>🚫</span>
   {:else}
-    {#each naps as nap}
+    {#each naps as nap (nap.timestamp)}
       <NapUpdate timestamp={nap.timestamp} amount={nap.amount} />
     {/each}
   {/if}

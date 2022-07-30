@@ -10,7 +10,7 @@
   {#if feeds.length === 0}
     <span>🚫</span>
   {:else}
-    {#each feeds as feed}
+    {#each feeds as feed (feed.timestamp)}
       <FeedUpdate
         timestamp={feed.timestamp}
         amount={feed.amount}

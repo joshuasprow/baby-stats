@@ -10,7 +10,7 @@
   {#if pees.length === 0}
     <span>🚫</span>
   {:else}
-    {#each pees as pee}
+    {#each pees as pee (pee.timestamp)}
       <PeeUpdate timestamp={pee.timestamp} amount={pee.amount} />
     {/each}
   {/if}

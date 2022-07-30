@@ -10,7 +10,7 @@
   {#if poops.length === 0}
     <span>🚫</span>
   {:else}
-    {#each poops as poop}
+    {#each poops as poop (poop.timestamp)}
       <PoopUpdate timestamp={poop.timestamp} amount={poop.amount} />
     {/each}
   {/if}
