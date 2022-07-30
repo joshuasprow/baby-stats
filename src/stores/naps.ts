@@ -61,6 +61,7 @@ export const addNap = async (value: object) => {
 
   const nap = Nap.parse({
     ...value,
+    kind: "naps",
     timestamp: newTimestampWithPickerDate(),
   });
 
@@ -74,7 +75,7 @@ export const updateNap = async (value: object) => {
     throw new Error("No user found");
   }
 
-  const nap = Nap.parse(value);
+  const nap = Nap.parse({ ...value, kind: "naps" });
 
   await setNapDoc($user.uid, nap);
 };

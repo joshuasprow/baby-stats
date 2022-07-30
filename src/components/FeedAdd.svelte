@@ -26,7 +26,7 @@
   </article>
 
   <article>
-    kind:
+    source:
     <FeedSourceInput bind:source />
   </article>
 

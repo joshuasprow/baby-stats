@@ -64,6 +64,7 @@ export const addPee = async (value: object) => {
 
   const pee = Pee.parse({
     ...value,
+    kind: "pees",
     timestamp: newTimestampWithPickerDate(),
   });
 
@@ -77,7 +78,7 @@ export const updatePee = async (value: object) => {
     throw new Error("No user found");
   }
 
-  const pee = Pee.parse(value);
+  const pee = Pee.parse({ ...value, kind: "pees" });
 
   await setPeeDoc($user.uid, pee);
 };

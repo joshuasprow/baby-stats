@@ -64,6 +64,7 @@ export const addPoop = async (value: object) => {
 
   const poop = Poop.parse({
     ...value,
+    kind: "poops",
     timestamp: newTimestampWithPickerDate(),
   });
 
@@ -77,7 +78,7 @@ export const updatePoop = async (value: object) => {
     throw new Error("No user found");
   }
 
-  const poop = Poop.parse(value);
+  const poop = Poop.parse({ ...value, kind: "poops" });
 
   await setPoopDoc($user.uid, poop);
 };
