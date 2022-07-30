@@ -6,6 +6,7 @@ const daysData: Days = {
       {
         amount: 1,
         kind: "bottle",
+        side: null,
         timestamp: new Date("2022-07-24T02:17:52.694Z"),
       },
     ],

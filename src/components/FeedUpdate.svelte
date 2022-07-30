@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { Feed, FeedKind, FeedSide } from "../stores/feeds.types";
   import { removeFeed, updateFeed } from "../stores/feeds";
+  import type { FeedKind, FeedSide } from "../stores/feeds.types";
   import EntryModal from "./EntryModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedIcon from "./FeedIcon.svelte";

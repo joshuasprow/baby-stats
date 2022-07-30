@@ -10,7 +10,7 @@ import {
   type QueryDocumentSnapshot,
   type Timestamp,
 } from "firebase/firestore";
-import { derived, get, writable } from "svelte/store";
+import { derived, get } from "svelte/store";
 import { z } from "zod";
 import { firestore } from "../lib/firebase";
 import { newTimestampWithPickerDate } from "./picker-date";
