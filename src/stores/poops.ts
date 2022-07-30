@@ -12,6 +12,7 @@ import {
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
 import { z } from "zod";
+import { EntryBase } from "../lib/entry";
 import { firestore } from "../lib/firebase";
 import { newTimestampWithPickerDate } from "./picker-date";
 import { user } from "./user";
@@ -19,8 +20,7 @@ import { user } from "./user";
 const PoopAmount = z.union([z.literal(1), z.literal(2), z.literal(3)]);
 export type PoopAmount = z.infer<typeof PoopAmount>;
 
-const Poop = z.object({
-  timestamp: z.date(),
+const Poop = EntryBase.omit({ amount: true }).extend({
   amount: PoopAmount,
 });
 export type Poop = z.infer<typeof Poop>;

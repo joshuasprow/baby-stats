@@ -1,6 +1,6 @@
-import type { Entry } from "src/lib/entry";
-import type { Kind } from "src/lib/kind";
 import { derived } from "svelte/store";
+import type { Entry } from "../lib/entry";
+import type { Kind } from "../lib/kind";
 import { feeds } from "./feeds";
 import { naps } from "./naps";
 import { pees } from "./pees";

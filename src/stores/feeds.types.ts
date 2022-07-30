@@ -1,5 +1,5 @@
-import { EntryBase } from "src/lib/entry";
 import { z } from "zod";
+import { EntryBase } from "../lib/entry";
 
 const FeedSide = z.enum(["L", "R"]);
 export type FeedSide = z.infer<typeof FeedSide>;
