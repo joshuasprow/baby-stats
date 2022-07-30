@@ -10,19 +10,35 @@ import {
   Timestamp,
   type DocumentData,
 } from "firebase/firestore";
-import { get, writable } from "svelte/store";
+import { derived, get } from "svelte/store";
 import { firestore } from "../lib/firebase";
 import { Feed } from "./feeds.types";
 import { newTimestampWithPickerDate } from "./picker-date";
 import { user } from "./user";
-
-export const feeds = writable<Feed[]>([]);
 
 const feedsCollection = (uid: string) =>
   query(
     collection(firestore, `users/${uid}/feeds`),
     orderBy("timestamp", "desc")
   );
+
+export const feeds = derived<typeof user, Feed[]>(user, ($user, set) => {
+  let unsubscribe = () => {};
+
+  if (!$user) {
+    set([]);
+
+    return unsubscribe;
+  }
+
+  unsubscribe = onSnapshot(feedsCollection($user.uid), (snap) => {
+    const $feeds = snap.docs.map(validateFeedDoc);
+
+    set($feeds);
+  });
+
+  return unsubscribe;
+});
 
 const feedsQuery = (uid: string, timestamp: Date) =>
   `users/${uid}/feeds/${timestamp.getTime()}`;
@@ -75,23 +91,3 @@ const validateFeedDoc = (doc: QueryDocumentSnapshot<DocumentData>): Feed => {
 
   return feed;
 };
-
-let subscribed = false;
-
-user.subscribe(($user) => {
-  if (!$user) {
-    subscribed = false;
-    feeds.set([]);
-    return;
-  }
-
-  if (subscribed) return;
-
-  const unsubscribe = onSnapshot(feedsCollection($user.uid), (snap) =>
-    feeds.set(snap.docs.map(validateFeedDoc))
-  );
-
-  subscribed = true;
-
-  return unsubscribe;
-});
