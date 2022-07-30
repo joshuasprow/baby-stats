@@ -27,12 +27,14 @@ const feedsCollection = (uid: string) =>
 const feedsQuery = (uid: string, timestamp: Date) =>
   `users/${uid}/feeds/${timestamp.getTime()}`;
 
-export const addFeed = (value: object) => {
+const setFeedDoc = (uid: string, feed: Feed) =>
+  setDoc(doc(firestore, feedsQuery(uid, feed.timestamp)), feed);
+
+export const addFeed = async (value: object) => {
   const $user = get(user);
 
   if (!$user) {
-    console.error("No user found");
-    return;
+    throw new Error("No user found");
   }
 
   const feed = Feed.parse({
@@ -40,31 +42,29 @@ export const addFeed = (value: object) => {
     timestamp: newTimestampWithPickerDate(),
   });
 
-  setDoc(doc(firestore, feedsQuery($user.uid, feed.timestamp)), feed);
+  await setFeedDoc($user.uid, feed);
 };
 
-export const updateFeed = (value: object) => {
+export const updateFeed = async (value: object) => {
   const $user = get(user);
 
   if (!$user) {
-    console.error("No user found");
-    return;
+    throw new Error("No user found");
   }
 
   const feed = Feed.parse(value);
 
-  setDoc(doc(firestore, feedsQuery($user.uid, feed.timestamp)), feed);
+  await setFeedDoc($user.uid, feed);
 };
 
-export const removeFeed = (timestamp: Date) => {
+export const removeFeed = async (timestamp: Date) => {
   const $user = get(user);
 
   if (!$user) {
-    console.error("No user found");
-    return;
+    throw new Error("No user found");
   }
 
-  deleteDoc(doc(firestore, feedsQuery($user.uid, timestamp)));
+  await deleteDoc(doc(firestore, feedsQuery($user.uid, timestamp)));
 };
 
 const validateFeedDoc = (doc: QueryDocumentSnapshot<DocumentData>): Feed => {
