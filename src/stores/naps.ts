@@ -12,12 +12,12 @@ import {
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
 import { z } from "zod";
+import { EntryBase } from "../lib/entry";
 import { firestore } from "../lib/firebase";
 import { newTimestampWithPickerDate } from "./picker-date";
 import { user } from "./user";
 
-const Nap = z.object({
-  timestamp: z.date(),
+export const Nap = EntryBase.omit({ amount: true }).extend({
   amount: z.number().int().positive(),
 });
 export type Nap = z.infer<typeof Nap>;
