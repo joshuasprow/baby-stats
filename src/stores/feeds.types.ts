@@ -16,16 +16,6 @@ const BreastFeed = EntryBase.extend({
   source: z.literal(FeedSource[1]),
   side: FeedSide,
 });
-type BreastFeed = z.infer<typeof BreastFeed>;
-
-export const isBreastFeed = (value: unknown): value is BreastFeed => {
-  try {
-    BreastFeed.parse(value);
-    return true;
-  } catch {
-    return false;
-  }
-};
 
 export const Feed = z.discriminatedUnion("source", [BottleFeed, BreastFeed]);
 export type Feed = z.infer<typeof Feed>;
