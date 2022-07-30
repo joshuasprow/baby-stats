@@ -1,23 +1,39 @@
 rules_version = '2';
 service cloud.firestore {
+  function isLoggedIn(request) {
+    return request.auth.uid != null;
+  }
+
+  function isSprow(request) {
+    return request.auth.token.email.matches('^(j|rachel[.])sprow@gmail[.]com$')
+  }
+
+  function isOwner(request, docId) {
+      return request.auth.uid == docId
+  }
+  
   match /databases/{database}/documents {
     match /users/{userId} {
-      allow create, read, update: if request.auth.uid != null && request.auth.uid == userId;
+      function isAuthorized(request) {
+        return isLoggedIn(request) && isSprow(request) && isOwner(request, userId);
+      }
+
+      allow create, read, update: if isAuthorized(request);
       
       match /feeds/{feedId} {
-        allow create, read, update, delete: if request.auth.uid == userId;
+        allow create, read, update, delete: if isAuthorized(request);
       }
 
       match /naps/{napId} {
-        allow create, read, update, delete: if request.auth.uid == userId;
+        allow create, read, update, delete: if isAuthorized(request);
       }
 
       match /pees/{peeId} {
-        allow create, read, update, delete: if request.auth.uid == userId;
+        allow create, read, update, delete: if isAuthorized(request);
       }
 
       match /poops/{poopId} {
-        allow create, read, update, delete: if request.auth.uid == userId;
+        allow create, read, update, delete: if isAuthorized(request);
       }
     }
   }
