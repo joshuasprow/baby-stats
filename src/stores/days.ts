@@ -1,8 +1,10 @@
-import { doc, setDoc } from "firebase/firestore";
-import { writable } from "svelte/store";
-import daysData from "../lib/days.data";
-import type { Entry } from "../lib/entry";
-import type { Kind } from "../lib/kind";
+import type { Entry } from "src/lib/entry";
+import type { Kind } from "src/lib/kind";
+import { derived } from "svelte/store";
+import { feeds } from "./feeds";
+import { naps } from "./naps";
+import { pees } from "./pees";
+import { poops } from "./poops";
 
 export type DayState = {
   [K in Kind]: Entry<K>[];
@@ -33,73 +35,34 @@ const newEmptyDay = (): DayState => ({
   poops: [],
 });
 
-export const days = writable<Days>(daysData);
-
-const sortDaysByTimestamp = ($days: Days): Days =>
-  Object.keys($days)
-    .sort()
-    .reduce((acc, timestamp) => {
-      acc[timestamp] = $days[timestamp];
-      return acc;
-    }, {} as Days);
-
-const isEmptyDay = (day: DayState): boolean =>
-  !Object.values(day).some((entries) => entries.length > 0);
-
-export const addEntry = async <K extends Kind>(kind: K, entry: Entry<K>) => {
-  const ts = encodeDayTimestamp(entry.timestamp);
-
-  days.update(($days) => {
-    if (!$days[ts]) {
-      $days[ts] = newEmptyDay();
-    }
-
-    $days[ts][kind].push(entry);
-
-    return sortDaysByTimestamp($days);
-  });
-};
-
-export const updateEntry = <K extends Kind>(kind: K, entry: Entry<K>) =>
-  days.update(($days) => {
+const addEntriesToDays = <K extends Kind>(
+  days: Days,
+  kind: K,
+  entries: Entry<K>[]
+): Days => {
+  for (const entry of entries) {
     const ts = encodeDayTimestamp(entry.timestamp);
 
-    if (!$days[ts]) {
-      console.error(`No day found for entry: ${entry}`);
-      return $days;
+    if (!days[ts]) {
+      days[ts] = newEmptyDay();
     }
 
-    const day = $days[ts];
-    const index = day[kind].findIndex(
-      (e) => e.timestamp.getTime() === entry.timestamp.getTime()
-    );
+    days[ts][kind].push(entry);
+  }
 
-    day[kind][index] = entry;
-    $days[ts] = day;
+  return days;
+};
 
-    return sortDaysByTimestamp($days);
-  });
+export const days = derived(
+  [feeds, naps, pees, poops],
+  ([$feeds, $naps, $pees, $poops]) => {
+    const days: Days = {};
 
-export const removeEntry = <K extends Kind>(kind: K, timestamp: Date) =>
-  days.update(($days) => {
-    const ts = encodeDayTimestamp(timestamp);
+    addEntriesToDays(days, "feeds", $feeds);
+    addEntriesToDays(days, "naps", $naps);
+    addEntriesToDays(days, "pees", $pees);
+    addEntriesToDays(days, "poops", $poops);
 
-    if (!$days[ts]) {
-      console.error(
-        `Tried to remove ${kind} entry from day ${ts} but it doesn't exist`
-      );
-      return $days;
-    }
-
-    const entries = $days[ts][kind].filter(
-      (e) => e.timestamp !== timestamp
-    ) as DayState[K];
-
-    $days[ts][kind] = entries;
-
-    if (isEmptyDay($days[ts])) {
-      delete $days[ts];
-    }
-
-    return sortDaysByTimestamp($days);
-  });
+    return days;
+  }
+);

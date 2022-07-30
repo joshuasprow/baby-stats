@@ -1,70 +1,17 @@
 <script lang="ts">
   import Actions from "./components/Actions.svelte";
   import Signup from "./components/Auth.svelte";
-  import FeedUpdate from "./components/FeedUpdate.svelte";
-  import NapUpdate from "./components/NapUpdate.svelte";
-  import PeeUpdate from "./components/PeeUpdate.svelte";
-  import PoopUpdate from "./components/PoopUpdate.svelte";
-  import { feeds } from "./stores/feeds";
-  import { naps } from "./stores/naps";
-  import { pees } from "./stores/pees";
-  import { poops } from "./stores/poops";
+  import DatePicker from "./components/DatePicker.svelte";
+  import Day from "./components/Day.svelte";
+  import { days } from "./stores/days";
 </script>
 
 <main>
   <Signup />
   <Actions />
-  <div>
-    {#if !$feeds}
-      <span>🚫</span>
-    {:else}
-      {#each $feeds as feed}
-        <FeedUpdate {feed} />
-      {/each}
-    {/if}
-  </div>
-  <div>
-    {#if !$naps}
-      <span>🚫</span>
-    {:else}
-      {#each $naps as nap}
-        <NapUpdate {nap} />
-      {/each}
-    {/if}
-  </div>
-  <div>
-    {#if !$pees}
-      <span>🚫</span>
-    {:else}
-      {#each $pees as pee}
-        <PeeUpdate {pee} />
-      {/each}
-    {/if}
-  </div>
-  <div>
-    {#if !$poops}
-      <span>🚫</span>
-    {:else}
-      {#each $poops as poop}
-        <PoopUpdate {poop} />
-      {/each}
-    {/if}
-  </div>
-
-  <!-- <DatePicker />
-
-  <Actions />
-
-  <span>days:</span>
+  <DatePicker />
 
   {#each Object.entries($days) as [timestamp, day]}
     <Day {timestamp} {day} />
-  {/each} -->
+  {/each}
 </main>
-
-<style>
-  span {
-    display: block;
-    text-decoration: underline;
-  }
-</style>
