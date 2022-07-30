@@ -59,10 +59,10 @@ export const days = derived(
   ([_, $feeds, $naps, $pees, $poops]) => {
     const days: Days = {};
 
-    addEntriesToDays(days, "feeds", $feeds);
-    addEntriesToDays(days, "naps", $naps);
-    addEntriesToDays(days, "pees", $pees);
-    addEntriesToDays(days, "poops", $poops);
+    addEntriesToDays(days, "feeds", $feeds || []);
+    addEntriesToDays(days, "naps", $naps || []);
+    addEntriesToDays(days, "pees", $pees || []);
+    addEntriesToDays(days, "poops", $poops || []);
 
     return days;
   }
