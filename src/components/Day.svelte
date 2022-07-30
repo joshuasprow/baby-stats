@@ -11,9 +11,9 @@
   $: date = new Intl.DateTimeFormat("en-US").format(parseInt(timestamp));
 </script>
 
-<section>
-  <span class="timestamp">{date}</span>
+<span class="timestamp">{date}</span>
 
+<section>
   <article class="feeds">
     <Feeds feeds={day.feeds} />
   </article>
@@ -33,35 +33,12 @@
 
 <style>
   section {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-areas:
-      "ts . .  ."
-      "fe na pe po";
-    margin-bottom: 1rem;
-  }
-
-  article {
-    padding-left: 1rem;
+    display: flex;
+    flex-wrap: wrap;
   }
 
   .timestamp {
-    grid-area: ts;
-  }
-
-  .feeds {
-    grid-area: fe;
-  }
-
-  .naps {
-    grid-area: na;
-  }
-
-  .pees {
-    grid-area: pe;
-  }
-
-  .poops {
-    grid-area: po;
+    display: block;
+    text-decoration: underline;
   }
 </style>
