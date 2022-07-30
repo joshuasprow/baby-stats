@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Feed } from "../stores/feeds.types";
+  import type { Feed } from "$stores/feeds.types";
   import EntriesWrapper from "./EntriesWrapper.svelte";
   import FeedUpdate from "./FeedUpdate.svelte";
 

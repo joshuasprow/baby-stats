@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { removeNap, updateNap } from "../stores/naps";
+  import { removeNap, updateNap } from "$stores/naps";
   import EntryModal from "./EntryModal.svelte";
   import NapAmountInput from "./NapAmountInput.svelte";
   import NapIcon from "./NapIcon.svelte";

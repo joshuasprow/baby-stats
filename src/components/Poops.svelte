@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Poop } from "../stores/poops";
+  import type { Poop } from "$stores/poops";
   import EntriesWrapper from "./EntriesWrapper.svelte";
   import PoopUpdate from "./PoopUpdate.svelte";
 

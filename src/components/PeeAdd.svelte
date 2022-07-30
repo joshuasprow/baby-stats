@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { addPee, type PeeAmount } from "../stores/pees";
+  import { addPee, type PeeAmount } from "$stores/pees";
   import EntryModal from "./EntryModal.svelte";
   import PeeAmountInput from "./PeeAmountInput.svelte";
 

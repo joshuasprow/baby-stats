@@ -1,6 +1,6 @@
 <script lang="ts">
   import PeeUpdate from "./PeeUpdate.svelte";
-  import type { Pee } from "../stores/pees";
+  import type { Pee } from "$stores/pees";
   import EntriesWrapper from "./EntriesWrapper.svelte";
 
   export let pees: Pee[];

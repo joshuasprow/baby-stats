@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { DayState } from "../stores/days";
+  import type { DayState } from "$stores/days";
   import Feeds from "./Feeds.svelte";
   import Naps from "./Naps.svelte";
   import Pees from "./Pees.svelte";

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { pickerDate, pickerDateString } from "../stores/picker-date";
+  import { pickerDate, pickerDateString } from "$stores/picker-date";
 
   const setDevDate = (
     event: Event & {

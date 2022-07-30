@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { removePoop, updatePoop, type PoopAmount } from "../stores/poops";
+  import { removePoop, updatePoop, type PoopAmount } from "$stores/poops";
   import EntryModal from "./EntryModal.svelte";
   import PoopAmountInput from "./PoopAmountInput.svelte";
   import PoopIcon from "./PoopIcon.svelte";

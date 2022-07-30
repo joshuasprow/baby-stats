@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Nap } from "../stores/naps";
+  import type { Nap } from "$stores/naps";
   import EntriesWrapper from "./EntriesWrapper.svelte";
   import NapUpdate from "./NapUpdate.svelte";
 

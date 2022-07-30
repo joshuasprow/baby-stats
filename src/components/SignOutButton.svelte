@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { signOut, user } from "../stores/user";
+  import { signOut, user } from "$stores/user";
 
   $: disabled = $user === undefined || !$user;
 </script>
