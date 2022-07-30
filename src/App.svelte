@@ -4,9 +4,11 @@
   import FeedUpdate from "./components/FeedUpdate.svelte";
   import NapUpdate from "./components/NapUpdate.svelte";
   import PeeUpdate from "./components/PeeUpdate.svelte";
+  import PoopUpdate from "./components/PoopUpdate.svelte";
   import { feeds } from "./stores/feeds";
   import { naps } from "./stores/naps";
   import { pees } from "./stores/pees";
+  import { poops } from "./stores/poops";
 </script>
 
 <main>
@@ -36,6 +38,15 @@
     {:else}
       {#each $pees as pee}
         <PeeUpdate {pee} />
+      {/each}
+    {/if}
+  </div>
+  <div>
+    {#if !$poops}
+      <span>🚫</span>
+    {:else}
+      {#each $poops as poop}
+        <PoopUpdate {poop} />
       {/each}
     {/if}
   </div>
