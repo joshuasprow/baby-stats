@@ -1,8 +1,15 @@
 <script lang="ts">
-  import type { FeedSide } from "src/stores/feeds";
+  import type { FeedSide } from "src/stores/feeds.types";
+  import { createEventDispatcher } from "svelte";
 
-  export let side: FeedSide | undefined = undefined;
   export let disabled: boolean;
+  export let side: FeedSide | null;
+
+  const dispatch = createEventDispatcher<{ change: FeedSide | null }>();
+
+  $: {
+    dispatch("change", side);
+  }
 </script>
 
 <label for="L">

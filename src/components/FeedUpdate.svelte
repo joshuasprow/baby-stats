@@ -1,59 +1,54 @@
 <script lang="ts">
-  import {
-    isBreastFeed,
-    removeFeed,
-    updateFeed,
-    type Feed,
-    type FeedKind,
-    type FeedSide,
-  } from "../stores/feeds";
+  import type { Feed, FeedKind, FeedSide } from "../stores/feeds.types";
+  import { removeFeed, updateFeed } from "../stores/feeds";
   import EntryModal from "./EntryModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedIcon from "./FeedIcon.svelte";
   import FeedKindInput from "./FeedKindInput.svelte";
   import FeedSideInput from "./FeedSideInput.svelte";
 
-  type K = $$Generic<FeedKind>;
+  export let timestamp: Date;
+  export let amount: number;
+  export let kind: FeedKind;
+  export let side: FeedSide | null;
 
-  export let feed: Feed<K>;
+  const handleAmount = (e: CustomEvent<number>) => {
+    amount = e.detail;
+  };
 
-  let amount = feed.amount;
-  let kind = feed.kind;
-  let side: FeedSide | undefined;
+  const handleKind = (e: CustomEvent<FeedKind>) => {
+    kind = e.detail;
+    if (kind === "bottle") {
+      side = null;
+    }
+    if (kind === "breast" && side === null) {
+      side = "L";
+    }
+  };
 
-  $: if (isBreastFeed(feed)) {
-    side = feed.side;
-  } else if (side === undefined) {
-    side = "L";
-  } else {
-    side = undefined;
-  }
+  const handleSide = (e: CustomEvent<FeedSide | null>) => {
+    side = e.detail;
+  };
 
-  const onUpdateClick = () =>
-    updateFeed({ amount, kind, side, timestamp: feed.timestamp });
+  const onUpdateClick = () => updateFeed({ amount, kind, side, timestamp });
 
-  const onRemoveClick = () => removeFeed(feed.timestamp);
+  const onRemoveClick = () => removeFeed(timestamp);
 </script>
 
-<EntryModal
-  icon="🍼"
-  okText="update"
-  onOk={onUpdateClick}
-  onRemove={onRemoveClick}
->
-  <FeedIcon {feed} />
+<EntryModal okText="update" onOk={onUpdateClick} onRemove={onRemoveClick}>
+  <FeedIcon {amount} {kind} {side} slot="icon" />
 
   <article>
-    <FeedAmountInput bind:amount />
+    <FeedAmountInput on:change={handleAmount} {amount} />
   </article>
 
   <article>
     kind:
-    <FeedKindInput bind:kind />
+    <FeedKindInput on:change={handleKind} {kind} />
   </article>
 
   <article>
     side:
-    <FeedSideInput disabled={kind !== "breast"} bind:side />
+    <FeedSideInput disabled={kind !== "breast"} on:change={handleSide} {side} />
   </article>
 </EntryModal>

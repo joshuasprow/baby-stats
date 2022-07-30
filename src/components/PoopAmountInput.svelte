@@ -1,10 +1,14 @@
 <script lang="ts">
+  import { createEventDispatcher } from "svelte";
   import type { PoopAmount } from "../stores/poops";
 
   export let amount: PoopAmount = 2;
 
+  const dispatch = createEventDispatcher<{ change: PoopAmount }>();
+
   const set = (a: PoopAmount) => {
     amount = a;
+    dispatch("change", amount);
   };
 </script>
 

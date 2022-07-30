@@ -1,33 +1,102 @@
-import { addEntry, removeEntry, updateEntry } from "./days";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+  type DocumentData,
+  type QueryDocumentSnapshot,
+  type Timestamp,
+} from "firebase/firestore";
+import { get, writable } from "svelte/store";
+import { z } from "zod";
+import { firestore } from "../lib/firebase";
 import { newTimestampWithPickerDate } from "./picker-date";
+import { user } from "./user";
 
-const PEE_AMOUNTS = [1, 2, 3] as const;
+const PeeAmount = z.union([z.literal(1), z.literal(2), z.literal(3)]);
+export type PeeAmount = z.infer<typeof PeeAmount>;
 
-export type PeeAmount = typeof PEE_AMOUNTS[number];
+const Pee = z.object({
+  timestamp: z.date(),
+  amount: PeeAmount,
+});
+export type Pee = z.infer<typeof Pee>;
 
-export interface Pee {
-  timestamp: Date;
-  amount: PeeAmount;
-}
+export const pees = writable<Pee[]>([]);
 
-type PeeAdd = Omit<Pee, "timestamp">;
+const peesCollection = (uid: string) =>
+  query(
+    collection(firestore, `users/${uid}/pees`),
+    orderBy("timestamp", "desc")
+  );
 
-export const isPee = (value: unknown): value is Pee => {
-  if (typeof value !== "object" || value === null) return false;
-  if (!((value as Pee).timestamp instanceof Date)) return false;
-  if (typeof (value as Pee).amount !== "number") return false;
-  return true;
+const peesQuery = (uid: string, timestamp: Date) =>
+  `users/${uid}/pees/${timestamp.getTime()}`;
+
+const setPeeDoc = (uid: string, pee: Pee) =>
+  setDoc(doc(firestore, peesQuery(uid, pee.timestamp)), pee);
+
+export const addPee = async (value: object) => {
+  const $user = get(user);
+
+  if (!$user) {
+    throw new Error("No user found");
+  }
+
+  const pee = Pee.parse({
+    ...value,
+    timestamp: newTimestampWithPickerDate(),
+  });
+
+  await setPeeDoc($user.uid, pee);
 };
 
-export const addPee = (peeAdd: PeeAdd) => {
-  const pee = { ...peeAdd, timestamp: newTimestampWithPickerDate() };
-  if (!isPee(pee)) throw new Error("Invalid pee");
-  addEntry("pees", pee);
+export const updatePee = async (value: object) => {
+  const $user = get(user);
+
+  if (!$user) {
+    throw new Error("No user found");
+  }
+
+  const pee = Pee.parse(value);
+
+  await setPeeDoc($user.uid, pee);
 };
 
-export const updatePee = (pee: Pee) => {
-  if (!isPee(pee)) throw new Error("Invalid pee");
-  updateEntry("pees", pee);
+export const removePee = async (timestamp: Date) => {
+  const $user = get(user);
+
+  if (!$user) {
+    throw new Error("No user found");
+  }
+
+  await deleteDoc(doc(firestore, peesQuery($user.uid, timestamp)));
 };
 
-export const removePee = (timestamp: Date) => removeEntry("pees", timestamp);
+const validatePeeDoc = (doc: QueryDocumentSnapshot<DocumentData>): Pee => {
+  const data = doc.data();
+  const timestamp = (data.timestamp as Timestamp).toDate();
+
+  const pee = Pee.parse({ ...data, timestamp });
+
+  return pee;
+};
+
+let subscribed = false;
+
+user.subscribe(($user) => {
+  if (subscribed) return;
+
+  if (!$user) return;
+
+  const unsubscribe = onSnapshot(peesCollection($user.uid), (snap) =>
+    pees.set(snap.docs.map(validatePeeDoc))
+  );
+
+  subscribed = true;
+
+  return unsubscribe;
+});

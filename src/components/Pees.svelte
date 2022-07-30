@@ -11,7 +11,7 @@
   <span>🚫</span>
 {:else}
   {#each pees as pee}
-    <PeeUpdate {pee} />
+    <PeeUpdate timestamp={pee.timestamp} amount={pee.amount} />
   {/each}
 {/if}
 

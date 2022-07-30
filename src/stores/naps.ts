@@ -1,29 +1,99 @@
-import { addEntry, removeEntry, updateEntry } from "./days";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  QueryDocumentSnapshot,
+  setDoc,
+  Timestamp,
+  type DocumentData,
+} from "firebase/firestore";
+import { get, writable } from "svelte/store";
+import { z } from "zod";
+import { firestore } from "../lib/firebase";
 import { newTimestampWithPickerDate } from "./picker-date";
+import { user } from "./user";
 
-export interface Nap {
-  amount: number;
-  timestamp: Date;
-}
+const Nap = z.object({
+  timestamp: z.date(),
+  amount: z.number().int().positive(),
+});
+export type Nap = z.infer<typeof Nap>;
 
-type NapAdd = Omit<Nap, "timestamp">;
+export const naps = writable<Nap[]>([]);
 
-export const isNap = (value: unknown): value is Nap => {
-  if (typeof value !== "object" || value === null) return false;
-  if (!((value as Nap).timestamp instanceof Date)) return false;
-  if (typeof (value as Nap).amount !== "number") return false;
-  return true;
+const napsCollection = (uid: string) =>
+  query(
+    collection(firestore, `users/${uid}/naps`),
+    orderBy("timestamp", "desc")
+  );
+
+const napsQuery = (uid: string, timestamp: Date) =>
+  `users/${uid}/naps/${timestamp.getTime()}`;
+
+const setNapDoc = (uid: string, nap: Nap) =>
+  setDoc(doc(firestore, napsQuery(uid, nap.timestamp)), nap);
+
+export const addNap = async (value: object) => {
+  const $user = get(user);
+
+  if (!$user) {
+    throw new Error("No user found");
+  }
+
+  const nap = Nap.parse({
+    ...value,
+    timestamp: newTimestampWithPickerDate(),
+  });
+
+  await setNapDoc($user.uid, nap);
 };
 
-export const addNap = (napAdd: NapAdd) => {
-  const nap = { ...napAdd, timestamp: newTimestampWithPickerDate() };
-  if (!isNap(nap)) throw new Error("Invalid nap");
-  addEntry("naps", nap);
+export const updateNap = async (value: object) => {
+  const $user = get(user);
+
+  if (!$user) {
+    throw new Error("No user found");
+  }
+
+  const nap = Nap.parse(value);
+
+  await setNapDoc($user.uid, nap);
 };
 
-export const updateNap = (nap: Nap) => {
-  if (!isNap(nap)) throw new Error("Invalid nap");
-  updateEntry("naps", nap);
+export const removeNap = async (timestamp: Date) => {
+  const $user = get(user);
+
+  if (!$user) {
+    throw new Error("No user found");
+  }
+
+  await deleteDoc(doc(firestore, napsQuery($user.uid, timestamp)));
 };
 
-export const removeNap = (timestamp: Date) => removeEntry("naps", timestamp);
+const validateNapDoc = (doc: QueryDocumentSnapshot<DocumentData>): Nap => {
+  const data = doc.data();
+  const timestamp = (data.timestamp as Timestamp).toDate();
+
+  const nap = Nap.parse({ ...data, timestamp });
+
+  return nap;
+};
+
+let subscribed = false;
+
+user.subscribe(($user) => {
+  if (subscribed) return;
+
+  if (!$user) return;
+
+  const unsubscribe = onSnapshot(napsCollection($user.uid), (snap) =>
+    naps.set(snap.docs.map(validateNapDoc))
+  );
+
+  subscribed = true;
+
+  return unsubscribe;
+});

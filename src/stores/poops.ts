@@ -1,33 +1,102 @@
-import { addEntry, removeEntry, updateEntry } from "./days";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  setDoc,
+  type DocumentData,
+  type QueryDocumentSnapshot,
+  type Timestamp,
+} from "firebase/firestore";
+import { get, writable } from "svelte/store";
+import { z } from "zod";
+import { firestore } from "../lib/firebase";
 import { newTimestampWithPickerDate } from "./picker-date";
+import { user } from "./user";
 
-const POOP_AMOUNTS = [1, 2, 3] as const;
+const PoopAmount = z.union([z.literal(1), z.literal(2), z.literal(3)]);
+export type PoopAmount = z.infer<typeof PoopAmount>;
 
-export type PoopAmount = typeof POOP_AMOUNTS[number];
+const Poop = z.object({
+  timestamp: z.date(),
+  amount: PoopAmount,
+});
+export type Poop = z.infer<typeof Poop>;
 
-export interface Poop {
-  timestamp: Date;
-  amount: PoopAmount;
-}
+export const poops = writable<Poop[]>([]);
 
-type PoopAdd = Omit<Poop, "timestamp">;
+const poopsCollection = (uid: string) =>
+  query(
+    collection(firestore, `users/${uid}/poops`),
+    orderBy("timestamp", "desc")
+  );
 
-export const isPoop = (value: unknown): value is Poop => {
-  if (typeof value !== "object" || value === null) return false;
-  if (!((value as Poop).timestamp instanceof Date)) return false;
-  if (typeof (value as Poop).amount !== "number") return false;
-  return true;
+const poopsQuery = (uid: string, timestamp: Date) =>
+  `users/${uid}/poops/${timestamp.getTime()}`;
+
+const setPoopDoc = (uid: string, poop: Poop) =>
+  setDoc(doc(firestore, poopsQuery(uid, poop.timestamp)), poop);
+
+export const addPoop = async (value: object) => {
+  const $user = get(user);
+
+  if (!$user) {
+    throw new Error("No user found");
+  }
+
+  const poop = Poop.parse({
+    ...value,
+    timestamp: newTimestampWithPickerDate(),
+  });
+
+  await setPoopDoc($user.uid, poop);
 };
 
-export const addPoop = (poopAdd: PoopAdd) => {
-  const poop = { ...poopAdd, timestamp: newTimestampWithPickerDate() };
-  if (!isPoop(poop)) throw new Error("Invalid poop");
-  addEntry("poops", poop);
+export const updatePoop = async (value: object) => {
+  const $user = get(user);
+
+  if (!$user) {
+    throw new Error("No user found");
+  }
+
+  const poop = Poop.parse(value);
+
+  await setPoopDoc($user.uid, poop);
 };
 
-export const updatePoop = (poop: Poop) => {
-  if (!isPoop(poop)) throw new Error("Invalid poop");
-  updateEntry("poops", poop);
+export const removePoop = async (timestamp: Date) => {
+  const $user = get(user);
+
+  if (!$user) {
+    throw new Error("No user found");
+  }
+
+  await deleteDoc(doc(firestore, poopsQuery($user.uid, timestamp)));
 };
 
-export const removePoop = (timestamp: Date) => removeEntry("poops", timestamp);
+const validatePoopDoc = (doc: QueryDocumentSnapshot<DocumentData>): Poop => {
+  const data = doc.data();
+  const timestamp = (data.timestamp as Timestamp).toDate();
+
+  const poop = Poop.parse({ ...data, timestamp });
+
+  return poop;
+};
+
+let subscribed = false;
+
+user.subscribe(($user) => {
+  if (subscribed) return;
+
+  if (!$user) return;
+
+  const unsubscribe = onSnapshot(poopsCollection($user.uid), (snap) =>
+    poops.set(snap.docs.map(validatePoopDoc))
+  );
+
+  subscribed = true;
+
+  return unsubscribe;
+});

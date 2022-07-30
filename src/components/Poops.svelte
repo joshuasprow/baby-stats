@@ -11,7 +11,7 @@
   <span>🚫</span>
 {:else}
   {#each poops as poop}
-    <PoopUpdate {poop} />
+    <PoopUpdate timestamp={poop.timestamp} amount={poop.amount} />
   {/each}
 {/if}
 

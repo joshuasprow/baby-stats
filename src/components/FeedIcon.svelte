@@ -1,11 +1,9 @@
 <script lang="ts">
-  import { isBreastFeed, type Feed, type FeedKind } from "../stores/feeds";
+  import type { FeedKind, FeedSide } from "../stores/feeds.types";
 
-  export let feed: Feed<FeedKind>;
-
-  $: amount = feed.amount;
-  $: kind = feed.kind;
-  $: side = isBreastFeed(feed) ? feed.side : "";
+  export let amount: number;
+  export let kind: FeedKind;
+  export let side: FeedSide | null;
 </script>
 
 {#if kind === "bottle"}

@@ -1,63 +1,93 @@
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  QueryDocumentSnapshot,
+  setDoc,
+  Timestamp,
+  type DocumentData,
+} from "firebase/firestore";
+import { get, writable } from "svelte/store";
+import { firestore } from "../lib/firebase";
+import { Feed } from "./feeds.types";
 import { newTimestampWithPickerDate } from "./picker-date";
-import { addEntry, removeEntry, updateEntry } from "./days";
+import { user } from "./user";
 
-const FEED_KINDS = ["bottle", "breast"] as const;
+export const feeds = writable<Feed[]>([]);
 
-export type FeedKind = typeof FEED_KINDS[number];
+const feedsCollection = (uid: string) =>
+  query(
+    collection(firestore, `users/${uid}/feeds`),
+    orderBy("timestamp", "desc")
+  );
 
-const FEED_SIDES = ["L", "R"] as const;
+const feedsQuery = (uid: string, timestamp: Date) =>
+  `users/${uid}/feeds/${timestamp.getTime()}`;
 
-export type FeedSide = typeof FEED_SIDES[number];
+const setFeedDoc = (uid: string, feed: Feed) =>
+  setDoc(doc(firestore, feedsQuery(uid, feed.timestamp)), feed);
 
-export type Feed<K extends FeedKind> = {
-  timestamp: Date;
-  kind: K;
-  amount: number;
-  side: FeedSide | undefined;
+export const addFeed = async (value: object) => {
+  const $user = get(user);
+
+  if (!$user) {
+    throw new Error("No user found");
+  }
+
+  const feed = Feed.parse({
+    ...value,
+    timestamp: newTimestampWithPickerDate(),
+  });
+
+  await setFeedDoc($user.uid, feed);
 };
 
-type FeedAdd<K extends FeedKind> = Omit<Feed<K>, "timestamp">;
+export const updateFeed = async (value: object) => {
+  const $user = get(user);
 
-export const isFeedAdd = (
-  value: Record<string, unknown>
-): value is FeedAdd<FeedKind> => {
-  if (typeof value.amount !== "number") return false;
+  if (!$user) {
+    throw new Error("No user found");
+  }
 
-  if (!FEED_KINDS.includes(value.kind as FeedKind)) return false;
+  const feed = Feed.parse(value);
 
-  if (value.kind === "bottle") return true;
-
-  if (value.kind !== "breast") return false;
-
-  if (!FEED_SIDES.includes(value.side as FeedSide)) return false;
-
-  return true;
+  await setFeedDoc($user.uid, feed);
 };
 
-export const isFeed = <K extends FeedKind>(
-  value: Record<string, unknown>
-): value is Feed<K> => {
-  if (!isFeedAdd(value)) return false;
+export const removeFeed = async (timestamp: Date) => {
+  const $user = get(user);
 
-  if (!((value as Feed<"breast">).timestamp instanceof Date)) return false;
+  if (!$user) {
+    throw new Error("No user found");
+  }
 
-  return true;
+  await deleteDoc(doc(firestore, feedsQuery($user.uid, timestamp)));
 };
 
-export const isBreastFeed = (
-  value: Record<string, unknown>
-): value is Feed<"breast"> => {
-  if (!isFeed(value)) return false;
+const validateFeedDoc = (doc: QueryDocumentSnapshot<DocumentData>): Feed => {
+  const data = doc.data();
+  const timestamp = (data.timestamp as Timestamp).toDate();
 
-  if (value.kind !== "breast") return false;
+  const feed = Feed.parse({ ...data, timestamp });
 
-  return true;
+  return feed;
 };
 
-export const addFeed = <K extends FeedKind>(feed: FeedAdd<K>) =>
-  addEntry("feeds", { ...feed, timestamp: newTimestampWithPickerDate() });
+let subscribed = false;
 
-export const updateFeed = <K extends FeedKind>(feed: Feed<K>) =>
-  updateEntry("feeds", feed);
+user.subscribe(($user) => {
+  if (subscribed) return;
 
-export const removeFeed = (timestamp: Date) => removeEntry("feeds", timestamp);
+  if (!$user) return;
+
+  const unsubscribe = onSnapshot(feedsCollection($user.uid), (snap) =>
+    feeds.set(snap.docs.map(validateFeedDoc))
+  );
+
+  subscribed = true;
+
+  return unsubscribe;
+});

@@ -1,11 +1,6 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
-  import {
-    addFeed,
-    isFeedAdd,
-    type FeedKind,
-    type FeedSide,
-  } from "../stores/feeds";
+  import type { FeedKind, FeedSide } from "../stores/feeds.types";
+  import { addFeed } from "../stores/feeds";
   import EntryModal from "./EntryModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedKindInput from "./FeedKindInput.svelte";
@@ -13,25 +8,16 @@
 
   let amount = 1;
   let kind: FeedKind = "bottle";
-  let side: FeedSide | undefined = undefined;
+  let side: FeedSide | null = null;
 
   $: if (kind === "bottle") {
-    side = undefined;
+    side = null;
   }
-  $: if (kind === "breast" && side === undefined) {
+  $: if (kind === "breast" && side === null) {
     side = "L";
   }
 
-  const onAdd = () => {
-    const feed = { amount, kind, side };
-
-    if (!isFeedAdd(feed)) {
-      console.error("invalid feed", feed);
-      return;
-    }
-
-    addFeed(feed);
-  };
+  const onAdd = () => addFeed({ amount, kind, side });
 </script>
 
 <EntryModal icon="🍼" okText="add" onOk={onAdd}>

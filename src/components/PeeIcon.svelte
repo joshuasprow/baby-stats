@@ -1,9 +1,7 @@
 <script lang="ts">
-  import type { Pee } from "../stores/pees";
+  import type { PeeAmount } from "../stores/pees";
 
-  export let pee: Pee;
-
-  $: amount = pee.amount;
+  export let amount: PeeAmount;
 </script>
 
 {amount}💧
