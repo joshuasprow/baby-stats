@@ -1,6 +1,6 @@
 <script lang="ts">
   import GoogleIcon from "../components/GoogleIcon.svelte";
-  import { user } from "../stores/user";
+  import { signIn, signOut, user } from "../stores/user";
 
   $: loading = $user === undefined;
 
@@ -10,8 +10,8 @@
 
 <pre>{$user?.uid}</pre>
 
-<button disabled={signInDisabled} on:click={user.sign_in}>
+<button disabled={signInDisabled} on:click={signIn}>
   <GoogleIcon disabled={signInDisabled} />
 </button>
 
-<button disabled={signOutDisabled} on:click={user.sign_out}>Sign out</button>
+<button disabled={signOutDisabled} on:click={signOut}>Sign out</button>

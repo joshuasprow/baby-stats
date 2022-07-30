@@ -2,38 +2,22 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
-  signOut,
+  signOut as _signOut,
   type User,
 } from "firebase/auth";
 import { readable } from "svelte/store";
 import { auth } from "../lib/firebase";
 
-const createUser = () => {
-  const { subscribe } = readable<User | null | undefined>(undefined, (set) => {
-    let unsubscribe = () => {};
+export const user = readable<User | null | undefined>(undefined, (set) => {
+  const unsubscribe = onAuthStateChanged(auth, set);
 
-    const init = async () => {
-      unsubscribe = onAuthStateChanged(auth, set);
-    };
+  return unsubscribe;
+});
 
-    init();
-
-    return unsubscribe;
-  });
-
-  const sign_in = async () => {
-    await signInWithPopup(auth, new GoogleAuthProvider());
-  };
-
-  const sign_out = async () => {
-    await signOut(auth);
-  };
-
-  return {
-    subscribe,
-    sign_in,
-    sign_out,
-  };
+export const signIn = async () => {
+  await signInWithPopup(auth, new GoogleAuthProvider());
 };
 
-export const user = createUser();
+export const signOut = async () => {
+  await _signOut(auth);
+};

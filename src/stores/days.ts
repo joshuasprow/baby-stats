@@ -5,6 +5,7 @@ import { feeds } from "./feeds";
 import { naps } from "./naps";
 import { pees } from "./pees";
 import { poops } from "./poops";
+import { user } from "./user";
 
 export type DayState = {
   [K in Kind]: Entry<K>[];
@@ -54,8 +55,8 @@ const addEntriesToDays = <K extends Kind>(
 };
 
 export const days = derived(
-  [feeds, naps, pees, poops],
-  ([$feeds, $naps, $pees, $poops]) => {
+  [user, feeds, naps, pees, poops],
+  ([_, $feeds, $naps, $pees, $poops]) => {
     const days: Days = {};
 
     addEntriesToDays(days, "feeds", $feeds);

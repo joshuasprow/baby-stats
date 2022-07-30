@@ -10,7 +10,7 @@ import {
   type QueryDocumentSnapshot,
   type Timestamp,
 } from "firebase/firestore";
-import { get, writable } from "svelte/store";
+import { derived, get } from "svelte/store";
 import { z } from "zod";
 import { firestore } from "../lib/firebase";
 import { newTimestampWithPickerDate } from "./picker-date";
@@ -25,13 +25,29 @@ const Pee = z.object({
 });
 export type Pee = z.infer<typeof Pee>;
 
-export const pees = writable<Pee[]>([]);
-
 const peesCollection = (uid: string) =>
   query(
     collection(firestore, `users/${uid}/pees`),
     orderBy("timestamp", "desc")
   );
+
+export const pees = derived<typeof user, Pee[]>(user, ($user, set) => {
+  let unsubscribe = () => {};
+
+  if (!$user) {
+    set([]);
+
+    return unsubscribe;
+  }
+
+  unsubscribe = onSnapshot(peesCollection($user.uid), (snap) => {
+    const $pees = snap.docs.map(validatePeeDoc);
+
+    set($pees);
+  });
+
+  return unsubscribe;
+});
 
 const peesQuery = (uid: string, timestamp: Date) =>
   `users/${uid}/pees/${timestamp.getTime()}`;
@@ -84,23 +100,3 @@ const validatePeeDoc = (doc: QueryDocumentSnapshot<DocumentData>): Pee => {
 
   return pee;
 };
-
-let subscribed = false;
-
-user.subscribe(($user) => {
-  if (!$user) {
-    subscribed = false;
-    pees.set([]);
-    return;
-  }
-
-  if (subscribed) return;
-
-  const unsubscribe = onSnapshot(peesCollection($user.uid), (snap) =>
-    pees.set(snap.docs.map(validatePeeDoc))
-  );
-
-  subscribed = true;
-
-  return unsubscribe;
-});

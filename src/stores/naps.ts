@@ -10,7 +10,7 @@ import {
   Timestamp,
   type DocumentData,
 } from "firebase/firestore";
-import { get, writable } from "svelte/store";
+import { derived, get } from "svelte/store";
 import { z } from "zod";
 import { firestore } from "../lib/firebase";
 import { newTimestampWithPickerDate } from "./picker-date";
@@ -22,13 +22,29 @@ const Nap = z.object({
 });
 export type Nap = z.infer<typeof Nap>;
 
-export const naps = writable<Nap[]>([]);
-
 const napsCollection = (uid: string) =>
   query(
     collection(firestore, `users/${uid}/naps`),
     orderBy("timestamp", "desc")
   );
+
+export const naps = derived<typeof user, Nap[]>(user, ($user, set) => {
+  let unsubscribe = () => {};
+
+  if (!$user) {
+    set([]);
+
+    return unsubscribe;
+  }
+
+  unsubscribe = onSnapshot(napsCollection($user.uid), (snap) => {
+    const $naps = snap.docs.map(validateNapDoc);
+
+    set($naps);
+  });
+
+  return unsubscribe;
+});
 
 const napsQuery = (uid: string, timestamp: Date) =>
   `users/${uid}/naps/${timestamp.getTime()}`;
@@ -81,23 +97,3 @@ const validateNapDoc = (doc: QueryDocumentSnapshot<DocumentData>): Nap => {
 
   return nap;
 };
-
-let subscribed = false;
-
-user.subscribe(($user) => {
-  if (!$user) {
-    subscribed = false;
-    naps.set([]);
-    return;
-  }
-
-  if (subscribed) return;
-
-  const unsubscribe = onSnapshot(napsCollection($user.uid), (snap) =>
-    naps.set(snap.docs.map(validateNapDoc))
-  );
-
-  subscribed = true;
-
-  return unsubscribe;
-});
