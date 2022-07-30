@@ -21,7 +21,7 @@
     justify-content: space-around;
     align-items: center;
     width: 100%;
-    height: 54px;
+    height: var(--footer-height);
     background: #ddd;
     z-index: 200;
   }
