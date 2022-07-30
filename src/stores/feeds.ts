@@ -5,160 +5,90 @@ import {
   onSnapshot,
   orderBy,
   query,
+  QueryDocumentSnapshot,
+  QuerySnapshot,
   setDoc,
   Timestamp,
+  type DocumentData,
 } from "firebase/firestore";
-import { derived, get } from "svelte/store";
-import { z } from "zod";
+import { get, writable } from "svelte/store";
 import { firestore } from "../lib/firebase";
-import { addEntry, removeEntry, updateEntry } from "./days";
+import { Feed } from "./feeds.types";
 import { newTimestampWithPickerDate } from "./picker-date";
 import { user } from "./user";
 
-const FEED_KINDS = ["bottle", "breast"] as const;
-const FEED_SIDES = z.enum(["L", "R"]);
+export const feeds = writable<Feed[]>([]);
 
-const BOTTLE_FEED = z.object({
-  timestamp: z.date(),
-  kind: z.literal(FEED_KINDS[0]),
-  amount: z.number(),
-  side: z.null(),
-});
-const BREAST_FEED = z.object({
-  timestamp: z.date(),
-  kind: z.literal(FEED_KINDS[1]),
-  amount: z.number(),
-  side: FEED_SIDES,
-});
+const feedsCollection = (uid: string) =>
+  query(
+    collection(firestore, `users/${uid}/feeds`),
+    orderBy("timestamp", "desc")
+  );
 
-const FEED = z.discriminatedUnion("kind", [BOTTLE_FEED, BREAST_FEED]);
+const feedsQuery = (uid: string, timestamp: Date) =>
+  `users/${uid}/feeds/${timestamp.getTime()}`;
 
-export type FeedKind = typeof FEED_KINDS[number];
-export type FeedSide = z.infer<typeof FEED_SIDES>;
+export const addFeed = (value: object) => {
+  const $user = get(user);
 
-export type Feed = z.infer<typeof FEED>;
-
-type BreastFeed = z.infer<typeof BREAST_FEED>;
-
-export const isBreastFeed = (value: unknown): value is BreastFeed => {
-  try {
-    BREAST_FEED.parse(value);
-    return true;
-  } catch {
-    return false;
+  if (!$user) {
+    console.error("No user found");
+    return;
   }
-};
 
-export const addFeed = async (feed: Omit<Feed, "timestamp">) => {
-  const _feed = FEED.parse({
-    ...feed,
+  const feed = Feed.parse({
+    ...value,
     timestamp: newTimestampWithPickerDate(),
   });
 
-  await addEntry("feeds", _feed);
+  setDoc(doc(firestore, feedsQuery($user.uid, feed.timestamp)), feed);
 };
 
-// todo: replace unknown with a narrower type
-export const updateFeed = async (feed: unknown) => {
-  const _feed = FEED.parse(feed);
+export const updateFeed = (value: object) => {
+  const $user = get(user);
 
-  await updateEntry("feeds", _feed);
+  if (!$user) {
+    console.error("No user found");
+    return;
+  }
+
+  const feed = Feed.parse(value);
+
+  setDoc(doc(firestore, feedsQuery($user.uid, feed.timestamp)), feed);
 };
 
-export const removeFeed = (timestamp: Date) => removeEntry("feeds", timestamp);
+export const removeFeed = (timestamp: Date) => {
+  const $user = get(user);
 
-const getQuery = (uid: string) =>
-  query(
-    query(
-      collection(firestore, `users/${uid}/feeds`),
-      orderBy("timestamp", "desc")
-    )
+  if (!$user) {
+    console.error("No user found");
+    return;
+  }
+
+  deleteDoc(doc(firestore, feedsQuery($user.uid, timestamp)));
+};
+
+const validateFeedDoc = (doc: QueryDocumentSnapshot<DocumentData>): Feed => {
+  const data = doc.data();
+  const timestamp = (data.timestamp as Timestamp).toDate();
+
+  const feed = Feed.parse({ ...data, timestamp });
+
+  return feed;
+};
+
+let subscribed = false;
+
+user.subscribe(($user) => {
+  if (subscribed) return;
+
+  if (!$user) return;
+
+  const unsubscribe = onSnapshot(feedsCollection($user.uid), (snap) =>
+    feeds.set(snap.docs.map(validateFeedDoc))
   );
 
-const createFeeds = () => {
-  const { subscribe } = derived<typeof user, Feed[]>(user, ($user, set) => {
-    let unsubscribe = () => {};
+  subscribed = true;
 
-    if (!$user) {
-      set([]);
-      return unsubscribe;
-    }
-
-    const init = async () => {
-      const _query = getQuery($user.uid);
-
-      unsubscribe = onSnapshot(_query, (snap) => {
-        if (snap.docs.length === 0) {
-          set([]);
-          return;
-        }
-
-        const _feeds = snap.docs.map((doc) => {
-          const data = doc.data();
-          const timestamp = (data.timestamp as Timestamp).toDate();
-          const feed = FEED.parse({ ...data, timestamp });
-
-          return feed;
-        });
-
-        set(_feeds);
-      });
-    };
-
-    init();
-
-    return unsubscribe;
-  });
-
-  const add = (value: object) => {
-    const $user = get(user);
-
-    if (!$user) {
-      console.error("No user found");
-      return;
-    }
-
-    const feed = FEED.parse({
-      ...value,
-      timestamp: newTimestampWithPickerDate(),
-    });
-
-    setDoc(
-      doc(firestore, `users/${$user.uid}/feeds/${feed.timestamp.getTime()}`),
-      feed
-    );
-  };
-
-  const update = (value: object) => {
-    const $user = get(user);
-
-    if (!$user) {
-      console.error("No user found");
-      return;
-    }
-
-    const feed = FEED.parse(value);
-
-    setDoc(
-      doc(firestore, `users/${$user.uid}/feeds/${feed.timestamp.getTime()}`),
-      feed
-    );
-  };
-
-  const remove = (timestamp: Date) => {
-    const $user = get(user);
-
-    if (!$user) {
-      console.error("No user found");
-      return;
-    }
-
-    deleteDoc(
-      doc(firestore, `users/${$user.uid}/feeds/${timestamp.getTime()}`)
-    );
-  };
-
-  return { subscribe, add, update, remove };
-};
-
-export const feeds = createFeeds();
+  return unsubscribe;
+});

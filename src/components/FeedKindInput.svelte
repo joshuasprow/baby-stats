@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FeedKind } from "src/stores/feeds";
+  import type { FeedKind } from "src/stores/feeds.types";
   import { createEventDispatcher } from "svelte";
 
   export let kind: FeedKind = "bottle";

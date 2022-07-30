@@ -1,10 +1,6 @@
 <script lang="ts">
-  import {
-    feeds,
-    type Feed,
-    type FeedKind,
-    type FeedSide,
-  } from "../stores/feeds";
+  import type { Feed, FeedKind, FeedSide } from "../stores/feeds.types";
+  import { removeFeed, updateFeed } from "../stores/feeds";
   import EntryModal from "./EntryModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedIcon from "./FeedIcon.svelte";
@@ -36,9 +32,9 @@
   };
 
   const onUpdateClick = () =>
-    feeds.update({ amount, kind, side, timestamp: feed.timestamp });
+    updateFeed({ amount, kind, side, timestamp: feed.timestamp });
 
-  const onRemoveClick = () => feeds.remove(feed.timestamp);
+  const onRemoveClick = () => removeFeed(feed.timestamp);
 </script>
 
 <EntryModal okText="update" onOk={onUpdateClick} onRemove={onRemoveClick}>

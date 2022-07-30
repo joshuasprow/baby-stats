@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { Feed } from "../stores/feeds";
+  import type { Feed } from "../stores/feeds.types";
   import FeedUpdate from "./FeedUpdate.svelte";
 
   export let feeds: Feed[];

@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { feeds, type FeedKind, type FeedSide } from "../stores/feeds";
+  import type { FeedKind, FeedSide } from "../stores/feeds.types";
+  import { addFeed } from "../stores/feeds";
   import EntryModal from "./EntryModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedKindInput from "./FeedKindInput.svelte";
@@ -16,7 +17,7 @@
     side = "L";
   }
 
-  const onAdd = () => feeds.add({ amount, kind, side });
+  const onAdd = () => addFeed({ amount, kind, side });
 </script>
 
 <EntryModal icon="🍼" okText="add" onOk={onAdd}>
