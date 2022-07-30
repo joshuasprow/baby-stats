@@ -2,16 +2,20 @@
 
 ### reqs
 
-- poops
-  - count
-  - notes: consistency/color
-- pees
-  - count
-  - notes
+- mess
+  - poops
+    - count
+    - notes: consistency/color
+  - pees
+    - count
+    - notes
 - feeds
-  - amount
-  - side: left/right
-  - duration
+  - bottle
+    - amount
+    - notes
+  - breast
+    - side: left/right/left-right/right-left
+    - duration
   - notes
 - nap
   - duration
