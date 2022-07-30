@@ -1,9 +1,7 @@
 <script lang="ts">
-  import type { PeeAmount } from "../stores/pees";
+  export let amount = 2;
 
-  export let amount: PeeAmount = 2;
-
-  const set = (a: PeeAmount) => {
+  const set = (a: number) => {
     amount = a;
   };
 </script>

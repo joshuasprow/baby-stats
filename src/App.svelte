@@ -3,8 +3,10 @@
   import Signup from "./components/Auth.svelte";
   import FeedUpdate from "./components/FeedUpdate.svelte";
   import NapUpdate from "./components/NapUpdate.svelte";
+  import PeeUpdate from "./components/PeeUpdate.svelte";
   import { feeds } from "./stores/feeds";
   import { naps } from "./stores/naps";
+  import { pees } from "./stores/pees";
 </script>
 
 <main>
@@ -25,6 +27,15 @@
     {:else}
       {#each $naps as nap}
         <NapUpdate {nap} />
+      {/each}
+    {/if}
+  </div>
+  <div>
+    {#if !$pees}
+      <span>🚫</span>
+    {:else}
+      {#each $pees as pee}
+        <PeeUpdate {pee} />
       {/each}
     {/if}
   </div>
