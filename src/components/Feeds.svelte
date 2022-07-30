@@ -11,7 +11,12 @@
   <span>🚫</span>
 {:else}
   {#each feeds as feed}
-    <FeedUpdate {feed} />
+    <FeedUpdate
+      timestamp={feed.timestamp}
+      amount={feed.amount}
+      kind={feed.kind}
+      side={feed.side}
+    />
   {/each}
 {/if}
 

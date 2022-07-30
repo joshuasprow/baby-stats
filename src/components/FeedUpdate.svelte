@@ -7,11 +7,10 @@
   import FeedKindInput from "./FeedKindInput.svelte";
   import FeedSideInput from "./FeedSideInput.svelte";
 
-  export let feed: Feed;
-
-  let amount = feed.amount;
-  let kind = feed.kind;
-  let side: FeedSide | null = feed.side;
+  export let timestamp: Date;
+  export let amount: number;
+  export let kind: FeedKind;
+  export let side: FeedSide | null;
 
   const handleAmount = (e: CustomEvent<number>) => {
     amount = e.detail;
@@ -31,14 +30,13 @@
     side = e.detail;
   };
 
-  const onUpdateClick = () =>
-    updateFeed({ amount, kind, side, timestamp: feed.timestamp });
+  const onUpdateClick = () => updateFeed({ amount, kind, side, timestamp });
 
-  const onRemoveClick = () => removeFeed(feed.timestamp);
+  const onRemoveClick = () => removeFeed(timestamp);
 </script>
 
 <EntryModal okText="update" onOk={onUpdateClick} onRemove={onRemoveClick}>
-  <FeedIcon {feed} slot="icon" />
+  <FeedIcon {amount} {kind} {side} slot="icon" />
 
   <article>
     <FeedAmountInput on:change={handleAmount} {amount} />
