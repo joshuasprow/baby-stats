@@ -4,7 +4,7 @@
   import Day from "./components/Day.svelte";
   import SignInButton from "./components/SignInButton.svelte";
   import SignOutButton from "./components/SignOutButton.svelte";
-  import { days } from "./stores/days";
+  import { days } from "./stores/days.next";
   import { user } from "./stores/user";
 </script>
 
@@ -18,9 +18,7 @@
 
     <DatePicker />
 
-    {#each Object.entries($days) as [timestamp, day]}
-      <Day {timestamp} {day} />
-    {/each}
+    <pre>{JSON.stringify($days, null, 2)}</pre>
   {/if}
 </main>
 
@@ -53,5 +51,10 @@
   button,
   input {
     font-size: 1rem;
+  }
+
+  pre {
+    font-size: 0.5rem;
+    line-height: 0.5rem;
   }
 </style>
