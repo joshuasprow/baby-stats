@@ -1,28 +1,22 @@
 import { addEntry, removeEntry, updateEntry } from "./days";
 import { newTimestampWithPickerDate } from "./picker-date";
+import { z } from "zod";
 
-export interface Nap {
-  amount: number;
-  timestamp: Date;
-}
+const Nap = z.object({
+  timestamp: z.date(),
+  amount: z.number().int().positive(),
+});
+export type Nap = z.infer<typeof Nap>;
 
-type NapAdd = Omit<Nap, "timestamp">;
+export const addNap = (value: object) => {
+  const nap = Nap.parse({ ...value, timestamp: newTimestampWithPickerDate() });
 
-export const isNap = (value: unknown): value is Nap => {
-  if (typeof value !== "object" || value === null) return false;
-  if (!((value as Nap).timestamp instanceof Date)) return false;
-  if (typeof (value as Nap).amount !== "number") return false;
-  return true;
-};
-
-export const addNap = (napAdd: NapAdd) => {
-  const nap = { ...napAdd, timestamp: newTimestampWithPickerDate() };
-  if (!isNap(nap)) throw new Error("Invalid nap");
   addEntry("naps", nap);
 };
 
-export const updateNap = (nap: Nap) => {
-  if (!isNap(nap)) throw new Error("Invalid nap");
+export const updateNap = (value: object) => {
+  const nap = Nap.parse(value);
+
   updateEntry("naps", nap);
 };
 

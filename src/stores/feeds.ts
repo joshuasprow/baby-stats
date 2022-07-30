@@ -6,7 +6,6 @@ import {
   orderBy,
   query,
   QueryDocumentSnapshot,
-  QuerySnapshot,
   setDoc,
   Timestamp,
   type DocumentData,
