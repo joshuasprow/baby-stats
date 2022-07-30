@@ -1,25 +1,23 @@
+import { Entry } from "src/lib/entry";
 import { z } from "zod";
-
-const FeedKind = ["bottle", "breast"] as const;
-export type FeedKind = typeof FeedKind[number];
 
 const FeedSide = z.enum(["L", "R"]);
 export type FeedSide = z.infer<typeof FeedSide>;
 
-const BottleFeed = z.object({
-  timestamp: z.date(),
-  kind: z.literal(FeedKind[0]),
-  amount: z.number(),
+const FeedSource = ["bottle", "breast"] as const;
+export type FeedSource = typeof FeedSource[number];
+
+const BottleFeed = Entry.extend({
+  source: z.literal(FeedSource[0]),
   side: z.null(),
 });
 
-const BreastFeed = z.object({
-  timestamp: z.date(),
-  kind: z.literal(FeedKind[1]),
-  amount: z.number(),
+const BreastFeed = Entry.extend({
+  source: z.literal(FeedSource[1]),
   side: FeedSide,
 });
 type BreastFeed = z.infer<typeof BreastFeed>;
+
 export const isBreastFeed = (value: unknown): value is BreastFeed => {
   try {
     BreastFeed.parse(value);
@@ -29,5 +27,5 @@ export const isBreastFeed = (value: unknown): value is BreastFeed => {
   }
 };
 
-export const Feed = z.discriminatedUnion("kind", [BottleFeed, BreastFeed]);
+export const Feed = z.discriminatedUnion("source", [BottleFeed, BreastFeed]);
 export type Feed = z.infer<typeof Feed>;

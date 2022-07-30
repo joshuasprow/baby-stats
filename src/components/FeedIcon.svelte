@@ -1,14 +1,14 @@
 <script lang="ts">
-  import type { FeedKind, FeedSide } from "../stores/feeds.types";
+  import type { FeedSource, FeedSide } from "../stores/feeds.types";
 
   export let amount: number;
-  export let kind: FeedKind;
+  export let source: FeedSource;
   export let side: FeedSide | null;
 </script>
 
-{#if kind === "bottle"}
+{#if source === "bottle"}
   {amount}🍼
-{:else if kind === "breast"}
+{:else if source === "breast"}
   {amount}🤱{side}
 {:else}
   {amount}

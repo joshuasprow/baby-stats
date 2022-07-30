@@ -1,23 +1,23 @@
 <script lang="ts">
-  import type { FeedKind, FeedSide } from "../stores/feeds.types";
+  import type { FeedSource, FeedSide } from "../stores/feeds.types";
   import { addFeed } from "../stores/feeds";
   import EntryModal from "./EntryModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
-  import FeedKindInput from "./FeedKindInput.svelte";
+  import FeedSourceInput from "./FeedSourceInput.svelte";
   import FeedSideInput from "./FeedSideInput.svelte";
 
   let amount = 1;
-  let kind: FeedKind = "bottle";
+  let source: FeedSource = "bottle";
   let side: FeedSide | null = null;
 
-  $: if (kind === "bottle") {
+  $: if (source === "bottle") {
     side = null;
   }
-  $: if (kind === "breast" && side === null) {
+  $: if (source === "breast" && side === null) {
     side = "L";
   }
 
-  const onAdd = () => addFeed({ amount, kind, side });
+  const onAdd = () => addFeed({ amount, source, side });
 </script>
 
 <EntryModal icon="🍼" okText="add" onOk={onAdd}>
@@ -27,11 +27,11 @@
 
   <article>
     kind:
-    <FeedKindInput bind:kind />
+    <FeedSourceInput bind:source />
   </article>
 
   <article>
     side:
-    <FeedSideInput bind:side disabled={kind === "bottle"} />
+    <FeedSideInput bind:side disabled={source === "bottle"} />
   </article>
 </EntryModal>

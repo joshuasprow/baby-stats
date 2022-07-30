@@ -14,7 +14,7 @@
     <FeedUpdate
       timestamp={feed.timestamp}
       amount={feed.amount}
-      kind={feed.kind}
+      source={feed.source}
       side={feed.side}
     />
   {/each}

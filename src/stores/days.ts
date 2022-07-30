@@ -8,7 +8,7 @@ import { poops } from "./poops";
 import { user } from "./user";
 
 export type DayState = {
-  [K in Kind]: Entry<K>[];
+  [K in Kind]: Entry[];
 };
 
 export type Days = {
@@ -39,7 +39,7 @@ const newEmptyDay = (): DayState => ({
 const addEntriesToDays = <K extends Kind>(
   days: Days,
   kind: K,
-  entries: Entry<K>[]
+  entries: Entry[]
 ): Days => {
   for (const entry of entries) {
     const ts = encodeDayTimestamp(entry.timestamp);

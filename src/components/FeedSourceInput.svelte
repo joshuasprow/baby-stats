@@ -1,22 +1,22 @@
 <script lang="ts">
-  import type { FeedKind } from "src/stores/feeds.types";
+  import type { FeedSource } from "src/stores/feeds.types";
   import { createEventDispatcher } from "svelte";
 
-  export let kind: FeedKind = "bottle";
+  export let source: FeedSource = "bottle";
 
-  const dispatch = createEventDispatcher<{ change: FeedKind }>();
+  const dispatch = createEventDispatcher<{ change: FeedSource }>();
 
   $: {
-    dispatch("change", kind);
+    dispatch("change", source);
   }
 </script>
 
 <label for="bottle">
   <input
-    bind:group={kind}
+    bind:group={source}
     type="radio"
     id="bottle"
-    name="kind"
+    name="source"
     value="bottle"
   />
   bottle
@@ -24,10 +24,10 @@
 
 <label for="breast">
   <input
-    bind:group={kind}
+    bind:group={source}
     type="radio"
     id="breast"
-    name="kind"
+    name="source"
     value="breast"
   />
   breast
