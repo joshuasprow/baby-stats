@@ -88,9 +88,13 @@ const validatePoopDoc = (doc: QueryDocumentSnapshot<DocumentData>): Poop => {
 let subscribed = false;
 
 user.subscribe(($user) => {
-  if (subscribed) return;
+  if (!$user) {
+    subscribed = false;
+    poops.set([]);
+    return;
+  }
 
-  if (!$user) return;
+  if (subscribed) return;
 
   const unsubscribe = onSnapshot(poopsCollection($user.uid), (snap) =>
     poops.set(snap.docs.map(validatePoopDoc))

@@ -85,9 +85,13 @@ const validateNapDoc = (doc: QueryDocumentSnapshot<DocumentData>): Nap => {
 let subscribed = false;
 
 user.subscribe(($user) => {
-  if (subscribed) return;
+  if (!$user) {
+    subscribed = false;
+    naps.set([]);
+    return;
+  }
 
-  if (!$user) return;
+  if (subscribed) return;
 
   const unsubscribe = onSnapshot(napsCollection($user.uid), (snap) =>
     naps.set(snap.docs.map(validateNapDoc))

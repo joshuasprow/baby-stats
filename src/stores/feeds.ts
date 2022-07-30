@@ -79,9 +79,13 @@ const validateFeedDoc = (doc: QueryDocumentSnapshot<DocumentData>): Feed => {
 let subscribed = false;
 
 user.subscribe(($user) => {
-  if (subscribed) return;
+  if (!$user) {
+    subscribed = false;
+    feeds.set([]);
+    return;
+  }
 
-  if (!$user) return;
+  if (subscribed) return;
 
   const unsubscribe = onSnapshot(feedsCollection($user.uid), (snap) =>
     feeds.set(snap.docs.map(validateFeedDoc))

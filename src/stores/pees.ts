@@ -88,9 +88,13 @@ const validatePeeDoc = (doc: QueryDocumentSnapshot<DocumentData>): Pee => {
 let subscribed = false;
 
 user.subscribe(($user) => {
-  if (subscribed) return;
+  if (!$user) {
+    subscribed = false;
+    pees.set([]);
+    return;
+  }
 
-  if (!$user) return;
+  if (subscribed) return;
 
   const unsubscribe = onSnapshot(peesCollection($user.uid), (snap) =>
     pees.set(snap.docs.map(validatePeeDoc))
