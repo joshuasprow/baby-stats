@@ -5,7 +5,7 @@
     type Poop,
     type PoopAmount,
   } from "$stores/poops";
-  import EntryModal from "./EntryModal.svelte";
+  import EntryUpdateModal from "./EntryUpdateModal.svelte";
   import PoopAmountInput from "./PoopAmountInput.svelte";
   import PoopIcon from "./PoopIcon.svelte";
 
@@ -18,20 +18,24 @@
     amount = e.detail;
   };
 
-  const onUpdateClick = () =>
-    updatePoop({ id: entry.id, amount, kind: "pees", timestamp });
+  const handleTimestamp = (e: CustomEvent<Date>) => {
+    timestamp = e.detail;
+  };
 
-  const onRemoveClick = () => removePoop(entry.id);
+  const handleUpdate = () =>
+    updatePoop({ id: entry.id, amount, kind: "poops", timestamp });
+
+  const handleRemove = () => removePoop(entry.id);
 </script>
 
-<EntryModal
-  okText="update"
-  okCallback={onUpdateClick}
-  removeCallback={onRemoveClick}
+<EntryUpdateModal
+  on:remove={handleRemove}
+  on:timestamp={handleTimestamp}
+  on:update={handleUpdate}
+  {timestamp}
 >
   <PoopIcon {amount} slot="icon" />
-
   <article>
     <PoopAmountInput on:change={handleAmount} {amount} />
   </article>
-</EntryModal>
+</EntryUpdateModal>

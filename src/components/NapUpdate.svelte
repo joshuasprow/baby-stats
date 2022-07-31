@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Nap, removeNap, updateNap } from "$stores/naps";
-  import EntryModal from "./EntryModal.svelte";
+  import EntryUpdateModal from "./EntryUpdateModal.svelte";
   import NapAmountInput from "./NapAmountInput.svelte";
   import NapIcon from "./NapIcon.svelte";
 
@@ -13,20 +13,25 @@
     amount = e.detail;
   };
 
-  const onUpdateClick = () =>
+  const handleTimestamp = (e: CustomEvent<Date>) => {
+    timestamp = e.detail;
+  };
+
+  const handleUpdate = () =>
     updateNap({ id: entry.id, amount, kind: "naps", timestamp });
 
-  const onRemoveClick = () => removeNap(entry.id);
+  const handleRemove = () => removeNap(entry.id);
 </script>
 
-<EntryModal
-  okText="update"
-  okCallback={onUpdateClick}
-  removeCallback={onRemoveClick}
+<EntryUpdateModal
+  on:remove={handleRemove}
+  on:timestamp={handleTimestamp}
+  on:update={handleUpdate}
+  {timestamp}
 >
   <NapIcon {amount} slot="icon" />
 
   <article>
     <NapAmountInput on:change={handleAmount} {amount} />
   </article>
-</EntryModal>
+</EntryUpdateModal>

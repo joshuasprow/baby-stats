@@ -1,16 +1,21 @@
 <script lang="ts">
   import { addPee, type PeeAmount } from "$stores/pees";
-  import EntryModal from "./EntryModal.svelte";
+  import EntryAddModal from "./EntryAddModal.svelte";
   import PeeAmountInput from "./PeeAmountInput.svelte";
 
   let amount: PeeAmount = 2;
   let timestamp = new Date();
 
-  const onAdd = () => addPee({ amount, kind: "pees", timestamp });
+  const handleTimestamp = (e: CustomEvent<Date>) => {
+    timestamp = e.detail;
+  };
+
+  const handleAdd = () => addPee({ amount, kind: "pees", timestamp });
 </script>
 
-<EntryModal icon="💧" okText="add" okCallback={onAdd}>
+<EntryAddModal on:add={handleAdd} on:timestamp={handleTimestamp} {timestamp}>
+  <span slot="icon">💧</span>
   <article>
     <PeeAmountInput bind:amount />
   </article>
-</EntryModal>
+</EntryAddModal>

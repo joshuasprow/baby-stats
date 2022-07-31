@@ -1,6 +1,6 @@
 <script lang="ts">
   import { removePee, updatePee, type Pee, type PeeAmount } from "$stores/pees";
-  import EntryModal from "./EntryModal.svelte";
+  import EntryUpdateModal from "./EntryUpdateModal.svelte";
   import PeeAmountInput from "./PeeAmountInput.svelte";
   import PeeIcon from "./PeeIcon.svelte";
 
@@ -13,20 +13,24 @@
     amount = e.detail;
   };
 
-  const onUpdateClick = () =>
+  const handleTimestamp = (e: CustomEvent<Date>) => {
+    timestamp = e.detail;
+  };
+
+  const handleUpdate = () =>
     updatePee({ id: entry.id, amount, kind: "pees", timestamp });
 
-  const onRemoveClick = () => removePee(entry.id);
+  const handleRemove = () => removePee(entry.id);
 </script>
 
-<EntryModal
-  okText="update"
-  okCallback={onUpdateClick}
-  removeCallback={onRemoveClick}
+<EntryUpdateModal
+  on:remove={handleRemove}
+  on:timestamp={handleTimestamp}
+  on:update={handleUpdate}
+  {timestamp}
 >
   <PeeIcon {amount} slot="icon" />
-
   <article>
     <PeeAmountInput on:change={handleAmount} {amount} />
   </article>
-</EntryModal>
+</EntryUpdateModal>

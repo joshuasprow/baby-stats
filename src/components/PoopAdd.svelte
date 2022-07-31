@@ -1,16 +1,21 @@
 <script lang="ts">
   import { addPoop, type PoopAmount } from "$stores/poops";
-  import EntryModal from "./EntryModal.svelte";
+  import EntryAddModal from "./EntryAddModal.svelte";
   import PoopAmountInput from "./PoopAmountInput.svelte";
 
   let amount: PoopAmount = 2;
   let timestamp = new Date();
 
-  const onAdd = () => addPoop({ amount, kind: "poops", timestamp });
+  const handleTimestamp = (e: CustomEvent<Date>) => {
+    timestamp = e.detail;
+  };
+
+  const handleAdd = () => addPoop({ amount, kind: "poops", timestamp });
 </script>
 
-<EntryModal icon="💩" okText="add" okCallback={onAdd}>
+<EntryAddModal on:add={handleAdd} on:timestamp={handleTimestamp} {timestamp}>
+  <span slot="icon">💩</span>
   <article>
     <PoopAmountInput bind:amount />
   </article>
-</EntryModal>
+</EntryAddModal>
