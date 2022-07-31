@@ -20,7 +20,7 @@ import { user } from "./user";
 const PeeAmount = z.union([z.literal(1), z.literal(2), z.literal(3)]);
 export type PeeAmount = z.infer<typeof PeeAmount>;
 
-const Pee = EntryBase.omit({ amount: true }).extend({
+export const Pee = EntryBase.omit({ amount: true }).extend({
   amount: PeeAmount,
 });
 export type Pee = z.infer<typeof Pee>;

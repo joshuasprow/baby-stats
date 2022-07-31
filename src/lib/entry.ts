@@ -6,6 +6,7 @@ import { z } from "zod";
 import { KindEnum, type Kind } from "./kind";
 
 export const EntryBase = z.object({
+  id: z.string().min(1),
   timestamp: z.date(),
   amount: z.number(),
   kind: KindEnum,

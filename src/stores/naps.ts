@@ -10,11 +10,11 @@ import {
   QueryDocumentSnapshot,
   setDoc,
   Timestamp,
+  updateDoc,
   type DocumentData,
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
 import { z } from "zod";
-import { newTimestampWithPickerDate } from "./picker-date";
 import { user } from "./user";
 
 export const Nap = EntryBase.omit({ amount: true }).extend({
@@ -22,11 +22,23 @@ export const Nap = EntryBase.omit({ amount: true }).extend({
 });
 export type Nap = z.infer<typeof Nap>;
 
-const napsCollection = (uid: string) =>
-  query(
-    collection(firestore, `users/${uid}/naps`),
-    orderBy("timestamp", "desc")
-  );
+const NapAdd = Nap.omit({ id: true });
+type NapAdd = z.infer<typeof NapAdd>;
+
+const getNapsCollection = (uid: string) =>
+  collection(firestore, `users/${uid}/naps`);
+
+const getNapDoc = (uid: string, id: string) =>
+  doc(firestore, `users/${uid}/naps/${id}`);
+
+const napFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): Nap => {
+  const data = doc.data();
+  const timestamp = (data.timestamp as Timestamp).toDate();
+
+  const nap = Nap.parse({ ...data, id: doc.id, timestamp });
+
+  return nap;
+};
 
 export const naps = derived<typeof user, Nap[]>(user, ($user, set) => {
   let unsubscribe = () => {};
@@ -37,64 +49,53 @@ export const naps = derived<typeof user, Nap[]>(user, ($user, set) => {
     return unsubscribe;
   }
 
-  unsubscribe = onSnapshot(napsCollection($user.uid), (snap) => {
-    const $naps = snap.docs.map(validateNapDoc);
+  unsubscribe = onSnapshot(
+    query(getNapsCollection($user.uid), orderBy("timestamp", "desc")),
+    (snap) => {
+      const $naps = snap.docs.map(napFromDoc);
 
-    set($naps);
-  });
+      set($naps);
+    }
+  );
 
   return unsubscribe;
 });
 
-const napsQuery = (uid: string, timestamp: Date) =>
-  `users/${uid}/naps/${timestamp.getTime()}`;
-
-const setNapDoc = (uid: string, nap: Nap) =>
-  setDoc(doc(firestore, napsQuery(uid, nap.timestamp)), nap);
-
-export const addNap = async (value: object) => {
+export const addNap = async (value: NapAdd) => {
   const $user = get(user);
 
   if (!$user) {
     throw new Error("No user found");
   }
 
-  const nap = Nap.parse({
-    ...value,
-    kind: "naps",
-    timestamp: newTimestampWithPickerDate(),
-  });
+  const add = NapAdd.parse(value);
+  const ref = doc(getNapsCollection($user.uid));
+  const nap = Nap.parse({ ...add, id: ref.id });
 
-  await setNapDoc($user.uid, nap);
-};
-
-export const updateNap = async (value: object) => {
-  const $user = get(user);
-
-  if (!$user) {
-    throw new Error("No user found");
-  }
-
-  const nap = Nap.parse({ ...value, kind: "naps" });
-
-  await setNapDoc($user.uid, nap);
-};
-
-export const removeNap = async (timestamp: Date) => {
-  const $user = get(user);
-
-  if (!$user) {
-    throw new Error("No user found");
-  }
-
-  await deleteDoc(doc(firestore, napsQuery($user.uid, timestamp)));
-};
-
-const validateNapDoc = (doc: QueryDocumentSnapshot<DocumentData>): Nap => {
-  const data = doc.data();
-  const timestamp = (data.timestamp as Timestamp).toDate();
-
-  const nap = Nap.parse({ ...data, timestamp });
+  await setDoc(ref, nap);
 
   return nap;
+};
+
+export const updateNap = async (value: Nap) => {
+  const $user = get(user);
+
+  if (!$user) {
+    throw new Error("No user found");
+  }
+
+  const nap = Nap.parse(value);
+  const ref = getNapDoc($user.uid, nap.id);
+
+  await updateDoc(ref, nap);
+};
+
+export const removeNap = async (id: string) => {
+  const $user = get(user);
+
+  if (!$user) {
+    throw new Error("No user found");
+  }
+
+  await deleteDoc(getNapDoc($user.uid, id));
 };

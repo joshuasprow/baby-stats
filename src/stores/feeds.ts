@@ -1,7 +1,6 @@
 import { EntryBase } from "$lib/entry";
 import { firestore } from "$lib/firebase";
 import {
-  addDoc,
   collection,
   deleteDoc,
   doc,
@@ -25,18 +24,16 @@ const FeedSource = ["bottle", "breast"] as const;
 export type FeedSource = typeof FeedSource[number];
 
 const BottleFeed = EntryBase.extend({
-  id: z.string(),
   source: z.literal(FeedSource[0]),
   side: z.null(),
 });
 
 const BreastFeed = EntryBase.extend({
-  id: z.string(),
   source: z.literal(FeedSource[1]),
   side: FeedSide,
 });
 
-const Feed = z.discriminatedUnion("source", [BottleFeed, BreastFeed]);
+export const Feed = z.discriminatedUnion("source", [BottleFeed, BreastFeed]);
 export type Feed = z.infer<typeof Feed>;
 
 const FeedAdd = z.discriminatedUnion("source", [
@@ -90,8 +87,6 @@ export const addFeed = async (value: FeedAdd) => {
 
   const add = FeedAdd.parse({ ...value });
   const ref = doc(getFeedsCollection($user.uid));
-
-  console.log(ref.id);
   const feed = Feed.parse({ ...add, id: ref.id });
 
   await setDoc(ref, feed);
@@ -106,14 +101,10 @@ export const updateFeed = async (value: Feed) => {
     throw new Error("No user found");
   }
 
-  try {
-    const feed = Feed.parse({ ...value });
-    const ref = getFeedDoc($user.uid, feed.id);
+  const feed = Feed.parse({ ...value });
+  const ref = getFeedDoc($user.uid, feed.id);
 
-    await updateDoc(ref, feed);
-  } catch (error) {
-    console.error(error);
-  }
+  await updateDoc(ref, feed);
 };
 
 export const removeFeed = async (id: string) => {
