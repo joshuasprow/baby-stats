@@ -8,7 +8,7 @@
   const onAdd = () => addPoop({ amount });
 </script>
 
-<EntryModal icon="💩" okText="add" onOk={onAdd}>
+<EntryModal icon="💩" okText="add" okCallback={onAdd}>
   <article>
     <PoopAmountInput bind:amount />
   </article>

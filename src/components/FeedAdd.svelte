@@ -5,7 +5,9 @@
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedSourceInput from "./FeedSourceInput.svelte";
   import FeedSideInput from "./FeedSideInput.svelte";
+  import DateTimePicker from "./DateTimePicker.svelte";
 
+  let timestamp = new Date();
   let amount = 1;
   let source: FeedSource = "bottle";
   let side: FeedSide | null = null;
@@ -17,10 +19,19 @@
     side = "L";
   }
 
-  const onAdd = () => addFeed({ amount, source, side });
+  const handleTimestamp = (e: CustomEvent<Date>) => {
+    timestamp = e.detail;
+  };
+
+  const handleAdd = () => addFeed({ timestamp, amount, source, side });
 </script>
 
-<EntryModal icon="🍼" okText="add" onOk={onAdd}>
+<EntryModal
+  icon="🍼"
+  okText="add"
+  okCallback={handleAdd}
+  on:timestamp={handleTimestamp}
+>
   <article>
     <FeedAmountInput bind:amount />
   </article>

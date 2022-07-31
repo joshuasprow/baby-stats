@@ -16,7 +16,11 @@
   const onRemoveClick = () => removePoop(timestamp);
 </script>
 
-<EntryModal okText="update" onOk={onUpdateClick} onRemove={onRemoveClick}>
+<EntryModal
+  okText="update"
+  okCallback={onUpdateClick}
+  removeCallback={onRemoveClick}
+>
   <PoopIcon {amount} slot="icon" />
 
   <article>

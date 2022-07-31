@@ -66,18 +66,14 @@ const feedsQuery = (uid: string, timestamp: Date) =>
 const setFeedDoc = (uid: string, feed: Feed) =>
   setDoc(doc(firestore, feedsQuery(uid, feed.timestamp)), feed);
 
-export const addFeed = async (value: object) => {
+export const addFeed = async (value: Omit<Feed, "kind">) => {
   const $user = get(user);
 
   if (!$user) {
     throw new Error("No user found");
   }
 
-  const feed = Feed.parse({
-    ...value,
-    kind: "feeds",
-    timestamp: newTimestampWithPickerDate(),
-  });
+  const feed = Feed.parse({ ...value, kind: "feeds" });
 
   await setFeedDoc($user.uid, feed);
 };

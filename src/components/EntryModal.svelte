@@ -1,12 +1,17 @@
 <script lang="ts">
+  import { createEventDispatcher } from "svelte";
+
   import { fly } from "svelte/transition";
+  import DateTimePicker from "./DateTimePicker.svelte";
 
   export let icon = "😃";
+
   export let okText: string;
-  export let onOk: () => void;
+  export let okCallback: () => void;
 
-  export let onRemove: (() => void) | undefined = undefined;
+  export let removeCallback: (() => void) | undefined = undefined;
 
+  const dispatch = createEventDispatcher<{ timestamp: Date }>();
   const duration = 300;
 
   let open = false;
@@ -24,17 +29,21 @@
 
     await new Promise((resolve) => setTimeout(resolve, duration));
 
-    onOk();
+    okCallback();
+  };
+
+  const handleTimestamp = (e: CustomEvent<Date>) => {
+    dispatch("timestamp", e.detail);
   };
 
   const handleRemove = async () => {
     setClosed();
 
-    if (!onRemove) return;
+    if (!removeCallback) return;
 
     await new Promise((resolve) => setTimeout(resolve, duration));
 
-    onRemove();
+    removeCallback();
   };
 </script>
 
@@ -52,13 +61,15 @@
       on:click|stopPropagation
       transition:fly={{ duration, y: 1000, opacity: 0 }}
     >
+      <DateTimePicker on:change={handleTimestamp} />
+
       <slot />
 
       <button on:click={handleOk}>
         {okText}
       </button>
 
-      {#if onRemove}
+      {#if removeCallback}
         <button on:click={handleRemove}> remove </button>
       {/if}
     </section>

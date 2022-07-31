@@ -16,7 +16,11 @@
   const onRemoveClick = () => removePee(timestamp);
 </script>
 
-<EntryModal okText="update" onOk={onUpdateClick} onRemove={onRemoveClick}>
+<EntryModal
+  okText="update"
+  okCallback={onUpdateClick}
+  removeCallback={onRemoveClick}
+>
   <PeeIcon {amount} slot="icon" />
 
   <article>

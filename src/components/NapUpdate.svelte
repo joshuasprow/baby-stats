@@ -16,7 +16,11 @@
   const onRemoveClick = () => removeNap(timestamp);
 </script>
 
-<EntryModal okText="update" onOk={onUpdateClick} onRemove={onRemoveClick}>
+<EntryModal
+  okText="update"
+  okCallback={onUpdateClick}
+  removeCallback={onRemoveClick}
+>
   <NapIcon {amount} slot="icon" />
 
   <article>
