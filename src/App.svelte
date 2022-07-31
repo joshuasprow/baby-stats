@@ -1,32 +1,8 @@
 <script lang="ts">
-  import Nav from "$components/Nav.svelte";
-  import Actions from "./components/Actions.svelte";
-  import Entry from "./components/Entry.svelte";
-  import SignInButton from "./components/SignInButton.svelte";
-  import SignOutButton from "./components/SignOutButton.svelte";
-  import { days } from "./stores/days";
-  import { user } from "./stores/user";
+  import Layout from "./components/Layout.svelte";
 </script>
 
-<main>
-  {#if $user === undefined}
-    😵‍💫
-  {:else if $user === null}
-    <SignInButton />
-  {:else}
-    <SignOutButton />
-
-    {#each $days as [daystamp, day] (daystamp)}
-      <div>{new Date(daystamp).toDateString()}</div>
-      {#each day as [_, entry] (entry.id)}
-        <Entry {entry} />
-      {/each}
-    {/each}
-  {/if}
-
-  <Actions />
-  <Nav />
-</main>
+<Layout />
 
 <style global>
   :root {
@@ -48,17 +24,8 @@
     margin: 0;
   }
 
-  main {
-    padding-bottom: var(--footer-height);
-  }
-
   button,
   input {
     font-size: 1rem;
-  }
-
-  pre {
-    font-size: 0.5rem;
-    line-height: 0.5rem;
   }
 </style>
