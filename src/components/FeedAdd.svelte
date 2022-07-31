@@ -1,14 +1,14 @@
 <script lang="ts">
   import type { FeedAdd, FeedSide, FeedSource } from "$stores/feeds";
   import { addFeed } from "$stores/feeds";
-  import EntryModal from "./EntryModal.svelte";
+  import EntryAddModal from "./EntryAddModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedSideInput from "./FeedSideInput.svelte";
   import FeedSourceInput from "./FeedSourceInput.svelte";
 
   let amount = 1;
-  let source: FeedSource = "bottle";
   let side: FeedSide | null = null;
+  let source: FeedSource = "bottle";
   let timestamp = new Date();
 
   $: if (source === "bottle") {
@@ -26,12 +26,9 @@
     addFeed({ amount, kind: "feeds", source, side, timestamp } as FeedAdd);
 </script>
 
-<EntryModal
-  icon="🍼"
-  okText="add"
-  okCallback={handleAdd}
-  on:timestamp={handleTimestamp}
->
+<EntryAddModal on:add={handleAdd} on:timestamp={handleTimestamp}>
+  <span slot="icon">🍼</span>
+
   <article>
     <FeedAmountInput bind:amount />
   </article>
@@ -45,4 +42,4 @@
     side:
     <FeedSideInput bind:side disabled={source === "bottle"} />
   </article>
-</EntryModal>
+</EntryAddModal>

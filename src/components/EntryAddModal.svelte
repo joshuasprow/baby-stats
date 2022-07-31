@@ -1,0 +1,38 @@
+<script lang="ts">
+  import { createEventDispatcher } from "svelte";
+  import DateTimePicker from "./DateTimePicker.svelte";
+  import EntryModalNext from "./EntryModalNext.svelte";
+
+  export let timestamp = new Date();
+
+  const dispatch = createEventDispatcher<{ add: void; timestamp: Date }>();
+
+  let open = false;
+
+  const handleOpen = () => {
+    open = true;
+  };
+
+  const handleClose = () => {
+    open = false;
+  };
+
+  const handleAdd = async () => {
+    handleClose();
+
+    await new Promise((resolve) => setTimeout(resolve, 300));
+
+    dispatch("add");
+  };
+
+  const handleTimestamp = (e: CustomEvent<Date>) => {
+    dispatch("timestamp", e.detail);
+  };
+</script>
+
+<EntryModalNext on:close={handleClose} on:open={handleOpen} {open}>
+  <slot name="icon" slot="icon" />
+  <DateTimePicker on:change={handleTimestamp} {timestamp} />
+  <slot />
+  <button on:click={handleAdd}>add</button>
+</EntryModalNext>
