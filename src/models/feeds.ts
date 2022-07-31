@@ -1,4 +1,4 @@
-import { EntryBase } from "$lib/entry";
+import { EntryBase } from "$models/entries";
 import { z } from "zod";
 
 const FeedSide = z.enum(["L", "R"]);

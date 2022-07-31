@@ -1,4 +1,4 @@
-import type { Entry } from "$lib/entry";
+import type { Entry } from "$models/entries";
 import type { Kind } from "$lib/kind";
 import type { Feed } from "$models/feeds";
 import type { Nap } from "$models/naps";

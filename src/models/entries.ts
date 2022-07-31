@@ -3,7 +3,7 @@ import type { Nap } from "$models/naps";
 import type { Pee } from "$models/pees";
 import type { Poop } from "$models/poops";
 import { z } from "zod";
-import { KindEnum, type Kind } from "./kind";
+import { KindEnum, type Kind } from "../lib/kind";
 
 export const EntryBase = z.object({
   id: z.string().min(1),

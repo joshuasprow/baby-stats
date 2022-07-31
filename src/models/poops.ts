@@ -1,4 +1,4 @@
-import { EntryBase } from "$lib/entry";
+import { EntryBase } from "$models/entries";
 import { z } from "zod";
 
 export const PoopAmount = z.union([z.literal(1), z.literal(2), z.literal(3)]);

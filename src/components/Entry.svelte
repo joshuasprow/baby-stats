@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import type { Entry } from "$lib/entry";
+  import type { Entry } from "$models/entries";
   import type { Kind } from "$lib/kind";
   import type { ComponentType } from "svelte";
   import FeedUpdate from "./FeedUpdate.svelte";
