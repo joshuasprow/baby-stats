@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import type { InputEvent } from "$lib/types";
-  import { getDatetimeLocalString } from "$lib/picker-datetime";
+  import { getDatetimeLocalString } from "$lib/dates";
 
   let datetimeLocal = getDatetimeLocalString();
 
