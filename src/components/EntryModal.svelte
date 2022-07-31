@@ -5,13 +5,15 @@
   import DateTimePicker from "./DateTimePicker.svelte";
 
   export let icon = "😃";
+  export let timestamp = new Date();
 
   export let okText: string;
   export let okCallback: () => void;
 
   export let removeCallback: (() => void) | undefined = undefined;
+  export let timestampCallback: ((timestamp: Date) => void) | undefined =
+    undefined;
 
-  const dispatch = createEventDispatcher<{ timestamp: Date }>();
   const duration = 300;
 
   let open = false;
@@ -33,7 +35,9 @@
   };
 
   const handleTimestamp = (e: CustomEvent<Date>) => {
-    dispatch("timestamp", e.detail);
+    if (timestampCallback) {
+      timestampCallback(e.detail);
+    }
   };
 
   const handleRemove = async () => {
@@ -61,7 +65,7 @@
       on:click|stopPropagation
       transition:fly={{ duration, y: 1000, opacity: 0 }}
     >
-      <DateTimePicker on:change={handleTimestamp} />
+      <DateTimePicker on:change={handleTimestamp} {timestamp} />
 
       <slot />
 

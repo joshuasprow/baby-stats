@@ -3,15 +3,17 @@
   import type { InputEvent } from "$lib/types";
   import { getDatetimeLocalString } from "$lib/dates";
 
-  let datetimeLocal = getDatetimeLocalString();
+  export let timestamp = new Date();
+
+  let value = getDatetimeLocalString(timestamp);
 
   const dispatch = createEventDispatcher<{ change: Date }>();
 
   const handleInput = (e: InputEvent) => {
-    const value = e.currentTarget.value;
+    value = e.currentTarget.value;
 
     dispatch("change", new Date(value));
   };
 </script>
 
-<input on:input={handleInput} type="datetime-local" value={datetimeLocal} />
+<input on:input={handleInput} type="datetime-local" {value} />
