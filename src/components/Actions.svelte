@@ -22,7 +22,6 @@
     align-items: center;
     width: 100%;
     height: var(--footer-height);
-    background: #ddd;
     z-index: 200;
   }
 </style>

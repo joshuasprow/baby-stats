@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Nav from "$components/Nav.svelte";
   import Actions from "./components/Actions.svelte";
   import Entry from "./components/Entry.svelte";
   import SignInButton from "./components/SignInButton.svelte";
@@ -25,6 +26,7 @@
 </main>
 
 <Actions />
+<Nav />
 
 <style global>
   :root {
