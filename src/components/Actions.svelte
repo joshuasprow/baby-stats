@@ -22,6 +22,5 @@
     align-items: center;
     width: 100%;
     height: var(--footer-height);
-    z-index: 200;
   }
 </style>

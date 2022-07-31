@@ -23,10 +23,10 @@
       {/each}
     {/each}
   {/if}
-</main>
 
-<Actions />
-<Nav />
+  <Actions />
+  <Nav />
+</main>
 
 <style global>
   :root {

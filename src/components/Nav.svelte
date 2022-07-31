@@ -19,12 +19,14 @@
   };
 </script>
 
-<button on:click={toggle}>🍔</button>
+<button class="open" on:click={toggle}>🍔</button>
 
 {#if open}
   <div class="backdrop" on:click={close} transition:fade />
 
   <aside transition:fly={{ x: window.innerWidth }}>
+    <button class="close" on:click={toggle}>❌</button>
+
     <span>{greeting}</span>
 
     {#if $user}
@@ -36,11 +38,10 @@
 {/if}
 
 <style>
-  button {
+  .open {
     position: fixed;
     top: 0.25rem;
     right: 0.25rem;
-    z-index: 100;
   }
 
   .backdrop {
@@ -52,10 +53,14 @@
   aside {
     position: fixed;
     inset: 0;
-    left: 0.5rem;
+    left: 1rem;
     background: #fff;
-    padding: 2rem 0.5rem 0 0.5rem;
+    padding: 0.25rem 0.5rem;
     display: flex;
     flex-direction: column;
+  }
+
+  .close {
+    margin-left: auto;
   }
 </style>
