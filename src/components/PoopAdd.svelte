@@ -4,8 +4,9 @@
   import PoopAmountInput from "./PoopAmountInput.svelte";
 
   let amount: PoopAmount = 2;
+  let timestamp = new Date();
 
-  const onAdd = () => addPoop({ amount });
+  const onAdd = () => addPoop({ amount, kind: "poops", timestamp });
 </script>
 
 <EntryModal icon="💩" okText="add" okCallback={onAdd}>

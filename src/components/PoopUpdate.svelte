@@ -18,9 +18,10 @@
     amount = e.detail;
   };
 
-  const onUpdateClick = () => updatePoop({ timestamp, amount });
+  const onUpdateClick = () =>
+    updatePoop({ id: entry.id, amount, kind: "pees", timestamp });
 
-  const onRemoveClick = () => removePoop(timestamp);
+  const onRemoveClick = () => removePoop(entry.id);
 </script>
 
 <EntryModal
