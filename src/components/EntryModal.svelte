@@ -4,7 +4,7 @@
 
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import { fly } from "svelte/transition";
+  import { fade, fly } from "svelte/transition";
 
   export let open = false;
 
@@ -20,33 +20,39 @@
 </button>
 
 {#if open}
-  <aside on:click={() => dispatch("close")}>
+  <div class="backdrop" transition:fade />
+  <div class="wrapper" on:click={() => dispatch("close")}>
     <section
+      class="modal"
       on:click|stopPropagation
-      transition:fly={{ duration, y: 1000, opacity: 0 }}
+      transition:fly={{ duration, y: window.innerHeight }}
     >
       <slot />
     </section>
-  </aside>
+  </div>
 {/if}
 
 <style>
-  aside {
+  .backdrop,
+  .wrapper {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     z-index: 100;
+  }
+
+  .backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+  }
+
+  .wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
   }
 
-  section {
+  .modal {
     color: #000;
     background: #fff;
     border: 1px solid #000;
