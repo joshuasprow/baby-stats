@@ -1,6 +1,7 @@
 <script lang="ts">
   import Actions from "./components/Actions.svelte";
   import DatePicker from "./components/DatePicker.svelte";
+  import DateTimePicker from "./components/DateTimePicker.svelte";
   import Entry from "./components/Entry.svelte";
   import SignInButton from "./components/SignInButton.svelte";
   import SignOutButton from "./components/SignOutButton.svelte";
@@ -9,6 +10,7 @@
 </script>
 
 <main>
+  <DateTimePicker />
   {#if $user === undefined}
     😵‍💫
   {:else if $user === null}
