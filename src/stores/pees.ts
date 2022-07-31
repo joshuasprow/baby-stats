@@ -15,7 +15,6 @@ import {
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
 import { z } from "zod";
-import { newTimestampWithPickerDate } from "./picker-date";
 import { user } from "./user";
 
 const PeeAmount = z.union([z.literal(1), z.literal(2), z.literal(3)]);
