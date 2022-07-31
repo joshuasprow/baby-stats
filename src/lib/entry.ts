@@ -1,7 +1,7 @@
 import type { Feed } from "$models/feeds";
 import type { Nap } from "$models/naps";
 import type { Pee } from "$models/pees";
-import type { Poop } from "$stores/poops";
+import type { Poop } from "$models/poops";
 import { z } from "zod";
 import { KindEnum, type Kind } from "./kind";
 

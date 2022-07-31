@@ -3,16 +3,17 @@ import type { Kind } from "$lib/kind";
 import type { Feed } from "$models/feeds";
 import type { Nap } from "$models/naps";
 import type { Pee } from "$models/pees";
+import type { Poop } from "$models/poops";
 import { derived } from "svelte/store";
 import { feeds } from "./feeds";
 import { naps } from "./naps";
 import { pees } from "./pees";
-import { poops, type Poop } from "./poops";
+import { poops } from "./poops";
 import { user } from "./user";
 
 type DayEntry<K extends Kind> = [timestamp: number, entry: Entry<K>];
 
-export type Days = [daystamp: number, entries: DayEntry<Kind>[]][];
+type Days = [daystamp: number, entries: DayEntry<Kind>[]][];
 
 const encodeDayTimestamp = (timestamp: Date): number => {
   const date = new Date(

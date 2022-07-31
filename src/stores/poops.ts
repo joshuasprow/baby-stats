@@ -1,5 +1,5 @@
-import { EntryBase } from "$lib/entry";
 import { firestore } from "$lib/firebase";
+import { Poop, PoopAdd } from "$models/poops";
 import {
   collection,
   deleteDoc,
@@ -14,19 +14,7 @@ import {
   type Timestamp,
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
-import { z } from "zod";
 import { user } from "./user";
-
-const PoopAmount = z.union([z.literal(1), z.literal(2), z.literal(3)]);
-export type PoopAmount = z.infer<typeof PoopAmount>;
-
-export const Poop = EntryBase.omit({ amount: true }).extend({
-  amount: PoopAmount,
-});
-export type Poop = z.infer<typeof Poop>;
-
-const PoopAdd = Poop.omit({ id: true });
-type PoopAdd = z.infer<typeof PoopAdd>;
 
 const getPoopsCollection = (uid: string) =>
   collection(firestore, `users/${uid}/poops`);

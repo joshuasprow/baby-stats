@@ -1,10 +1,6 @@
 <script lang="ts">
-  import {
-    removePoop,
-    updatePoop,
-    type Poop,
-    type PoopAmount,
-  } from "$stores/poops";
+  import type { Poop, PoopAmount } from "$models/poops";
+  import { removePoop, updatePoop } from "$stores/poops";
   import EntryUpdateModal from "./EntryUpdateModal.svelte";
   import PoopAmountInput from "./PoopAmountInput.svelte";
   import PoopIcon from "./PoopIcon.svelte";
