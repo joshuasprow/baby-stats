@@ -19,22 +19,16 @@
   import PeeUpdate from "./PeeUpdate.svelte";
   import PoopUpdate from "./PoopUpdate.svelte";
 
-  type K = $$Generic<Kind>;
+  export let entry: Entry<Kind>;
 
-  export let timestamp: number;
-  export let entry: Entry<K>;
-
-  // none of the update components accept a kind prop
-  let { kind, ...props } = entry;
-
-  let component = components[kind];
+  let component = components[entry.kind];
 </script>
 
 <div>
-  <span>{new Date(timestamp).toLocaleTimeString()}</span>
+  <span>{entry.timestamp.toLocaleTimeString()}</span>
 
   {#if component}
-    <svelte:component this={component} {...props} />
+    <svelte:component this={component} {entry} />
   {:else}
     <span>🚫</span>
   {/if}

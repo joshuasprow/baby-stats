@@ -10,13 +10,8 @@
   {#if feeds.length === 0}
     <span>🚫</span>
   {:else}
-    {#each feeds as feed (feed.timestamp)}
-      <FeedUpdate
-        timestamp={feed.timestamp}
-        amount={feed.amount}
-        source={feed.source}
-        side={feed.side}
-      />
+    {#each feeds as feed (feed.id)}
+      <FeedUpdate entry={feed} />
     {/each}
   {/if}
 </EntriesWrapper>

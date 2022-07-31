@@ -1,11 +1,10 @@
 <script lang="ts">
-  import type { FeedSource, FeedSide } from "$stores/feeds";
+  import type { FeedAdd, FeedSide, FeedSource } from "$stores/feeds";
   import { addFeed } from "$stores/feeds";
   import EntryModal from "./EntryModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
-  import FeedSourceInput from "./FeedSourceInput.svelte";
   import FeedSideInput from "./FeedSideInput.svelte";
-  import DateTimePicker from "./DateTimePicker.svelte";
+  import FeedSourceInput from "./FeedSourceInput.svelte";
 
   let timestamp = new Date();
   let amount = 1;
@@ -23,7 +22,8 @@
     timestamp = e.detail;
   };
 
-  const handleAdd = () => addFeed({ timestamp, amount, source, side });
+  const handleAdd = () =>
+    addFeed({ amount, kind: "feeds", source, side, timestamp } as FeedAdd);
 </script>
 
 <EntryModal

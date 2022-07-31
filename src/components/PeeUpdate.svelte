@@ -1,11 +1,13 @@
 <script lang="ts">
-  import { removePee, updatePee, type PeeAmount } from "$stores/pees";
+  import { removePee, updatePee, type Pee, type PeeAmount } from "$stores/pees";
   import EntryModal from "./EntryModal.svelte";
   import PeeAmountInput from "./PeeAmountInput.svelte";
   import PeeIcon from "./PeeIcon.svelte";
 
-  export let timestamp: Date;
-  export let amount: PeeAmount;
+  export let entry: Pee;
+
+  let amount = entry.amount;
+  let timestamp = entry.timestamp;
 
   const handleAmount = (e: CustomEvent<PeeAmount>) => {
     amount = e.detail;

@@ -22,8 +22,8 @@
 
     {#each $days as [daystamp, day] (daystamp)}
       <div>{new Date(daystamp).toDateString()}</div>
-      {#each day as [timestamp, entry] (timestamp)}
-        <Entry {timestamp} entry={{ ...entry }} />
+      {#each day as [_, entry] (entry.timestamp)}
+        <Entry {entry} />
       {/each}
     {/each}
   {/if}

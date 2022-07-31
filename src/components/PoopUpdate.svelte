@@ -1,11 +1,18 @@
 <script lang="ts">
-  import { removePoop, updatePoop, type PoopAmount } from "$stores/poops";
+  import {
+    removePoop,
+    updatePoop,
+    type Poop,
+    type PoopAmount,
+  } from "$stores/poops";
   import EntryModal from "./EntryModal.svelte";
   import PoopAmountInput from "./PoopAmountInput.svelte";
   import PoopIcon from "./PoopIcon.svelte";
 
-  export let timestamp: Date;
-  export let amount: PoopAmount;
+  export let entry: Poop;
+
+  let amount = entry.amount;
+  let timestamp = entry.timestamp;
 
   const handleAmount = (e: CustomEvent<PoopAmount>) => {
     amount = e.detail;

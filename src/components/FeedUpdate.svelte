@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { removeFeed, updateFeed } from "$stores/feeds";
+  import { type Feed, removeFeed, updateFeed } from "$stores/feeds";
   import type { FeedSide, FeedSource } from "$stores/feeds";
   import EntryModal from "./EntryModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
@@ -7,10 +7,11 @@
   import FeedSideInput from "./FeedSideInput.svelte";
   import FeedSourceInput from "./FeedSourceInput.svelte";
 
-  export let timestamp: Date;
-  export let amount: number;
-  export let source: FeedSource;
-  export let side: FeedSide | null;
+  export let entry: Feed;
+
+  let amount = entry.amount;
+  let source = entry.source;
+  let side: FeedSide | null = entry.side;
 
   const handleAmount = (e: CustomEvent<number>) => {
     amount = e.detail;
@@ -30,9 +31,17 @@
     side = e.detail;
   };
 
-  const onUpdateClick = () => updateFeed({ amount, source, side, timestamp });
+  const onUpdateClick = () =>
+    updateFeed({
+      id: entry.id,
+      amount,
+      kind: "feeds",
+      side,
+      source,
+      timestamp: entry.timestamp,
+    } as Feed);
 
-  const onRemoveClick = () => removeFeed(timestamp);
+  const onRemoveClick = () => removeFeed(entry.id);
 </script>
 
 <EntryModal
