@@ -1,5 +1,5 @@
-import { EntryBase } from "$lib/entry";
 import { firestore } from "$lib/firebase";
+import { Pee, PeeAdd } from "$models/pees";
 import {
   collection,
   deleteDoc,
@@ -14,7 +14,6 @@ import {
   type Timestamp,
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
-import { Pee, PeeAdd } from "$models/pees";
 import { user } from "./user";
 
 const getPeesCollection = (uid: string) =>
