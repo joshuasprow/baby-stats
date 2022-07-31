@@ -6,10 +6,10 @@
   import FeedSideInput from "./FeedSideInput.svelte";
   import FeedSourceInput from "./FeedSourceInput.svelte";
 
-  let timestamp = new Date();
   let amount = 1;
   let source: FeedSource = "bottle";
   let side: FeedSide | null = null;
+  let timestamp = new Date();
 
   $: if (source === "bottle") {
     side = null;

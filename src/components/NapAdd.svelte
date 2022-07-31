@@ -4,8 +4,9 @@
   import NapAmountInput from "./NapAmountInput.svelte";
 
   let amount = 2;
+  let timestamp = new Date();
 
-  const onAdd = () => addNap({ amount });
+  const onAdd = () => addNap({ amount, kind: "naps", timestamp });
 </script>
 
 <EntryModal icon="💤" okText="add" okCallback={onAdd}>

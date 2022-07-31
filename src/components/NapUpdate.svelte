@@ -13,9 +13,10 @@
     amount = e.detail;
   };
 
-  const onUpdateClick = () => updateNap({ timestamp, amount });
+  const onUpdateClick = () =>
+    updateNap({ id: entry.id, amount, kind: "naps", timestamp });
 
-  const onRemoveClick = () => removeNap(timestamp);
+  const onRemoveClick = () => removeNap(entry.id);
 </script>
 
 <EntryModal
