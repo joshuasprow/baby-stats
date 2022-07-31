@@ -18,7 +18,7 @@ import { z } from "zod";
 import { user } from "./user";
 
 export const Nap = EntryBase.omit({ amount: true }).extend({
-  amount: z.number().int().positive(),
+  amount: z.number().positive(),
 });
 export type Nap = z.infer<typeof Nap>;
 
