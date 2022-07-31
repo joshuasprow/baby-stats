@@ -1,7 +1,7 @@
 import type { Entry } from "$lib/entry";
 import type { Kind } from "$lib/kind";
+import type { Feed } from "$models/feeds";
 import { derived } from "svelte/store";
-import type { Feed } from "./feeds";
 import { feeds } from "./feeds";
 import { Nap, naps } from "./naps";
 import { pees, type Pee } from "./pees";

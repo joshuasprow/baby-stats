@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FeedSide } from "$stores/feeds";
+  import type { FeedSide } from "$models/feeds";
   import { createEventDispatcher } from "svelte";
 
   export let disabled: boolean;

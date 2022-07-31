@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FeedSource, FeedSide } from "$stores/feeds";
+  import type { FeedSource, FeedSide } from "$models/feeds";
 
   export let amount: number;
   export let source: FeedSource;

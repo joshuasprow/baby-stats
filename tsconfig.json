@@ -9,6 +9,7 @@
     "paths": {
       "$components/*": ["src/components/*"],
       "$lib/*": ["src/lib/*"],
+      "$models/*": ["src/models/*"],
       "$stores/*": ["src/stores/*"]
     },
     "strict": true,
