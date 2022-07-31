@@ -1,43 +1,26 @@
 <script lang="ts">
   import type { FeedSide } from "$models/feeds";
-  import { createEventDispatcher } from "svelte";
 
   export let disabled: boolean;
+  export let group: FeedSide | null;
   export let side: FeedSide | null;
-
-  const dispatch = createEventDispatcher<{ change: FeedSide | null }>();
-
-  $: {
-    dispatch("change", side);
-  }
+  export let label: string;
 </script>
 
-<label for="L">
+<label class:disabled for={side}>
   <input
-    bind:group={side}
+    bind:group
     {disabled}
-    id="L"
+    id={side}
     name="side"
     type="radio"
-    value="L"
+    value={side}
   />
-  <span>left</span>
-</label>
-
-<label for="R">
-  <input
-    bind:group={side}
-    {disabled}
-    id="R"
-    name="side"
-    type="radio"
-    value="R"
-  />
-  <span>right</span>
+  <span>{label}</span>
 </label>
 
 <style>
-  input:disabled + span {
+  .disabled span {
     color: #aaa;
   }
 </style>

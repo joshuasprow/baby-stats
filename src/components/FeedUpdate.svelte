@@ -4,7 +4,7 @@
   import EntryUpdateModal from "./EntryUpdateModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedIcon from "./FeedIcon.svelte";
-  import FeedSideInput from "./FeedSideInput.svelte";
+  import FeedSideInputGroup from "./FeedSideInputGroup.svelte";
   import FeedSourceInput from "./FeedSourceInput.svelte";
 
   export let entry: Feed;
@@ -68,7 +68,7 @@
 
   <article>
     side:
-    <FeedSideInput
+    <FeedSideInputGroup
       disabled={source !== "breast"}
       on:change={handleSide}
       {side}

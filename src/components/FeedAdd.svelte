@@ -3,7 +3,7 @@
   import { addFeed } from "$stores/feeds";
   import EntryAddModal from "./EntryAddModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
-  import FeedSideInput from "./FeedSideInput.svelte";
+  import FeedSideInputGroup from "./FeedSideInputGroup.svelte";
   import FeedSourceInput from "./FeedSourceInput.svelte";
 
   let amount = 1;
@@ -38,8 +38,5 @@
     <FeedSourceInput bind:source />
   </article>
 
-  <article>
-    side:
-    <FeedSideInput bind:side disabled={source === "bottle"} />
-  </article>
+  <FeedSideInputGroup bind:side disabled={source === "bottle"} />
 </EntryAddModal>
