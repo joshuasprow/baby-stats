@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { type Feed, removeFeed, updateFeed } from "$stores/feeds";
   import type { FeedSide, FeedSource } from "$stores/feeds";
-  import EntryModal from "./EntryModal.svelte";
+  import { removeFeed, updateFeed, type Feed } from "$stores/feeds";
+  import EntryUpdateModal from "./EntryUpdateModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedIcon from "./FeedIcon.svelte";
   import FeedSideInput from "./FeedSideInput.svelte";
@@ -12,6 +12,7 @@
   let amount = entry.amount;
   let source = entry.source;
   let side: FeedSide | null = entry.side;
+  let timestamp = entry.timestamp;
 
   const handleAmount = (e: CustomEvent<number>) => {
     amount = e.detail;
@@ -31,23 +32,28 @@
     side = e.detail;
   };
 
-  const onUpdateClick = () =>
+  const handleTimestamp = (e: CustomEvent<Date>) => {
+    timestamp = e.detail;
+  };
+
+  const handleUpdate = () =>
     updateFeed({
       id: entry.id,
       amount,
       kind: "feeds",
       side,
       source,
-      timestamp: entry.timestamp,
+      timestamp,
     } as Feed);
 
-  const onRemoveClick = () => removeFeed(entry.id);
+  const handleRemove = () => removeFeed(entry.id);
 </script>
 
-<EntryModal
-  okText="update"
-  okCallback={onUpdateClick}
-  removeCallback={onRemoveClick}
+<EntryUpdateModal
+  on:remove={handleRemove}
+  on:timestamp={handleTimestamp}
+  on:update={handleUpdate}
+  {timestamp}
 >
   <FeedIcon {amount} {source} {side} slot="icon" />
 
@@ -68,4 +74,4 @@
       {side}
     />
   </article>
-</EntryModal>
+</EntryUpdateModal>

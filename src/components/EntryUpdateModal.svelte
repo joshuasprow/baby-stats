@@ -3,7 +3,7 @@
   import DateTimePicker from "./DateTimePicker.svelte";
   import EntryModalNext from "./EntryModalNext.svelte";
 
-  export let timestamp = new Date();
+  export let timestamp: Date;
 
   const dispatch =
     createEventDispatcher<{ remove: void; timestamp: Date; update: void }>();
@@ -39,14 +39,6 @@
     dispatch("remove");
   };
 </script>
-
-<button on:click={handleOpen}>
-  {#if $$slots.icon}
-    <slot name="icon" />
-  {:else}
-    🚫
-  {/if}
-</button>
 
 <EntryModalNext on:close={handleClose} on:open={handleOpen} {open}>
   <slot name="icon" slot="icon" />

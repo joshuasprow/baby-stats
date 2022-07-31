@@ -26,7 +26,7 @@
     addFeed({ amount, kind: "feeds", source, side, timestamp } as FeedAdd);
 </script>
 
-<EntryAddModal on:add={handleAdd} on:timestamp={handleTimestamp}>
+<EntryAddModal on:add={handleAdd} on:timestamp={handleTimestamp} {timestamp}>
   <span slot="icon">🍼</span>
 
   <article>

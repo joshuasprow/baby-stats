@@ -3,7 +3,7 @@
   import DateTimePicker from "./DateTimePicker.svelte";
   import EntryModalNext from "./EntryModalNext.svelte";
 
-  export let timestamp = new Date();
+  export let timestamp: Date;
 
   const dispatch = createEventDispatcher<{ add: void; timestamp: Date }>();
 
