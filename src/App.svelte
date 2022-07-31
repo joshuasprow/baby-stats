@@ -5,7 +5,7 @@
   import Entry from "./components/Entry.svelte";
   import SignInButton from "./components/SignInButton.svelte";
   import SignOutButton from "./components/SignOutButton.svelte";
-  import { days } from "./stores/days.next";
+  import { days } from "./stores/days";
   import { user } from "./stores/user";
 </script>
 
@@ -22,7 +22,7 @@
 
     {#each $days as [daystamp, day] (daystamp)}
       <div>{new Date(daystamp).toDateString()}</div>
-      {#each day as [_, entry] (entry.timestamp)}
+      {#each day as [_, entry] (entry.id)}
         <Entry {entry} />
       {/each}
     {/each}

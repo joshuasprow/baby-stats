@@ -1,21 +1,18 @@
 import type { Entry } from "$lib/entry";
 import type { Kind } from "$lib/kind";
 import { derived } from "svelte/store";
+import type { Feed } from "./feeds";
 import { feeds } from "./feeds";
-import { naps } from "./naps";
-import { pees } from "./pees";
-import { poops } from "./poops";
+import { Nap, naps } from "./naps";
+import { pees, type Pee } from "./pees";
+import { poops, type Poop } from "./poops";
 import { user } from "./user";
 
-export type DayState = {
-  [K in Kind]: Entry<K>[];
-};
+type DayEntry<K extends Kind> = [timestamp: number, entry: Entry<K>];
 
-export type Days = {
-  [timestamp: string]: DayState;
-};
+export type Days = [daystamp: number, entries: DayEntry<Kind>[]][];
 
-const encodeDayTimestamp = (timestamp: Date): string => {
+const encodeDayTimestamp = (timestamp: Date): number => {
   const date = new Date(
     timestamp.getFullYear(),
     timestamp.getMonth(),
@@ -26,43 +23,48 @@ const encodeDayTimestamp = (timestamp: Date): string => {
     0
   );
 
-  return date.getTime().toString();
+  return date.getTime();
 };
 
-const newEmptyDay = (): DayState => ({
-  feeds: [],
-  naps: [],
-  pees: [],
-  poops: [],
-});
+const newDayEntry = <K extends Kind>(entry: Entry<K>): DayEntry<K> => [
+  entry.timestamp.getTime(),
+  entry,
+];
 
-const addEntriesToDays = <K extends Kind>(
-  days: Days,
-  kind: K,
-  entries: Entry<K>[]
-): Days => {
-  for (const entry of entries) {
-    const ts = encodeDayTimestamp(entry.timestamp);
+const combineEntries = (
+  $feeds: Feed[],
+  $naps: Nap[],
+  $pees: Pee[],
+  $poops: Poop[]
+) => {
+  const combined = [...$feeds, ...$naps, ...$pees, ...$poops];
+  const sorted = combined.sort(
+    (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
+  );
 
-    if (!days[ts]) {
-      days[ts] = newEmptyDay();
-    }
-
-    days[ts][kind].push(entry);
-  }
-
-  return days;
+  return sorted;
 };
 
 export const days = derived(
   [user, feeds, naps, pees, poops],
-  ([_, $feeds, $naps, $pees, $poops]) => {
-    const days: Days = {};
+  ([_, $feeds = [], $naps = [], $pees = [], $poops = []]) => {
+    const days: Days = [];
+    const entries = combineEntries($feeds, $naps, $pees, $poops);
 
-    addEntriesToDays(days, "feeds", $feeds || []);
-    addEntriesToDays(days, "naps", $naps || []);
-    addEntriesToDays(days, "pees", $pees || []);
-    addEntriesToDays(days, "poops", $poops || []);
+    for (const entry of entries) {
+      const daystamp = encodeDayTimestamp(entry.timestamp);
+      const dayEntry = newDayEntry(entry);
+
+      const day = days.find(([ds]) => ds === daystamp);
+
+      if (day) {
+        day[1].push(dayEntry);
+        days[daystamp] = day;
+        continue;
+      }
+
+      days.push([daystamp, [dayEntry]]);
+    }
 
     return days;
   }
