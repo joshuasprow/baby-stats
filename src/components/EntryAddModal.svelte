@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
   import DateTimePicker from "./DateTimePicker.svelte";
-  import EntryModalNext from "./EntryModalNext.svelte";
+  import EntryModal from "./EntryModal.svelte";
 
   export let timestamp: Date;
 
@@ -30,9 +30,9 @@
   };
 </script>
 
-<EntryModalNext on:close={handleClose} on:open={handleOpen} {open}>
+<EntryModal on:close={handleClose} on:open={handleOpen} {open}>
   <slot name="icon" slot="icon" />
   <DateTimePicker on:change={handleTimestamp} {timestamp} />
   <slot />
   <button on:click={handleAdd}>add</button>
-</EntryModalNext>
+</EntryModal>
