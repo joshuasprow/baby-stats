@@ -1,5 +1,4 @@
-import type { Entry } from "$models/entries";
-import type { Kind } from "$lib/kind";
+import type { Entry, EntryKind } from "$models/entries";
 import type { Feed } from "$models/feeds";
 import type { Nap } from "$models/naps";
 import type { Pee } from "$models/pees";
@@ -11,9 +10,9 @@ import { pees } from "./pees";
 import { poops } from "./poops";
 import { user } from "./user";
 
-type DayEntry<K extends Kind> = [timestamp: number, entry: Entry<K>];
+type DayEntry<K extends EntryKind> = [timestamp: number, entry: Entry<K>];
 
-type Days = [daystamp: number, entries: DayEntry<Kind>[]][];
+type Days = [daystamp: number, entries: DayEntry<EntryKind>[]][];
 
 const encodeDayTimestamp = (timestamp: Date): number => {
   const date = new Date(
@@ -29,7 +28,7 @@ const encodeDayTimestamp = (timestamp: Date): number => {
   return date.getTime();
 };
 
-const newDayEntry = <K extends Kind>(entry: Entry<K>): DayEntry<K> => [
+const newDayEntry = <K extends EntryKind>(entry: Entry<K>): DayEntry<K> => [
   entry.timestamp.getTime(),
   entry,
 ];

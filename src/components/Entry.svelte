@@ -1,15 +1,13 @@
 <script lang="ts" context="module">
-  import type { Entry } from "$models/entries";
-  import type { Kind } from "$lib/kind";
+  import type { Entry, EntryKind } from "$models/entries";
   import type { ComponentType } from "svelte";
   import FeedUpdate from "./FeedUpdate.svelte";
   import NapUpdate from "./NapUpdate.svelte";
   import PeeUpdate from "./PeeUpdate.svelte";
   import PoopUpdate from "./PoopUpdate.svelte";
-
   // used to dynamically render the correct component
   const components: {
-    [K in Kind]: ComponentType;
+    [K in EntryKind]: ComponentType;
   } = {
     feeds: FeedUpdate,
     naps: NapUpdate,
@@ -19,7 +17,7 @@
 </script>
 
 <script lang="ts">
-  export let entry: Entry<Kind>;
+  export let entry: Entry<EntryKind>;
 
   let component = components[entry.kind];
 </script>
