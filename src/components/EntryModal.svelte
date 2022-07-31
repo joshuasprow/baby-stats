@@ -54,7 +54,7 @@
   .modal {
     color: #000;
     background: #fff;
-    border: 1px solid #000;
+    border-radius: 0.5rem;
     padding: 0.5rem;
   }
 </style>
