@@ -1,4 +1,12 @@
 <script lang="ts" context="module">
+  import type { Entry } from "$lib/entry";
+  import type { Kind } from "$lib/kind";
+  import type { ComponentType } from "svelte";
+  import FeedUpdate from "./FeedUpdate.svelte";
+  import NapUpdate from "./NapUpdate.svelte";
+  import PeeUpdate from "./PeeUpdate.svelte";
+  import PoopUpdate from "./PoopUpdate.svelte";
+
   // used to dynamically render the correct component
   const components: {
     [K in Kind]: ComponentType;
@@ -11,14 +19,6 @@
 </script>
 
 <script lang="ts">
-  import type { Entry } from "$lib/entry";
-  import type { Kind } from "$lib/kind";
-  import type { ComponentType } from "svelte";
-  import FeedUpdate from "./FeedUpdate.svelte";
-  import NapUpdate from "./NapUpdate.svelte";
-  import PeeUpdate from "./PeeUpdate.svelte";
-  import PoopUpdate from "./PoopUpdate.svelte";
-
   export let entry: Entry<Kind>;
 
   let component = components[entry.kind];

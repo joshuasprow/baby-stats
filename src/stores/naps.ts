@@ -1,5 +1,5 @@
-import { EntryBase } from "$lib/entry";
 import { firestore } from "$lib/firebase";
+import { Nap, NapAdd } from "$models/naps";
 import {
   collection,
   deleteDoc,
@@ -14,16 +14,7 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
-import { z } from "zod";
 import { user } from "./user";
-
-export const Nap = EntryBase.omit({ amount: true }).extend({
-  amount: z.number().positive(),
-});
-export type Nap = z.infer<typeof Nap>;
-
-const NapAdd = Nap.omit({ id: true });
-type NapAdd = z.infer<typeof NapAdd>;
 
 const getNapsCollection = (uid: string) =>
   collection(firestore, `users/${uid}/naps`);

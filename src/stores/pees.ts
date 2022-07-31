@@ -14,19 +14,8 @@ import {
   type Timestamp,
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
-import { z } from "zod";
+import { Pee, PeeAdd } from "$models/pees";
 import { user } from "./user";
-
-const PeeAmount = z.union([z.literal(1), z.literal(2), z.literal(3)]);
-export type PeeAmount = z.infer<typeof PeeAmount>;
-
-export const Pee = EntryBase.omit({ amount: true }).extend({
-  amount: PeeAmount,
-});
-export type Pee = z.infer<typeof Pee>;
-
-const PeeAdd = Pee.omit({ id: true });
-type PeeAdd = z.infer<typeof PeeAdd>;
 
 const getPeesCollection = (uid: string) =>
   collection(firestore, `users/${uid}/pees`);

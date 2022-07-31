@@ -1,6 +1,6 @@
 <script lang="ts">
+  import type { PeeAmount } from "$models/pees";
   import { createEventDispatcher } from "svelte";
-  import type { PeeAmount } from "$stores/pees";
 
   export let amount: PeeAmount = 2;
 

@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { removePee, updatePee, type Pee, type PeeAmount } from "$stores/pees";
+  import type { Pee, PeeAmount } from "$models/pees";
+  import { removePee, updatePee } from "$stores/pees";
   import EntryUpdateModal from "./EntryUpdateModal.svelte";
   import PeeAmountInput from "./PeeAmountInput.svelte";
   import PeeIcon from "./PeeIcon.svelte";
