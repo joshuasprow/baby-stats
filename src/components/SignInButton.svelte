@@ -5,8 +5,14 @@
   $: disabled = $user === undefined || !!$user;
 </script>
 
-<pre>{$user?.uid}</pre>
-
 <button {disabled} on:click={signIn}>
   <GoogleIcon {disabled} />
 </button>
+
+<style>
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+</style>

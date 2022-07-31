@@ -1,10 +1,14 @@
 <script lang="ts">
-  import { fade, fly } from "svelte/transition";
   import { user } from "$stores/user";
+  import { fade, fly } from "svelte/transition";
+  import SignInButton from "./SignInButton.svelte";
+  import SignOutButton from "./SignOutButton.svelte";
 
   let open = false;
 
-  $: greeting = $user ? `Hi ${$user.displayName}` : "Hello";
+  $: greeting = $user
+    ? `Hi ${$user.displayName}`
+    : "Hello, please sign in below";
 
   const close = () => {
     open = false;
@@ -19,7 +23,16 @@
 
 {#if open}
   <div class="backdrop" on:click={close} transition:fade />
-  <aside transition:fly={{ x: window.innerWidth }}>{greeting}</aside>
+
+  <aside transition:fly={{ x: window.innerWidth }}>
+    <span>{greeting}</span>
+
+    {#if $user}
+      <SignOutButton />
+    {:else}
+      <SignInButton />
+    {/if}
+  </aside>
 {/if}
 
 <style>
@@ -42,5 +55,7 @@
     left: 0.5rem;
     background: #fff;
     padding: 2rem 0.5rem 0 0.5rem;
+    display: flex;
+    flex-direction: column;
   }
 </style>
