@@ -27,8 +27,8 @@
 <script lang="ts">
   export let entry: Entry<EntryKind>;
 
-  let time = formatter.format(entry.timestamp);
-  let component = components[entry.kind];
+  $: time = formatter.format(entry.timestamp);
+  $: component = components[entry.kind];
 </script>
 
 <div transition:slide>

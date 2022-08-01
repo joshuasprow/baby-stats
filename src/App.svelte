@@ -17,7 +17,7 @@
     -moz-osx-font-smoothing: grayscale;
     -webkit-text-size-adjust: 100%;
 
-    --action-bar-color: rgba(255, 255, 255, 0.9);
+    --action-bar-color: rgba(255, 255, 255, 0.7);
     --action-bar-height: 54px;
   }
 
