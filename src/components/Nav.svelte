@@ -19,7 +19,9 @@
   };
 </script>
 
-<button class="open" on:click={toggle}>🍔</button>
+<header class="open">
+  <button on:click={toggle}>🍔</button>
+</header>
 
 {#if open}
   <div class="backdrop" on:click={close} transition:fade />
@@ -40,8 +42,19 @@
 <style>
   .open {
     position: fixed;
-    top: 0.25rem;
-    right: 0.25rem;
+    top: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--action-bar-height);
+    padding: 0 0.25rem;
+    background: var(--action-bar-color);
+  }
+
+  .open > button {
+    margin-left: auto;
   }
 
   .backdrop {

@@ -21,20 +21,20 @@
 {:else}
   <main>
     {#each $days as [daystamp, day] (daystamp)}
-      <div>{new Date(daystamp).toDateString()}</div>
+      <span class="date">{new Date(daystamp).toDateString()}</span>
       {#each day as [_, entry] (entry.id)}
         <Entry {entry} />
       {/each}
     {/each}
-
-    <Actions />
-    <Nav />
   </main>
+
+  <Actions />
+  <Nav />
 {/if}
 
 <style>
   main {
-    padding-bottom: var(--footer-height);
+    padding: var(--action-bar-height) 0.5rem;
   }
 
   .centered {
@@ -44,5 +44,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+  .date {
+    font-size: 0.75rem;
+    color: #888;
   }
 </style>

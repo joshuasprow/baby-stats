@@ -16,16 +16,23 @@
     pees: PeeUpdate,
     poops: PoopUpdate,
   } as const;
+
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  });
 </script>
 
 <script lang="ts">
   export let entry: Entry<EntryKind>;
 
+  let time = formatter.format(entry.timestamp);
   let component = components[entry.kind];
 </script>
 
 <div transition:slide>
-  <span>{entry.timestamp.toLocaleTimeString()}</span>
+  <span class="time">{time}</span>
 
   {#if component}
     <svelte:component this={component} {entry} />
@@ -37,7 +44,12 @@
 <style>
   div {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding-left: 0.5rem;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+  }
+
+  .time {
+    text-align: right;
+    margin-right: 0.5rem;
   }
 </style>
