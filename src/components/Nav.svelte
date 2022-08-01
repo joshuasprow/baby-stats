@@ -6,10 +6,6 @@
 
   let open = false;
 
-  $: greeting = $user
-    ? `Hi ${$user.displayName}`
-    : "Hello, please sign in below";
-
   const close = () => {
     open = false;
   };
@@ -29,7 +25,13 @@
   <aside transition:fly={{ x: window.innerWidth }}>
     <button class="close" on:click={toggle}>❌</button>
 
-    <span>{greeting}</span>
+    <span>
+      {#if $user}
+        Hi {$user.displayName}
+      {:else}
+        Hello, please sign in below
+      {/if}
+    </span>
 
     {#if $user}
       <SignOutButton />
