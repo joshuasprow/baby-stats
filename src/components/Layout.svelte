@@ -18,6 +18,10 @@
     <span>Please sign in below</span>
     <SignInButton />
   </main>
+{:else if $days.length === 0}
+  <main class="centered">
+    <span>Use the buttons below to add new entries</span>
+  </main>
 {:else}
   <main>
     {#each $days as [daystamp, day] (daystamp)}
