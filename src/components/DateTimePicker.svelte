@@ -1,19 +1,46 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import type { InputEvent } from "$lib/dom";
-  import { getDatetimeLocalString } from "$lib/dates";
+  import type { ChangeEvent, InputEvent } from "$lib/dom";
+  import { getDateAndTimeStrings, getDateFromStrings } from "$lib/dates";
 
   export let timestamp = new Date();
 
-  let value = getDatetimeLocalString(timestamp);
+  let { date, time } = getDateAndTimeStrings(timestamp);
 
   const dispatch = createEventDispatcher<{ change: Date }>();
 
-  const handleInput = (e: InputEvent) => {
-    value = e.currentTarget.value;
+  const handleDateChange = (e: InputEvent | ChangeEvent) =>
+    dispatch(
+      "change",
+      getDateFromStrings({ date: e.currentTarget.value, time })
+    );
 
-    dispatch("change", new Date(value));
-  };
+  const handleTimeChange = (e: InputEvent | ChangeEvent) =>
+    dispatch(
+      "change",
+      getDateFromStrings({ date, time: e.currentTarget.value })
+    );
 </script>
 
-<input on:input={handleInput} type="datetime-local" {value} />
+<div>
+  <input
+    on:change={handleDateChange}
+    on:input={handleDateChange}
+    type="date"
+    value={date}
+  />
+  <input
+    on:change={handleTimeChange}
+    on:input={handleTimeChange}
+    type="time"
+    value={time}
+  />
+</div>
+
+<style>
+  div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+</style>
