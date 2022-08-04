@@ -1,9 +1,9 @@
 <script lang="ts">
   import { days } from "$stores/days";
   import { user } from "$stores/user";
-  import Actions from "./Actions.svelte";
   import Entries from "./Entries.svelte";
-  import Nav from "./Nav.svelte";
+  import Footer from "./Footer.svelte";
+  import Header from "./Header.svelte";
   import SignInButton from "./SignInButton.svelte";
 </script>
 
@@ -27,8 +27,8 @@
     <Entries />
   </main>
 
-  <Actions />
-  <Nav />
+  <Footer />
+  <Header />
 {/if}
 
 <style>
