@@ -1,4 +1,4 @@
-import { firestore } from "$lib/firebase";
+import { firestore } from "$firebase";
 import { Poop, PoopAdd } from "baby-stats-models/poops";
 import {
   collection,

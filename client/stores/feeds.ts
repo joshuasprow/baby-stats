@@ -1,4 +1,4 @@
-import { firestore } from "$lib/firebase";
+import { firestore } from "$firebase";
 import { Feed, FeedAdd } from "baby-stats-models/feeds";
 import {
   collection,

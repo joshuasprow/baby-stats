@@ -1,4 +1,4 @@
-import { firestore } from "$lib/firebase";
+import { firestore } from "$firebase";
 import { Nap, NapAdd } from "baby-stats-models/naps";
 import {
   collection,
