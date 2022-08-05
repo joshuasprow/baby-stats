@@ -2,7 +2,7 @@
   import FeedAdd from "$components/Feed/FeedAdd.svelte";
   import NapAdd from "$components/Nap/NapAdd.svelte";
   import PeeAdd from "$components/Pee/PeeAdd.svelte";
-  import PoopAdd from "$components/PoopAdd.svelte";
+  import PoopAdd from "$components/Poop/PoopAdd.svelte";
 </script>
 
 <footer>

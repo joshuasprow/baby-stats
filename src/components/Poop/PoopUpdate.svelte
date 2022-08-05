@@ -1,9 +1,9 @@
 <script lang="ts">
+  import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
+  import PoopAmountInput from "$components/Poop/PoopAmountInput.svelte";
+  import PoopIcon from "$components/Poop/PoopIcon.svelte";
   import type { Poop, PoopAmount } from "$models/poops";
   import { removePoop, updatePoop } from "$stores/poops";
-  import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
-  import PoopAmountInput from "$components/PoopAmountInput.svelte";
-  import PoopIcon from "$components/PoopIcon.svelte";
 
   export let entry: Poop;
 

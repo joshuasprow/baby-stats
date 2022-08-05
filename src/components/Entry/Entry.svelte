@@ -2,7 +2,7 @@
   import FeedUpdate from "$components/Feed/FeedUpdate.svelte";
   import NapUpdate from "$components/Nap/NapUpdate.svelte";
   import PeeUpdate from "$components/Pee/PeeUpdate.svelte";
-  import PoopUpdate from "$components/PoopUpdate.svelte";
+  import PoopUpdate from "$components/Poop/PoopUpdate.svelte";
   import type { Entry, EntryKind } from "$models/entries";
   import type { ComponentType } from "svelte";
   import { slide } from "svelte/transition";

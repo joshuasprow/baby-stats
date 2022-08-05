@@ -1,8 +1,8 @@
 <script lang="ts">
+  import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
+  import PoopAmountInput from "$components/Poop/PoopAmountInput.svelte";
   import type { PoopAmount } from "$models/poops";
   import { addPoop } from "$stores/poops";
-  import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
-  import PoopAmountInput from "$components/PoopAmountInput.svelte";
 
   let amount: PoopAmount = 2;
   let timestamp = new Date();
