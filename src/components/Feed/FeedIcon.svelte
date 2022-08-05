@@ -16,7 +16,7 @@
   <EntryIcon>
     <span slot="left">🤱</span>
     <span slot="middle">{amount * 5}min</span>
-    <span>{side}</span>
+    <span slot="right">{side}</span>
   </EntryIcon>
 {:else}
   <EntryIcon>
