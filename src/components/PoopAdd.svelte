@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { PoopAmount } from "$models/poops";
   import { addPoop } from "$stores/poops";
-  import EntryAddModal from "./EntryAddModal.svelte";
+  import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import PoopAmountInput from "./PoopAmountInput.svelte";
 
   let amount: PoopAmount = 2;

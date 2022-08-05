@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Poop, PoopAmount } from "$models/poops";
   import { removePoop, updatePoop } from "$stores/poops";
-  import EntryUpdateModal from "./EntryUpdateModal.svelte";
+  import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import PoopAmountInput from "./PoopAmountInput.svelte";
   import PoopIcon from "./PoopIcon.svelte";
 

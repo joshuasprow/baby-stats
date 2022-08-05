@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Nap } from "$models/naps";
   import { removeNap, updateNap } from "$stores/naps";
-  import EntryUpdateModal from "./EntryUpdateModal.svelte";
+  import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import NapAmountInput from "./NapAmountInput.svelte";
   import NapIcon from "./NapIcon.svelte";
 

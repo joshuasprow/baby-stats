@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import DateTimePicker from "./DateTimePicker.svelte";
-  import EntryModal from "./EntryModal.svelte";
+  import DateTimePicker from "$components/DateTimePicker.svelte";
+  import EntryModal from "$components/Entry/EntryModal.svelte";
 
   export let loading = false;
   export let timestamp: Date;

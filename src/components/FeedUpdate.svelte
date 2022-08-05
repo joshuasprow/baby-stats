@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Feed, FeedSide, FeedSource } from "$models/feeds";
   import { removeFeed, updateFeed } from "$stores/feeds";
-  import EntryUpdateModal from "./EntryUpdateModal.svelte";
+  import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedIcon from "./FeedIcon.svelte";
   import FeedSideInputGroup from "./FeedSideInputGroup.svelte";

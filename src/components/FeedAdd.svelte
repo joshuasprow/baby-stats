@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { FeedAdd, FeedSide, FeedSource } from "$models/feeds";
   import { addFeed } from "$stores/feeds";
-  import EntryAddModal from "./EntryAddModal.svelte";
+  import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import FeedAmountInput from "./FeedAmountInput.svelte";
   import FeedSideInputGroup from "./FeedSideInputGroup.svelte";
   import FeedSourceInput from "./FeedSourceInput.svelte";
@@ -30,7 +30,7 @@
   <span slot="icon">🍼</span>
 
   <article>
-    <FeedAmountInput bind:amount />
+    <FeedAmountInput bind:amount {source} />
   </article>
 
   <article>

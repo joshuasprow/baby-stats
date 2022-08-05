@@ -1,6 +1,6 @@
 <script lang="ts">
   import { addNap } from "$stores/naps";
-  import EntryAddModal from "./EntryAddModal.svelte";
+  import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import NapAmountInput from "./NapAmountInput.svelte";
 
   let amount = 2;
