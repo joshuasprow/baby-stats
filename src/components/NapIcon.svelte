@@ -2,4 +2,4 @@
   export let amount: number;
 </script>
 
-{amount}💤
+💤 {amount * 15}min
