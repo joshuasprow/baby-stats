@@ -1,0 +1,11 @@
+<figure>
+  <slot />
+</figure>
+
+<style>
+  figure {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin: 0;
+  }
+</style>
