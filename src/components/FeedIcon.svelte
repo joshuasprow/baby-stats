@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { FeedSource, FeedSide } from "$models/feeds";
-  import ElementIcon from "./ElementIcon.svelte";
+  import type { FeedSide, FeedSource } from "$models/feeds";
+  import EntryIcon from "./EntryIcon.svelte";
   import ErrorMessage from "./ErrorMessage.svelte";
 
   export let amount: number;
@@ -8,7 +8,7 @@
   export let side: FeedSide | null;
 </script>
 
-<ElementIcon>
+<EntryIcon>
   {#if source === "bottle"}
     <span>🍼</span><span>{amount}oz</span>
   {:else if source === "breast"}
@@ -16,4 +16,4 @@
   {:else}
     <span /><ErrorMessage message={`invalid source: ${source}`} />
   {/if}
-</ElementIcon>
+</EntryIcon>
