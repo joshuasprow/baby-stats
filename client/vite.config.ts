@@ -7,6 +7,9 @@ const dir = (...parts: string[]) => resolve(__dirname, ...parts);
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [svelte()],
+  build: {
+    outDir: dir("../dist"),
+  },
   resolve: {
     alias: {
       $components: dir("components"),
