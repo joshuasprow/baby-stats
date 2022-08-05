@@ -12,6 +12,8 @@
   }
 </script>
 
+source:
+
 <label class:loading for="bottle">
   <input
     bind:group={source}

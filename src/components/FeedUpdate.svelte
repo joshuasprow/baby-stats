@@ -69,16 +69,14 @@
   <FeedIcon {amount} {source} {side} slot="icon" />
 
   <article>
-    <FeedAmountInput {loading} on:change={handleAmount} {amount} />
+    <FeedAmountInput {loading} on:change={handleAmount} {amount} {source} />
   </article>
 
   <article>
-    kind:
     <FeedSourceInput {loading} on:change={handleKind} {source} />
   </article>
 
   <article>
-    side:
     <FeedSideInputGroup
       disabled={loading || source !== "breast"}
       on:change={handleSide}
