@@ -1,10 +1,49 @@
-<script lang="ts">
-  import NumberInput from "$components/NumberInput.svelte";
-
+<script lang="ts" context="module">
   import type { SelectEvent } from "baby-stats-lib/dom";
   import type { FeedSource } from "baby-stats-models/feeds";
   import { createEventDispatcher } from "svelte";
 
+  const getUnit = (source: FeedSource) => {
+    switch (source) {
+      case "bottle":
+        return "oz";
+      case "breast":
+        return "ml";
+      default:
+        return "Error: invalid source";
+    }
+  };
+
+  const getOptionLabel = (source: FeedSource, value: number) => {
+    switch (source) {
+      case "bottle":
+        return `${value} oz`;
+      case "breast":
+        return `${value * 5} ml`;
+      default:
+        return "Error: invalid source";
+    }
+  };
+
+  const getOptions = (source: FeedSource) => {
+    switch (source) {
+      case "bottle":
+        return [1, 2, 3, 4, 5].map((v) => ({
+          label: getOptionLabel(source, v),
+          value: v,
+        }));
+      case "breast":
+        return [1, 2, 3, 4, 5, 6, 7, 8, 9].map((v) => ({
+          label: getOptionLabel(source, v),
+          value: v,
+        }));
+      default:
+        return [];
+    }
+  };
+</script>
+
+<script lang="ts">
   export let loading = false;
 
   export let amount: number;
@@ -12,14 +51,12 @@
 
   const dispatch = createEventDispatcher<{ change: number }>();
 
+  $: options = getOptions(source);
+  $: unit = getUnit(source);
+
   $: {
     dispatch("change", amount);
   }
-
-  const options = [1, 2, 3, 4, 5, 6, 7, 8, 9].map((v) => ({
-    label: `${v * 5}`,
-    value: v,
-  }));
 
   const handleChange = (event: SelectEvent) => {
     const value = parseInt(event.currentTarget.value);
@@ -34,24 +71,10 @@
 <label for="amount">
   amount:
   <!-- TODO: make amount in minutes for breast; oz for bottle -->
-  {#if source === "bottle"}
-    <NumberInput
-      id="amount"
-      bind:value={amount}
-      disabled={loading}
-      min={0.5}
-      max={6}
-      step={0.5}
-    />
-    oz
-  {:else if source === "breast"}
-    <select on:change={handleChange}>
-      {#each options as option}
-        <option value={option.value}>{option.label}</option>
-      {/each}
-    </select>
-    minutes
-  {:else}
-    Invalid source: {source}
-  {/if}
+  <select disabled={loading} on:change={handleChange}>
+    {#each options as option}
+      <option value={option.value}>{option.value}</option>
+    {/each}
+  </select>
+  {unit}
 </label>
