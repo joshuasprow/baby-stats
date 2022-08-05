@@ -34,7 +34,7 @@
   };
 </script>
 
-<EntryModal on:close={handleClose} on:open={handleOpen} {open}>
+<EntryModal {loading} on:close={handleClose} on:open={handleOpen} {open}>
   <slot name="icon" slot="icon" />
   <DateTimePicker {loading} on:change={handleTimestamp} {timestamp} />
   <slot />

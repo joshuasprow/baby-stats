@@ -14,7 +14,7 @@
   let side: FeedSide | null = entry.side;
   let timestamp = entry.timestamp;
 
-  let loading = true;
+  let loading = false;
 
   const update = async () => {
     loading = true;
