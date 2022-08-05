@@ -1,10 +1,10 @@
 <script lang="ts">
   import { days } from "$stores/days";
   import { user } from "$stores/user";
-  import Entries from "./Entries.svelte";
-  import Footer from "./Footer.svelte";
-  import Header from "./Header.svelte";
-  import SignInButton from "./SignInButton.svelte";
+  import Entries from "$components/Entries.svelte";
+  import Footer from "$components/Footer.svelte";
+  import Header from "$components/Header.svelte";
+  import SignInButton from "$components/SignInButton.svelte";
 </script>
 
 <!-- firebase hasn't loaded yet -->

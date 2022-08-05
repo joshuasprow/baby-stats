@@ -2,10 +2,10 @@
   import type { Feed, FeedSide, FeedSource } from "$models/feeds";
   import { removeFeed, updateFeed } from "$stores/feeds";
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
-  import FeedAmountInput from "./FeedAmountInput.svelte";
-  import FeedIcon from "./FeedIcon.svelte";
-  import FeedSideInputGroup from "./FeedSideInputGroup.svelte";
-  import FeedSourceInput from "./FeedSourceInput.svelte";
+  import FeedAmountInput from "$components/Feed/FeedAmountInput.svelte";
+  import FeedIcon from "$components/Feed/FeedIcon.svelte";
+  import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
+  import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
 
   export let entry: Feed;
 

@@ -1,8 +1,8 @@
 <script lang="ts">
-  import FeedAdd from "./FeedAdd.svelte";
-  import NapAdd from "./NapAdd.svelte";
-  import PeeAdd from "./PeeAdd.svelte";
-  import PoopAdd from "./PoopAdd.svelte";
+  import FeedAdd from "$components/Feed/FeedAdd.svelte";
+  import NapAdd from "$components/NapAdd.svelte";
+  import PeeAdd from "$components/PeeAdd.svelte";
+  import PoopAdd from "$components/PoopAdd.svelte";
 </script>
 
 <footer>

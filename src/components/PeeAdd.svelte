@@ -2,7 +2,7 @@
   import type { PeeAmount } from "$models/pees";
   import { addPee } from "$stores/pees";
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
-  import PeeAmountInput from "./PeeAmountInput.svelte";
+  import PeeAmountInput from "$components/PeeAmountInput.svelte";
 
   let amount: PeeAmount = 2;
   let timestamp = new Date();

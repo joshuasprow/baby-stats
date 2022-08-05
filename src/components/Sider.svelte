@@ -1,8 +1,8 @@
 <script lang="ts">
   import { user } from "$stores/user";
   import { fade, fly } from "svelte/transition";
-  import SignInButton from "./SignInButton.svelte";
-  import SignOutButton from "./SignOutButton.svelte";
+  import SignInButton from "$components/SignInButton.svelte";
+  import SignOutButton from "$components/SignOutButton.svelte";
 
   export let buttonClass = "sider-button";
   export let open = false;

@@ -2,8 +2,8 @@
   import type { Pee, PeeAmount } from "$models/pees";
   import { removePee, updatePee } from "$stores/pees";
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
-  import PeeAmountInput from "./PeeAmountInput.svelte";
-  import PeeIcon from "./PeeIcon.svelte";
+  import PeeAmountInput from "$components/PeeAmountInput.svelte";
+  import PeeIcon from "$components/PeeIcon.svelte";
 
   export let entry: Pee;
 

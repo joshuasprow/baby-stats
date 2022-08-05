@@ -5,7 +5,7 @@
 
 <script lang="ts">
   import { days } from "$stores/days";
-  import Entry from "./Entry/Entry.svelte";
+  import Entry from "$components/Entry/Entry.svelte";
 </script>
 
 {#each $days as [daystamp, day] (daystamp)}

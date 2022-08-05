@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Sider from "./Sider.svelte";
+  import Sider from "$components/Sider.svelte";
 </script>
 
 <header>

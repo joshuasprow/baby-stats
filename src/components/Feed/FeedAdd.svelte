@@ -2,9 +2,9 @@
   import type { FeedAdd, FeedSide, FeedSource } from "$models/feeds";
   import { addFeed } from "$stores/feeds";
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
-  import FeedAmountInput from "./FeedAmountInput.svelte";
-  import FeedSideInputGroup from "./FeedSideInputGroup.svelte";
-  import FeedSourceInput from "./FeedSourceInput.svelte";
+  import FeedAmountInput from "$components/Feed/FeedAmountInput.svelte";
+  import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
+  import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
 
   let amount = 1;
   let side: FeedSide | null = null;

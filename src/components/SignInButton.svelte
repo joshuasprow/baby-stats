@@ -1,6 +1,6 @@
 <script lang="ts">
   import { signIn, user } from "$stores/user";
-  import GoogleIcon from "./GoogleIcon.svelte";
+  import GoogleIcon from "$components/GoogleIcon.svelte";
 
   $: disabled = $user === undefined || !!$user;
 </script>

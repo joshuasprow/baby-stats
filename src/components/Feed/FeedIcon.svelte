@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { FeedSide, FeedSource } from "$models/feeds";
-  import EntryIcon from "./Entry/EntryIcon.svelte";
-  import ErrorMessage from "./ErrorMessage.svelte";
+  import EntryIcon from "$components/Entry/EntryIcon.svelte";
+  import ErrorMessage from "$components/ErrorMessage.svelte";
 
   export let amount: number;
   export let source: FeedSource;
