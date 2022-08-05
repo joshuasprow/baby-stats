@@ -2,6 +2,7 @@
   import type { FeedSource } from "$models/feeds";
   import { createEventDispatcher } from "svelte";
 
+  export let loading = false;
   export let source: FeedSource = "bottle";
 
   const dispatch = createEventDispatcher<{ change: FeedSource }>();
@@ -14,6 +15,7 @@
 <label for="bottle">
   <input
     bind:group={source}
+    disabled={loading}
     type="radio"
     id="bottle"
     name="source"
@@ -25,6 +27,7 @@
 <label for="breast">
   <input
     bind:group={source}
+    disabled={loading}
     type="radio"
     id="breast"
     name="source"

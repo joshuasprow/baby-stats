@@ -3,6 +3,7 @@
   import DateTimePicker from "./DateTimePicker.svelte";
   import EntryModal from "./EntryModal.svelte";
 
+  export let loading = false;
   export let timestamp: Date;
 
   const dispatch =
@@ -35,7 +36,7 @@
 
 <EntryModal on:close={handleClose} on:open={handleOpen} {open}>
   <slot name="icon" slot="icon" />
-  <DateTimePicker on:change={handleTimestamp} {timestamp} />
+  <DateTimePicker {loading} on:change={handleTimestamp} {timestamp} />
   <slot />
-  <button on:click={handleRemove}>remove</button>
+  <button disabled={loading} on:click={handleRemove}>remove</button>
 </EntryModal>

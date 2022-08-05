@@ -3,7 +3,7 @@
   import { createEventDispatcher } from "svelte";
   import FeedSideInput from "./FeedSideInput.svelte";
 
-  export let disabled: boolean;
+  export let disabled = false;
   export let side: FeedSide | null;
 
   const dispatch = createEventDispatcher<{ change: FeedSide | null }>();

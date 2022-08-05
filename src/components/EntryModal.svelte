@@ -6,12 +6,23 @@
   import { createEventDispatcher } from "svelte";
   import { fade, fly } from "svelte/transition";
 
+  export let loading = false;
   export let open = false;
 
   const dispatch = createEventDispatcher<{ close: void; open: void }>();
+
+  const handleOpen = () => {
+    if (loading) return;
+    dispatch("open");
+  };
+
+  const handleClose = () => {
+    if (loading) return;
+    dispatch("close");
+  };
 </script>
 
-<button on:click={() => dispatch("open")}>
+<button disabled={loading} on:click={handleOpen}>
   {#if $$slots.icon}
     <slot name="icon" />
   {:else}
@@ -21,7 +32,7 @@
 
 {#if open}
   <div class="backdrop" transition:fade />
-  <div class="wrapper" on:click={() => dispatch("close")}>
+  <div class="wrapper" on:click={handleClose}>
     <section
       class="modal"
       on:click|stopPropagation

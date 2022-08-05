@@ -14,7 +14,7 @@
   let side: FeedSide | null = entry.side;
   let timestamp = entry.timestamp;
 
-  let loading = false;
+  let loading = true;
 
   const update = async () => {
     loading = true;
@@ -61,6 +61,7 @@
 </script>
 
 <EntryUpdateModal
+  {loading}
   on:remove={handleRemove}
   on:timestamp={handleTimestamp}
   {timestamp}
@@ -68,18 +69,18 @@
   <FeedIcon {amount} {source} {side} slot="icon" />
 
   <article>
-    <FeedAmountInput on:change={handleAmount} {amount} />
+    <FeedAmountInput {loading} on:change={handleAmount} {amount} />
   </article>
 
   <article>
     kind:
-    <FeedSourceInput on:change={handleKind} {source} />
+    <FeedSourceInput {loading} on:change={handleKind} {source} />
   </article>
 
   <article>
     side:
     <FeedSideInputGroup
-      disabled={source !== "breast"}
+      disabled={loading || source !== "breast"}
       on:change={handleSide}
       {side}
     />

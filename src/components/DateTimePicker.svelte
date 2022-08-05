@@ -3,6 +3,7 @@
   import type { ChangeEvent, InputEvent } from "$lib/dom";
   import { getDateAndTimeStrings, getDateFromStrings } from "$lib/dates";
 
+  export let loading = false;
   export let timestamp = new Date();
 
   let { date, time } = getDateAndTimeStrings(timestamp);
@@ -24,12 +25,14 @@
 
 <div>
   <input
+    disabled={loading}
     on:change={handleDateChange}
     on:input={handleDateChange}
     type="date"
     value={date}
   />
   <input
+    disabled={loading}
     on:change={handleTimeChange}
     on:input={handleTimeChange}
     type="time"

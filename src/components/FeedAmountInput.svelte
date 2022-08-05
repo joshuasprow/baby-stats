@@ -2,6 +2,7 @@
   import { createEventDispatcher } from "svelte";
 
   export let amount: number;
+  export let loading = false;
 
   const dispatch = createEventDispatcher<{ change: number }>();
 
@@ -15,6 +16,7 @@
   <input
     id="amount"
     bind:value={amount}
+    disabled={loading}
     type="number"
     min={0.5}
     max={6}
