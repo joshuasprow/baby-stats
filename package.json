@@ -1,27 +1,18 @@
 {
   "name": "baby-stats",
-  "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "private": true,
+  "workspaces": [
+    "*"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview",
-    "check": "svelte-check --tsconfig ./tsconfig.json"
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^1.0.1",
-    "@tsconfig/svelte": "^3.0.0",
-    "svelte": "^3.49.0",
-    "svelte-check": "^2.8.0",
-    "svelte-preprocess": "^4.10.7",
-    "tslib": "^2.4.0",
-    "typescript": "^4.6.4",
-    "vite": "^3.0.0"
-  },
-  "dependencies": {
-    "firebase": "^9.9.1",
-    "svelte-router-spa": "^6.0.3",
-    "zod": "^3.17.10"
+    "prettier": "latest",
+    "turbo": "latest"
   }
 }

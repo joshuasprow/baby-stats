@@ -9,10 +9,10 @@ export default defineConfig({
   plugins: [svelte()],
   resolve: {
     alias: {
-      $components: dir("src", "components"),
-      $lib: dir("src", "lib"),
-      $models: dir("src", "models"),
-      $stores: dir("src", "stores"),
+      $components: dir("components"),
+      $lib: dir("lib"),
+      $models: dir("models"),
+      $stores: dir("stores"),
     },
   },
 });
