@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { SelectEvent } from "$lib/dom";
+
   import { createEventDispatcher } from "svelte";
 
   export let loading = false;
@@ -7,20 +9,31 @@
 
   const dispatch = createEventDispatcher<{ change: number }>();
 
-  $: {
-    dispatch("change", amount);
-  }
+  const options = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((v) => ({
+    label: `${v * 15}`,
+    value: v,
+  }));
+
+  const handleChange = (e: SelectEvent) => {
+    const _amount = parseInt(e.currentTarget.value);
+
+    if (typeof _amount !== "number") {
+      console.error("invalid amount", _amount, typeof _amount);
+      return;
+    }
+
+    amount = _amount;
+
+    dispatch("change", _amount);
+  };
 </script>
 
 <label for="amount">
   amount:
-  <input
-    id="amount"
-    bind:value={amount}
-    disabled={loading}
-    type="number"
-    min={0.5}
-    max={6}
-    step={0.25}
-  />
+  <select disabled={loading} on:change={handleChange}>
+    {#each options as option}
+      <option value={option.value}>{option.label}</option>
+    {/each}
+  </select>
+  minutes
 </label>

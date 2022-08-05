@@ -26,7 +26,8 @@
   }
 
   button,
-  input {
+  input,
+  select {
     font-size: 1rem;
   }
 </style>
