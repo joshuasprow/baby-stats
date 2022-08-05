@@ -1,6 +1,5 @@
 <script lang="ts">
-  import type { SelectEvent } from "baby-client-lib/dom";
-
+  import type { SelectEvent } from "baby-stats-lib/dom";
   import type { FeedSource } from "baby-stats-models/feeds";
   import { createEventDispatcher } from "svelte";
 
