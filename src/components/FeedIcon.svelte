@@ -7,9 +7,9 @@
 </script>
 
 {#if source === "bottle"}
-  {amount}🍼
+  🍼{amount}oz
 {:else if source === "breast"}
-  {amount}🤱{side}
+  🤱{amount * 5}min ({side})
 {:else}
   {amount}
 {/if}
