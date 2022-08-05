@@ -8,12 +8,18 @@
   export let side: FeedSide | null;
 </script>
 
-<EntryIcon>
-  {#if source === "bottle"}
-    <span>🍼</span><span>{amount}oz</span>
-  {:else if source === "breast"}
-    <span>🤱</span><span>{amount * 5}min</span><span>{side}</span>
-  {:else}
-    <span /><ErrorMessage message={`invalid source: ${source}`} />
-  {/if}
-</EntryIcon>
+{#if source === "bottle"}
+  <EntryIcon>
+    <span slot="left">🍼</span><span slot="middle">{amount}oz</span>
+  </EntryIcon>
+{:else if source === "breast"}
+  <EntryIcon>
+    <span slot="left">🤱</span>
+    <span slot="middle">{amount * 5}min</span>
+    <span>{side}</span>
+  </EntryIcon>
+{:else}
+  <EntryIcon>
+    <ErrorMessage message={`invalid source: ${source}`} slot="middle" />
+  </EntryIcon>
+{/if}

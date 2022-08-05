@@ -1,5 +1,25 @@
+<script lang="ts">
+  interface $$Slots {
+    default: Node[];
+  }
+</script>
+
 <figure>
-  <slot />
+  {#if $$slots.left}
+    <slot name="left" />
+  {:else}
+    <span />
+  {/if}
+  {#if $$slots.middle}
+    <slot name="middle" />
+  {:else}
+    <span />
+  {/if}
+  {#if $$slots.right}
+    <slot name="right" />
+  {:else}
+    <span />
+  {/if}
 </figure>
 
 <style>
