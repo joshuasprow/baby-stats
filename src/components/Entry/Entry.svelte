@@ -1,7 +1,7 @@
 <script lang="ts" context="module">
   import FeedUpdate from "$components/Feed/FeedUpdate.svelte";
   import NapUpdate from "$components/Nap/NapUpdate.svelte";
-  import PeeUpdate from "$components/PeeUpdate.svelte";
+  import PeeUpdate from "$components/Pee/PeeUpdate.svelte";
   import PoopUpdate from "$components/PoopUpdate.svelte";
   import type { Entry, EntryKind } from "$models/entries";
   import type { ComponentType } from "svelte";
