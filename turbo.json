@@ -3,6 +3,15 @@
   "pipeline": {
     "baby-stats-client#dev": {
       "cache": false
+    },
+    "dev": {
+      "dependsOn": ["baby-stats-client#dev"]
+    },
+    "baby-stats-client#build": {
+      "cache": false
+    },
+    "build": {
+      "dependsOn": ["baby-stats-client#build"]
     }
   }
 }
