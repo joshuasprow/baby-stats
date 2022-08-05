@@ -6,7 +6,7 @@
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
 
-  let amount = 1;
+  let amount = 2;
   let side: FeedSide | null = null;
   let source: FeedSource = "bottle";
   let timestamp = new Date();

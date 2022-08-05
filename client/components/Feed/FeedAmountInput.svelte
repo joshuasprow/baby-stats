@@ -71,7 +71,7 @@
 <label for="amount">
   amount:
   <!-- TODO: make amount in minutes for breast; oz for bottle -->
-  <select disabled={loading} on:change={handleChange}>
+  <select disabled={loading} on:change={handleChange} value={amount}>
     {#each options as option}
       <option value={option.value}>{option.value}</option>
     {/each}
