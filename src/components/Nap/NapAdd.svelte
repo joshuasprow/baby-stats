@@ -1,7 +1,7 @@
 <script lang="ts">
   import { addNap } from "$stores/naps";
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
-  import NapAmountInput from "$components/NapAmountInput.svelte";
+  import NapAmountInput from "$components/Nap/NapAmountInput.svelte";
 
   let amount = 2;
   let timestamp = new Date();

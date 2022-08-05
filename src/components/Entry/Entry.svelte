@@ -3,7 +3,7 @@
   import type { ComponentType } from "svelte";
   import { slide } from "svelte/transition";
   import FeedUpdate from "$components/Feed/FeedUpdate.svelte";
-  import NapUpdate from "$components/NapUpdate.svelte";
+  import NapUpdate from "$components/Nap/NapUpdate.svelte";
   import PeeUpdate from "$components/PeeUpdate.svelte";
   import PoopUpdate from "$components/PoopUpdate.svelte";
 
