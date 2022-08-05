@@ -1,8 +1,8 @@
-import type { Feed } from "$models/feeds";
-import type { Nap } from "$models/naps";
-import type { Pee } from "$models/pees";
-import type { Poop } from "$models/poops";
 import { z } from "zod";
+import type { Feed } from "./feeds";
+import type { Nap } from "./naps";
+import type { Pee } from "./pees";
+import type { Poop } from "./poops";
 
 export const ENTRY_KINDS = ["feeds", "naps", "pees", "poops"] as const;
 export const EntryKindEnum = z.enum(ENTRY_KINDS);

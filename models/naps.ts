@@ -1,5 +1,5 @@
-import { EntryBase } from "$models/entries";
 import { z } from "zod";
+import { EntryBase } from "./entries";
 
 export const Nap = EntryBase.omit({ amount: true }).extend({
   amount: z.number().positive(),

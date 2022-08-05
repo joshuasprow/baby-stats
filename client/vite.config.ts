@@ -11,7 +11,6 @@ export default defineConfig({
     alias: {
       $components: dir("components"),
       $lib: dir("lib"),
-      $models: dir("models"),
       $stores: dir("stores"),
     },
   },

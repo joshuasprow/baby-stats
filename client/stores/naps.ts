@@ -1,5 +1,5 @@
 import { firestore } from "$lib/firebase";
-import { Nap, NapAdd } from "$models/naps";
+import { Nap, NapAdd } from "baby-stats-models/naps";
 import {
   collection,
   deleteDoc,

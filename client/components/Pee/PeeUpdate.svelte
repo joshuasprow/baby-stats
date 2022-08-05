@@ -2,7 +2,7 @@
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import PeeAmountInput from "$components/Pee/PeeAmountInput.svelte";
   import PeeIcon from "$components/Pee/PeeIcon.svelte";
-  import type { Pee, PeeAmount } from "$models/pees";
+  import type { Pee, PeeAmount } from "baby-stats-models/pees";
   import { removePee, updatePee } from "$stores/pees";
 
   export let entry: Pee;

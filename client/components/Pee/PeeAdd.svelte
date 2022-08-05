@@ -1,7 +1,7 @@
 <script lang="ts">
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import PeeAmountInput from "$components/Pee/PeeAmountInput.svelte";
-  import type { PeeAmount } from "$models/pees";
+  import type { PeeAmount } from "baby-stats-models/pees";
   import { addPee } from "$stores/pees";
 
   let amount: PeeAmount = 2;

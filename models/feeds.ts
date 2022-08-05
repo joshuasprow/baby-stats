@@ -1,5 +1,5 @@
-import { EntryBase } from "$models/entries";
 import { z } from "zod";
+import { EntryBase } from "./entries";
 
 const FeedSide = z.enum(["L", "R", "LR", "RL"]);
 export type FeedSide = z.infer<typeof FeedSide>;

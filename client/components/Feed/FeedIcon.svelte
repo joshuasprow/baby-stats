@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FeedSide, FeedSource } from "$models/feeds";
+  import type { FeedSide, FeedSource } from "baby-stats-models/feeds";
   import EntryIcon from "$components/Entry/EntryIcon.svelte";
   import ErrorMessage from "$components/ErrorMessage.svelte";
 

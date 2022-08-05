@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PoopAmount } from "$models/poops";
+  import type { PoopAmount } from "baby-stats-models/poops";
   import { createEventDispatcher } from "svelte";
 
   export let amount: PoopAmount = 2;

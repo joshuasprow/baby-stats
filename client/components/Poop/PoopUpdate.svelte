@@ -2,7 +2,7 @@
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import PoopAmountInput from "$components/Poop/PoopAmountInput.svelte";
   import PoopIcon from "$components/Poop/PoopIcon.svelte";
-  import type { Poop, PoopAmount } from "$models/poops";
+  import type { Poop, PoopAmount } from "baby-stats-models/poops";
   import { removePoop, updatePoop } from "$stores/poops";
 
   export let entry: Poop;

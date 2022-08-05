@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PeeAmount } from "$models/pees";
+  import type { PeeAmount } from "baby-stats-models/pees";
 
   export let amount: PeeAmount;
 

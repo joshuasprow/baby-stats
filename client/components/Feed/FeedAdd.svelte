@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FeedAdd, FeedSide, FeedSource } from "$models/feeds";
+  import type { FeedAdd, FeedSide, FeedSource } from "baby-stats-models/feeds";
   import { addFeed } from "$stores/feeds";
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import FeedAmountInput from "$components/Feed/FeedAmountInput.svelte";

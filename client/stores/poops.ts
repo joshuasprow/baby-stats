@@ -1,5 +1,5 @@
 import { firestore } from "$lib/firebase";
-import { Poop, PoopAdd } from "$models/poops";
+import { Poop, PoopAdd } from "baby-stats-models/poops";
 import {
   collection,
   deleteDoc,

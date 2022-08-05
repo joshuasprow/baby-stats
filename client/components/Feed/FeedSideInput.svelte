@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FeedSide } from "$models/feeds";
+  import type { FeedSide } from "baby-stats-models/feeds";
 
   export let loading = false;
 
