@@ -1,4 +1,6 @@
 <script lang="ts">
+  import NumberInput from "$components/NumberInput.svelte";
+
   import type { SelectEvent } from "baby-stats-lib/dom";
   import type { FeedSource } from "baby-stats-models/feeds";
   import { createEventDispatcher } from "svelte";
@@ -33,11 +35,10 @@
   amount:
   <!-- TODO: make amount in minutes for breast; oz for bottle -->
   {#if source === "bottle"}
-    <input
+    <NumberInput
       id="amount"
       bind:value={amount}
       disabled={loading}
-      type="number"
       min={0.5}
       max={6}
       step={0.5}

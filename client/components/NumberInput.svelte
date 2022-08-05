@@ -1,7 +1,6 @@
 <script lang="ts">
-  import type { ChangeEvent, SelectEvent } from "baby-stats-lib/dom";
-  import type { FeedSource } from "baby-stats-models/feeds";
-  import { createEventDispatcher } from "svelte";
+  import type { ChangeEvent } from "baby-stats-lib/dom";
+  import { createEventDispatcher, onMount } from "svelte";
 
   export let disabled: boolean;
   export let id: string;
@@ -9,6 +8,8 @@
   export let min: number;
   export let max: number;
   export let step: number;
+
+  let input: HTMLInputElement;
 
   const dispatch = createEventDispatcher<{ change: number }>();
 
@@ -22,6 +23,10 @@
 
     dispatch("change", value);
   };
+
+  const handleClick = () => {
+    input.select();
+  };
 </script>
 
 <input
@@ -32,5 +37,7 @@
   {min}
   {max}
   on:change={handleChange}
+  on:click={handleClick}
   {step}
+  bind:this={input}
 />
