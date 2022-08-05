@@ -1,4 +1,4 @@
-import { firestore } from "$lib/firebase";
+import { firestore } from "baby-client-lib/firebase";
 import { Pee, PeeAdd } from "$models/pees";
 import {
   collection,

@@ -1,6 +1,9 @@
 <script lang="ts">
-  import { getDateAndTimeStrings, getDateFromStrings } from "lib/dates";
-  import type { ChangeEvent, InputEvent } from "lib/dom";
+  import {
+    getDateAndTimeStrings,
+    getDateFromStrings,
+  } from "baby-client-lib/dates";
+  import type { ChangeEvent, InputEvent } from "baby-client-lib/dom";
   import { createEventDispatcher } from "svelte";
 
   export let loading = false;
