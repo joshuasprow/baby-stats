@@ -10,16 +10,23 @@
   let amount = entry.amount;
   let timestamp = entry.timestamp;
 
-  const handleAmount = (e: CustomEvent<PoopAmount>) => {
+  let loading = false;
+
+  const update = async () => {
+    loading = true;
+    await updatePoop({ id: entry.id, amount, kind: "poops", timestamp });
+    loading = false;
+  };
+
+  const handleAmount = async (e: CustomEvent<PoopAmount>) => {
     amount = e.detail;
+    await update();
   };
 
-  const handleTimestamp = (e: CustomEvent<Date>) => {
+  const handleTimestamp = async (e: CustomEvent<Date>) => {
     timestamp = e.detail;
+    await update();
   };
-
-  const handleUpdate = () =>
-    updatePoop({ id: entry.id, amount, kind: "poops", timestamp });
 
   const handleRemove = () => removePoop(entry.id);
 </script>
@@ -27,7 +34,6 @@
 <EntryUpdateModal
   on:remove={handleRemove}
   on:timestamp={handleTimestamp}
-  on:update={handleUpdate}
   {timestamp}
 >
   <PoopIcon {amount} slot="icon" />

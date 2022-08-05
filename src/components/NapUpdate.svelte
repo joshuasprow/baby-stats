@@ -10,16 +10,23 @@
   let amount = entry.amount;
   let timestamp = entry.timestamp;
 
-  const handleAmount = (e: CustomEvent<number>) => {
+  let loading = false;
+
+  const update = async () => {
+    loading = true;
+    await updateNap({ id: entry.id, amount, kind: "naps", timestamp });
+    loading = false;
+  };
+
+  const handleAmount = async (e: CustomEvent<number>) => {
     amount = e.detail;
+    await update();
   };
 
-  const handleTimestamp = (e: CustomEvent<Date>) => {
+  const handleTimestamp = async (e: CustomEvent<Date>) => {
     timestamp = e.detail;
+    await update();
   };
-
-  const handleUpdate = () =>
-    updateNap({ id: entry.id, amount, kind: "naps", timestamp });
 
   const handleRemove = () => removeNap(entry.id);
 </script>
@@ -27,7 +34,6 @@
 <EntryUpdateModal
   on:remove={handleRemove}
   on:timestamp={handleTimestamp}
-  on:update={handleUpdate}
   {timestamp}
 >
   <NapIcon {amount} slot="icon" />

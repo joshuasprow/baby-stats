@@ -14,30 +14,12 @@
   let side: FeedSide | null = entry.side;
   let timestamp = entry.timestamp;
 
-  const handleAmount = (e: CustomEvent<number>) => {
-    amount = e.detail;
-  };
+  let loading = false;
 
-  const handleKind = (e: CustomEvent<FeedSource>) => {
-    source = e.detail;
-    if (source === "bottle") {
-      side = null;
-    }
-    if (source === "breast" && side === null) {
-      side = "L";
-    }
-  };
+  const update = async () => {
+    loading = true;
 
-  const handleSide = (e: CustomEvent<FeedSide | null>) => {
-    side = e.detail;
-  };
-
-  const handleTimestamp = (e: CustomEvent<Date>) => {
-    timestamp = e.detail;
-  };
-
-  const handleUpdate = () =>
-    updateFeed({
+    await updateFeed({
       id: entry.id,
       amount,
       kind: "feeds",
@@ -46,13 +28,41 @@
       timestamp,
     } as Feed);
 
+    loading = false;
+  };
+
+  const handleAmount = async (e: CustomEvent<number>) => {
+    amount = e.detail;
+    await update();
+  };
+
+  const handleKind = async (e: CustomEvent<FeedSource>) => {
+    source = e.detail;
+    if (source === "bottle") {
+      side = null;
+    }
+    if (source === "breast" && side === null) {
+      side = "L";
+    }
+    await update();
+  };
+
+  const handleSide = async (e: CustomEvent<FeedSide | null>) => {
+    side = e.detail;
+    await update();
+  };
+
+  const handleTimestamp = async (e: CustomEvent<Date>) => {
+    timestamp = e.detail;
+    await update();
+  };
+
   const handleRemove = () => removeFeed(entry.id);
 </script>
 
 <EntryUpdateModal
   on:remove={handleRemove}
   on:timestamp={handleTimestamp}
-  on:update={handleUpdate}
   {timestamp}
 >
   <FeedIcon {amount} {source} {side} slot="icon" />

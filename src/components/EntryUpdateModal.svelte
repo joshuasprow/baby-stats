@@ -19,14 +19,6 @@
     open = false;
   };
 
-  const handleUpdate = async () => {
-    handleClose();
-
-    await new Promise((resolve) => setTimeout(resolve, duration));
-
-    dispatch("update");
-  };
-
   const handleTimestamp = (e: CustomEvent<Date>) => {
     console.log(e.detail);
     dispatch("timestamp", e.detail);
@@ -45,6 +37,5 @@
   <slot name="icon" slot="icon" />
   <DateTimePicker on:change={handleTimestamp} {timestamp} />
   <slot />
-  <button on:click={handleUpdate}>update</button>
   <button on:click={handleRemove}>remove</button>
 </EntryModal>

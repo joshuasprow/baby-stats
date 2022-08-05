@@ -10,16 +10,28 @@
   let amount = entry.amount;
   let timestamp = entry.timestamp;
 
-  const handleAmount = (e: CustomEvent<PeeAmount>) => {
+  let loading = false;
+
+  const update = async () => {
+    loading = true;
+    await updatePee({
+      id: entry.id,
+      amount,
+      kind: "pees",
+      timestamp,
+    } as Pee);
+    loading = false;
+  };
+
+  const handleAmount = async (e: CustomEvent<PeeAmount>) => {
     amount = e.detail;
+    await update();
   };
 
-  const handleTimestamp = (e: CustomEvent<Date>) => {
+  const handleTimestamp = async (e: CustomEvent<Date>) => {
     timestamp = e.detail;
+    await update();
   };
-
-  const handleUpdate = () =>
-    updatePee({ id: entry.id, amount, kind: "pees", timestamp });
 
   const handleRemove = () => removePee(entry.id);
 </script>
@@ -27,7 +39,6 @@
 <EntryUpdateModal
   on:remove={handleRemove}
   on:timestamp={handleTimestamp}
-  on:update={handleUpdate}
   {timestamp}
 >
   <PeeIcon {amount} slot="icon" />
