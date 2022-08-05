@@ -12,7 +12,7 @@
   }
 </script>
 
-<label for="bottle">
+<label class:loading for="bottle">
   <input
     bind:group={source}
     disabled={loading}
@@ -24,7 +24,7 @@
   bottle
 </label>
 
-<label for="breast">
+<label class:loading for="breast">
   <input
     bind:group={source}
     disabled={loading}
@@ -35,3 +35,9 @@
   />
   breast
 </label>
+
+<style>
+  .loading {
+    color: #ddd;
+  }
+</style>
