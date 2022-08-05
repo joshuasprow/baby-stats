@@ -8,7 +8,7 @@
       case "bottle":
         return "oz";
       case "breast":
-        return "ml";
+        return "minutes";
       default:
         return "Error: invalid source";
     }
@@ -17,9 +17,9 @@
   const getOptionLabel = (source: FeedSource, value: number) => {
     switch (source) {
       case "bottle":
-        return `${value} oz`;
+        return `${value}`;
       case "breast":
-        return `${value * 5} ml`;
+        return `${value * 5}`;
       default:
         return "Error: invalid source";
     }
@@ -73,7 +73,7 @@
   <!-- TODO: make amount in minutes for breast; oz for bottle -->
   <select disabled={loading} on:change={handleChange} value={amount}>
     {#each options as option}
-      <option value={option.value}>{option.value}</option>
+      <option value={option.value}>{option.label}</option>
     {/each}
   </select>
   {unit}
