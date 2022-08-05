@@ -2,8 +2,8 @@
   import {
     getDateAndTimeStrings,
     getDateFromStrings,
-  } from "baby-client-lib/dates";
-  import type { ChangeEvent, InputEvent } from "baby-client-lib/dom";
+  } from "baby-stats-lib/dates";
+  import type { ChangeEvent, InputEvent } from "baby-stats-lib/dom";
   import { createEventDispatcher } from "svelte";
 
   export let loading = false;
