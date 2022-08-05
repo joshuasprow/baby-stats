@@ -4,8 +4,8 @@
 </script>
 
 <script lang="ts">
-  import { days } from "$stores/days";
   import Entry from "$components/Entry/Entry.svelte";
+  import { days } from "$stores/days";
 </script>
 
 {#each $days as [daystamp, day] (daystamp)}

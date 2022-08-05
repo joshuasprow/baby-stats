@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { createEventDispatcher } from "svelte";
-  import type { ChangeEvent, InputEvent } from "$lib/dom";
   import { getDateAndTimeStrings, getDateFromStrings } from "$lib/dates";
+  import type { ChangeEvent, InputEvent } from "$lib/dom";
+  import { createEventDispatcher } from "svelte";
 
   export let loading = false;
   export let timestamp = new Date();

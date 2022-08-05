@@ -1,7 +1,7 @@
 <script lang="ts">
   import FeedAdd from "$components/Feed/FeedAdd.svelte";
   import NapAdd from "$components/Nap/NapAdd.svelte";
-  import PeeAdd from "$components/PeeAdd.svelte";
+  import PeeAdd from "$components/Pee/PeeAdd.svelte";
   import PoopAdd from "$components/PoopAdd.svelte";
 </script>
 

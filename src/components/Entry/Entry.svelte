@@ -1,11 +1,11 @@
 <script lang="ts" context="module">
-  import type { Entry, EntryKind } from "$models/entries";
-  import type { ComponentType } from "svelte";
-  import { slide } from "svelte/transition";
   import FeedUpdate from "$components/Feed/FeedUpdate.svelte";
   import NapUpdate from "$components/Nap/NapUpdate.svelte";
   import PeeUpdate from "$components/PeeUpdate.svelte";
   import PoopUpdate from "$components/PoopUpdate.svelte";
+  import type { Entry, EntryKind } from "$models/entries";
+  import type { ComponentType } from "svelte";
+  import { slide } from "svelte/transition";
 
   // used to dynamically render the correct component
   const components: {

@@ -1,9 +1,9 @@
 <script lang="ts">
+  import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
+  import PeeAmountInput from "$components/Pee/PeeAmountInput.svelte";
+  import PeeIcon from "$components/Pee/PeeIcon.svelte";
   import type { Pee, PeeAmount } from "$models/pees";
   import { removePee, updatePee } from "$stores/pees";
-  import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
-  import PeeAmountInput from "$components/PeeAmountInput.svelte";
-  import PeeIcon from "$components/PeeIcon.svelte";
 
   export let entry: Pee;
 
