@@ -27,8 +27,8 @@
     <Entries />
   </main>
 
-  <Footer />
   <Header />
+  <Footer />
 {/if}
 
 <style>
