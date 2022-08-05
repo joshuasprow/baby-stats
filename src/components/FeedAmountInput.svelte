@@ -1,8 +1,9 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
 
-  export let amount: number;
   export let loading = false;
+
+  export let amount: number;
 
   const dispatch = createEventDispatcher<{ change: number }>();
 
