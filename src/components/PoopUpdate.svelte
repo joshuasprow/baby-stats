@@ -32,12 +32,13 @@
 </script>
 
 <EntryUpdateModal
+  {loading}
   on:remove={handleRemove}
   on:timestamp={handleTimestamp}
   {timestamp}
 >
   <PoopIcon {amount} slot="icon" />
   <article>
-    <PoopAmountInput on:change={handleAmount} {amount} />
+    <PoopAmountInput {loading} on:change={handleAmount} {amount} />
   </article>
 </EntryUpdateModal>

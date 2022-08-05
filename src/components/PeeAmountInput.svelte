@@ -3,6 +3,7 @@
   import { createEventDispatcher } from "svelte";
 
   export let amount: PeeAmount = 2;
+  export let loading = false;
 
   const dispatch = createEventDispatcher<{ change: PeeAmount }>();
 
@@ -14,9 +15,15 @@
 
 <label for="amount">
   amount:
-  <span class:active={amount >= 1} on:click={() => set(1)}>💧</span>
-  <span class:active={amount >= 2} on:click={() => set(2)}>💧</span>
-  <span class:active={amount === 3} on:click={() => set(3)}>💧</span>
+  <span class:active={amount >= 1} class:loading on:click={() => set(1)}>
+    💧
+  </span>
+  <span class:active={amount >= 2} class:loading on:click={() => set(2)}>
+    💧
+  </span>
+  <span class:active={amount === 3} class:loading on:click={() => set(3)}>
+    💧
+  </span>
 </label>
 
 <style>
@@ -28,5 +35,10 @@
 
   .active {
     filter: grayscale(0%);
+  }
+
+  .loading {
+    filter: grayscale(100%);
+    cursor: not-allowed;
   }
 </style>

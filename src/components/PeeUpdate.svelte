@@ -37,12 +37,13 @@
 </script>
 
 <EntryUpdateModal
+  {loading}
   on:remove={handleRemove}
   on:timestamp={handleTimestamp}
   {timestamp}
 >
   <PeeIcon {amount} slot="icon" />
   <article>
-    <PeeAmountInput on:change={handleAmount} {amount} />
+    <PeeAmountInput {loading} on:change={handleAmount} {amount} />
   </article>
 </EntryUpdateModal>

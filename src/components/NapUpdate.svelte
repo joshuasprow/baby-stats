@@ -32,6 +32,7 @@
 </script>
 
 <EntryUpdateModal
+  {loading}
   on:remove={handleRemove}
   on:timestamp={handleTimestamp}
   {timestamp}
@@ -39,6 +40,6 @@
   <NapIcon {amount} slot="icon" />
 
   <article>
-    <NapAmountInput on:change={handleAmount} {amount} />
+    <NapAmountInput {loading} on:change={handleAmount} {amount} />
   </article>
 </EntryUpdateModal>
