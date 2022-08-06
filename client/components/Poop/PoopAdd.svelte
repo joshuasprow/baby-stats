@@ -5,16 +5,26 @@
   import { addPoop } from "$stores/poops";
 
   let amount: PoopAmount = 2;
+  let loading = false;
   let timestamp = new Date();
 
   const handleTimestamp = (e: CustomEvent<Date>) => {
     timestamp = e.detail;
   };
 
-  const handleAdd = () => addPoop({ amount, kind: "poops", timestamp });
+  const handleAdd = async () => {
+    loading = true;
+    await addPoop({ amount, kind: "poops", timestamp });
+    loading = false;
+  };
 </script>
 
-<EntryAddModal on:add={handleAdd} on:timestamp={handleTimestamp} {timestamp}>
+<EntryAddModal
+  {loading}
+  on:add={handleAdd}
+  on:timestamp={handleTimestamp}
+  {timestamp}
+>
   <span slot="icon">💩</span>
   <article>
     <PoopAmountInput bind:amount />

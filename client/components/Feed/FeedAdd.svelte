@@ -1,12 +1,13 @@
 <script lang="ts">
-  import type { FeedAdd, FeedSide, FeedSource } from "baby-stats-models/feeds";
-  import { addFeed } from "$stores/feeds";
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import FeedAmountInput from "$components/Feed/FeedAmountInput.svelte";
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
+  import { addFeed } from "$stores/feeds";
+  import type { FeedAdd, FeedSide, FeedSource } from "baby-stats-models/feeds";
 
   let amount = 2;
+  let loading = false;
   let side: FeedSide | null = null;
   let source: FeedSource = "bottle";
   let timestamp = new Date();
@@ -22,11 +23,27 @@
     timestamp = e.detail;
   };
 
-  const handleAdd = () =>
-    addFeed({ amount, kind: "feeds", source, side, timestamp } as FeedAdd);
+  const handleAdd = async () => {
+    loading = true;
+
+    await addFeed({
+      amount,
+      kind: "feeds",
+      source,
+      side,
+      timestamp,
+    } as FeedAdd);
+
+    loading = false;
+  };
 </script>
 
-<EntryAddModal on:add={handleAdd} on:timestamp={handleTimestamp} {timestamp}>
+<EntryAddModal
+  {loading}
+  on:add={handleAdd}
+  on:timestamp={handleTimestamp}
+  {timestamp}
+>
   <span slot="icon">🍼</span>
 
   <article>

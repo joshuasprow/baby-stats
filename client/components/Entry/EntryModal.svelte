@@ -24,13 +24,11 @@
   };
 </script>
 
-<button disabled={loading} on:click={handleOpen}>
-  {#if $$slots.icon}
-    <slot name="icon" />
-  {:else}
-    🚫
-  {/if}
-</button>
+{#if $$slots.button}
+  <slot name="button" />
+{:else}
+  <button disabled={loading} on:click={handleOpen}>🚫</button>
+{/if}
 
 {#if open}
   <div class="backdrop" transition:fade />

@@ -2,24 +2,25 @@
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import PeeAmountInput from "$components/Pee/PeeAmountInput.svelte";
   import PeeIcon from "$components/Pee/PeeIcon.svelte";
-  import type { Pee, PeeAmount } from "baby-stats-models/pees";
   import { removePee, updatePee } from "$stores/pees";
+  import type { Pee, PeeAmount } from "baby-stats-models/pees";
 
   export let entry: Pee;
 
   let amount = entry.amount;
-  let timestamp = entry.timestamp;
-
   let loading = false;
+  let timestamp = entry.timestamp;
 
   const update = async () => {
     loading = true;
+
     await updatePee({
       id: entry.id,
       amount,
       kind: "pees",
       timestamp,
     } as Pee);
+
     loading = false;
   };
 

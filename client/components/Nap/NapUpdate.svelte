@@ -8,9 +8,8 @@
   export let entry: Nap;
 
   let amount = entry.amount;
-  let timestamp = entry.timestamp;
-
   let loading = false;
+  let timestamp = entry.timestamp;
 
   const update = async () => {
     loading = true;

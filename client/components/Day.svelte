@@ -29,10 +29,14 @@
   let open = false;
 
   $: counts = getEntryCounts(day);
+
+  const handleOpenClick = () => {
+    open = true;
+  };
 </script>
 
-<EntryModal {open}>
-  <span class="date" slot="icon">{label}</span>
+<EntryModal bind:open>
+  <button slot="button" on:click={handleOpenClick}>{label}</button>
 
   <section>
     <p>{label}</p>
@@ -43,19 +47,30 @@
   </section>
 </EntryModal>
 
-{#each day as [_, entry] (entry.id)}
-  <Entry {entry} />
-{/each}
+<article>
+  {#each day as [_, entry] (entry.id)}
+    <Entry {entry} />
+  {/each}
+</article>
 
 <style>
-  .date {
+  button {
+    background: transparent;
     display: flex;
     align-items: center;
     font-size: 0.75rem;
     color: #888;
+    padding: 0 0.25rem;
+    margin-bottom: 0.5rem;
+    border: 1px solid #888;
+    border-radius: 0.25rem;
   }
 
   p {
     margin: 0 0 0.5rem 0;
+  }
+
+  article {
+    margin-bottom: 0.5rem;
   }
 </style>

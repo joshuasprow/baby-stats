@@ -3,11 +3,14 @@
   import EntryModal from "$components/Entry/EntryModal.svelte";
   import { createEventDispatcher } from "svelte";
 
-  export let loading = false;
+  export let loading: boolean;
   export let timestamp: Date;
 
-  const dispatch =
-    createEventDispatcher<{ remove: void; timestamp: Date; update: void }>();
+  const dispatch = createEventDispatcher<{
+    remove: void;
+    timestamp: Date;
+    update: void;
+  }>();
   const duration = 300;
 
   let open = false;
@@ -35,8 +38,13 @@
 </script>
 
 <EntryModal {loading} on:close={handleClose} on:open={handleOpen} {open}>
-  <slot name="icon" slot="icon" />
+  <button disabled={loading} on:click={handleOpen} slot="button">
+    <slot name="icon" />
+  </button>
+
   <DateTimePicker {loading} on:change={handleTimestamp} {timestamp} />
+
   <slot />
+
   <button disabled={loading} on:click={handleRemove}>remove</button>
 </EntryModal>

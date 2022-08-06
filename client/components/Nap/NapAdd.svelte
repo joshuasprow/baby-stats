@@ -4,12 +4,17 @@
   import NapAmountInput from "$components/Nap/NapAmountInput.svelte";
 
   let amount = 2;
+  let loading = false;
   let timestamp = new Date();
 
-  const handleAdd = () => addNap({ amount, kind: "naps", timestamp });
+  const handleAdd = async () => {
+    loading = true;
+    await addNap({ amount, kind: "naps", timestamp });
+    loading = false;
+  };
 </script>
 
-<EntryAddModal on:add={handleAdd} {timestamp}>
+<EntryAddModal {loading} on:add={handleAdd} {timestamp}>
   <span slot="icon">💤</span>
   <article>
     <NapAmountInput bind:amount />
