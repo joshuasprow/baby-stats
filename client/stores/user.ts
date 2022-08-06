@@ -1,4 +1,5 @@
 import { auth, firestore } from "$firebase";
+import { ProviderData, User } from "baby-stats-models/users";
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -10,29 +11,6 @@ import {
 import { doc, setDoc } from "firebase/firestore";
 import { readable } from "svelte/store";
 import { z } from "zod";
-
-const ProviderData = z.object({
-  providerId: z.string(),
-  uid: z.string(),
-  displayName: z.string().nullable(),
-  email: z.string().email().nullable(),
-  phoneNumber: z.string().nullable(),
-  photoURL: z.string().url().nullable(),
-});
-type ProviderData = z.infer<typeof ProviderData>;
-
-const User = z.object({
-  uid: z.string(),
-  email: z.string().email().nullable(),
-  emailVerified: z.boolean(),
-  displayName: z.string(),
-  isAnonymous: z.boolean(),
-  photoURL: z.string().url().nullable(),
-  providerData: z.array(ProviderData),
-  createdAt: z.date(),
-  lastLoginAt: z.date(),
-});
-export type User = z.infer<typeof User>;
 
 const parseProviderData = (providerData: UserInfo): ProviderData => ({
   providerId: providerData.providerId,
