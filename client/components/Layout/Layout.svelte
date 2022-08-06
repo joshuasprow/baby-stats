@@ -1,11 +1,21 @@
 <script lang="ts">
   import Entries from "$components/Entries.svelte";
+  import EntryModal from "$components/Entry/EntryModal.svelte";
   import Footer from "$components/Layout/Footer.svelte";
   import Header from "$components/Layout/Header.svelte";
   import SignInButton from "$components/SignInButton.svelte";
+  import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { days } from "$stores/days";
   import { user } from "$stores/user";
+
+  const handleChange = (e: CustomEvent<{ start: Date; end: Date }>) => {
+    console.log(e.detail);
+  };
 </script>
+
+<EntryModal open={true}>
+  <TimeRangePicker on:change={handleChange} />
+</EntryModal>
 
 <!-- firebase hasn't loaded yet -->
 {#if $user === undefined}
