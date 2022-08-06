@@ -5,9 +5,22 @@ import {
   collection,
   doc,
   getDocs,
+  limit,
+  orderBy,
+  query,
   runTransaction,
+  Timestamp as FirestoreTimestamp,
   Transaction,
 } from "firebase/firestore";
+import { z } from "zod";
+
+const Timestamp = z.instanceof(FirestoreTimestamp);
+
+const Snapshot = z.object({
+  createdAt: Timestamp,
+  expiresAt: Timestamp,
+});
+type Snapshot = z.infer<typeof Snapshot>;
 
 const getSnapshotDoc = (uid: string, timestamp: string) =>
   doc(firestore, `users/${uid}/snapshots/${timestamp}`);
@@ -53,6 +66,30 @@ const takeEntriesSnapshot = async (uid: string) => {
   }
 };
 
+const getLatestSnapshot = async (uid: string) => {
+  const { docs } = await getDocs(
+    query(
+      collection(firestore, `users/${uid}/snapshots`),
+      orderBy("createdAt", "desc"),
+      limit(1)
+    )
+  );
+
+  if (docs.length === 0) return null;
+
+  const snapshot = Snapshot.parse(docs[0].data());
+
+  return snapshot;
+};
+
+/** Checks if snapshot.createdAt is at least one hour old */
+const isOneHourOld = (snapshot: Snapshot): boolean => {
+  const createdAt = snapshot.createdAt.toDate();
+  const now = new Date();
+
+  return now.getTime() - createdAt.getTime() > 60 * 60 * 1000;
+};
+
 let taking = false;
 
 export const takeSnapshot = (uid: string) => {
@@ -63,7 +100,13 @@ export const takeSnapshot = (uid: string) => {
   const take = async () => {
     taking = true;
 
-    await takeEntriesSnapshot(uid);
+    const latest = await getLatestSnapshot(uid);
+
+    if (!latest || isOneHourOld(latest)) {
+      await takeEntriesSnapshot(uid);
+    } else {
+      console.warn("Snapshot is less than an hour old");
+    }
 
     taking = false;
   };

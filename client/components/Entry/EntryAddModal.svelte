@@ -4,7 +4,7 @@
   import { createEventDispatcher } from "svelte";
 
   export let loading: boolean;
-  export let timestamp: Date;
+  export let timestamp = new Date();
 
   const dispatch = createEventDispatcher<{ add: void; timestamp: Date }>();
 
