@@ -12,7 +12,7 @@ import { user } from "./user";
 
 type DayEntry<K extends EntryKind> = [timestamp: number, entry: Entry<K>];
 
-type Days = [daystamp: number, entries: DayEntry<EntryKind>[]][];
+export type Days = [daystamp: number, entries: DayEntry<EntryKind>[]][];
 
 const encodeDayTimestamp = (timestamp: Date): number => {
   const date = new Date(

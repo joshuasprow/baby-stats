@@ -10,7 +10,7 @@ export const Snapshot = z.object({
   uid: z.string(),
   feeds: z.array(Feed),
   naps: z.array(Nap),
-  pees: z.array(Pee).nonempty(),
-  poops: z.array(Poop).nonempty(),
+  pees: z.array(Pee),
+  poops: z.array(Poop),
 });
 export type Snapshot = z.infer<typeof Snapshot>;
