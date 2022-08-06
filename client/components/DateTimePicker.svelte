@@ -1,46 +1,41 @@
 <script lang="ts">
-  import {
-    getDateAndTimeStrings,
-    getDateFromStrings,
-  } from "baby-stats-lib/dates";
-  import type { ChangeEvent, InputEvent } from "baby-stats-lib/dom";
+  import type { Time } from "baby-stats-lib/dates";
   import { createEventDispatcher } from "svelte";
+  import DatePicker from "./DatePicker.svelte";
+  import TimePicker from "./TimePicker.svelte";
 
   export let loading = false;
   export let timestamp = new Date();
 
-  let { date, time } = getDateAndTimeStrings(timestamp);
+  let date = new Date(timestamp);
+  let time: Time = { hours: date.getHours(), minutes: date.getMinutes() };
 
   const dispatch = createEventDispatcher<{ change: Date }>();
 
-  const handleDateChange = (e: InputEvent | ChangeEvent) =>
-    dispatch(
-      "change",
-      getDateFromStrings({ date: e.currentTarget.value, time })
-    );
+  const handleDateChange = (e: CustomEvent<Date>) => {
+    date = e.detail;
 
-  const handleTimeChange = (e: InputEvent | ChangeEvent) =>
-    dispatch(
-      "change",
-      getDateFromStrings({ date, time: e.currentTarget.value })
-    );
+    const d = new Date(date);
+    d.setHours(time.hours);
+    d.setMinutes(time.minutes);
+
+    dispatch("change", d);
+  };
+
+  const handleTimeChange = (e: CustomEvent<Time>) => {
+    time = e.detail;
+
+    const d = new Date(date);
+    d.setHours(time.hours);
+    d.setMinutes(time.minutes);
+
+    dispatch("change", d);
+  };
 </script>
 
 <div>
-  <input
-    disabled={loading}
-    on:change={handleDateChange}
-    on:input={handleDateChange}
-    type="date"
-    value={date}
-  />
-  <input
-    disabled={loading}
-    on:change={handleTimeChange}
-    on:input={handleTimeChange}
-    type="time"
-    value={time}
-  />
+  <DatePicker {loading} on:change={handleDateChange} {date} />
+  <TimePicker {loading} on:change={handleTimeChange} {time} />
 </div>
 
 <style>

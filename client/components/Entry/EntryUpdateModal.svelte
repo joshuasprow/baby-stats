@@ -23,10 +23,8 @@
     open = false;
   };
 
-  const handleTimestamp = (e: CustomEvent<Date>) => {
-    console.log(e.detail);
+  const handleTimestamp = (e: CustomEvent<Date>) =>
     dispatch("timestamp", e.detail);
-  };
 
   const handleRemove = async () => {
     handleClose();

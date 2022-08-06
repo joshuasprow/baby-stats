@@ -1,11 +1,9 @@
 <script lang="ts">
   import type { SelectEvent } from "baby-stats-lib/dom";
-
   import { createEventDispatcher } from "svelte";
 
-  export let loading = false;
-
   export let amount: number;
+  export let loading = false;
 
   const dispatch = createEventDispatcher<{ change: number }>();
 

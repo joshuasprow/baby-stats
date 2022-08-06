@@ -1,3 +1,5 @@
+export type Time = { hours: number; minutes: number };
+
 /** Adds days to the given date */
 export const addDays = (date: Date, days: number) => {
   const copy = new Date(date);
@@ -16,6 +18,19 @@ export const addHours = (date: Date, hours: number) => {
 export const formatDaystamp = (daystamp: number) =>
   new Date(daystamp).toDateString();
 
+const addLeadingZero = (num: number) => (num < 10 ? `0${num}` : num);
+
+export const getDateString = (date = new Date()) => {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  return `${year}-${addLeadingZero(month)}-${addLeadingZero(day)}`;
+};
+
+export const getTimeString = ({ hours, minutes }: Time) =>
+  `${addLeadingZero(hours)}:${addLeadingZero(minutes)}`;
+
 /**
  * Split a date string into its components. Format can be used for "date" or "time"
  * html input values. Default value is new Date().
@@ -32,10 +47,24 @@ export const getDateAndTimeStrings = (date = new Date()) => {
   return { date: d, time };
 };
 
+export const getDateFromString = (string: string) => {
+  const [y, mo, d] = string.split("-"); // [y, mo, d] = ["2022", "07", "31"]
+  const [year, month, date] = [y, mo, d].map(Number); /* [2022, 7, 31] */
+
+  return new Date(year, month - 1, date);
+};
+
+export const getTimeFromString = (string: string): Time => {
+  const [h, mi] = string.split(":"); /* [h, mi] = ["15", "23"] */
+  const [hours, minutes] = [h, mi].map(Number); /* [ 15, 23] */
+
+  return { hours, minutes };
+};
+
 /**
  * Combine "date" and "time" strings into a single Date object.
  */
-export const getDateFromStrings = ({
+export const getDateTimeFromStrings = ({
   date /* "2022-07-31" */,
   time /* "15:23" */,
 }: {
