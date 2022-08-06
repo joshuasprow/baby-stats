@@ -8,6 +8,7 @@ import { feeds } from "./feeds";
 import { naps } from "./naps";
 import { pees } from "./pees";
 import { poops } from "./poops";
+import { takeSnapshot } from "./snapshots";
 import { user } from "./user";
 
 type DayEntry<K extends EntryKind> = [timestamp: number, entry: Entry<K>];
@@ -47,27 +48,40 @@ const combineEntries = (
   return sorted;
 };
 
-export const days = derived(
-  [user, feeds, naps, pees, poops],
-  ([_, $feeds = [], $naps = [], $pees = [], $poops = []]) => {
-    const days: Days = [];
-    const entries = combineEntries($feeds, $naps, $pees, $poops);
+const buildDays = ([_feeds, _naps, _pees, _poops]: [
+  Feed[],
+  Nap[],
+  Pee[],
+  Poop[]
+]) => {
+  const days: Days = [];
+  const entries = combineEntries(_feeds, _naps, _pees, _poops);
 
-    for (const entry of entries) {
-      const daystamp = encodeDayTimestamp(entry.timestamp);
-      const dayEntry = newDayEntry(entry);
+  for (const entry of entries) {
+    const daystamp = encodeDayTimestamp(entry.timestamp);
+    const dayEntry = newDayEntry(entry);
 
-      const day = days.find(([ds]) => ds === daystamp);
+    const day = days.find(([ds]) => ds === daystamp);
 
-      if (day) {
-        day[1].push(dayEntry);
-        days[daystamp] = day;
-        continue;
-      }
-
-      days.push([daystamp, [dayEntry]]);
+    if (day) {
+      day[1].push(dayEntry);
+      days[daystamp] = day;
+      continue;
     }
 
-    return days;
+    days.push([daystamp, [dayEntry]]);
+  }
+
+  return days;
+};
+
+export const days = derived(
+  [user, feeds, naps, pees, poops],
+  ([_user, ...stores]) => {
+    if (!_user) return [];
+
+    takeSnapshot(_user.uid);
+
+    return buildDays(stores);
   }
 );

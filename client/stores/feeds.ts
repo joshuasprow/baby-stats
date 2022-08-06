@@ -4,6 +4,9 @@ import {
   collection,
   deleteDoc,
   doc,
+  onSnapshot,
+  orderBy,
+  query,
   QueryDocumentSnapshot,
   setDoc,
   Timestamp,
@@ -11,7 +14,6 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
-import { subscribeToEntrySnapshots } from "./snapshots";
 import { user } from "./user";
 
 export const getFeedsCollection = (uid: string) =>
@@ -40,11 +42,13 @@ export const feeds = derived<typeof user, Feed[]>(user, ($user, set) => {
 
   const { uid } = $user;
 
-  unsubscribe = subscribeToEntrySnapshots(
-    uid,
-    getFeedsCollection(uid),
-    feedFromDoc,
-    set
+  unsubscribe = onSnapshot(
+    query(getFeedsCollection(uid), orderBy("timestamp", "desc")),
+    (snap) => {
+      const $feeds = snap.docs.map(feedFromDoc);
+
+      set($feeds);
+    }
   );
 
   return unsubscribe;
