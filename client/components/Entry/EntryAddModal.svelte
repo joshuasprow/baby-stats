@@ -27,7 +27,6 @@
   };
 
   const handleTimestamp = (e: CustomEvent<Date>) => {
-    console.log(e.detail);
     dispatch("timestamp", e.detail);
   };
 </script>

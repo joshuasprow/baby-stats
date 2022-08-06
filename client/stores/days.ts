@@ -84,6 +84,7 @@ export const days = derived(
   ([_user, ...stores]) => {
     if (!_user) return [];
 
+    // calling synchronously so that state isn't blocked from setting
     takeSnapshot(_user.uid);
 
     return buildDays(stores);
