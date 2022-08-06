@@ -1,4 +1,5 @@
 <script lang="ts">
+  import MenuIcon from "$components/MenuIcon.svelte";
   import SignInButton from "$components/SignInButton.svelte";
   import SignOutButton from "$components/SignOutButton.svelte";
   import { user } from "$stores/user";
@@ -16,7 +17,7 @@
   };
 </script>
 
-<button class={buttonClass} on:click={toggle}>🍔</button>
+<button class={buttonClass} on:click={toggle}><MenuIcon /></button>
 
 {#if open}
   <div class="backdrop" on:click={close} transition:fade />
