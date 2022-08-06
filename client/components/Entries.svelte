@@ -1,24 +1,8 @@
-<script lang="ts" context="module">
-  const formatDaystamp = (daystamp: number) =>
-    new Date(daystamp).toDateString();
-</script>
-
 <script lang="ts">
-  import Entry from "$components/Entry/Entry.svelte";
+  import Day from "$components/Day.svelte";
   import { days } from "$stores/days";
 </script>
 
 {#each $days as [daystamp, day] (daystamp)}
-  <span class="date">{formatDaystamp(daystamp)}</span>
-
-  {#each day as [_, entry] (entry.id)}
-    <Entry {entry} />
-  {/each}
+  <Day {daystamp} {day} />
 {/each}
-
-<style>
-  .date {
-    font-size: 0.75rem;
-    color: #888;
-  }
-</style>

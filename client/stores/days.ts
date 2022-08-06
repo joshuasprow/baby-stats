@@ -11,9 +11,13 @@ import { poops } from "./poops";
 import { takeSnapshot } from "./snapshots";
 import { user } from "./user";
 
-type DayEntry<K extends EntryKind> = [timestamp: number, entry: Entry<K>];
+export type DayEntry<K extends EntryKind> = [
+  timestamp: number,
+  entry: Entry<K>
+];
 
-export type Days = [daystamp: number, entries: DayEntry<EntryKind>[]][];
+export type Day = [daystamp: number, entries: DayEntry<EntryKind>[]];
+export type Days = Day[];
 
 const encodeDayTimestamp = (timestamp: Date): number => {
   const date = new Date(

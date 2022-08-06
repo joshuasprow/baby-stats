@@ -5,6 +5,10 @@ export const addDays = (date: Date, days: number) => {
   return copy;
 };
 
+/** Converts a unix timestamp to a formatted string */
+export const formatDaystamp = (daystamp: number) =>
+  new Date(daystamp).toDateString();
+
 /**
  * Split a date string into its components. Format can be used for "date" or "time"
  * html input values. Default value is new Date().

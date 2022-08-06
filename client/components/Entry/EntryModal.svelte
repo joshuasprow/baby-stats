@@ -12,11 +12,13 @@
   const dispatch = createEventDispatcher<{ close: void; open: void }>();
 
   const handleOpen = () => {
+    open = true;
     if (loading) return;
     dispatch("open");
   };
 
   const handleClose = () => {
+    open = false;
     if (loading) return;
     dispatch("close");
   };
