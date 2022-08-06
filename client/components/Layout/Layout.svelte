@@ -33,7 +33,7 @@
 
 <style>
   main {
-    padding: var(--action-bar-height) 0.5rem;
+    padding: 0.5rem 0.5rem var(--action-bar-height) 0.5rem;
   }
 
   .centered {

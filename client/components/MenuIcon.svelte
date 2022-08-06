@@ -3,3 +3,9 @@
   <rect y="30" width="100" height="20" />
   <rect y="60" width="100" height="20" />
 </svg>
+
+<style>
+  rect {
+    fill: #888;
+  }
+</style>

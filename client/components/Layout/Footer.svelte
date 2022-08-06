@@ -24,6 +24,6 @@
     align-items: center;
     height: var(--action-bar-height);
     padding: 0 0.25rem;
-    background: var(--action-bar-color);
+    background-color: buttonface;
   }
 </style>

@@ -5,7 +5,6 @@
   import { user } from "$stores/user";
   import { fade, fly } from "svelte/transition";
 
-  export let buttonClass = "sider-button";
   export let open = false;
 
   const close = () => {
@@ -17,7 +16,7 @@
   };
 </script>
 
-<button class={buttonClass} on:click={toggle}><MenuIcon /></button>
+<button class="open" on:click={toggle}><MenuIcon /></button>
 
 {#if open}
   <div class="backdrop" on:click={close} transition:fade />
@@ -42,6 +41,11 @@
 {/if}
 
 <style>
+  .open {
+    display: flex;
+    align-items: center;
+  }
+
   .backdrop {
     position: fixed;
     inset: 0;
