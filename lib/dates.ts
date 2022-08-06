@@ -1,3 +1,10 @@
+/** Adds days to the given date */
+export const addDays = (date: Date, days: number) => {
+  const copy = new Date(date);
+  copy.setDate(date.getDate() + days);
+  return copy;
+};
+
 /**
  * Split a date string into its components. Format can be used for "date" or "time"
  * html input values. Default value is new Date().
