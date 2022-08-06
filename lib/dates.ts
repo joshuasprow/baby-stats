@@ -5,6 +5,13 @@ export const addDays = (date: Date, days: number) => {
   return copy;
 };
 
+/** Adds hours to the given date */
+export const addHours = (date: Date, hours: number) => {
+  const copy = new Date(date);
+  copy.setHours(date.getHours() + hours);
+  return copy;
+};
+
 /** Converts a unix timestamp to a formatted string */
 export const formatDaystamp = (daystamp: number) =>
   new Date(daystamp).toDateString();

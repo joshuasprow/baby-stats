@@ -1,5 +1,5 @@
 import { firestore } from "$firebase";
-import { addDays } from "baby-stats-lib/dates";
+import { addHours } from "baby-stats-lib/dates";
 import { ENTRY_KINDS, type EntryKind } from "baby-stats-models/entries";
 import {
   collection,
@@ -30,10 +30,10 @@ const copyEntriesToSnapshot = async <K extends EntryKind>(
 
 const takeEntriesSnapshot = async (uid: string) => {
   try {
-    // uses Firestore TTL to delete after 10 days based on expiresAt
+    // uses Firestore TTL to delete after expiresAt
     // https://console.cloud.google.com/firestore/ttl
     const createdAt = new Date();
-    const expiresAt = addDays(createdAt, 10);
+    const expiresAt = addHours(createdAt, 1);
 
     const timestamp = createdAt.getTime().toString();
 
