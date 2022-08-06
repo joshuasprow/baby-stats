@@ -10,7 +10,8 @@
   let loading = false;
   let side: FeedSide | null = null;
   let source: FeedSource = "bottle";
-  let timestamp = new Date();
+
+  let timestamp: Date;
 
   $: if (source === "bottle") {
     side = null;
@@ -39,10 +40,10 @@
 </script>
 
 <EntryAddModal
+  bind:timestamp
   {loading}
   on:add={handleAdd}
   on:timestamp={handleTimestamp}
-  {timestamp}
 >
   <span slot="icon">🍼</span>
 

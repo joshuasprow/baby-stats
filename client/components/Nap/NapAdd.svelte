@@ -5,7 +5,7 @@
 
   let amount = 2;
   let loading = false;
-  let timestamp = new Date();
+  let timestamp: Date;
 
   const handleAdd = async () => {
     loading = true;
@@ -14,7 +14,7 @@
   };
 </script>
 
-<EntryAddModal {loading} on:add={handleAdd} {timestamp}>
+<EntryAddModal bind:timestamp {loading} on:add={handleAdd}>
   <span slot="icon">💤</span>
   <article>
     <NapAmountInput bind:amount />

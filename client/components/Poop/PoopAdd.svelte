@@ -6,7 +6,7 @@
 
   let amount: PoopAmount = 2;
   let loading = false;
-  let timestamp = new Date();
+  let timestamp: Date;
 
   const handleTimestamp = (e: CustomEvent<Date>) => {
     timestamp = e.detail;
@@ -20,10 +20,10 @@
 </script>
 
 <EntryAddModal
+  bind:timestamp
   {loading}
   on:add={handleAdd}
   on:timestamp={handleTimestamp}
-  {timestamp}
 >
   <span slot="icon">💩</span>
   <article>
