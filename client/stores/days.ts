@@ -52,7 +52,7 @@ const combineEntries = (
   return sorted;
 };
 
-const buildDays = ([_feeds, _naps, _pees, _poops]: [
+const buildDays = ([_feeds = [], _naps = [], _pees = [], _poops = []]: [
   Feed[],
   Nap[],
   Pee[],
