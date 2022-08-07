@@ -4,10 +4,10 @@
    */
 
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
-  import type { BreastFeedAmount } from "baby-stats-models/feeds";
+  import type { TimeRangeAmount } from "baby-stats-models/entries";
   import { createEventDispatcher } from "svelte";
 
-  type Amount = number | BreastFeedAmount;
+  type Amount = number | TimeRangeAmount;
   type Timestamp<A extends Amount> = A extends number ? Date : undefined;
 
   const getStartDate = <A extends Amount>(
@@ -47,7 +47,7 @@
   let start = getStartDate(amount, timestamp);
   let end = getEndDate(amount, timestamp);
 
-  const dispatch = createEventDispatcher<{ change: BreastFeedAmount }>();
+  const dispatch = createEventDispatcher<{ change: TimeRangeAmount }>();
 
   const handleChange = (e: CustomEvent<{ start: Date; end: Date }>) => {
     dispatch("change", e.detail);

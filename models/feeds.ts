@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EntryBase } from "./entries";
+import { EntryBase, TimeRangeAmount } from "./entries";
 
 const FeedSide = z.enum(["L", "R", "LR", "RL"]);
 export type FeedSide = z.infer<typeof FeedSide>;
@@ -19,13 +19,8 @@ export const BottleFeed = EntryBase.extend({
 });
 export type BottleFeed = z.infer<typeof BottleFeed>;
 
-const BreastFeedAmount = z
-  .object({ start: z.date(), end: z.date() })
-  .refine((s) => s.start <= s.end, "start must be before end");
-export type BreastFeedAmount = z.infer<typeof BreastFeedAmount>;
-
 export const BreastFeed = EntryBase.extend({
-  amount: z.number().or(BreastFeedAmount),
+  amount: z.number().or(TimeRangeAmount),
   source: z.literal(FeedSource[1]),
   side: FeedSide,
 });
