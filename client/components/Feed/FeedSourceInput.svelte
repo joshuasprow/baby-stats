@@ -2,7 +2,7 @@
   import type { FeedSource } from "baby-stats-models/feeds";
   import { createEventDispatcher } from "svelte";
 
-  export let loading = false;
+  export let loading: boolean;
   export let source: FeedSource = "bottle";
 
   const dispatch = createEventDispatcher<{ change: FeedSource }>();

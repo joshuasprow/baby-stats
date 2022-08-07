@@ -139,11 +139,7 @@
 
   {#if update.source === "breast"}
     <article>
-      <FeedSideInputGroup
-        disabled={loading}
-        on:change={handleSide}
-        side={update.side}
-      />
+      <FeedSideInputGroup {loading} on:change={handleSide} side={update.side} />
     </article>
   {/if}
 

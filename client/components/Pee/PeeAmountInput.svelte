@@ -3,7 +3,7 @@
   import { createEventDispatcher } from "svelte";
 
   export let amount: PeeAmount = 2;
-  export let loading = false;
+  export let loading: boolean;
 
   const dispatch = createEventDispatcher<{ change: PeeAmount }>();
 

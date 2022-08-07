@@ -1,20 +1,16 @@
 <script lang="ts">
   import type { FeedSide } from "baby-stats-models/feeds";
 
-  export let loading = false;
-
-  export let disabled: boolean;
   export let group: FeedSide | null;
-  export let side: FeedSide | null;
   export let label: string;
-
-  $: _disabled = disabled || loading;
+  export let loading: boolean;
+  export let side: FeedSide | null;
 </script>
 
-<label class:disabled={_disabled} for={side}>
+<label class:disabled={loading} for={side}>
   <input
     bind:group
-    disabled={_disabled}
+    disabled={loading}
     id={side}
     name="side"
     type="radio"

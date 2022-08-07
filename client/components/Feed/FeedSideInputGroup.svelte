@@ -3,9 +3,7 @@
   import { createEventDispatcher } from "svelte";
   import FeedSideInput from "$components/Feed/FeedSideInput.svelte";
 
-  export let loading = false;
-
-  export let disabled: boolean;
+  export let loading: boolean;
   export let side: FeedSide | null;
 
   const dispatch = createEventDispatcher<{ change: FeedSide | null }>();
@@ -18,29 +16,15 @@
 <article>
   <span>side:</span>
   <div>
+    <FeedSideInput bind:group={side} label="left" {loading} side="L" />
+    <FeedSideInput bind:group={side} label="right" {loading} side="R" />
     <FeedSideInput
-      {disabled}
-      bind:group={side}
-      label="left"
-      {loading}
-      side="L"
-    />
-    <FeedSideInput
-      {disabled}
-      bind:group={side}
-      label="right"
-      {loading}
-      side="R"
-    />
-    <FeedSideInput
-      {disabled}
       bind:group={side}
       label="left -> right"
       {loading}
       side="LR"
     />
     <FeedSideInput
-      {disabled}
       bind:group={side}
       label="right -> left"
       {loading}

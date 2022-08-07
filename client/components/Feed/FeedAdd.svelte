@@ -97,16 +97,12 @@
 
   <article>
     source:
-    <FeedSourceInput on:change={handleSource} source={add.source} />
+    <FeedSourceInput {loading} on:change={handleSource} source={add.source} />
   </article>
 
   {#if add.source === "breast"}
     <article>
-      <FeedSideInputGroup
-        disabled={loading}
-        on:change={handleSide}
-        side={add.side}
-      />
+      <FeedSideInputGroup {loading} on:change={handleSide} side={add.side} />
     </article>
   {/if}
 
