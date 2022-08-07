@@ -1,32 +1,72 @@
 <script lang="ts">
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import PoopAmountInput from "$components/Poop/PoopAmountInput.svelte";
-  import type { PoopAmount } from "baby-stats-models/poops";
+  import { addEntryFields } from "$stores/entries";
   import { addPoop } from "$stores/poops";
+  import { parseError } from "baby-stats-lib/error";
+  import { PoopAdd, type PoopAmount } from "baby-stats-models/poops";
 
-  let amount: PoopAmount = 2;
-  let loading = false;
-  let timestamp: Date;
-
-  const handleTimestamp = (e: CustomEvent<Date>) => {
-    timestamp = e.detail;
+  let add: PoopAdd = {
+    amount: 2,
+    kind: "poops",
+    timestamp: new Date(),
   };
+
+  let error: null | string = null;
+  let loading = false;
+
+  const setAdd = (fields: Partial<PoopAdd>) => {
+    const [a, e] = addEntryFields(PoopAdd, add, fields);
+    if (e) {
+      error = e.message;
+    } else {
+      add = a;
+      error = null;
+    }
+  };
+
+  const handleOpen = () => setAdd({ timestamp: new Date() });
+
+  const handleAmount = (e: CustomEvent<PoopAmount>) =>
+    setAdd({ amount: e.detail });
+
+  const handleTimestamp = (e: CustomEvent<Date>) =>
+    setAdd({ timestamp: e.detail });
 
   const handleAdd = async () => {
     loading = true;
-    await addPoop({ amount, kind: "poops", timestamp });
+
+    try {
+      await addPoop(add);
+    } catch (e) {
+      error = parseError(e).message;
+    }
+
     loading = false;
   };
 </script>
 
 <EntryAddModal
-  bind:timestamp
   {loading}
   on:add={handleAdd}
+  on:open={handleOpen}
   on:timestamp={handleTimestamp}
+  timestamp={add.timestamp}
 >
   <span slot="icon">💩</span>
+
   <article>
-    <PoopAmountInput bind:amount />
+    <PoopAmountInput amount={add.amount} {loading} on:change={handleAmount} />
   </article>
+
+  {#if error}
+    <span class="error">{error}</span>
+  {/if}
 </EntryAddModal>
+
+<style>
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+</style>

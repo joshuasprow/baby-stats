@@ -53,7 +53,17 @@
     await handleUpdate();
   };
 
-  const handleRemove = () => removePee(entry.id);
+  const handleRemove = async () => {
+    loading = true;
+
+    try {
+      await removePee(entry.id);
+    } catch (e) {
+      error = parseError(e).message;
+    }
+
+    loading = false;
+  };
 </script>
 
 <EntryUpdateModal
