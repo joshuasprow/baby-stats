@@ -3,7 +3,8 @@
   import FeedIcon from "$components/Feed/FeedIcon.svelte";
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
-  import { addFeedFields, removeFeed, updateFeed } from "$stores/feeds";
+  import { addEntryFields } from "$stores/entries";
+  import { removeFeed, updateFeed } from "$stores/feeds";
   import { parseError } from "baby-stats-lib/error";
   import {
     Feed,
@@ -34,7 +35,7 @@
   }
 
   const setUpdate = (fields: Partial<Feed>) => {
-    const [u, e] = addFeedFields(Feed, update, fields);
+    const [u, e] = addEntryFields(Feed, update, fields);
     if (e) {
       error = e.message;
     } else {

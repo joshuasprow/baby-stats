@@ -1,7 +1,8 @@
 <script lang="ts">
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import NapAmountInput from "$components/Nap/NapAmountInput.svelte";
-  import { addNap, addNapFields } from "$stores/naps";
+  import { addEntryFields } from "$stores/entries";
+  import { addNap } from "$stores/naps";
   import { parseError } from "baby-stats-lib/error";
   import { NapAdd } from "baby-stats-models/naps";
 
@@ -16,7 +17,7 @@
   let open = false;
 
   const setAdd = (fields: Partial<NapAdd>) => {
-    const [a, e] = addNapFields(NapAdd, add, fields);
+    const [a, e] = addEntryFields(NapAdd, add, fields);
     if (e) {
       error = e.message;
     } else {

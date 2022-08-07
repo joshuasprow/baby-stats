@@ -1,5 +1,5 @@
 import { firestore } from "$firebase";
-import { BottleFeed, BreastFeed, Feed, FeedAdd } from "baby-stats-models/feeds";
+import { Feed, FeedAdd } from "baby-stats-models/feeds";
 import {
   collection,
   deleteDoc,
@@ -14,7 +14,6 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
-import type { ZodType, ZodError } from "zod";
 import { user } from "./user";
 
 export const getFeedsCollection = (uid: string) =>
@@ -31,25 +30,6 @@ const feedFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): Feed => {
 
   return feed;
 };
-
-export const parseFeed = <F extends BreastFeed | BottleFeed | Feed | FeedAdd>(
-  type: ZodType<F>,
-  feed: F
-): [F, null] | [null, ZodError<F>] => {
-  try {
-    return [type.parse(feed), null];
-  } catch (error) {
-    return [null, error as ZodError<F>];
-  }
-};
-
-export const addFeedFields = <
-  F extends BreastFeed | BottleFeed | Feed | FeedAdd
->(
-  type: ZodType<F>,
-  feed: F,
-  fields: Partial<F>
-) => parseFeed(type, { ...feed, ...fields });
 
 export const feeds = derived<typeof user, Feed[]>(user, ($user, set) => {
   let unsubscribe = () => {};

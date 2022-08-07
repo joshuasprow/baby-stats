@@ -2,7 +2,8 @@
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import NapAmountInput from "$components/Nap/NapAmountInput.svelte";
   import NapIcon from "$components/Nap/NapIcon.svelte";
-  import { addNapFields, removeNap, updateNap } from "$stores/naps";
+  import { addEntryFields } from "$stores/entries";
+  import { removeNap, updateNap } from "$stores/naps";
   import { parseError } from "baby-stats-lib/error";
   import { Nap } from "baby-stats-models/naps";
 
@@ -31,7 +32,7 @@
   };
 
   const setUpdate = (fields: Partial<Nap>) => {
-    const [u, e] = addNapFields(Nap, update, fields);
+    const [u, e] = addEntryFields(Nap, update, fields);
     if (e) {
       error = e.message;
     } else {

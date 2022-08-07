@@ -2,7 +2,8 @@
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
-  import { addFeed, addFeedFields } from "$stores/feeds";
+  import { addEntryFields } from "$stores/entries";
+  import { addFeed } from "$stores/feeds";
   import { parseError } from "baby-stats-lib/error";
   import {
     FeedAdd,
@@ -26,7 +27,7 @@
   let loading = false;
 
   const setAdd = (fields: Partial<FeedAdd>) => {
-    const [a, e] = addFeedFields(FeedAdd, add, fields);
+    const [a, e] = addEntryFields(FeedAdd, add, fields);
     if (e) {
       error = e.message;
     } else {
