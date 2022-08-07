@@ -1,80 +1,46 @@
 <script lang="ts" context="module">
   import type { SelectEvent } from "baby-stats-lib/dom";
-  import type { FeedSource } from "baby-stats-models/feeds";
+  import type { BreastFeedAmount, FeedSource } from "baby-stats-models/feeds";
   import { createEventDispatcher } from "svelte";
 
-  const getUnit = (source: FeedSource) => {
-    switch (source) {
-      case "bottle":
-        return "oz";
-      case "breast":
-        return "minutes";
-      default:
-        return "Error: invalid source";
-    }
-  };
+  type Amount<S extends FeedSource> = S extends "bottle"
+    ? number
+    : BreastFeedAmount;
 
-  const getOptionLabel = (source: FeedSource, value: number) => {
-    switch (source) {
-      case "bottle":
-        return `${value}`;
-      case "breast":
-        return `${value * 5}`;
-      default:
-        return "Error: invalid source";
-    }
-  };
-
-  const getOptions = (source: FeedSource) => {
-    switch (source) {
-      case "bottle":
-        return [1, 2, 3, 4, 5].map((v) => ({
-          label: getOptionLabel(source, v),
-          value: v,
-        }));
-      case "breast":
-        return [1, 2, 3, 4, 5, 6, 7, 8, 9].map((v) => ({
-          label: getOptionLabel(source, v),
-          value: v,
-        }));
-      default:
-        return [];
-    }
-  };
+  type Timestamp<S extends FeedSource> = S extends "bottle" ? Date : never;
 </script>
 
 <script lang="ts">
-  export let loading = false;
+  import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
+  import BreastFeedAmountInput from "./BreastFeedAmountInput.svelte";
 
-  export let amount: number;
-  export let source: FeedSource;
+  type S = $$Generic<FeedSource>;
 
-  const dispatch = createEventDispatcher<{ change: number }>();
+  export let amount: Amount<S>;
+  export let loading: boolean;
+  export let source: S;
+  export let timestamp: Timestamp<S>;
 
-  $: options = getOptions(source);
-  $: unit = getUnit(source);
+  const dispatch = createEventDispatcher<{ change: Amount<S> }>();
 
-  $: {
-    dispatch("change", amount);
-  }
+  const handleBottleChange = (e: CustomEvent<number>) =>
+    dispatch("change", e.detail as Amount<S>);
 
-  const handleChange = (event: SelectEvent) => {
-    const value = parseInt(event.currentTarget.value);
-    if (typeof value !== "number") {
-      console.error("invalid amount", value, typeof value);
-      return;
-    }
-    amount = value;
-  };
+  const handleBreastChange = (e: CustomEvent<BreastFeedAmount>) =>
+    dispatch("change", e.detail as Amount<S>);
 </script>
 
-<label for="amount">
-  amount:
-  <!-- TODO: make amount in minutes for breast; oz for bottle -->
-  <select disabled={loading} on:change={handleChange} value={amount}>
-    {#each options as option}
-      <option value={option.value}>{option.label}</option>
-    {/each}
-  </select>
-  {unit}
-</label>
+{#if source === "bottle"}
+  {#if typeof amount === "number"}
+    <BottleFeedAmountInput {amount} {loading} on:change={handleBottleChange} />
+  {:else}
+    🚫 amount should be a number
+  {/if}
+{:else}
+  <BreastFeedAmountInput
+    {amount}
+    {loading}
+    on:change={handleBreastChange}
+    {timestamp}
+  />
+{/if}

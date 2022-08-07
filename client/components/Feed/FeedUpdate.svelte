@@ -69,7 +69,13 @@
   <FeedIcon {amount} {source} {side} slot="icon" />
 
   <article>
-    <FeedAmountInput {loading} on:change={handleAmount} {amount} {source} />
+    <FeedAmountInput
+      {loading}
+      on:change={handleAmount}
+      {amount}
+      {source}
+      {timestamp}
+    />
   </article>
 
   <article>

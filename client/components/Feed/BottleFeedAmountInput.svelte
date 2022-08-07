@@ -3,7 +3,7 @@
   import { createEventDispatcher } from "svelte";
 
   export let amount: number;
-  export let loading = false;
+  export let loading: boolean;
 
   const dispatch = createEventDispatcher<{ change: number }>();
 
@@ -11,10 +11,6 @@
     label: `${v}`,
     value: v,
   }));
-
-  $: {
-    dispatch("change", amount);
-  }
 
   const handleChange = (event: SelectEvent) => {
     const value = parseInt(event.currentTarget.value);
@@ -25,6 +21,8 @@
     }
 
     amount = value;
+
+    dispatch("change", amount);
   };
 </script>
 
