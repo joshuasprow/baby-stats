@@ -1,16 +1,29 @@
-<script lang="ts">
+<script lang="ts" context="module">
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
-  import NapAmountInput from "$components/Nap/NapAmountInput.svelte";
+  import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { addEntryFields } from "$stores/entries";
   import { addNap } from "$stores/naps";
   import { parseError } from "baby-stats-lib/error";
+  import type { TimeRangeAmount } from "baby-stats-models/entries";
   import { NapAdd } from "baby-stats-models/naps";
 
-  let add: NapAdd = {
-    amount: 2,
-    kind: "naps",
-    timestamp: new Date(),
+  const getDefaultAdd = (): NapAdd => {
+    const timestamp = new Date();
+
+    const start = new Date(timestamp);
+    const end = new Date(timestamp);
+    end.setMinutes(end.getMinutes() + 30);
+
+    return {
+      amount: { start, end },
+      kind: "naps",
+      timestamp,
+    };
   };
+</script>
+
+<script lang="ts">
+  let add: NapAdd = getDefaultAdd();
 
   let error: null | string = null;
   let loading = false;
@@ -25,9 +38,14 @@
     }
   };
 
-  const handleOpen = () => setAdd({ timestamp: new Date() });
+  const handleOpen = () => {
+    const { amount, timestamp } = getDefaultAdd();
 
-  const handleAmount = (e: CustomEvent<number>) => setAdd({ amount: e.detail });
+    setAdd({ amount, timestamp });
+  };
+
+  const handleAmount = (e: CustomEvent<TimeRangeAmount>) =>
+    setAdd({ amount: e.detail });
 
   const handleTimestamp = (e: CustomEvent<Date>) =>
     setAdd({ timestamp: e.detail });
@@ -55,7 +73,12 @@
   <span slot="icon">💤</span>
 
   <article>
-    <NapAmountInput amount={add.amount} {loading} on:change={handleAmount} />
+    <TimeRangePicker
+      start={add.amount.start}
+      end={add.amount.end}
+      {loading}
+      on:change={handleAmount}
+    />
   </article>
 
   {#if error}
