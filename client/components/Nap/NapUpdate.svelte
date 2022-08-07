@@ -2,29 +2,54 @@
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import NapAmountInput from "$components/Nap/NapAmountInput.svelte";
   import NapIcon from "$components/Nap/NapIcon.svelte";
-  import { removeNap, updateNap } from "$stores/naps";
-  import type { Nap } from "baby-stats-models/naps";
+  import { addNapFields, removeNap, updateNap } from "$stores/naps";
+  import { parseError } from "baby-stats-lib/error";
+  import { Nap } from "baby-stats-models/naps";
 
   export let entry: Nap;
 
-  let amount = entry.amount;
-  let loading = false;
-  let timestamp = entry.timestamp;
+  let update: Nap = {
+    id: entry.id,
+    amount: entry.amount,
+    kind: "naps",
+    timestamp: entry.timestamp,
+  };
 
-  const update = async () => {
+  let error: null | string = null;
+  let loading = false;
+
+  const handleUpdate = async () => {
     loading = true;
-    await updateNap({ id: entry.id, amount, kind: "naps", timestamp });
+
+    try {
+      await updateNap(update);
+    } catch (e) {
+      error = parseError(e).message;
+    }
+
     loading = false;
   };
 
+  const setUpdate = (fields: Partial<Nap>) => {
+    const [u, e] = addNapFields(Nap, update, fields);
+    if (e) {
+      error = e.message;
+    } else {
+      update = u;
+      error = null;
+    }
+  };
+
   const handleAmount = async (e: CustomEvent<number>) => {
-    amount = e.detail;
-    await update();
+    setUpdate({ amount: e.detail });
+
+    await handleUpdate();
   };
 
   const handleTimestamp = async (e: CustomEvent<Date>) => {
-    timestamp = e.detail;
-    await update();
+    setUpdate({ timestamp: e.detail });
+
+    await handleUpdate();
   };
 
   const handleRemove = () => removeNap(entry.id);
@@ -34,11 +59,22 @@
   {loading}
   on:remove={handleRemove}
   on:timestamp={handleTimestamp}
-  {timestamp}
+  timestamp={update.timestamp}
 >
-  <NapIcon {amount} slot="icon" />
+  <NapIcon amount={update.amount} slot="icon" />
 
   <article>
-    <NapAmountInput {loading} on:change={handleAmount} {amount} />
+    <NapAmountInput amount={update.amount} {loading} on:change={handleAmount} />
   </article>
+
+  {#if error}
+    <span class="error">{error}</span>
+  {/if}
 </EntryUpdateModal>
+
+<style>
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+</style>
