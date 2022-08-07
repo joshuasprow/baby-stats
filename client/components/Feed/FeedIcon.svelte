@@ -1,6 +1,7 @@
 <script lang="ts">
   import EntryIcon from "$components/Entry/EntryIcon.svelte";
   import ErrorMessage from "$components/ErrorMessage.svelte";
+  import { getTimeRangeDiffInMinutes } from "baby-stats-lib/dates";
   import type { TimeRangeAmount } from "baby-stats-models/entries";
   import type { FeedSide, FeedSource } from "baby-stats-models/feeds";
 
@@ -8,10 +9,8 @@
   export let source: FeedSource;
   export let side: FeedSide | null;
 
-  let _amount =
-    typeof amount === "number"
-      ? amount * 5
-      : amount.end.getMinutes() - amount.start.getMinutes();
+  $: minutes =
+    typeof amount === "number" ? "" : getTimeRangeDiffInMinutes(amount);
 </script>
 
 {#if source === "bottle"}
@@ -21,7 +20,7 @@
 {:else if source === "breast"}
   <EntryIcon>
     <span slot="left">🤱</span>
-    <span slot="middle">{_amount}min</span>
+    <span slot="middle">{minutes}min</span>
     <span slot="right">{side}</span>
   </EntryIcon>
 {:else}
