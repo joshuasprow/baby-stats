@@ -1,9 +1,7 @@
 <script lang="ts">
-  import DatePicker from "$components/DatePicker.svelte";
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import NapAmountInput from "$components/Nap/NapAmountInput.svelte";
   import NapIcon from "$components/Nap/NapIcon.svelte";
-  import TimePicker from "$components/TimePicker.svelte";
   import { removeNap, updateNap } from "$stores/naps";
   import type { Nap } from "baby-stats-models/naps";
 

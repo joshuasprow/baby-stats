@@ -60,18 +60,14 @@
   const handleRemove = () => removeFeed(entry.id);
 </script>
 
-<EntryUpdateModal
-  {loading}
-  on:remove={handleRemove}
-  on:timestamp={handleTimestamp}
-  {timestamp}
->
+<EntryUpdateModal {loading} on:remove={handleRemove}>
   <FeedIcon {amount} {source} {side} slot="icon" />
 
   <article>
     <FeedAmountInput
       {loading}
-      on:change={handleAmount}
+      on:amount={handleAmount}
+      on:timestamp={handleTimestamp}
       {amount}
       {source}
       {timestamp}

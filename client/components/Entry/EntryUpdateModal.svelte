@@ -3,12 +3,14 @@
   import EntryModal from "$components/Entry/EntryModal.svelte";
   import { createEventDispatcher } from "svelte";
 
+  type T = $$Generic<Date | undefined>;
+
   export let loading: boolean;
-  export let timestamp: Date;
+  export let timestamp: T = undefined as T;
 
   const dispatch = createEventDispatcher<{
     remove: void;
-    timestamp: Date;
+    timestamp: T;
     update: void;
   }>();
   const duration = 300;
@@ -23,8 +25,9 @@
     open = false;
   };
 
-  const handleTimestamp = (e: CustomEvent<Date>) =>
-    dispatch("timestamp", e.detail);
+  const handleTimestamp = (e: CustomEvent<Date>) => {
+    if (timestamp instanceof Date) dispatch("timestamp", e.detail as T);
+  };
 
   const handleRemove = async () => {
     handleClose();
@@ -40,7 +43,9 @@
     <slot name="icon" />
   </button>
 
-  <DateTimePicker {loading} on:change={handleTimestamp} {timestamp} />
+  {#if timestamp}
+    <DateTimePicker {loading} on:change={handleTimestamp} {timestamp} />
+  {/if}
 
   <slot />
 

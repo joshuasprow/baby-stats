@@ -1,19 +1,21 @@
 <script lang="ts">
+  import DateTimePicker from "$components/DateTimePicker.svelte";
   import type { SelectEvent } from "baby-stats-lib/dom";
   import { createEventDispatcher } from "svelte";
 
   export let amount: number;
   export let loading: boolean;
+  export let timestamp: Date;
 
-  const dispatch = createEventDispatcher<{ change: number }>();
+  const dispatch = createEventDispatcher<{ amount: number; timestamp: Date }>();
 
   $: options = [1, 2, 3, 4, 5].map((v) => ({
     label: `${v}`,
     value: v,
   }));
 
-  const handleChange = (event: SelectEvent) => {
-    const value = parseInt(event.currentTarget.value);
+  const handleAmountChange = (e: SelectEvent) => {
+    const value = parseInt(e.currentTarget.value);
 
     if (typeof value !== "number") {
       console.error("invalid amount", value, typeof value);
@@ -22,13 +24,21 @@
 
     amount = value;
 
-    dispatch("change", amount);
+    dispatch("amount", amount);
+  };
+
+  const handleTimestampChange = (e: CustomEvent<Date>) => {
+    timestamp = e.detail;
+
+    dispatch("timestamp", timestamp);
   };
 </script>
 
+<DateTimePicker {loading} on:change={handleTimestampChange} {timestamp} />
+
 <label for="amount">
   amount:
-  <select disabled={loading} on:change={handleChange} value={amount}>
+  <select disabled={loading} on:change={handleAmountChange} value={amount}>
     {#each options as option}
       <option value={option.value}>{option.label}</option>
     {/each}

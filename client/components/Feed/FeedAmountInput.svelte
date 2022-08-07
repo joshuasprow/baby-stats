@@ -21,18 +21,32 @@
   export let source: S;
   export let timestamp: Timestamp<S>;
 
-  const dispatch = createEventDispatcher<{ change: Amount<S> }>();
+  const dispatch = createEventDispatcher<{
+    amount: Amount<S>;
+    timestamp: Date;
+  }>();
 
   const handleBottleChange = (e: CustomEvent<number>) =>
-    dispatch("change", e.detail as Amount<S>);
+    dispatch("amount", e.detail as Amount<S>);
 
-  const handleBreastChange = (e: CustomEvent<BreastFeedAmount>) =>
-    dispatch("change", e.detail as Amount<S>);
+  const handleBreastChange = (e: CustomEvent<BreastFeedAmount>) => {
+    dispatch("amount", e.detail as Amount<S>);
+    dispatch("timestamp", e.detail.start);
+  };
+
+  const handleTimestampChange = (e: CustomEvent<Date>) =>
+    dispatch("timestamp", e.detail);
 </script>
 
 {#if source === "bottle"}
   {#if typeof amount === "number"}
-    <BottleFeedAmountInput {amount} {loading} on:change={handleBottleChange} />
+    <BottleFeedAmountInput
+      {amount}
+      {loading}
+      on:amount={handleBottleChange}
+      on:timestamp={handleTimestampChange}
+      {timestamp}
+    />
   {:else}
     🚫 amount should be a number
   {/if}
