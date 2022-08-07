@@ -4,7 +4,12 @@
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
   import { addEntryFields } from "$stores/entries";
-  import { removeFeed, updateFeed } from "$stores/feeds";
+  import {
+    convertAmountToBottle,
+    convertAmountToBreast,
+    removeFeed,
+    updateFeed,
+  } from "$stores/feeds";
   import { parseError } from "baby-stats-lib/error";
   import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
   import {
@@ -76,8 +81,16 @@
 
     setUpdate(
       source === "bottle"
-        ? { side: null, source }
-        : { side: entry.side || "L", source }
+        ? {
+            amount: convertAmountToBottle(update.amount),
+            side: null,
+            source,
+          }
+        : {
+            amount: convertAmountToBreast(update.amount, update.timestamp),
+            side: entry.side || "L",
+            source,
+          }
     );
 
     await handleUpdate();

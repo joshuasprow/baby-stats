@@ -21,6 +21,10 @@ import {
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
 import { user } from "./user";
+import {
+  getTimeRangeFromMinutes,
+  getTimeRangeDiffInMinutes,
+} from "baby-stats-lib/dates";
 
 export const getFeedsCollection = (uid: string) =>
   collection(firestore, `users/${uid}/feeds`);
@@ -153,4 +157,19 @@ export const removeFeed = async (id: string) => {
   }
 
   await deleteDoc(getFeedDoc($user.uid, id));
+};
+
+export const convertAmountToBreast = (
+  amount: Feed["amount"],
+  timestamp: Date
+) => {
+  if (typeof amount !== "number") return amount;
+
+  return getTimeRangeFromMinutes(timestamp, amount * 5);
+};
+
+export const convertAmountToBottle = (amount: Feed["amount"]) => {
+  if (typeof amount === "number") return amount;
+
+  return getTimeRangeDiffInMinutes(amount) / 5;
 };

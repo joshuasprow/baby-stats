@@ -3,14 +3,18 @@
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
   import { addEntryFields } from "$stores/entries";
-  import { addFeed } from "$stores/feeds";
+  import {
+    addFeed,
+    convertAmountToBottle,
+    convertAmountToBreast,
+  } from "$stores/feeds";
   import { parseError } from "baby-stats-lib/error";
-  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
   import {
     FeedAdd,
     type FeedSide,
     type FeedSource,
   } from "baby-stats-models/feeds";
+  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
   import BreastFeedAmountInput from "./BreastFeedAmountInput.svelte";
 
@@ -37,10 +41,15 @@
 
   const handleOpen = () => setAdd({ timestamp: new Date() });
 
-  const handleBottleAmount = (e: CustomEvent<number>) =>
+  const handleBottleAmount = (e: CustomEvent<number>) => {
+    if (add.source === "breast") return;
+
     setAdd({ amount: e.detail });
+  };
 
   const handleBreastAmount = (e: CustomEvent<TimeRangeAmount>) => {
+    if (add.source === "bottle") return;
+
     const amount = e.detail;
 
     setAdd({ amount, timestamp: amount.start });
@@ -54,8 +63,16 @@
 
     setAdd(
       source === "bottle"
-        ? { side: null, source }
-        : { side: add.side || "L", source }
+        ? {
+            amount: convertAmountToBottle(add.amount),
+            side: null,
+            source,
+          }
+        : {
+            amount: convertAmountToBreast(add.amount, add.timestamp),
+            side: add.side || "L",
+            source,
+          }
     );
   };
 
