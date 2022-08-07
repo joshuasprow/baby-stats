@@ -5,12 +5,19 @@
   import TimePicker from "./TimePicker.svelte";
 
   export let loading = false;
-  export let timestamp = new Date();
+  export let start: Date;
+  export let end: Date;
 
-  let date = new Date(timestamp);
+  let date = new Date(start);
 
-  let startTime: Time = { hours: date.getHours(), minutes: date.getMinutes() };
-  let endTime: Time = { ...startTime };
+  let startTime: Time = {
+    hours: start.getHours(),
+    minutes: start.getMinutes(),
+  };
+  let endTime: Time = {
+    hours: end.getHours(),
+    minutes: end.getMinutes(),
+  };
 
   const timeIsLessThan = (a: Time, b: Time) => {
     if (a.hours < b.hours) return true;
@@ -23,15 +30,15 @@
   }>();
 
   const dispatchChange = () => {
-    const start = new Date(date);
-    start.setHours(startTime.hours);
-    start.setMinutes(startTime.minutes);
+    const s = new Date(date);
+    s.setHours(startTime.hours);
+    s.setMinutes(startTime.minutes);
 
-    const end = new Date(date);
-    end.setHours(endTime.hours);
-    end.setMinutes(endTime.minutes);
+    const e = new Date(date);
+    e.setHours(endTime.hours);
+    e.setMinutes(endTime.minutes);
 
-    dispatch("change", { start, end });
+    dispatch("change", { start: s, end: e });
   };
 
   const handleDateChange = ({ detail }: CustomEvent<Date>) => {

@@ -18,7 +18,13 @@ const BottleFeed = EntryBase.extend({
   side: z.null(),
 });
 
+const BreastFeedAmount = z
+  .object({ start: z.date(), end: z.date() })
+  .refine((s) => s.start <= s.end, "start must be before end");
+export type BreastFeedAmount = z.infer<typeof BreastFeedAmount>;
+
 const BreastFeed = EntryBase.extend({
+  amount: z.number().or(BreastFeedAmount),
   source: z.literal(FeedSource[1]),
   side: FeedSide,
 });
