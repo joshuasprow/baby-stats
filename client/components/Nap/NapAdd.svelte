@@ -26,6 +26,8 @@
     }
   };
 
+  $: if (open) setAdd({ timestamp: new Date() });
+
   const handleAmount = (e: CustomEvent<number>) => setAdd({ amount: e.detail });
 
   const handleTimestamp = (e: CustomEvent<Date>) =>

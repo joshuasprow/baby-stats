@@ -26,6 +26,8 @@
     }
   };
 
+  $: if (open) setAdd({ timestamp: new Date() });
+
   const handleAmount = (e: CustomEvent<PeeAmount>) =>
     setAdd({ amount: e.detail });
 
