@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { Feed } from "./feeds";
-import type { Nap } from "./naps";
+import type { NapNext } from "./naps";
 import type { Pee } from "./pees";
 import type { Poop } from "./poops";
 
@@ -32,7 +32,7 @@ export type EntryBase = z.infer<typeof EntryBase>;
 export type Entry<K extends EntryKind> = K extends "feeds"
   ? Feed
   : K extends "naps"
-  ? Nap
+  ? NapNext
   : K extends "pees"
   ? Pee
   : K extends "poops"

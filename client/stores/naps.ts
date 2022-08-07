@@ -58,51 +58,48 @@ const napFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): NapNext => {
   return nap;
 };
 
-export const naps = derived<typeof user, (Nap | NapNext)[]>(
-  user,
-  ($user, set) => {
-    let unsubscribe = () => {};
+export const naps = derived<typeof user, NapNext[]>(user, ($user, set) => {
+  let unsubscribe = () => {};
 
-    if (!$user) {
-      set([]);
-
-      return unsubscribe;
-    }
-
-    let updating = false;
-
-    unsubscribe = onSnapshot(
-      query(getNapsCollection($user.uid), orderBy("timestamp", "desc")),
-      (snap) => {
-        NAP_FIX_QUEUE = [];
-
-        const $naps = snap.docs.map(napFromDoc);
-
-        set($naps);
-
-        if (NAP_FIX_QUEUE.length === 0) return;
-        if (updating) {
-          console.log("naps already updating");
-          return;
-        }
-
-        console.log(`updating ${NAP_FIX_QUEUE.length} fixed naps`);
-        updating = true;
-
-        Promise.all(NAP_FIX_QUEUE.map(updateNap))
-          .catch((error) => {
-            console.error(error);
-          })
-          .finally(() => {
-            updating = false;
-            console.log(`updated  ${NAP_FIX_QUEUE.length} fixed naps`);
-          });
-      }
-    );
+  if (!$user) {
+    set([]);
 
     return unsubscribe;
   }
-);
+
+  let updating = false;
+
+  unsubscribe = onSnapshot(
+    query(getNapsCollection($user.uid), orderBy("timestamp", "desc")),
+    (snap) => {
+      NAP_FIX_QUEUE = [];
+
+      const $naps = snap.docs.map(napFromDoc);
+
+      set($naps);
+
+      if (NAP_FIX_QUEUE.length === 0) return;
+      if (updating) {
+        console.log("naps already updating");
+        return;
+      }
+
+      console.log(`updating ${NAP_FIX_QUEUE.length} fixed naps`);
+      updating = true;
+
+      Promise.all(NAP_FIX_QUEUE.map(updateNap))
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          updating = false;
+          console.log(`updated  ${NAP_FIX_QUEUE.length} fixed naps`);
+        });
+    }
+  );
+
+  return unsubscribe;
+});
 
 export const addNap = async (value: NapAdd) => {
   const $user = get(user);

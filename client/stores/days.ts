@@ -1,6 +1,6 @@
 import type { Entry, EntryKind } from "baby-stats-models/entries";
 import type { Feed } from "baby-stats-models/feeds";
-import type { Nap } from "baby-stats-models/naps";
+import type { NapNext } from "baby-stats-models/naps";
 import type { Pee } from "baby-stats-models/pees";
 import type { Poop } from "baby-stats-models/poops";
 import { derived } from "svelte/store";
@@ -40,7 +40,7 @@ const newDayEntry = <K extends EntryKind>(entry: Entry<K>): DayEntry<K> => [
 
 const combineEntries = (
   $feeds: Feed[],
-  $naps: Nap[],
+  $naps: NapNext[],
   $pees: Pee[],
   $poops: Poop[]
 ) => {
@@ -54,7 +54,7 @@ const combineEntries = (
 
 const buildDays = ([_feeds = [], _naps = [], _pees = [], _poops = []]: [
   Feed[],
-  Nap[],
+  NapNext[],
   Pee[],
   Poop[]
 ]) => {

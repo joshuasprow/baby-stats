@@ -1,12 +1,12 @@
 <script lang="ts">
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
-  import NapAmountInput from "$components/Nap/NapAmountInput.svelte";
   import NapIcon from "$components/Nap/NapIcon.svelte";
+  import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { addEntryFields } from "$stores/entries";
   import { removeNap, updateNap } from "$stores/naps";
   import { parseError } from "baby-stats-lib/error";
   import type { TimeRangeAmount } from "baby-stats-models/entries";
-  import { Nap, NapNext } from "baby-stats-models/naps";
+  import { NapNext } from "baby-stats-models/naps";
 
   export let entry: NapNext;
 
@@ -76,7 +76,12 @@
   <NapIcon amount={update.amount} slot="icon" />
 
   <article>
-    <NapAmountInput amount={update.amount} {loading} on:change={handleAmount} />
+    <TimeRangePicker
+      start={update.amount.start}
+      end={update.amount.end}
+      {loading}
+      on:change={handleAmount}
+    />
   </article>
 
   {#if error}
