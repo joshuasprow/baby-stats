@@ -6,6 +6,7 @@
   import { addEntryFields } from "$stores/entries";
   import { removeFeed, updateFeed } from "$stores/feeds";
   import { parseError } from "baby-stats-lib/error";
+  import type { TimeRangeAmount } from "baby-stats-models/entries";
   import {
     Feed,
     type FeedSide,
@@ -56,8 +57,16 @@
     loading = false;
   };
 
-  const handleAmount = async (e: CustomEvent<number>) => {
+  const handleBottleAmount = async (e: CustomEvent<number>) => {
     setUpdate({ amount: e.detail });
+
+    await handleUpdate();
+  };
+
+  const handleBreastAmount = async (e: CustomEvent<TimeRangeAmount>) => {
+    const amount = e.detail;
+
+    setUpdate({ amount, timestamp: amount.start });
 
     await handleUpdate();
   };
@@ -112,7 +121,7 @@
       <BottleFeedAmountInput
         amount={update.amount}
         {loading}
-        on:amount={handleAmount}
+        on:amount={handleBottleAmount}
         on:timestamp={handleTimestamp}
         timestamp={update.timestamp}
       />
@@ -120,9 +129,7 @@
       <BreastFeedAmountInput
         amount={update.amount}
         {loading}
-        on:amount={handleAmount}
-        on:timestamp={handleTimestamp}
-        timestamp={update.timestamp}
+        on:change={handleBreastAmount}
       />
     {:else}
       🚫 unknown source

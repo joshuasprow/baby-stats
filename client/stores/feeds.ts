@@ -22,6 +22,8 @@ export const getFeedsCollection = (uid: string) =>
 const getFeedDoc = (uid: string, id: string) =>
   doc(firestore, `users/${uid}/feeds/${id}`);
 
+// let FEED_FIX_QUEUE: NapNext[] = [];
+
 const feedFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): Feed => {
   const data = doc.data();
   const timestamp = (data.timestamp as Timestamp).toDate();

@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Time } from "baby-stats-lib/dates";
+  import type { TimeRangeAmount } from "baby-stats-models/entries";
   import { createEventDispatcher } from "svelte";
   import DatePicker from "./DatePicker.svelte";
   import TimePicker from "./TimePicker.svelte";
@@ -25,9 +26,7 @@
     return a.minutes < b.minutes;
   };
 
-  const dispatch = createEventDispatcher<{
-    change: { start: Date; end: Date };
-  }>();
+  const dispatch = createEventDispatcher<{ change: TimeRangeAmount }>();
 
   const dispatchChange = () => {
     const s = new Date(date);

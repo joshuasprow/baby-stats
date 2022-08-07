@@ -20,7 +20,7 @@ export const BottleFeed = EntryBase.extend({
 export type BottleFeed = z.infer<typeof BottleFeed>;
 
 export const BreastFeed = EntryBase.extend({
-  amount: z.number().or(TimeRangeAmount),
+  amount: TimeRangeAmount,
   source: z.literal(FeedSource[1]),
   side: FeedSide,
 });

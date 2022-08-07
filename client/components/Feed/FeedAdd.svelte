@@ -37,8 +37,14 @@
 
   const handleOpen = () => setAdd({ timestamp: new Date() });
 
-  const handleAmount = (e: CustomEvent<number | TimeRangeAmount>) =>
+  const handleBottleAmount = (e: CustomEvent<number>) =>
     setAdd({ amount: e.detail });
+
+  const handleBreastAmount = (e: CustomEvent<TimeRangeAmount>) => {
+    const amount = e.detail;
+
+    setAdd({ amount, timestamp: amount.start });
+  };
 
   const handleTimestamp = (e: CustomEvent<Date>) =>
     setAdd({ timestamp: e.detail });
@@ -77,7 +83,7 @@
       <BottleFeedAmountInput
         amount={add.amount}
         {loading}
-        on:amount={handleAmount}
+        on:amount={handleBottleAmount}
         on:timestamp={handleTimestamp}
         timestamp={add.timestamp}
       />
@@ -85,9 +91,7 @@
       <BreastFeedAmountInput
         amount={add.amount}
         {loading}
-        on:amount={handleAmount}
-        on:timestamp={handleTimestamp}
-        timestamp={add.timestamp}
+        on:change={handleBreastAmount}
       />
     {:else}
       🚫 unknown source
