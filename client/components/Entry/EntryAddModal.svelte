@@ -6,13 +6,20 @@
   type T = $$Generic<Date | undefined>;
 
   export let loading: boolean;
-  export let open: boolean;
   export let timestamp: T = undefined as T;
 
-  const dispatch = createEventDispatcher<{ add: void; timestamp: Date }>();
+  let open = false;
+
+  const dispatch = createEventDispatcher<{
+    add: void;
+    open: void;
+    timestamp: Date;
+  }>();
 
   const handleOpen = () => {
     open = true;
+
+    dispatch("open");
   };
 
   const handleClose = () => {
@@ -27,9 +34,8 @@
     dispatch("add");
   };
 
-  const handleTimestamp = (e: CustomEvent<Date>) => {
+  const handleTimestamp = (e: CustomEvent<Date>) =>
     dispatch("timestamp", e.detail);
-  };
 </script>
 
 <EntryModal on:close={handleClose} on:open={handleOpen} {open}>

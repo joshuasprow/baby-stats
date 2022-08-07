@@ -14,7 +14,6 @@
 
   let error: null | string = null;
   let loading = false;
-  let open = false;
 
   const setAdd = (fields: Partial<PeeAdd>) => {
     const [a, e] = addEntryFields(PeeAdd, add, fields);
@@ -26,7 +25,7 @@
     }
   };
 
-  $: if (open) setAdd({ timestamp: new Date() });
+  const handleOpen = () => setAdd({ timestamp: new Date() });
 
   const handleAmount = (e: CustomEvent<PeeAmount>) =>
     setAdd({ amount: e.detail });
@@ -48,9 +47,9 @@
 </script>
 
 <EntryAddModal
-  bind:open
   {loading}
   on:add={handleAdd}
+  on:open={handleOpen}
   on:timestamp={handleTimestamp}
   timestamp={add.timestamp}
 >
