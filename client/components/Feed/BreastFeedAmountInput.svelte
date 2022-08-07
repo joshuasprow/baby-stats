@@ -1,4 +1,8 @@
 <script lang="ts" context="module">
+  /**
+   *  All this garbage is for switching from bottle to breast feed amounts
+   */
+
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import type { BreastFeedAmount } from "baby-stats-models/feeds";
   import { createEventDispatcher } from "svelte";
