@@ -5,9 +5,9 @@
   import { addEntryFields } from "$stores/entries";
   import { addFeed } from "$stores/feeds";
   import { parseError } from "baby-stats-lib/error";
+  import type { TimeRangeAmount } from "baby-stats-models/entries";
   import {
     FeedAdd,
-    type BreastFeedAmount,
     type FeedSide,
     type FeedSource,
   } from "baby-stats-models/feeds";
@@ -37,7 +37,7 @@
 
   const handleOpen = () => setAdd({ timestamp: new Date() });
 
-  const handleAmount = (e: CustomEvent<number | BreastFeedAmount>) =>
+  const handleAmount = (e: CustomEvent<number | TimeRangeAmount>) =>
     setAdd({ amount: e.detail });
 
   const handleTimestamp = (e: CustomEvent<Date>) =>

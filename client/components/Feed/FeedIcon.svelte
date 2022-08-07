@@ -1,13 +1,10 @@
 <script lang="ts">
-  import type {
-    BreastFeedAmount,
-    FeedSide,
-    FeedSource,
-  } from "baby-stats-models/feeds";
   import EntryIcon from "$components/Entry/EntryIcon.svelte";
   import ErrorMessage from "$components/ErrorMessage.svelte";
+  import type { TimeRangeAmount } from "baby-stats-models/entries";
+  import type { FeedSide, FeedSource } from "baby-stats-models/feeds";
 
-  export let amount: number | BreastFeedAmount;
+  export let amount: number | TimeRangeAmount;
   export let source: FeedSource;
   export let side: FeedSide | null;
 
