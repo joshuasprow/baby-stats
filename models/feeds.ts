@@ -13,13 +13,15 @@ export const FeedValue = z.object({
 });
 export type FeedValue = z.infer<typeof FeedValue>;
 
-export const BottleFeed = EntryBase.extend({
+const FeedBase = EntryBase.extend({ kind: z.literal("feeds") });
+
+export const BottleFeed = FeedBase.extend({
   source: z.literal(FeedSource[0]),
   side: z.null(),
 });
 export type BottleFeed = z.infer<typeof BottleFeed>;
 
-export const BreastFeed = EntryBase.extend({
+export const BreastFeed = FeedBase.extend({
   amount: TimeRangeAmount,
   source: z.literal(FeedSource[1]),
   side: FeedSide,

@@ -1,27 +1,51 @@
 <script lang="ts" context="module">
-  const getEntryCounts = (day: DayEntry<EntryKind>[]) => {
-    const counts = {
-      feeds: 0,
-      naps: 0,
-      pees: 0,
-      poops: 0,
-    };
-
-    for (const [_, entry] of day) {
-      counts[entry.kind]++;
-    }
-
-    return counts;
-  };
-</script>
-
-<script lang="ts">
   import type { DayEntry } from "$stores/days";
-  import { formatDaystamp } from "baby-stats-lib/dates";
+  import {
+    formatDaystamp,
+    getTimeRangeDiffInMinutes,
+  } from "baby-stats-lib/dates";
   import { ENTRY_ICONS, type EntryKind } from "baby-stats-models/entries";
   import Entry from "./Entry/Entry.svelte";
   import EntryModal from "./Entry/EntryModal.svelte";
 
+  const getEntryCounts = (day: DayEntry<EntryKind>[]) =>
+    day.reduce(
+      (counts, [_, entry]) => {
+        const { kind } = entry;
+
+        switch (kind) {
+          case "feeds":
+            if (entry.source === "bottle") {
+              counts.feeds.bottle += entry.amount;
+            } else {
+              counts.feeds.breast += getTimeRangeDiffInMinutes(entry.amount);
+            }
+            break;
+          case "naps":
+            counts.naps += getTimeRangeDiffInMinutes(entry.amount);
+            break;
+          case "pees":
+            counts.pees += entry.amount;
+            break;
+          case "poops":
+            counts.poops += entry.amount;
+            break;
+          default:
+            throw new Error(`invalid entry kind: ${kind}`);
+        }
+
+        return counts;
+      },
+      {
+        feeds: { bottle: 0, breast: 0 },
+        naps: 0,
+        pees: 0,
+        poops: 0,
+      }
+    );
+</script>
+
+<script lang="ts">
   export let day: DayEntry<EntryKind>[];
   export let daystamp: number;
 
@@ -40,8 +64,9 @@
 
   <section>
     <p>{label}</p>
-    <p>{ENTRY_ICONS.feeds.bottle} {counts.feeds}</p>
-    <p>{ENTRY_ICONS.naps} {counts.naps}</p>
+    <p>{ENTRY_ICONS.feeds.bottle} {counts.feeds.bottle}oz</p>
+    <p>{ENTRY_ICONS.feeds.breast} {counts.feeds.breast}min</p>
+    <p>{ENTRY_ICONS.naps} {counts.naps}min</p>
     <p>{ENTRY_ICONS.pees} {counts.pees}</p>
     <p>{ENTRY_ICONS.poops} {counts.poops}</p>
   </section>
