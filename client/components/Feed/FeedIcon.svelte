@@ -1,11 +1,20 @@
 <script lang="ts">
-  import type { FeedSide, FeedSource } from "baby-stats-models/feeds";
+  import type {
+    BreastFeedAmount,
+    FeedSide,
+    FeedSource,
+  } from "baby-stats-models/feeds";
   import EntryIcon from "$components/Entry/EntryIcon.svelte";
   import ErrorMessage from "$components/ErrorMessage.svelte";
 
-  export let amount: number;
+  export let amount: number | BreastFeedAmount;
   export let source: FeedSource;
   export let side: FeedSide | null;
+
+  let _amount =
+    typeof amount === "number"
+      ? amount * 5
+      : amount.end.getMinutes() - amount.start.getMinutes();
 </script>
 
 {#if source === "bottle"}
@@ -15,7 +24,7 @@
 {:else if source === "breast"}
   <EntryIcon>
     <span slot="left">🤱</span>
-    <span slot="middle">{amount * 5}min</span>
+    <span slot="middle">{_amount}min</span>
     <span slot="right">{side}</span>
   </EntryIcon>
 {:else}
