@@ -12,6 +12,12 @@
   let startTime: Time = { hours: date.getHours(), minutes: date.getMinutes() };
   let endTime: Time = { ...startTime };
 
+  const timeIsLessThan = (a: Time, b: Time) => {
+    if (a.hours < b.hours) return true;
+    if (a.hours !== b.hours) return false;
+    return a.minutes < b.minutes;
+  };
+
   const dispatch = createEventDispatcher<{
     change: { start: Date; end: Date };
   }>();
@@ -28,35 +34,40 @@
     dispatch("change", { start, end });
   };
 
-  const handleDateChange = (e: CustomEvent<Date>) => {
-    date = e.detail;
+  const handleDateChange = ({ detail }: CustomEvent<Date>) => {
+    date = detail;
 
     dispatchChange();
   };
 
-  const handleStartTimeChange = (e: CustomEvent<Time>) => {
-    startTime = e.detail;
+  const handleStartTimeChange = ({ detail }: CustomEvent<Time>) => {
+    startTime = timeIsLessThan(detail, startTime) ? { ...detail } : startTime;
 
     dispatchChange();
   };
 
-  const handleEndTimeChange = (e: CustomEvent<Time>) => {
-    endTime = e.detail;
+  const handleEndTimeChange = ({ detail }: CustomEvent<Time>) => {
+    endTime = timeIsLessThan(detail, startTime) ? { ...startTime } : detail;
 
     dispatchChange();
   };
 </script>
 
 <div>
+  <span>date:</span>
   <DatePicker {loading} on:change={handleDateChange} {date} />
+
+  <span>start:</span>
   <TimePicker {loading} on:change={handleStartTimeChange} time={startTime} />
+
+  <span>end:</span>
   <TimePicker {loading} on:change={handleEndTimeChange} time={endTime} />
 </div>
 
 <style>
   div {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
   }
 </style>
