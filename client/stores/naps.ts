@@ -1,5 +1,5 @@
 import { firestore } from "$firebase";
-import { Nap, NapAdd } from "baby-stats-models/naps";
+import { Nap, NapAdd, NapNext } from "baby-stats-models/naps";
 import {
   collection,
   deleteDoc,
@@ -22,35 +22,54 @@ const getNapsCollection = (uid: string) =>
 const getNapDoc = (uid: string, id: string) =>
   doc(firestore, `users/${uid}/naps/${id}`);
 
-const napFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): Nap => {
+// TODO: remove this after migrating all nap records
+const fixOldNapAmount = (
+  amount: Nap["amount"] | NapNext["amount"],
+  timestamp: Date
+): NapNext["amount"] => {
+  if (typeof amount !== "number") return amount;
+
+  const start = new Date(timestamp);
+  const end = new Date(timestamp);
+
+  end.setMinutes(start.getMinutes() + amount * 15 /* 15 minutes per "unit" */);
+
+  return { start, end };
+};
+
+const napFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): NapNext => {
   const data = doc.data();
   const timestamp = (data.timestamp as Timestamp).toDate();
 
-  const nap = Nap.parse({ ...data, id: doc.id, timestamp });
+  const amount = fixOldNapAmount(data.amount, timestamp);
+  const nap = NapNext.parse({ ...data, amount, id: doc.id, timestamp });
 
   return nap;
 };
 
-export const naps = derived<typeof user, Nap[]>(user, ($user, set) => {
-  let unsubscribe = () => {};
+export const naps = derived<typeof user, (Nap | NapNext)[]>(
+  user,
+  ($user, set) => {
+    let unsubscribe = () => {};
 
-  if (!$user) {
-    set([]);
+    if (!$user) {
+      set([]);
+
+      return unsubscribe;
+    }
+
+    unsubscribe = onSnapshot(
+      query(getNapsCollection($user.uid), orderBy("timestamp", "desc")),
+      (snap) => {
+        const $naps = snap.docs.map(napFromDoc);
+
+        set($naps);
+      }
+    );
 
     return unsubscribe;
   }
-
-  unsubscribe = onSnapshot(
-    query(getNapsCollection($user.uid), orderBy("timestamp", "desc")),
-    (snap) => {
-      const $naps = snap.docs.map(napFromDoc);
-
-      set($naps);
-    }
-  );
-
-  return unsubscribe;
-});
+);
 
 export const addNap = async (value: NapAdd) => {
   const $user = get(user);
@@ -68,14 +87,14 @@ export const addNap = async (value: NapAdd) => {
   return nap;
 };
 
-export const updateNap = async (value: Nap) => {
+export const updateNap = async (value: NapNext) => {
   const $user = get(user);
 
   if (!$user) {
     throw new Error("No user found");
   }
 
-  const nap = Nap.parse(value);
+  const nap = NapNext.parse(value);
   const ref = getNapDoc($user.uid, nap.id);
 
   await updateDoc(ref, nap);

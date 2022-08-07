@@ -7,7 +7,7 @@ export const Nap = EntryBase.omit({ amount: true }).extend({
 });
 export type Nap = z.infer<typeof Nap>;
 
-export const NapNext = EntryBase.extend({
+export const NapNext = EntryBase.omit({ amount: true }).extend({
   amount: TimeRangeAmount,
 });
 export type NapNext = z.infer<typeof NapNext>;
