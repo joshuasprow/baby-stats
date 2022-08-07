@@ -3,6 +3,7 @@
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
   import { addFeed, addFeedFields } from "$stores/feeds";
+  import { parseError } from "baby-stats-lib/error";
   import {
     FeedAdd,
     type BreastFeedAmount,
@@ -55,7 +56,11 @@
   const handleAdd = async () => {
     loading = true;
 
-    await addFeed(add);
+    try {
+      await addFeed(add);
+    } catch (e) {
+      error = parseError(e).message;
+    }
 
     loading = false;
   };
