@@ -3,85 +3,157 @@
   import FeedIcon from "$components/Feed/FeedIcon.svelte";
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
-  import { removeFeed, updateFeed } from "$stores/feeds";
-  import type { Feed, FeedSide, FeedSource } from "baby-stats-models/feeds";
+  import { addFeedFields, removeFeed, updateFeed } from "$stores/feeds";
+  import { parseError } from "baby-stats-lib/error";
+  import {
+    Feed,
+    type FeedSide,
+    type FeedSource,
+  } from "baby-stats-models/feeds";
+  import type { ZodError } from "zod";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
   import BreastFeedAmountInput from "./BreastFeedAmountInput.svelte";
 
   export let entry: Feed;
 
-  let amount = entry.amount;
-  let source = entry.source;
-  let side: FeedSide | null = entry.side;
-  let timestamp = entry.timestamp;
-
+  let error: null | string = null;
   let loading = false;
 
-  const update = async () => {
+  let update: Feed;
+  try {
+    update = Feed.parse({
+      id: entry.id,
+      amount: entry.amount,
+      kind: "feeds",
+      source: entry.source,
+      side: entry.side,
+      timestamp: entry.timestamp,
+    });
+  } catch (e) {
+    error = (e as ZodError<Feed>).message;
+  }
+
+  const setUpdate = (fields: Partial<Feed>) => {
+    const [u, e] = addFeedFields(Feed, update, fields);
+    if (e) {
+      error = e.message;
+    } else {
+      update = u;
+      error = null;
+    }
+  };
+
+  const handleUpdate = async () => {
     loading = true;
 
-    await updateFeed({
-      id: entry.id,
-      amount,
-      kind: "feeds",
-      side,
-      source,
-      timestamp,
-    } as Feed);
+    try {
+      await updateFeed(update);
+    } catch (e) {
+      error = parseError(e).message;
+    }
 
     loading = false;
   };
 
   const handleAmount = async (e: CustomEvent<number>) => {
-    amount = e.detail;
-    await update();
+    setUpdate({ amount: e.detail });
+
+    await handleUpdate();
   };
 
-  const handleKind = async (e: CustomEvent<FeedSource>) => {
-    source = e.detail;
-    if (source === "bottle") {
-      side = null;
-    }
-    if (source === "breast" && side === null) {
-      side = "L";
-    }
-    await update();
+  const handleSource = async (e: CustomEvent<FeedSource>) => {
+    const source = e.detail;
+
+    setUpdate(
+      source === "bottle"
+        ? { side: null, source }
+        : { side: entry.side || "L", source }
+    );
+
+    await handleUpdate();
   };
 
   const handleSide = async (e: CustomEvent<FeedSide | null>) => {
-    side = e.detail;
-    await update();
+    setUpdate({ side: e.detail });
+
+    await handleUpdate();
   };
 
   const handleTimestamp = async (e: CustomEvent<Date>) => {
-    timestamp = e.detail;
-    await update();
+    setUpdate({ timestamp: e.detail });
+
+    await handleUpdate();
   };
 
-  const handleRemove = () => removeFeed(entry.id);
+  const handleRemove = async () => {
+    loading = true;
+
+    try {
+      await removeFeed(entry.id);
+    } catch (e) {
+      error = parseError(e).message;
+    }
+
+    loading = false;
+  };
 </script>
 
 <EntryUpdateModal {loading} on:remove={handleRemove}>
-  <FeedIcon {amount} {source} {side} slot="icon" />
+  <FeedIcon
+    amount={update.amount}
+    source={update.source}
+    side={update.side}
+    slot="icon"
+  />
 
   <article>
-    {#if source === "bottle"}
-      <BottleFeedAmountInput {side} on:change={handleSide} />
-    {/if}
-    {#if source === "breast"}
-      <BreastFeedAmountInput {side} on:change={handleSide} />
+    {#if update.source === "bottle"}
+      <BottleFeedAmountInput
+        amount={update.amount}
+        {loading}
+        on:amount={handleAmount}
+        on:timestamp={handleTimestamp}
+        timestamp={update.timestamp}
+      />
+    {:else if update.source === "breast"}
+      <BreastFeedAmountInput
+        amount={update.amount}
+        {loading}
+        on:amount={handleAmount}
+        on:timestamp={handleTimestamp}
+        timestamp={update.timestamp}
+      />
+    {:else}
+      🚫 unknown source
     {/if}
   </article>
 
   <article>
-    <FeedSourceInput {loading} on:change={handleKind} {source} />
-  </article>
-
-  <article>
-    <FeedSideInputGroup
-      disabled={loading || source !== "breast"}
-      on:change={handleSide}
-      {side}
+    <FeedSourceInput
+      {loading}
+      on:change={handleSource}
+      source={update.source}
     />
   </article>
+
+  {#if update.source === "breast"}
+    <article>
+      <FeedSideInputGroup
+        disabled={loading}
+        on:change={handleSide}
+        side={update.side}
+      />
+    </article>
+  {/if}
+
+  {#if error}
+    <span class="error">{error}</span>
+  {/if}
 </EntryUpdateModal>
+
+<style>
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+</style>
