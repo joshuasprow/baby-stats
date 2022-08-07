@@ -22,6 +22,7 @@
   };
 
   let error: null | string = null;
+  let open = false;
   let loading = false;
 
   const setAdd = (fields: Partial<FeedAdd>) => {
@@ -33,6 +34,8 @@
       error = null;
     }
   };
+
+  $: if (open) setAdd({ timestamp: new Date() });
 
   const handleAmount = (e: CustomEvent<number | BreastFeedAmount>) =>
     setAdd({ amount: e.detail });
@@ -66,7 +69,7 @@
   };
 </script>
 
-<EntryAddModal {loading} on:add={handleAdd}>
+<EntryAddModal bind:open {loading} on:add={handleAdd}>
   <span slot="icon">🍼</span>
 
   <article>

@@ -1,22 +1,69 @@
 <script lang="ts">
-  import { addNap } from "$stores/naps";
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import NapAmountInput from "$components/Nap/NapAmountInput.svelte";
+  import { addNap, addNapFields } from "$stores/naps";
+  import { parseError } from "baby-stats-lib/error";
+  import { NapAdd } from "baby-stats-models/naps";
 
-  let amount = 2;
+  let add: NapAdd = {
+    amount: 2,
+    kind: "naps",
+    timestamp: new Date(),
+  };
+
+  let error: null | string = null;
   let loading = false;
-  let timestamp: Date;
+  let open = false;
+
+  const setAdd = (fields: Partial<NapAdd>) => {
+    const [a, e] = addNapFields(NapAdd, add, fields);
+    if (e) {
+      error = e.message;
+    } else {
+      add = a;
+      error = null;
+    }
+  };
+
+  const handleAmount = (e: CustomEvent<number>) => setAdd({ amount: e.detail });
+
+  const handleTimestamp = (e: CustomEvent<Date>) =>
+    setAdd({ timestamp: e.detail });
 
   const handleAdd = async () => {
     loading = true;
-    await addNap({ amount, kind: "naps", timestamp });
+
+    try {
+      await addNap(add);
+    } catch (e) {
+      error = parseError(e).message;
+    }
+
     loading = false;
   };
 </script>
 
-<EntryAddModal bind:timestamp {loading} on:add={handleAdd}>
+<EntryAddModal
+  bind:open
+  {loading}
+  on:add={handleAdd}
+  on:timestamp={handleTimestamp}
+  timestamp={add.timestamp}
+>
   <span slot="icon">💤</span>
+
   <article>
-    <NapAmountInput bind:amount />
+    <NapAmountInput amount={add.amount} {loading} on:change={handleAmount} />
   </article>
+
+  {#if error}
+    <span class="error">{error}</span>
+  {/if}
 </EntryAddModal>
+
+<style>
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+</style>

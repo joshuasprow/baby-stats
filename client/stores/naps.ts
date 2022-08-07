@@ -14,6 +14,7 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
+import type { ZodType, ZodError } from "zod";
 import { user } from "./user";
 
 const getNapsCollection = (uid: string) =>
@@ -30,6 +31,23 @@ const napFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): Nap => {
 
   return nap;
 };
+
+export const parseNap = <N extends Nap | NapAdd>(
+  type: ZodType<N>,
+  nap: N
+): [N, null] | [null, ZodError<N>] => {
+  try {
+    return [type.parse(nap), null];
+  } catch (error) {
+    return [null, error as ZodError<N>];
+  }
+};
+
+export const addNapFields = <N extends Nap | NapAdd>(
+  type: ZodType<N>,
+  nap: N,
+  fields: Partial<N>
+) => parseNap(type, { ...nap, ...fields });
 
 export const naps = derived<typeof user, Nap[]>(user, ($user, set) => {
   let unsubscribe = () => {};

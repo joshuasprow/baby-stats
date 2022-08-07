@@ -6,11 +6,10 @@
   type T = $$Generic<Date | undefined>;
 
   export let loading: boolean;
+  export let open: boolean;
   export let timestamp: T = undefined as T;
 
   const dispatch = createEventDispatcher<{ add: void; timestamp: Date }>();
-
-  let open = false;
 
   const handleOpen = () => {
     open = true;
