@@ -1,11 +1,12 @@
 <script lang="ts">
-  import type { Feed, FeedSide, FeedSource } from "baby-stats-models/feeds";
-  import { removeFeed, updateFeed } from "$stores/feeds";
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
-  import FeedAmountInput from "$components/Feed/FeedAmountInput.svelte";
   import FeedIcon from "$components/Feed/FeedIcon.svelte";
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
+  import { removeFeed, updateFeed } from "$stores/feeds";
+  import type { Feed, FeedSide, FeedSource } from "baby-stats-models/feeds";
+  import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
+  import BreastFeedAmountInput from "./BreastFeedAmountInput.svelte";
 
   export let entry: Feed;
 
@@ -64,14 +65,12 @@
   <FeedIcon {amount} {source} {side} slot="icon" />
 
   <article>
-    <FeedAmountInput
-      {loading}
-      on:amount={handleAmount}
-      on:timestamp={handleTimestamp}
-      {amount}
-      {source}
-      {timestamp}
-    />
+    {#if source === "bottle"}
+      <BottleFeedAmountInput {side} on:change={handleSide} />
+    {/if}
+    {#if source === "breast"}
+      <BreastFeedAmountInput {side} on:change={handleSide} />
+    {/if}
   </article>
 
   <article>

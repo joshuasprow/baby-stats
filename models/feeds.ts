@@ -13,21 +13,23 @@ export const FeedValue = z.object({
 });
 export type FeedValue = z.infer<typeof FeedValue>;
 
-const BottleFeed = EntryBase.extend({
+export const BottleFeed = EntryBase.extend({
   source: z.literal(FeedSource[0]),
   side: z.null(),
 });
+export type BottleFeed = z.infer<typeof BottleFeed>;
 
 const BreastFeedAmount = z
   .object({ start: z.date(), end: z.date() })
   .refine((s) => s.start <= s.end, "start must be before end");
 export type BreastFeedAmount = z.infer<typeof BreastFeedAmount>;
 
-const BreastFeed = EntryBase.extend({
+export const BreastFeed = EntryBase.extend({
   amount: z.number().or(BreastFeedAmount),
   source: z.literal(FeedSource[1]),
   side: FeedSide,
 });
+export type BreastFeed = z.infer<typeof BreastFeed>;
 
 export const Feed = z.discriminatedUnion("source", [BottleFeed, BreastFeed]);
 export type Feed = z.infer<typeof Feed>;
