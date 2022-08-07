@@ -1,4 +1,5 @@
 import { firestore } from "$firebase";
+import type { TimeRangeAmount } from "baby-stats-models/entries";
 import { Nap, NapAdd, NapNext } from "baby-stats-models/naps";
 import {
   collection,
@@ -24,9 +25,9 @@ const getNapDoc = (uid: string, id: string) =>
 
 // TODO: remove this after migrating all nap records
 const fixOldNapAmount = (
-  amount: Nap["amount"] | NapNext["amount"],
+  amount: number | TimeRangeAmount,
   timestamp: Date
-): NapNext["amount"] => {
+): TimeRangeAmount => {
   if (typeof amount !== "number") return amount;
 
   const start = new Date(timestamp);
@@ -42,6 +43,8 @@ const napFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): NapNext => {
   const timestamp = (data.timestamp as Timestamp).toDate();
 
   const amount = fixOldNapAmount(data.amount, timestamp);
+
+  console.log(amount);
   const nap = NapNext.parse({ ...data, amount, id: doc.id, timestamp });
 
   return nap;

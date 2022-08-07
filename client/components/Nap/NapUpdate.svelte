@@ -5,11 +5,12 @@
   import { addEntryFields } from "$stores/entries";
   import { removeNap, updateNap } from "$stores/naps";
   import { parseError } from "baby-stats-lib/error";
-  import { Nap } from "baby-stats-models/naps";
+  import type { TimeRangeAmount } from "baby-stats-models/entries";
+  import { Nap, NapNext } from "baby-stats-models/naps";
 
-  export let entry: Nap;
+  export let entry: NapNext;
 
-  let update: Nap = {
+  let update: NapNext = {
     id: entry.id,
     amount: entry.amount,
     kind: "naps",
@@ -31,8 +32,8 @@
     loading = false;
   };
 
-  const setUpdate = (fields: Partial<Nap>) => {
-    const [u, e] = addEntryFields(Nap, update, fields);
+  const setUpdate = (fields: Partial<NapNext>) => {
+    const [u, e] = addEntryFields(NapNext, update, fields);
     if (e) {
       error = e.message;
     } else {
@@ -41,7 +42,7 @@
     }
   };
 
-  const handleAmount = async (e: CustomEvent<number>) => {
+  const handleAmount = async (e: CustomEvent<TimeRangeAmount>) => {
     setUpdate({ amount: e.detail });
 
     await handleUpdate();

@@ -1,3 +1,5 @@
+import type { TimeRangeAmount } from "baby-stats-models/entries";
+
 export type Time = { hours: number; minutes: number };
 
 /** Adds days to the given date */
@@ -79,4 +81,11 @@ export const getDateTimeFromStrings = ({
   ); /* [2022, 7, 31, 15, 23] */
 
   return new Date(Y, MO - 1, D, H, MI, 0);
+};
+
+/** Get the difference between dates in minutes */
+export const getTimeRangeDiffInMinutes = ({ start, end }: TimeRangeAmount) => {
+  const diff = end.getTime() - start.getTime();
+
+  return Math.round(diff / 1000 / 60);
 };
