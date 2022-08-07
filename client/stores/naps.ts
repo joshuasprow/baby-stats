@@ -14,7 +14,6 @@ import {
   type DocumentData,
 } from "firebase/firestore";
 import { derived, get } from "svelte/store";
-import type { ZodType, ZodError } from "zod";
 import { user } from "./user";
 
 const getNapsCollection = (uid: string) =>
