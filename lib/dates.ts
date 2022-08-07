@@ -1,4 +1,4 @@
-import type { TimeRangeAmount } from "baby-stats-models/entries";
+import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
 
 export type Time = { hours: number; minutes: number };
 
@@ -88,4 +88,16 @@ export const getTimeRangeDiffInMinutes = ({ start, end }: TimeRangeAmount) => {
   const diff = end.getTime() - start.getTime();
 
   return Math.round(diff / 1000 / 60);
+};
+
+/** Convert a number of minutes and a start time to a TimeRangeAmount */
+export const getTimeRangeFromMinutes = (
+  timestamp: Date,
+  minutes: number
+): TimeRangeAmount => {
+  const start = new Date(timestamp);
+  const end = new Date(timestamp);
+  end.setMinutes(start.getMinutes() + minutes);
+
+  return { start, end };
 };

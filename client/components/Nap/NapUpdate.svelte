@@ -5,7 +5,7 @@
   import { addEntryFields } from "$stores/entries";
   import { removeNap, updateNap } from "$stores/naps";
   import { parseError } from "baby-stats-lib/error";
-  import type { TimeRangeAmount } from "baby-stats-models/entries";
+  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
   import { NapNext } from "baby-stats-models/naps";
 
   export let entry: NapNext;

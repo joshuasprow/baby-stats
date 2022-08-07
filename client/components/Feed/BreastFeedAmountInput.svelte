@@ -1,6 +1,6 @@
 <script lang="ts">
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
-  import type { TimeRangeAmount } from "baby-stats-models/entries";
+  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
   import { createEventDispatcher } from "svelte";
 
   export let amount: TimeRangeAmount;

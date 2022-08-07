@@ -1,5 +1,6 @@
 import { z } from "zod";
-import { EntryBase, TimeRangeAmount } from "./entries";
+import { EntryBase } from "./entries";
+import { TimeRangeAmount } from "./time-ranges";
 
 const FeedSide = z.enum(["L", "R", "LR", "RL"]);
 export type FeedSide = z.infer<typeof FeedSide>;

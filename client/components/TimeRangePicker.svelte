@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Time } from "baby-stats-lib/dates";
-  import type { TimeRangeAmount } from "baby-stats-models/entries";
+  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
   import { createEventDispatcher } from "svelte";
   import DatePicker from "./DatePicker.svelte";
   import TimePicker from "./TimePicker.svelte";

@@ -2,7 +2,7 @@
   import EntryIcon from "$components/Entry/EntryIcon.svelte";
   import ErrorMessage from "$components/ErrorMessage.svelte";
   import { getTimeRangeDiffInMinutes } from "baby-stats-lib/dates";
-  import type { TimeRangeAmount } from "baby-stats-models/entries";
+  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
   import type { FeedSide, FeedSource } from "baby-stats-models/feeds";
 
   export let amount: number | TimeRangeAmount;

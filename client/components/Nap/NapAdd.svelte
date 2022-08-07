@@ -4,7 +4,7 @@
   import { addEntryFields } from "$stores/entries";
   import { addNap } from "$stores/naps";
   import { parseError } from "baby-stats-lib/error";
-  import type { TimeRangeAmount } from "baby-stats-models/entries";
+  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
   import { NapAdd } from "baby-stats-models/naps";
 
   const getDefaultAdd = (): NapAdd => {

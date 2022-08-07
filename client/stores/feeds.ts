@@ -1,5 +1,5 @@
 import { firestore } from "$firebase";
-import type { TimeRangeAmount } from "baby-stats-models/entries";
+import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
 import {
   BreastFeed,
   Feed,
