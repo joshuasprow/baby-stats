@@ -60,21 +60,22 @@
   };
 </script>
 
+<DatePicker {loading} on:change={handleDateChange} {date} />
+<TimePicker {loading} on:change={handleStartTimeChange} time={startTime} />
+
 <div>
-  <span>date:</span>
-  <DatePicker {loading} on:change={handleDateChange} {date} />
-
-  <span>start:</span>
-  <TimePicker {loading} on:change={handleStartTimeChange} time={startTime} />
-
-  <span>end:</span>
+  <span>end time:</span>
   <TimePicker {loading} on:change={handleEndTimeChange} time={endTime} />
 </div>
 
 <style>
   div {
-    display: grid;
-    grid-template-columns: 1fr auto;
+    display: flex;
+    justify-content: flex-end;
     align-items: center;
+  }
+
+  span {
+    margin-right: 0.5rem;
   }
 </style>
