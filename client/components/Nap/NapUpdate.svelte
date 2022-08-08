@@ -67,12 +67,7 @@
   };
 </script>
 
-<EntryUpdateModal
-  {loading}
-  on:remove={handleRemove}
-  on:timestamp={handleTimestamp}
-  timestamp={update.timestamp}
->
+<EntryUpdateModal {loading} on:remove={handleRemove}>
   <NapIcon amount={update.amount} slot="icon" />
 
   <article>
