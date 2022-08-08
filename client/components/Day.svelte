@@ -7,6 +7,7 @@
   import { ENTRY_ICONS, type EntryKind } from "baby-stats-models/entries";
   import Entry from "./Entry/Entry.svelte";
   import EntryModal from "./Entry/EntryModal.svelte";
+  import { fade } from "svelte/transition";
 
   const getEntryCounts = (day: DayEntry<EntryKind>[]) =>
     day.reduce(
@@ -60,7 +61,9 @@
 </script>
 
 <EntryModal bind:open>
-  <button slot="button" on:click={handleOpenClick}>{label}</button>
+  <button slot="button" on:click={handleOpenClick} transition:fade>
+    {label}
+  </button>
 
   <section>
     <p>{label}</p>

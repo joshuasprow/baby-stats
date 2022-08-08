@@ -5,7 +5,7 @@
   import PoopUpdate from "$components/Poop/PoopUpdate.svelte";
   import type { Entry, EntryKind } from "baby-stats-models/entries";
   import type { ComponentType } from "svelte";
-  import { slide } from "svelte/transition";
+  import { fly } from "svelte/transition";
 
   // used to dynamically render the correct component
   const components: {
@@ -31,7 +31,7 @@
   $: component = components[entry.kind];
 </script>
 
-<div transition:slide>
+<div transition:fly={{ x: window.innerWidth }}>
   <span class="time">{time}</span>
 
   {#if component}
