@@ -4,6 +4,7 @@
   import Header from "$components/Layout/Header.svelte";
   import SignInButton from "$components/SignInButton.svelte";
   import { days } from "$stores/days";
+  import { entriesLoaded } from "$stores/entries";
   import { user } from "$stores/user";
 </script>
 
@@ -18,17 +19,19 @@
     <span>Please sign in below</span>
     <SignInButton />
   </main>
-{:else if $days.length === 0}
-  <main class="centered">
-    <span>Use the buttons below to add new entries</span>
-  </main>
-{:else}
-  <main>
-    <Entries />
-  </main>
+{:else if $entriesLoaded}
+  {#if $days.length === 0}
+    <main class="centered">
+      <span>Use the buttons below to add new entries</span>
+    </main>
+  {:else}
+    <main>
+      <Entries />
+    </main>
 
-  <Header />
-  <Footer />
+    <Header />
+    <Footer />
+  {/if}
 {/if}
 
 <style>

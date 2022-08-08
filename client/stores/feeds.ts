@@ -19,7 +19,7 @@ import {
   updateDoc,
   type DocumentData,
 } from "firebase/firestore";
-import { derived, get } from "svelte/store";
+import { derived, get, writable } from "svelte/store";
 import { user } from "./user";
 import {
   getTimeRangeFromMinutes,
@@ -75,6 +75,8 @@ const feedFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): Feed => {
   return feed;
 };
 
+export const feedsLoaded = writable(false);
+
 export const feeds = derived<typeof user, Feed[]>(user, ($user, set) => {
   let unsubscribe = () => {};
 
@@ -96,6 +98,8 @@ export const feeds = derived<typeof user, Feed[]>(user, ($user, set) => {
       const $feeds = snap.docs.map(feedFromDoc);
 
       set($feeds);
+
+      feedsLoaded.set(true);
 
       if (FEED_FIX_QUEUE.length === 0) return;
       if (updating) {

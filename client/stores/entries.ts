@@ -2,7 +2,12 @@ import type { Feed, FeedAdd } from "baby-stats-models/feeds";
 import type { Nap, NapAdd } from "baby-stats-models/naps";
 import type { Pee, PeeAdd } from "baby-stats-models/pees";
 import type { Poop, PoopAdd } from "baby-stats-models/poops";
+import { derived } from "svelte/store";
 import type { ZodError, ZodType } from "zod";
+import { feedsLoaded } from "./feeds";
+import { napsLoaded } from "./naps";
+import { peesLoaded } from "./pees";
+import { poopsLoaded } from "./poops";
 
 type _Entry = Feed | FeedAdd | Nap | NapAdd | Pee | PeeAdd | Poop | PoopAdd;
 
@@ -22,3 +27,8 @@ export const addEntryFields = <E extends _Entry>(
   entry: E,
   fields: Partial<E>
 ) => parseEntry(type, { ...entry, ...fields });
+
+export const entriesLoaded = derived(
+  [feedsLoaded, napsLoaded, peesLoaded, poopsLoaded],
+  ([f, n, p, po]) => f && n && p && po
+);

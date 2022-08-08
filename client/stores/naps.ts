@@ -14,7 +14,7 @@ import {
   updateDoc,
   type DocumentData,
 } from "firebase/firestore";
-import { derived, get } from "svelte/store";
+import { derived, get, writable } from "svelte/store";
 import { user } from "./user";
 
 const getNapsCollection = (uid: string) =>
@@ -58,6 +58,8 @@ const napFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): NapNext => {
   return nap;
 };
 
+export const napsLoaded = writable(false);
+
 export const naps = derived<typeof user, NapNext[]>(user, ($user, set) => {
   let unsubscribe = () => {};
 
@@ -77,6 +79,8 @@ export const naps = derived<typeof user, NapNext[]>(user, ($user, set) => {
       const $naps = snap.docs.map(napFromDoc);
 
       set($naps);
+
+      napsLoaded.set(true);
 
       if (NAP_FIX_QUEUE.length === 0) return;
       if (updating) {

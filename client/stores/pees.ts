@@ -13,7 +13,7 @@ import {
   type QueryDocumentSnapshot,
   type Timestamp,
 } from "firebase/firestore";
-import { derived, get } from "svelte/store";
+import { derived, get, writable } from "svelte/store";
 import { user } from "./user";
 
 const getPeesCollection = (uid: string) =>
@@ -31,6 +31,8 @@ const peeFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): Pee => {
   return pee;
 };
 
+export const peesLoaded = writable(false);
+
 export const pees = derived<typeof user, Pee[]>(user, ($user, set) => {
   let unsubscribe = () => {};
 
@@ -46,6 +48,8 @@ export const pees = derived<typeof user, Pee[]>(user, ($user, set) => {
       const $pees = snap.docs.map(peeFromDoc);
 
       set($pees);
+
+      peesLoaded.set(true);
     }
   );
 
