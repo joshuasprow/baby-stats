@@ -63,13 +63,7 @@
   };
 </script>
 
-<EntryAddModal
-  {loading}
-  on:add={handleAdd}
-  on:open={handleOpen}
-  on:timestamp={handleTimestamp}
-  timestamp={add.timestamp}
->
+<EntryAddModal {loading} on:add={handleAdd} on:open={handleOpen}>
   <span slot="icon">💤</span>
 
   <article>
