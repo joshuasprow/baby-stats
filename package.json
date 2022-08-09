@@ -4,9 +4,11 @@
   "private": true,
   "workspaces": [
     "client",
+    "firebase",
     "functions",
     "lib",
-    "models"
+    "models",
+    "scripts"
   ],
   "scripts": {
     "build": "turbo run build",
