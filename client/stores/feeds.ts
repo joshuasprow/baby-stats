@@ -26,12 +26,6 @@ import {
   getTimeRangeDiffInMinutes,
 } from "baby-stats-lib/dates";
 
-export const getFeedsCollection = (uid: string) =>
-  collection(firestore, `users/${uid}/feeds`);
-
-const getFeedDoc = (uid: string, id: string) =>
-  doc(firestore, `users/${uid}/feeds/${id}`);
-
 // TODO: remove this after migrating all feed records
 const fixOldBreastFeedAmount = (
   amount: number | { start: Timestamp; end: Timestamp },
@@ -123,45 +117,6 @@ export const feeds = derived<typeof user, Feed[]>(user, ($user, set) => {
 
   return unsubscribe;
 });
-
-export const addFeed = async (value: FeedAdd) => {
-  const $user = get(user);
-
-  if (!$user) {
-    throw new Error("No user found");
-  }
-
-  const add = FeedAdd.parse({ ...value });
-  const ref = doc(getFeedsCollection($user.uid));
-  const feed = Feed.parse({ ...add, id: ref.id });
-
-  await setDoc(ref, feed);
-
-  return feed;
-};
-
-export const updateFeed = async (value: Feed) => {
-  const $user = get(user);
-
-  if (!$user) {
-    throw new Error("No user found");
-  }
-
-  const feed = Feed.parse({ ...value });
-  const ref = getFeedDoc($user.uid, feed.id);
-
-  await updateDoc(ref, feed);
-};
-
-export const removeFeed = async (id: string) => {
-  const $user = get(user);
-
-  if (!$user) {
-    throw new Error("No user found");
-  }
-
-  await deleteDoc(getFeedDoc($user.uid, id));
-};
 
 export const convertAmountToBreast = (
   amount: Feed["amount"],
