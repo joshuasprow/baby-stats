@@ -6,32 +6,30 @@
   import { days } from "$stores/days";
   import { entriesLoaded } from "$stores/entries";
   import { user } from "$stores/user";
+
+  $: loading = $user === undefined || !$entriesLoaded;
 </script>
 
-<!-- firebase hasn't loaded yet -->
-{#if $user === undefined}
+{#if loading}
   <main class="centered">
     <span>⏳</span>
   </main>
-  <!-- user is signed out -->
 {:else if $user === null}
   <main class="centered">
     <span>Please sign in below</span>
     <SignInButton />
   </main>
-{:else if $entriesLoaded}
-  {#if $days.length === 0}
-    <main class="centered">
-      <span>Use the buttons below to add new entries</span>
-    </main>
-  {:else}
-    <main>
-      <Entries />
-    </main>
+{:else if $days.length === 0}
+  <main class="centered">
+    <span>Use the buttons below to add new entries</span>
+  </main>
+{:else}
+  <main>
+    <Entries />
+  </main>
 
-    <Header />
-    <Footer />
-  {/if}
+  <Header />
+  <Footer />
 {/if}
 
 <style>
