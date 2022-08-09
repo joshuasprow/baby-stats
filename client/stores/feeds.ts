@@ -1,30 +1,20 @@
-import { firestore } from "$firebase";
+import { getFeedsCollection, updateFeed } from "baby-stats-firebase/feeds";
+import {
+  getTimeRangeDiffInMinutes,
+  getTimeRangeFromMinutes,
+} from "baby-stats-lib/dates";
+import { BreastFeed, Feed, type FeedSource } from "baby-stats-models/feeds";
 import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
 import {
-  BreastFeed,
-  Feed,
-  FeedAdd,
-  type FeedSource,
-} from "baby-stats-models/feeds";
-import {
-  collection,
-  deleteDoc,
-  doc,
   onSnapshot,
   orderBy,
   query,
   QueryDocumentSnapshot,
-  setDoc,
   Timestamp,
-  updateDoc,
   type DocumentData,
 } from "firebase/firestore";
-import { derived, get, writable } from "svelte/store";
+import { derived, writable } from "svelte/store";
 import { user } from "./user";
-import {
-  getTimeRangeFromMinutes,
-  getTimeRangeDiffInMinutes,
-} from "baby-stats-lib/dates";
 
 // TODO: remove this after migrating all feed records
 const fixOldBreastFeedAmount = (
@@ -104,7 +94,7 @@ export const feeds = derived<typeof user, Feed[]>(user, ($user, set) => {
       console.log(`updating ${FEED_FIX_QUEUE.length} fixed breast feeds`);
       updating = true;
 
-      Promise.all(FEED_FIX_QUEUE.map(updateFeed))
+      Promise.all(FEED_FIX_QUEUE.map((fix) => updateFeed(uid, fix)))
         .catch((error) => {
           console.error(error);
         })

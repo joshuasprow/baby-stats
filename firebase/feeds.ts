@@ -1,5 +1,3 @@
-import { firestore } from "./index";
-
 import { Feed, FeedAdd } from "baby-stats-models/feeds";
 import {
   collection,
@@ -8,12 +6,12 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { get } from "svelte/store";
+import { firestore } from "./index";
 
 export const getFeedsCollection = (uid: string) =>
   collection(firestore, `users/${uid}/feeds`);
 
-const getFeedDoc = (uid: string, id: string) =>
+export const getFeedDoc = (uid: string, id: string) =>
   doc(firestore, `users/${uid}/feeds/${id}`);
 
 export const addFeed = async (uid: string, value: FeedAdd) => {
