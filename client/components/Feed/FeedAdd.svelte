@@ -52,7 +52,7 @@
 
     const amount = e.detail;
 
-    setAdd({ amount, timestamp: amount.start });
+    setAdd({ amount: { ...amount }, timestamp: amount.start });
   };
 
   const handleTimestamp = (e: CustomEvent<Date>) =>

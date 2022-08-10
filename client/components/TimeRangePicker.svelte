@@ -47,13 +47,13 @@
   };
 
   const handleStartTimeChange = ({ detail }: CustomEvent<Time>) => {
-    startTime = timeIsLessThan(detail, startTime) ? { ...detail } : startTime;
+    startTime = { ...detail };
 
     dispatchChange();
   };
 
   const handleEndTimeChange = ({ detail }: CustomEvent<Time>) => {
-    endTime = timeIsLessThan(detail, startTime) ? { ...startTime } : detail;
+    endTime = { ...detail };
 
     dispatchChange();
   };
