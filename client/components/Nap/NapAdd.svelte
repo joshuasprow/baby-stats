@@ -2,11 +2,11 @@
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { addEntryFields } from "$stores/entries";
-  import { user } from "$stores/user";
   import { addNap } from "baby-stats-firebase/naps";
   import { parseError } from "baby-stats-lib/error";
   import { NapAdd } from "baby-stats-models/naps";
   import type { TimeRangeAmount } from "baby-stats-models/time";
+  import type { User } from "baby-stats-models/users";
   import { Timestamp } from "firebase/firestore";
 
   const getDefaultAdd = (): NapAdd => {
@@ -26,6 +26,8 @@
 </script>
 
 <script lang="ts">
+  export let user: User;
+
   let add: NapAdd = getDefaultAdd();
 
   let error: null | string = null;
@@ -54,9 +56,7 @@
     loading = true;
 
     try {
-      if (!$user) throw new Error("User not found");
-
-      await addNap($user.uid, add);
+      await addNap(user.uid, add);
     } catch (e) {
       error = parseError(e).message;
     }

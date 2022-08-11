@@ -5,7 +5,6 @@
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { addEntryFields } from "$stores/entries";
   import { convertAmountToBottle, convertAmountToBreast } from "$stores/feeds";
-  import { user } from "$stores/user";
   import { Timestamp } from "baby-stats-firebase";
   import { addFeed } from "baby-stats-firebase/feeds";
   import { parseError } from "baby-stats-lib/error";
@@ -15,7 +14,10 @@
     type FeedSource,
   } from "baby-stats-models/feeds";
   import type { TimeRangeAmount } from "baby-stats-models/time";
+  import type { User } from "baby-stats-models/users";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
+
+  export let user: User;
 
   let add: FeedAdd = {
     amount: 2,
@@ -82,9 +84,7 @@
     loading = true;
 
     try {
-      if (!$user) throw new Error("User not found");
-
-      await addFeed($user.uid, add);
+      await addFeed(user.uid, add);
     } catch (e) {
       error = parseError(e).message;
     }

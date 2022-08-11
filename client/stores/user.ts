@@ -80,24 +80,28 @@ const parseUser = (_user: AuthUser) => {
 
 const getUserDoc = (uid: string) => doc(firestore, `users/${uid}`);
 
-const updateUserDoc = async (_user: AuthUser) => {
+const updateUserDoc = async (_user: User) => {
   try {
     const ref = getUserDoc(_user.uid);
-    const parsed = parseUser(_user);
 
-    await setDoc(ref, parsed);
+    await setDoc(ref, _user);
   } catch (error) {
     console.error(error);
   }
 };
 
-export const user = readable<AuthUser | null | undefined>(undefined, (set) => {
+export const user = readable<User | null | undefined>(undefined, (set) => {
   const unsubscribe = onAuthStateChanged(auth, async (_user) => {
-    set(_user);
+    if (!_user) {
+      set(_user);
+      return;
+    }
 
-    if (!_user) return;
+    const parsed = parseUser(_user);
 
-    await updateUserDoc(_user);
+    set(parsed);
+
+    await updateUserDoc(parsed);
   });
 
   return unsubscribe;

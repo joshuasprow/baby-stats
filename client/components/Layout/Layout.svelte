@@ -6,11 +6,10 @@
   import { days } from "$stores/days";
   import { entriesLoaded } from "$stores/entries";
   import { user } from "$stores/user";
-
-  $: loading = $user === undefined || !$entriesLoaded;
 </script>
 
-{#if loading}
+<!-- user is loading if undefined -->
+{#if $user === undefined || !$entriesLoaded}
   <main class="centered">
     <span>⏳</span>
   </main>
@@ -29,7 +28,7 @@
   </main>
 
   <Header />
-  <Footer />
+  <Footer user={$user} />
 {/if}
 
 <style>
