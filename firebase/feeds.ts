@@ -3,16 +3,42 @@ import {
   collection,
   deleteDoc,
   doc,
+  onSnapshot,
+  orderBy,
+  query,
+  QueryDocumentSnapshot,
   setDoc,
+  Timestamp,
   updateDoc,
+  type DocumentData,
 } from "firebase/firestore";
 import { firestore } from "./index";
 
-export const getFeedsCollection = (uid: string) =>
+const getFeedsCollection = (uid: string) =>
   collection(firestore, `users/${uid}/feeds`);
 
-export const getFeedDoc = (uid: string, id: string) =>
+const getFeedDoc = (uid: string, id: string) =>
   doc(firestore, `users/${uid}/feeds/${id}`);
+
+const feedFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): Feed => {
+  const data = doc.data();
+  const timestamp = (data.timestamp as Timestamp).toDate();
+
+  const amount = data.amount;
+
+  if ("start" in amount) {
+    amount.start = (amount.start as Timestamp).toDate();
+    amount.end = (amount.end as Timestamp).toDate();
+  }
+
+  return Feed.parse({ ...data, id: doc.id, timestamp });
+};
+
+export const subscribeToFeeds = (uid: string, set: (feeds: Feed[]) => void) =>
+  onSnapshot(
+    query(getFeedsCollection(uid), orderBy("timestamp", "desc")),
+    (snap) => set(snap.docs.map(feedFromDoc))
+  );
 
 export const addFeed = async (uid: string, value: FeedAdd) => {
   const add = FeedAdd.parse({ ...value });
