@@ -3,22 +3,26 @@
   import type { ChangeEvent, InputEvent } from "baby-stats-lib/dom";
   import { createEventDispatcher } from "svelte";
 
-  export let loading = false;
   export let date = new Date();
+
+  $: value = getDateString(date);
 
   const dispatch = createEventDispatcher<{ change: Date }>();
 
-  const handleDateChange = (e: InputEvent | ChangeEvent) => {
+  const handleDateChange = (e: ChangeEvent) => {
     date = getDateFromString(e.currentTarget.value);
+    dispatch("change", date);
+  };
 
+  const handleDateInput = (e: InputEvent) => {
+    date = getDateFromString(e.currentTarget.value);
     dispatch("change", date);
   };
 </script>
 
 <input
-  disabled={loading}
   on:change={handleDateChange}
-  on:input={handleDateChange}
+  on:input={handleDateInput}
   type="date"
-  value={getDateString(date)}
+  {value}
 />

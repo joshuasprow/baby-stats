@@ -45,10 +45,7 @@
   };
 
   const handleAmount = (e: CustomEvent<TimeRangeAmount>) =>
-    setAdd({ amount: e.detail });
-
-  const handleTimestamp = (e: CustomEvent<Date>) =>
-    setAdd({ timestamp: e.detail });
+    setAdd({ amount: e.detail, timestamp: e.detail.start });
 
   const handleAdd = async () => {
     loading = true;
@@ -70,7 +67,6 @@
     <TimeRangePicker
       start={add.amount.start}
       end={add.amount.end}
-      {loading}
       on:change={handleAmount}
     />
   </article>

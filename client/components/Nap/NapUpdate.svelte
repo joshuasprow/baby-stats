@@ -43,13 +43,7 @@
   };
 
   const handleAmount = async (e: CustomEvent<TimeRangeAmount>) => {
-    setUpdate({ amount: e.detail });
-
-    await handleUpdate();
-  };
-
-  const handleTimestamp = async (e: CustomEvent<Date>) => {
-    setUpdate({ timestamp: e.detail });
+    setUpdate({ amount: e.detail, timestamp: e.detail.start });
 
     await handleUpdate();
   };
@@ -74,7 +68,6 @@
     <TimeRangePicker
       start={update.amount.start}
       end={update.amount.end}
-      {loading}
       on:change={handleAmount}
     />
   </article>

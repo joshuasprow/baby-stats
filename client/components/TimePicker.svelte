@@ -18,22 +18,26 @@
 </script>
 
 <script lang="ts">
-  export let loading = false;
   export let time: Time = newTime();
+
+  $: value = getTimeString(time);
 
   const dispatch = createEventDispatcher<{ change: Time }>();
 
-  const handleTimeChange = (e: InputEvent | ChangeEvent) => {
+  const handleTimeChange = (e: ChangeEvent) => {
     time = getTimeFromString(e.currentTarget.value);
+    dispatch("change", time);
+  };
 
+  const handleTimeInput = (e: InputEvent) => {
+    time = getTimeFromString(e.currentTarget.value);
     dispatch("change", time);
   };
 </script>
 
 <input
-  disabled={loading}
   on:change={handleTimeChange}
-  on:input={handleTimeChange}
+  on:input={handleTimeInput}
   type="time"
-  value={getTimeString(time)}
+  {value}
 />

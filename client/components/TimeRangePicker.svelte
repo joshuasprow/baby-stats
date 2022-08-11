@@ -5,7 +5,6 @@
   import DatePicker from "./DatePicker.svelte";
   import TimePicker from "./TimePicker.svelte";
 
-  export let loading = false;
   export let start: Date;
   export let end: Date;
 
@@ -47,24 +46,24 @@
   };
 
   const handleStartTimeChange = ({ detail }: CustomEvent<Time>) => {
-    startTime = timeIsLessThan(detail, startTime) ? { ...detail } : startTime;
+    startTime = { ...detail };
 
     dispatchChange();
   };
 
   const handleEndTimeChange = ({ detail }: CustomEvent<Time>) => {
-    endTime = timeIsLessThan(detail, startTime) ? { ...startTime } : detail;
+    endTime = { ...detail };
 
     dispatchChange();
   };
 </script>
 
-<DatePicker {loading} on:change={handleDateChange} {date} />
-<TimePicker {loading} on:change={handleStartTimeChange} time={startTime} />
+<DatePicker on:change={handleDateChange} {date} />
+<TimePicker on:change={handleStartTimeChange} time={startTime} />
 
 <div>
   <span>end time:</span>
-  <TimePicker {loading} on:change={handleEndTimeChange} time={endTime} />
+  <TimePicker on:change={handleEndTimeChange} time={endTime} />
 </div>
 
 <style>

@@ -2,6 +2,7 @@
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
+  import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { addEntryFields } from "$stores/entries";
   import {
     addFeed,
@@ -16,7 +17,6 @@
   } from "baby-stats-models/feeds";
   import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
-  import BreastFeedAmountInput from "./BreastFeedAmountInput.svelte";
 
   let add: FeedAdd = {
     amount: 2,
@@ -52,7 +52,7 @@
 
     const amount = e.detail;
 
-    setAdd({ amount, timestamp: amount.start });
+    setAdd({ amount: { ...amount }, timestamp: amount.start });
   };
 
   const handleTimestamp = (e: CustomEvent<Date>) =>
@@ -105,10 +105,10 @@
         timestamp={add.timestamp}
       />
     {:else if add.source === "breast"}
-      <BreastFeedAmountInput
-        amount={add.amount}
-        {loading}
+      <TimeRangePicker
         on:change={handleBreastAmount}
+        start={add.amount.start}
+        end={add.amount.end}
       />
     {:else}
       🚫 unknown source
