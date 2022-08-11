@@ -9,7 +9,7 @@ import {
   setDoc,
   updateDoc,
 } from "baby-stats-firebase";
-import { NapAdd, NapNext } from "baby-stats-models/naps";
+import { NapAdd, Nap } from "baby-stats-models/naps";
 import { derived, get, writable } from "svelte/store";
 import { user } from "./user";
 
@@ -21,7 +21,7 @@ const getNapDoc = (uid: string, id: string) =>
 
 export const napsLoaded = writable(false);
 
-export const naps = derived<typeof user, NapNext[]>(user, ($user, set) => {
+export const naps = derived<typeof user, Nap[]>(user, ($user, set) => {
   let unsubscribe = () => {};
 
   if (!$user) {
@@ -33,7 +33,7 @@ export const naps = derived<typeof user, NapNext[]>(user, ($user, set) => {
   unsubscribe = onSnapshot(
     query(getNapsCollection($user.uid), orderBy("timestamp", "desc")),
     (snap) => {
-      const $naps = snap.docs.map((doc) => NapNext.parse(doc.data()));
+      const $naps = snap.docs.map((doc) => Nap.parse(doc.data()));
 
       set($naps);
 
@@ -53,21 +53,21 @@ export const addNap = async (value: NapAdd) => {
 
   const add = NapAdd.parse(value);
   const ref = doc(getNapsCollection($user.uid));
-  const nap = NapNext.parse({ ...add, id: ref.id });
+  const nap = Nap.parse({ ...add, id: ref.id });
 
   await setDoc(ref, nap);
 
   return nap;
 };
 
-export const updateNap = async (value: NapNext) => {
+export const updateNap = async (value: Nap) => {
   const $user = get(user);
 
   if (!$user) {
     throw new Error("No user found");
   }
 
-  const nap = NapNext.parse(value);
+  const nap = Nap.parse(value);
   const ref = getNapDoc($user.uid, nap.id);
 
   await updateDoc(ref, nap);
