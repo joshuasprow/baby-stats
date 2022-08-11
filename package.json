@@ -7,8 +7,7 @@
     "firebase",
     "functions",
     "lib",
-    "models",
-    "scripts"
+    "models"
   ],
   "scripts": {
     "build": "turbo run build",
