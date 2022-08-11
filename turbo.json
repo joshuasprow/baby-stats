@@ -12,6 +12,12 @@
     },
     "build": {
       "dependsOn": ["baby-stats-client#build"]
+    },
+    "baby-stats-client#lint": {
+      "cache": false
+    },
+    "lint": {
+      "dependsOn": ["baby-stats-client#lint"]
     }
   }
 }
