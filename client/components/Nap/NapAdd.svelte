@@ -5,19 +5,21 @@
   import { addNap } from "$stores/naps";
   import { parseError } from "baby-stats-lib/error";
   import { NapAdd } from "baby-stats-models/naps";
-  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
+  import type { TimeRangeAmount } from "baby-stats-models/time";
+  import { Timestamp } from "firebase/firestore";
 
   const getDefaultAdd = (): NapAdd => {
-    const timestamp = new Date();
+    const t = new Date();
 
-    const start = new Date(timestamp);
-    const end = new Date(timestamp);
-    end.setMinutes(end.getMinutes() + 30);
+    const s = new Date(t);
+    const e = new Date(t);
+
+    e.setMinutes(e.getMinutes() + 30);
 
     return {
-      amount: { start, end },
+      amount: { start: Timestamp.fromDate(s), end: Timestamp.fromDate(e) },
       kind: "naps",
-      timestamp,
+      timestamp: Timestamp.fromDate(t),
     };
   };
 </script>

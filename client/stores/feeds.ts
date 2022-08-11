@@ -1,5 +1,5 @@
+import type { Timestamp } from "baby-stats-firebase";
 import { subscribeToFeeds } from "baby-stats-firebase/feeds";
-import type { Timestamp } from "baby-stats-firebase/types";
 import {
   getTimeRangeDiffInMinutes,
   getTimeRangeFromMinutes,

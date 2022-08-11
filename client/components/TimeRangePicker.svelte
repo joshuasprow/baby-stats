@@ -1,30 +1,30 @@
 <script lang="ts">
-  import { Timestamp } from "baby-stats-firebase/types";
+  import { Timestamp } from "baby-stats-firebase";
   import type { Time } from "baby-stats-lib/dates";
   import type { TimeRangeAmount } from "baby-stats-models/time";
   import { createEventDispatcher } from "svelte";
   import DatePicker from "./DatePicker.svelte";
   import TimePicker from "./TimePicker.svelte";
 
-  export let start: Date;
-  export let end: Date;
+  export let start: Timestamp;
+  export let end: Timestamp;
 
-  let date = new Date(start);
+  let date = start.toDate();
 
   let startTime: Time = {
-    hours: start.getHours(),
-    minutes: start.getMinutes(),
+    hours: start.toDate().getHours(),
+    minutes: start.toDate().getMinutes(),
   };
   let endTime: Time = {
-    hours: end.getHours(),
-    minutes: end.getMinutes(),
+    hours: end.toDate().getHours(),
+    minutes: end.toDate().getMinutes(),
   };
 
-  const timeIsLessThan = (a: Time, b: Time) => {
-    if (a.hours < b.hours) return true;
-    if (a.hours !== b.hours) return false;
-    return a.minutes < b.minutes;
-  };
+  // const timeIsLessThan = (a: Time, b: Time) => {
+  //   if (a.hours < b.hours) return true;
+  //   if (a.hours !== b.hours) return false;
+  //   return a.minutes < b.minutes;
+  // };
 
   const dispatch = createEventDispatcher<{ change: TimeRangeAmount }>();
 

@@ -1,9 +1,9 @@
+import type { Timestamp } from "baby-stats-firebase";
 import type { Entry, EntryKind } from "baby-stats-models/entries";
 import type { Feed } from "baby-stats-models/feeds";
 import type { NapNext } from "baby-stats-models/naps";
 import type { Pee } from "baby-stats-models/pees";
 import type { Poop } from "baby-stats-models/poops";
-import type { Timestamp } from "baby-stats-firebase/types";
 import { derived } from "svelte/store";
 import { feeds } from "./feeds";
 import { naps } from "./naps";

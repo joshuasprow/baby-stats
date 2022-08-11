@@ -4,6 +4,7 @@
   import PoopIcon from "$components/Poop/PoopIcon.svelte";
   import { addEntryFields } from "$stores/entries";
   import { removePoop, updatePoop } from "$stores/poops";
+  import type { Timestamp } from "baby-stats-firebase";
   import { parseError } from "baby-stats-lib/error";
   import { Poop, type PoopAmount } from "baby-stats-models/poops";
 
@@ -47,7 +48,7 @@
     await handleUpdate();
   };
 
-  const handleTimestamp = async (e: CustomEvent<Date>) => {
+  const handleTimestamp = async (e: CustomEvent<Timestamp>) => {
     setUpdate({ timestamp: e.detail });
 
     await handleUpdate();

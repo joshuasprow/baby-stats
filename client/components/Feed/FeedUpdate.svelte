@@ -7,6 +7,7 @@
   import { addEntryFields } from "$stores/entries";
   import { convertAmountToBottle, convertAmountToBreast } from "$stores/feeds";
   import { user } from "$stores/user";
+  import type { Timestamp } from "baby-stats-firebase";
   import { removeFeed, updateFeed } from "baby-stats-firebase/feeds";
   import { parseError } from "baby-stats-lib/error";
   import {
@@ -14,7 +15,7 @@
     type FeedSide,
     type FeedSource,
   } from "baby-stats-models/feeds";
-  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
+  import type { TimeRangeAmount } from "baby-stats-models/time";
   import type { ZodError } from "zod";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
 
@@ -101,7 +102,7 @@
     await handleUpdate();
   };
 
-  const handleTimestamp = async (e: CustomEvent<Date>) => {
+  const handleTimestamp = async (e: CustomEvent<Timestamp>) => {
     setUpdate({ timestamp: e.detail });
 
     await handleUpdate();

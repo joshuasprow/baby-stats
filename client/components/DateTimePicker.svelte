@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Timestamp } from "baby-stats-firebase/types";
+  import { Timestamp } from "baby-stats-firebase";
   import type { Time } from "baby-stats-lib/dates";
   import { createEventDispatcher } from "svelte";
   import DatePicker from "./DatePicker.svelte";

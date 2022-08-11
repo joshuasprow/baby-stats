@@ -3,7 +3,7 @@
   import PoopAmountInput from "$components/Poop/PoopAmountInput.svelte";
   import { addEntryFields } from "$stores/entries";
   import { addPoop } from "$stores/poops";
-  import { Timestamp } from "baby-stats-firebase/types";
+  import { Timestamp } from "baby-stats-firebase";
   import { parseError } from "baby-stats-lib/error";
   import { PoopAdd, type PoopAmount } from "baby-stats-models/poops";
 

@@ -6,8 +6,8 @@
   import { addEntryFields } from "$stores/entries";
   import { convertAmountToBottle, convertAmountToBreast } from "$stores/feeds";
   import { user } from "$stores/user";
+  import { Timestamp } from "baby-stats-firebase";
   import { addFeed } from "baby-stats-firebase/feeds";
-  import type { Timestamp } from "baby-stats-firebase/types";
   import { parseError } from "baby-stats-lib/error";
   import {
     FeedAdd,
@@ -15,7 +15,6 @@
     type FeedSource,
   } from "baby-stats-models/feeds";
   import type { TimeRangeAmount } from "baby-stats-models/time";
-  import { newTimestamp } from "baby-stats-models/time";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
 
   let add: FeedAdd = {
@@ -23,7 +22,7 @@
     kind: "feeds",
     side: null,
     source: "bottle",
-    timestamp: newTimestamp(),
+    timestamp: Timestamp.now(),
   };
 
   let error: null | string = null;
@@ -39,7 +38,7 @@
     }
   };
 
-  const handleOpen = () => setAdd({ timestamp: newTimestamp() });
+  const handleOpen = () => setAdd({ timestamp: Timestamp.now() });
 
   const handleBottleAmount = (e: CustomEvent<number>) => {
     if (add.source === "breast") return;

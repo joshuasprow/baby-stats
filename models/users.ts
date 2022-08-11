@@ -1,4 +1,4 @@
-import { Timestamp } from "baby-stats-firebase/types";
+import { Timestamp } from "baby-stats-firebase";
 import { z } from "zod";
 
 export const ProviderData = z.object({

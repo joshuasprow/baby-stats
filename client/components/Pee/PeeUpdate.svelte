@@ -4,6 +4,7 @@
   import PeeIcon from "$components/Pee/PeeIcon.svelte";
   import { addEntryFields } from "$stores/entries";
   import { removePee, updatePee } from "$stores/pees";
+  import type { Timestamp } from "baby-stats-firebase";
   import { parseError } from "baby-stats-lib/error";
   import { Pee, type PeeAmount } from "baby-stats-models/pees";
 
@@ -47,7 +48,7 @@
     await handleUpdate();
   };
 
-  const handleTimestamp = async (e: CustomEvent<Date>) => {
+  const handleTimestamp = async (e: CustomEvent<Timestamp>) => {
     setUpdate({ timestamp: e.detail });
 
     await handleUpdate();

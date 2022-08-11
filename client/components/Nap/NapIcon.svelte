@@ -1,7 +1,7 @@
 <script lang="ts">
   import EntryIcon from "$components/Entry/EntryIcon.svelte";
   import { getTimeRangeDiffInMinutes } from "baby-stats-lib/dates";
-  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
+  import type { TimeRangeAmount } from "baby-stats-models/time";
 
   export let amount: TimeRangeAmount;
 

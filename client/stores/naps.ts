@@ -30,8 +30,6 @@ export const naps = derived<typeof user, NapNext[]>(user, ($user, set) => {
     return unsubscribe;
   }
 
-  let updating = false;
-
   unsubscribe = onSnapshot(
     query(getNapsCollection($user.uid), orderBy("timestamp", "desc")),
     (snap) => {

@@ -3,13 +3,14 @@
   import PeeAmountInput from "$components/Pee/PeeAmountInput.svelte";
   import { addEntryFields } from "$stores/entries";
   import { addPee } from "$stores/pees";
+  import { Timestamp } from "baby-stats-firebase";
   import { parseError } from "baby-stats-lib/error";
   import { PeeAdd, type PeeAmount } from "baby-stats-models/pees";
 
   let add: PeeAdd = {
     amount: 2,
     kind: "pees",
-    timestamp: new Date(),
+    timestamp: Timestamp.now(),
   };
 
   let error: null | string = null;
@@ -25,12 +26,12 @@
     }
   };
 
-  const handleOpen = () => setAdd({ timestamp: new Date() });
+  const handleOpen = () => setAdd({ timestamp: Timestamp.now() });
 
   const handleAmount = (e: CustomEvent<PeeAmount>) =>
     setAdd({ amount: e.detail });
 
-  const handleTimestamp = (e: CustomEvent<Date>) =>
+  const handleTimestamp = (e: CustomEvent<Timestamp>) =>
     setAdd({ timestamp: e.detail });
 
   const handleAdd = async () => {

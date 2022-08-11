@@ -1,4 +1,4 @@
-import { Timestamp } from "baby-stats-firebase/types";
+import { Timestamp } from "baby-stats-firebase";
 import { z } from "zod";
 import type { Feed } from "./feeds";
 import type { NapNext } from "./naps";

@@ -1,13 +1,17 @@
 <script lang="ts">
   import DateTimePicker from "$components/DateTimePicker.svelte";
+  import type { Timestamp } from "baby-stats-firebase";
   import type { SelectEvent } from "baby-stats-lib/dom";
   import { createEventDispatcher } from "svelte";
 
   export let amount: number;
   export let loading: boolean;
-  export let timestamp: Date;
+  export let timestamp: Timestamp;
 
-  const dispatch = createEventDispatcher<{ amount: number; timestamp: Date }>();
+  const dispatch = createEventDispatcher<{
+    amount: number;
+    timestamp: Timestamp;
+  }>();
 
   $: options = [1, 2, 3, 4, 5].map((v) => ({
     label: `${v}`,
@@ -27,7 +31,7 @@
     dispatch("amount", amount);
   };
 
-  const handleTimestampChange = (e: CustomEvent<Date>) => {
+  const handleTimestampChange = (e: CustomEvent<Timestamp>) => {
     timestamp = e.detail;
 
     dispatch("timestamp", timestamp);

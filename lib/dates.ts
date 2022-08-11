@@ -1,5 +1,5 @@
-import type { Timestamp } from "@firebase/firestore";
-import { newTimestamp, type TimeRangeAmount } from "baby-stats-models/time";
+import { Timestamp } from "@firebase/firestore";
+import type { TimeRangeAmount } from "baby-stats-models/time";
 
 export type Time = { hours: number; minutes: number };
 
@@ -99,5 +99,5 @@ export const getTimeRangeFromMinutes = (
   const end = timestamp.toDate();
   end.setMinutes(start.getMinutes() + minutes);
 
-  return { start: newTimestamp(start), end: newTimestamp(end) };
+  return { start: Timestamp.fromDate(start), end: Timestamp.fromDate(end) };
 };
