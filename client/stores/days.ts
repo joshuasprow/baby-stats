@@ -3,6 +3,7 @@ import type { Feed } from "baby-stats-models/feeds";
 import type { NapNext } from "baby-stats-models/naps";
 import type { Pee } from "baby-stats-models/pees";
 import type { Poop } from "baby-stats-models/poops";
+import type { Timestamp } from "firebase/firestore";
 import { derived } from "svelte/store";
 import { feeds } from "./feeds";
 import { naps } from "./naps";
@@ -19,11 +20,13 @@ export type DayEntry<K extends EntryKind> = [
 export type Day = [daystamp: number, entries: DayEntry<EntryKind>[]];
 export type Days = Day[];
 
-const encodeDayTimestamp = (timestamp: Date): number => {
+const encodeDayTimestamp = (timestamp: Timestamp): number => {
+  const ts = timestamp.toDate();
+
   const date = new Date(
-    timestamp.getFullYear(),
-    timestamp.getMonth(),
-    timestamp.getDate(),
+    ts.getFullYear(),
+    ts.getMonth(),
+    ts.getDate(),
     0,
     0,
     0,
@@ -34,7 +37,7 @@ const encodeDayTimestamp = (timestamp: Date): number => {
 };
 
 const newDayEntry = <K extends EntryKind>(entry: Entry<K>): DayEntry<K> => [
-  entry.timestamp.getTime(),
+  entry.timestamp.toMillis(),
   entry,
 ];
 
@@ -46,7 +49,7 @@ const combineEntries = (
 ) => {
   const combined = [...$feeds, ...$naps, ...$pees, ...$poops];
   const sorted = combined.sort(
-    (a, b) => b.timestamp.getTime() - a.timestamp.getTime()
+    (a, b) => b.timestamp.seconds - a.timestamp.seconds
   );
 
   return sorted;

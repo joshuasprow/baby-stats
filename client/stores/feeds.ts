@@ -4,6 +4,7 @@ import {
   getTimeRangeFromMinutes,
 } from "baby-stats-lib/dates";
 import type { Feed } from "baby-stats-models/feeds";
+import type { Timestamp } from "firebase/firestore";
 import { derived, writable } from "svelte/store";
 import { user } from "./user";
 
@@ -29,7 +30,7 @@ export const feeds = derived<typeof user, Feed[]>(user, ($user, set) => {
 
 export const convertAmountToBreast = (
   amount: Feed["amount"],
-  timestamp: Date
+  timestamp: Timestamp
 ) => {
   if (typeof amount !== "number") return amount;
 

@@ -1,4 +1,5 @@
-import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
+import type { Timestamp } from "@firebase/firestore";
+import { newTimestamp, type TimeRangeAmount } from "baby-stats-models/time";
 
 export type Time = { hours: number; minutes: number };
 
@@ -85,19 +86,18 @@ export const getDateTimeFromStrings = ({
 
 /** Get the difference between dates in minutes */
 export const getTimeRangeDiffInMinutes = ({ start, end }: TimeRangeAmount) => {
-  const diff = end.getTime() - start.getTime();
-
-  return Math.round(diff / 1000 / 60);
+  const diff = end.seconds - start.seconds;
+  return diff / 60;
 };
 
 /** Convert a number of minutes and a start time to a TimeRangeAmount */
 export const getTimeRangeFromMinutes = (
-  timestamp: Date,
+  timestamp: Timestamp,
   minutes: number
 ): TimeRangeAmount => {
-  const start = new Date(timestamp);
-  const end = new Date(timestamp);
+  const start = timestamp.toDate();
+  const end = timestamp.toDate();
   end.setMinutes(start.getMinutes() + minutes);
 
-  return { start, end };
+  return { start: newTimestamp(start), end: newTimestamp(end) };
 };

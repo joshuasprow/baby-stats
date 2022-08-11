@@ -1,3 +1,4 @@
+import { Timestamp } from "baby-stats-firebase/types";
 import { z } from "zod";
 import type { Feed } from "./feeds";
 import type { NapNext } from "./naps";
@@ -23,7 +24,7 @@ export type EntryIcon<K extends EntryKind> = K extends keyof typeof ENTRY_ICONS
 
 export const EntryBase = z.object({
   id: z.string().min(1),
-  timestamp: z.date(),
+  timestamp: z.instanceof(Timestamp),
   amount: z.number(),
   kind: EntryKindEnum,
 });

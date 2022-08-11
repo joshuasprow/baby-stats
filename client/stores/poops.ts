@@ -9,9 +9,6 @@ import {
   query,
   setDoc,
   updateDoc,
-  type DocumentData,
-  type QueryDocumentSnapshot,
-  type Timestamp,
 } from "firebase/firestore";
 import { derived, get, writable } from "svelte/store";
 import { user } from "./user";
@@ -21,15 +18,6 @@ const getPoopsCollection = (uid: string) =>
 
 const getPoopDoc = (uid: string, id: string) =>
   doc(firestore, `users/${uid}/poops/${id}`);
-
-const poopFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): Poop => {
-  const data = doc.data();
-  const timestamp = (data.timestamp as Timestamp).toDate();
-
-  const poop = Poop.parse({ ...data, id: doc.id, timestamp });
-
-  return poop;
-};
 
 export const poopsLoaded = writable(false);
 
@@ -45,7 +33,7 @@ export const poops = derived<typeof user, Poop[]>(user, ($user, set) => {
   unsubscribe = onSnapshot(
     query(getPoopsCollection($user.uid), orderBy("timestamp", "desc")),
     (snap) => {
-      const $poops = snap.docs.map(poopFromDoc);
+      const $poops = snap.docs.map((doc) => Poop.parse(doc.data()));
 
       set($poops);
 
