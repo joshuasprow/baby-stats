@@ -3,6 +3,7 @@
   import FeedIcon from "$components/Feed/FeedIcon.svelte";
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
+  import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { addEntryFields } from "$stores/entries";
   import {
     convertAmountToBottle,
@@ -11,15 +12,14 @@
     updateFeed,
   } from "$stores/feeds";
   import { parseError } from "baby-stats-lib/error";
-  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
   import {
     Feed,
     type FeedSide,
     type FeedSource,
   } from "baby-stats-models/feeds";
+  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
   import type { ZodError } from "zod";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
-  import BreastFeedAmountInput from "./BreastFeedAmountInput.svelte";
 
   export let entry: Feed;
 
@@ -139,10 +139,10 @@
         timestamp={update.timestamp}
       />
     {:else if update.source === "breast"}
-      <BreastFeedAmountInput
-        amount={update.amount}
-        {loading}
+      <TimeRangePicker
         on:change={handleBreastAmount}
+        start={update.amount.start}
+        end={update.amount.end}
       />
     {:else}
       🚫 unknown source

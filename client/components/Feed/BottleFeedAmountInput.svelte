@@ -34,7 +34,7 @@
   };
 </script>
 
-<DateTimePicker {loading} on:change={handleTimestampChange} {timestamp} />
+<DateTimePicker on:change={handleTimestampChange} {timestamp} />
 
 <label for="amount">
   amount:

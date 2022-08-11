@@ -67,7 +67,6 @@
     <TimeRangePicker
       start={add.amount.start}
       end={add.amount.end}
-      {loading}
       on:change={handleAmount}
     />
   </article>

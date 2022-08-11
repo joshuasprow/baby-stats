@@ -44,7 +44,7 @@
   </button>
 
   {#if timestamp}
-    <DateTimePicker {loading} on:change={handleTimestamp} {timestamp} />
+    <DateTimePicker on:change={handleTimestamp} {timestamp} />
   {/if}
 
   <slot />

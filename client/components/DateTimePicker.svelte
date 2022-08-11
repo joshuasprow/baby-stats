@@ -4,7 +4,6 @@
   import DatePicker from "./DatePicker.svelte";
   import TimePicker from "./TimePicker.svelte";
 
-  export let loading = false;
   export let timestamp = new Date();
 
   let date = new Date(timestamp);
@@ -34,8 +33,8 @@
 </script>
 
 <div>
-  <DatePicker {loading} on:change={handleDateChange} {date} />
-  <TimePicker {loading} on:change={handleTimeChange} {time} />
+  <DatePicker on:change={handleDateChange} {date} />
+  <TimePicker on:change={handleTimeChange} {time} />
 </div>
 
 <style>
