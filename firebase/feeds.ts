@@ -1,4 +1,4 @@
-import { Feed, FeedAdd } from "baby-stats-models/feeds";
+import { BottleFeed, BreastFeed, Feed, FeedAdd } from "baby-stats-models/feeds";
 import {
   collection,
   deleteDoc,
@@ -12,7 +12,23 @@ import {
   updateDoc,
   type DocumentData,
 } from "firebase/firestore";
+import { z } from "zod";
 import { firestore } from "./index";
+
+const TimeRangeDoc = z.object({
+  start: z.instanceof(Timestamp),
+  end: z.instanceof(Timestamp),
+});
+
+const BottleFeedDoc = BottleFeed.extend({ timestamp: z.instanceof(Timestamp) });
+
+const BreastFeedDoc = BreastFeed.extend({
+  amount: TimeRangeDoc,
+  timestamp: z.instanceof(Timestamp),
+});
+
+const FeedDoc = z.discriminatedUnion("source", [BottleFeedDoc, BreastFeedDoc]);
+type FeedDoc = z.infer<typeof FeedDoc>;
 
 const getFeedsCollection = (uid: string) =>
   collection(firestore, `users/${uid}/feeds`);
@@ -20,18 +36,19 @@ const getFeedsCollection = (uid: string) =>
 const getFeedDoc = (uid: string, id: string) =>
   doc(firestore, `users/${uid}/feeds/${id}`);
 
+const amountFromDoc = (amount: FeedDoc["amount"]): Feed["amount"] => {
+  if (typeof amount === "number") return amount;
+
+  return { start: amount.start.toDate(), end: amount.end.toDate() };
+};
+
 const feedFromDoc = (doc: QueryDocumentSnapshot<DocumentData>): Feed => {
-  const data = doc.data();
-  const timestamp = (data.timestamp as Timestamp).toDate();
+  const data = FeedDoc.parse(doc.data());
 
-  const amount = data.amount;
+  const amount = amountFromDoc(data.amount);
+  const timestamp = data.timestamp.toDate();
 
-  if ("start" in amount) {
-    amount.start = (amount.start as Timestamp).toDate();
-    amount.end = (amount.end as Timestamp).toDate();
-  }
-
-  return Feed.parse({ ...data, id: doc.id, timestamp });
+  return Feed.parse({ ...data, id: doc.id, amount, timestamp });
 };
 
 export const subscribeToFeeds = (uid: string, set: (feeds: Feed[]) => void) =>
