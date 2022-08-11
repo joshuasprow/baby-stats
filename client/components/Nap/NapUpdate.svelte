@@ -3,7 +3,8 @@
   import NapIcon from "$components/Nap/NapIcon.svelte";
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { addEntryFields } from "$stores/entries";
-  import { removeNap, updateNap } from "$stores/naps";
+  import { user } from "$stores/user";
+  import { removeNap, updateNap } from "baby-stats-firebase/naps";
   import { parseError } from "baby-stats-lib/error";
   import { Nap } from "baby-stats-models/naps";
   import type { TimeRangeAmount } from "baby-stats-models/time";
@@ -24,7 +25,9 @@
     loading = true;
 
     try {
-      await updateNap(update);
+      if (!$user) throw new Error("User not found");
+
+      await updateNap($user.uid, update);
     } catch (e) {
       error = parseError(e).message;
     }
@@ -52,7 +55,9 @@
     loading = true;
 
     try {
-      await removeNap(entry.id);
+      if (!$user) throw new Error("User not found");
+
+      await removeNap($user.uid, entry.id);
     } catch (e) {
       error = parseError(e).message;
     }
