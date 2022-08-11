@@ -1,5 +1,4 @@
 import { firestore } from "$firebase";
-import { Poop, PoopAdd } from "baby-stats-models/poops";
 import {
   collection,
   deleteDoc,
@@ -9,7 +8,8 @@ import {
   query,
   setDoc,
   updateDoc,
-} from "firebase/firestore";
+} from "baby-stats-firebase";
+import { Poop, PoopAdd } from "baby-stats-models/poops";
 import { derived, get, writable } from "svelte/store";
 import { user } from "./user";
 

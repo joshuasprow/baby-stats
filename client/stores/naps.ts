@@ -1,5 +1,4 @@
 import { firestore } from "$firebase";
-import { NapAdd, NapNext } from "baby-stats-models/naps";
 import {
   collection,
   deleteDoc,
@@ -9,7 +8,8 @@ import {
   query,
   setDoc,
   updateDoc,
-} from "firebase/firestore";
+} from "baby-stats-firebase";
+import { NapAdd, NapNext } from "baby-stats-models/naps";
 import { derived, get, writable } from "svelte/store";
 import { user } from "./user";
 

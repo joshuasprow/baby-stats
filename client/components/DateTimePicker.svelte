@@ -1,15 +1,16 @@
 <script lang="ts">
+  import { Timestamp } from "baby-stats-firebase/types";
   import type { Time } from "baby-stats-lib/dates";
   import { createEventDispatcher } from "svelte";
   import DatePicker from "./DatePicker.svelte";
   import TimePicker from "./TimePicker.svelte";
 
-  export let timestamp = new Date();
+  export let timestamp = Timestamp.now();
 
-  let date = new Date(timestamp);
+  let date = timestamp.toDate();
   let time: Time = { hours: date.getHours(), minutes: date.getMinutes() };
 
-  const dispatch = createEventDispatcher<{ change: Date }>();
+  const dispatch = createEventDispatcher<{ change: Timestamp }>();
 
   const handleDateChange = (e: CustomEvent<Date>) => {
     date = e.detail;
@@ -18,7 +19,7 @@
     d.setHours(time.hours);
     d.setMinutes(time.minutes);
 
-    dispatch("change", d);
+    dispatch("change", Timestamp.fromDate(d));
   };
 
   const handleTimeChange = (e: CustomEvent<Time>) => {
@@ -28,7 +29,7 @@
     d.setHours(time.hours);
     d.setMinutes(time.minutes);
 
-    dispatch("change", d);
+    dispatch("change", Timestamp.fromDate(d));
   };
 </script>
 

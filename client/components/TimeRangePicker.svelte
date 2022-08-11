@@ -1,6 +1,7 @@
 <script lang="ts">
+  import { Timestamp } from "baby-stats-firebase/types";
   import type { Time } from "baby-stats-lib/dates";
-  import type { TimeRangeAmount } from "baby-stats-models/time-ranges";
+  import type { TimeRangeAmount } from "baby-stats-models/time";
   import { createEventDispatcher } from "svelte";
   import DatePicker from "./DatePicker.svelte";
   import TimePicker from "./TimePicker.svelte";
@@ -36,7 +37,10 @@
     e.setHours(endTime.hours);
     e.setMinutes(endTime.minutes);
 
-    dispatch("change", { start: s, end: e });
+    dispatch("change", {
+      start: Timestamp.fromDate(s),
+      end: Timestamp.fromDate(e),
+    });
   };
 
   const handleDateChange = ({ detail }: CustomEvent<Date>) => {

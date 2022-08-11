@@ -1,14 +1,15 @@
 import { auth, firestore } from "$firebase";
-import { ProviderData, User } from "baby-stats-models/users";
 import {
+  doc,
   GoogleAuthProvider,
   onAuthStateChanged,
+  setDoc,
   signInWithPopup,
   signOut as _signOut,
   type User as AuthUser,
   type UserInfo,
-} from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+} from "baby-stats-firebase";
+import { ProviderData, User } from "baby-stats-models/users";
 import { readable } from "svelte/store";
 import { z } from "zod";
 

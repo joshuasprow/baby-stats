@@ -1,3 +1,4 @@
+import { Timestamp } from "baby-stats-firebase/types";
 import { z } from "zod";
 
 export const ProviderData = z.object({
@@ -18,7 +19,7 @@ export const User = z.object({
   isAnonymous: z.boolean(),
   photoURL: z.string().url().nullable(),
   providerData: z.array(ProviderData),
-  createdAt: z.date(),
-  lastLoginAt: z.date(),
+  createdAt: z.instanceof(Timestamp),
+  lastLoginAt: z.instanceof(Timestamp),
 });
 export type User = z.infer<typeof User>;

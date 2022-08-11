@@ -1,9 +1,10 @@
 <script lang="ts">
   import DateTimePicker from "$components/DateTimePicker.svelte";
   import EntryModal from "$components/Entry/EntryModal.svelte";
+  import type { Timestamp } from "baby-stats-firebase/types";
   import { createEventDispatcher } from "svelte";
 
-  type T = $$Generic<Date | undefined>;
+  type T = $$Generic<Timestamp | undefined>;
 
   export let loading: boolean;
   export let timestamp: T = undefined as T;
@@ -13,7 +14,7 @@
   const dispatch = createEventDispatcher<{
     add: void;
     open: void;
-    timestamp: Date;
+    timestamp: Timestamp;
   }>();
 
   const handleOpen = () => {
@@ -34,7 +35,7 @@
     dispatch("add");
   };
 
-  const handleTimestamp = (e: CustomEvent<Date>) =>
+  const handleTimestamp = (e: CustomEvent<Timestamp>) =>
     dispatch("timestamp", e.detail);
 </script>
 

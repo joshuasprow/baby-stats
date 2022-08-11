@@ -1,10 +1,10 @@
 import { subscribeToFeeds } from "baby-stats-firebase/feeds";
+import type { Timestamp } from "baby-stats-firebase/types";
 import {
   getTimeRangeDiffInMinutes,
   getTimeRangeFromMinutes,
 } from "baby-stats-lib/dates";
 import type { Feed } from "baby-stats-models/feeds";
-import type { Timestamp } from "firebase/firestore";
 import { derived, writable } from "svelte/store";
 import { user } from "./user";
 
