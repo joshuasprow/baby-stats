@@ -6,6 +6,7 @@ import {
   setDoc,
   signInWithPopup,
   signOut as _signOut,
+  Timestamp,
   type User as AuthUser,
   type UserInfo,
 } from "baby-stats-firebase";
@@ -25,26 +26,28 @@ const parseProviderData = (providerData: UserInfo): ProviderData => ({
 const hasProperty = (obj: unknown, key: string) =>
   Object.prototype.hasOwnProperty.call(obj, key);
 
-const dateFromJson = (string: unknown) => {
+const parseTimeStringField = (
+  json: object,
+  field: "createdAt" | "lastLoginAt"
+) => {
+  if (!hasProperty(json, "createdAt")) {
+    throw new Error(`User has no ${field}`);
+  }
+
+  const string = (json as any)[field];
+
   if (typeof string !== "string") {
-    throw new Error(`Expected string, got ${string} ${typeof string}`);
+    throw new Error(`User ${field} is not a string`);
   }
 
-  const unix = parseInt(string, 10);
+  const millis = parseInt(string);
 
-  if (isNaN(unix)) {
-    throw new Error(`Expected number, got ${string}`);
-  }
-
-  return new Date(unix);
+  return Timestamp.fromMillis(millis);
 };
 
 const parseUser = (_user: AuthUser) => {
   const json = _user.toJSON();
 
-  if (!hasProperty(json, "createdAt")) {
-    throw new Error("User has no createdAt");
-  }
   if (!hasProperty(json, "lastLoginAt")) {
     throw new Error("User has no lastLoginAt");
   }
@@ -52,8 +55,10 @@ const parseUser = (_user: AuthUser) => {
     throw new Error("User has no email");
   }
 
-  const createdAt = dateFromJson((json as any).createdAt);
-  const lastLoginAt = dateFromJson((json as any).lastLoginAt);
+  const createdAt = parseTimeStringField(json, "createdAt");
+  const lastLoginAt = parseTimeStringField(json, "lastLoginAt");
+
+  console.log({ createdAt, lastLoginAt });
 
   const email = z
     .string()
