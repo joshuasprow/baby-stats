@@ -1,8 +1,7 @@
 import { Timestamp } from "baby-stats-firebase/types";
 import { z } from "zod";
 
-export const newTimestamp = (date = new Date()) =>
-  new Timestamp(date.getSeconds(), 0);
+export const newTimestamp = (date = new Date()) => Timestamp.fromDate(date);
 
 export const TimeRangeAmount = z
   .object({ start: z.instanceof(Timestamp), end: z.instanceof(Timestamp) })
