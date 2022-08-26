@@ -1,6 +1,7 @@
-import { auth, firestore } from "$firebase";
 import {
+  auth,
   doc,
+  firestore,
   GoogleAuthProvider,
   onAuthStateChanged,
   setDoc,

@@ -13,7 +13,6 @@ export default defineConfig({
   resolve: {
     alias: {
       $components: dir("components"),
-      $firebase: dir("firebase"),
       $stores: dir("stores"),
     },
   },

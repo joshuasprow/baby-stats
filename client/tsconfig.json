@@ -8,8 +8,6 @@
     "baseUrl": ".",
     "paths": {
       "$components/*": ["components/*"],
-      "$firebase": ["firebase"],
-      "$firebase/*": ["firebase/*"],
       "$stores/*": ["stores/*"]
     },
     "strict": true,

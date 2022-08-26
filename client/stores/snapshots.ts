@@ -1,7 +1,7 @@
-import { firestore } from "$firebase";
 import {
   collection,
   doc,
+  firestore,
   getDocs,
   limit,
   orderBy,
