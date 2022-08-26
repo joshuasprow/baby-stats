@@ -11,8 +11,8 @@
 <footer>
   <FeedAdd {user} />
   <NapAdd {user} />
-  <PeeAdd />
-  <PoopAdd />
+  <PeeAdd {user} />
+  <PoopAdd {user} />
 </footer>
 
 <style>

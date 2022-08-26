@@ -3,12 +3,14 @@
   import PeeAmountInput from "$components/Pee/PeeAmountInput.svelte";
   import PeeIcon from "$components/Pee/PeeIcon.svelte";
   import { addEntryFields } from "$stores/entries";
-  import { removePee, updatePee } from "$stores/pees";
   import type { Timestamp } from "baby-stats-firebase";
+  import { removePee, updatePee } from "baby-stats-firebase/pees";
   import { parseError } from "baby-stats-lib/error";
   import { Pee, type PeeAmount } from "baby-stats-models/pees";
+  import type { User } from "baby-stats-models/users";
 
   export let entry: Pee;
+  export let user: User;
 
   let update: Pee = {
     id: entry.id,
@@ -24,7 +26,7 @@
     loading = true;
 
     try {
-      await updatePee(update);
+      await updatePee(user.uid, update);
     } catch (e) {
       error = parseError(e).message;
     }
@@ -58,7 +60,7 @@
     loading = true;
 
     try {
-      await removePee(entry.id);
+      await removePee(user.uid, entry.id);
     } catch (e) {
       error = parseError(e).message;
     }
