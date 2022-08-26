@@ -24,7 +24,7 @@
   </main>
 {:else}
   <main>
-    <Entries />
+    <Entries user={$user} />
   </main>
 
   <Header />

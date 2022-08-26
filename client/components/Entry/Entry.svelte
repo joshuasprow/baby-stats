@@ -4,6 +4,7 @@
   import PeeUpdate from "$components/Pee/PeeUpdate.svelte";
   import PoopUpdate from "$components/Poop/PoopUpdate.svelte";
   import type { Entry, EntryKind } from "baby-stats-models/entries";
+  import type { User } from "baby-stats-models/users";
   import type { ComponentType } from "svelte";
   import { fly } from "svelte/transition";
 
@@ -26,6 +27,7 @@
 
 <script lang="ts">
   export let entry: Entry<EntryKind>;
+  export let user: User;
 
   $: time = formatter.format(entry.timestamp.toDate());
   $: component = components[entry.kind];
@@ -35,7 +37,7 @@
   <span class="time">{time}</span>
 
   {#if component}
-    <svelte:component this={component} {entry} />
+    <svelte:component this={component} {entry} {user} />
   {:else}
     <span>🚫</span>
   {/if}

@@ -5,9 +5,10 @@
     getTimeRangeDiffInMinutes,
   } from "baby-stats-lib/dates";
   import { ENTRY_ICONS, type EntryKind } from "baby-stats-models/entries";
+  import type { User } from "baby-stats-models/users";
+  import { fade } from "svelte/transition";
   import Entry from "./Entry/Entry.svelte";
   import EntryModal from "./Entry/EntryModal.svelte";
-  import { fade } from "svelte/transition";
 
   const getEntryCounts = (day: DayEntry<EntryKind>[]) =>
     day.reduce(
@@ -49,6 +50,7 @@
 <script lang="ts">
   export let day: DayEntry<EntryKind>[];
   export let daystamp: number;
+  export let user: User;
 
   let label = formatDaystamp(daystamp);
   let open = false;
@@ -77,7 +79,7 @@
 
 <article>
   {#each day as [_, entry] (entry.id)}
-    <Entry {entry} />
+    <Entry {entry} {user} />
   {/each}
 </article>
 
