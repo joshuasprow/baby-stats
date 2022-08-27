@@ -47,7 +47,7 @@
   div {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    align-items: center;
+    align-content: center;
   }
 
   .time {

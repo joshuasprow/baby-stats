@@ -26,6 +26,8 @@
   figure {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
+    align-items: center;
     margin: 0;
+    width: 100%;
   }
 </style>

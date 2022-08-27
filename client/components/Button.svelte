@@ -3,15 +3,23 @@
 
   export let disabled = false;
   export let label = "";
+  let _class = "";
+  export { _class as class };
 </script>
 
-<button aria-disabled={disabled} {disabled} on:click transition:fade>
+<button
+  aria-disabled={disabled}
+  class={_class}
+  {disabled}
+  on:click
+  transition:fade
+>
   {label}
   <slot />
 </button>
 
 <style>
-  button {
+  :global(button) {
     --border-color: #888;
 
     background: transparent;
@@ -32,13 +40,13 @@
     transition-timing-function: ease-in;
   }
 
-  button:hover {
+  :global(button:hover) {
     --border-color: #666;
 
     background: rgba(0, 0, 0, 0.1);
   }
 
-  button:active {
+  :global(button:active) {
     --border-color: #666;
 
     background: rgba(0, 0, 0, 0.2);

@@ -42,9 +42,14 @@
 </script>
 
 <EntryModal {loading} on:close={handleClose} on:open={handleOpen} {open}>
-  <Button disabled={loading} on:click={handleOpen} slot="button">
+  <button
+    class="update-button"
+    disabled={loading}
+    on:click={handleOpen}
+    slot="button"
+  >
     <slot name="icon" />
-  </Button>
+  </button>
 
   {#if timestamp}
     <DateTimePicker on:change={handleTimestamp} {timestamp} />
@@ -54,3 +59,9 @@
 
   <Button disabled={loading} on:click={handleRemove}>remove</Button>
 </EntryModal>
+
+<style>
+  .update-button {
+    background-color: #eee;
+  }
+</style>
