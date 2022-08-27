@@ -1,10 +1,14 @@
 <script lang="ts">
   import { fade } from "svelte/transition";
 
-  export let label: string;
+  export let disabled = false;
+  export let label = "";
 </script>
 
-<button on:click transition:fade>{label}</button>
+<button aria-disabled={disabled} {disabled} on:click transition:fade>
+  {label}
+  <slot />
+</button>
 
 <style>
   button {

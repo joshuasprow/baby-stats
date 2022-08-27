@@ -6,7 +6,7 @@
   } from "baby-stats-lib/dates";
   import { ENTRY_ICONS, type EntryKind } from "baby-stats-models/entries";
   import type { User } from "baby-stats-models/users";
-  import DayButton from "./DayButton.svelte";
+  import Button from "./Button.svelte";
   import Entry from "./Entry/Entry.svelte";
   import EntryModal from "./Entry/EntryModal.svelte";
 
@@ -63,7 +63,7 @@
 </script>
 
 <EntryModal bind:open>
-  <DayButton slot="button" {label} on:click={handleOpenClick} />
+  <Button slot="button" {label} on:click={handleOpenClick} />
 
   <section>
     <p>{label}</p>

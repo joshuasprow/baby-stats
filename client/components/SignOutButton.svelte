@@ -1,7 +1,8 @@
 <script lang="ts">
   import { signOut, user } from "$stores/user";
+  import Button from "./Button.svelte";
 
   $: disabled = $user === undefined || !$user;
 </script>
 
-<button {disabled} on:click={signOut}>Sign out</button>
+<Button {disabled} on:click={signOut}>Sign out</Button>

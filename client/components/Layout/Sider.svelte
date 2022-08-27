@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Button from "$components/Button.svelte";
   import MenuIcon from "$components/MenuIcon.svelte";
   import SignInButton from "$components/SignInButton.svelte";
   import SignOutButton from "$components/SignOutButton.svelte";
@@ -16,13 +17,13 @@
   };
 </script>
 
-<button class="open" on:click={toggle}><MenuIcon /></button>
+<Button on:click={toggle}><MenuIcon /></Button>
 
 {#if open}
   <div class="backdrop" on:click={close} transition:fade />
 
   <aside transition:fly={{ x: window.innerWidth }}>
-    <button class="close" on:click={toggle}>❌</button>
+    <Button on:click={toggle}>❌</Button>
 
     <span>
       {#if $user}
@@ -41,11 +42,6 @@
 {/if}
 
 <style>
-  .open {
-    display: flex;
-    align-items: center;
-  }
-
   .backdrop {
     position: fixed;
     inset: 0;
@@ -60,9 +56,5 @@
     padding: 0.25rem 0.5rem;
     display: flex;
     flex-direction: column;
-  }
-
-  .close {
-    margin-left: auto;
   }
 </style>

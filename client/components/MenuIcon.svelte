@@ -6,6 +6,6 @@
 
 <style>
   rect {
-    fill: #888;
+    fill: var(--border-color);
   }
 </style>

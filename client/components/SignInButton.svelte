@@ -1,18 +1,11 @@
 <script lang="ts">
   import { signIn, user } from "$stores/user";
   import GoogleIcon from "$components/GoogleIcon.svelte";
+  import Button from "./Button.svelte";
 
   $: disabled = $user === undefined || !!$user;
 </script>
 
-<button {disabled} on:click={signIn}>
+<Button {disabled} on:click={signIn}>
   <GoogleIcon {disabled} />
-</button>
-
-<style>
-  button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-</style>
+</Button>

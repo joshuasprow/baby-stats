@@ -3,6 +3,8 @@
 </script>
 
 <script lang="ts">
+  import Button from "$components/Button.svelte";
+
   import { createEventDispatcher } from "svelte";
   import { fade, fly } from "svelte/transition";
 
@@ -27,7 +29,7 @@
 {#if $$slots.button}
   <slot name="button" />
 {:else}
-  <button disabled={loading} on:click={handleOpen}>🚫</button>
+  <Button disabled={loading} on:click={handleOpen}>🚫</Button>
 {/if}
 
 {#if open}
