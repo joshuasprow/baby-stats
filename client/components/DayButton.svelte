@@ -4,18 +4,39 @@
   export let label: string;
 </script>
 
-<button transition:fade>{label}</button>
+<button on:click transition:fade>{label}</button>
 
 <style>
   button {
+    --border-color: #888;
+
     background: transparent;
     display: flex;
     align-items: center;
     font-size: 0.75rem;
-    color: #888;
-    padding: 0 0.25rem;
+    font-weight: 700;
+    color: #666;
+    padding: 0.1rem 0.25rem;
     margin-bottom: 0.5rem;
-    border: 1px solid #888;
-    border-radius: 0.25rem;
+    border: var(--border);
+
+    border-radius: var(--border-radius);
+    border-color: var(--border-color);
+
+    transition-duration: 0.25s;
+    transition-property: background, border-color;
+    transition-timing-function: ease-in;
+  }
+
+  button:hover {
+    --border-color: #666;
+
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  button:active {
+    --border-color: #666;
+
+    background: rgba(0, 0, 0, 0.2);
   }
 </style>
