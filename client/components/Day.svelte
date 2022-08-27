@@ -6,7 +6,7 @@
   } from "baby-stats-lib/dates";
   import { ENTRY_ICONS, type EntryKind } from "baby-stats-models/entries";
   import type { User } from "baby-stats-models/users";
-  import { fade } from "svelte/transition";
+  import DayButton from "./DayButton.svelte";
   import Entry from "./Entry/Entry.svelte";
   import EntryModal from "./Entry/EntryModal.svelte";
 
@@ -63,9 +63,7 @@
 </script>
 
 <EntryModal bind:open>
-  <button slot="button" on:click={handleOpenClick} transition:fade>
-    {label}
-  </button>
+  <DayButton slot="button" {label} on:click={handleOpenClick} />
 
   <section>
     <p>{label}</p>
@@ -84,18 +82,6 @@
 </article>
 
 <style>
-  button {
-    background: transparent;
-    display: flex;
-    align-items: center;
-    font-size: 0.75rem;
-    color: #888;
-    padding: 0 0.25rem;
-    margin-bottom: 0.5rem;
-    border: 1px solid #888;
-    border-radius: 0.25rem;
-  }
-
   p {
     margin: 0 0 0.5rem 0;
   }
