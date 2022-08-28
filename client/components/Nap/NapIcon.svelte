@@ -9,6 +9,6 @@
 </script>
 
 <EntryIcon>
-  <span slot="left">💤</span>
+  <span class="shadowed" slot="left">💤</span>
   <span slot="middle">{minutes}min</span>
 </EntryIcon>

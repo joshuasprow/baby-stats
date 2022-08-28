@@ -57,7 +57,7 @@
   on:timestamp={handleTimestamp}
   timestamp={add.timestamp}
 >
-  <span slot="icon">💩</span>
+  <span class="shadowed" slot="icon">💩</span>
 
   <article>
     <PoopAmountInput amount={add.amount} {loading} on:change={handleAmount} />

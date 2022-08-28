@@ -94,7 +94,7 @@
 </script>
 
 <EntryAddModal {loading} on:add={handleAdd} on:open={handleOpen}>
-  <span slot="icon">🍼</span>
+  <span class="shadowed" slot="icon">🍼</span>
 
   <article>
     {#if add.source === "bottle"}

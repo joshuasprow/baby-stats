@@ -9,5 +9,5 @@
 </script>
 
 <EntryIcon>
-  <span slot="middle">{icons}</span>
+  <span class="shadowed" slot="middle">{icons}</span>
 </EntryIcon>

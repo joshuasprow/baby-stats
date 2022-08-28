@@ -15,11 +15,13 @@
 
 {#if source === "bottle"}
   <EntryIcon>
-    <span slot="left">🍼</span><span slot="middle">{amount}oz</span>
+    <span class="shadowed" slot="left">🍼</span><span slot="middle">
+      {amount}oz
+    </span>
   </EntryIcon>
 {:else if source === "breast"}
   <EntryIcon>
-    <span slot="left">🤱</span>
+    <span class="shadowed" slot="left">🤱</span>
     <span slot="middle">{minutes}min</span>
     <span slot="right">{side}</span>
   </EntryIcon>

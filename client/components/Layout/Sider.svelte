@@ -17,7 +17,7 @@
   };
 </script>
 
-<Button on:click={toggle}><MenuIcon /></Button>
+<button class="sider-toggle-button" on:click={toggle}><MenuIcon /></button>
 
 {#if open}
   <div class="backdrop" on:click={close} transition:fade />
@@ -42,6 +42,10 @@
 {/if}
 
 <style>
+  .sider-toggle-button {
+    background-color: #fff;
+  }
+
   .backdrop {
     position: fixed;
     inset: 0;

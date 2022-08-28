@@ -48,3 +48,7 @@ select {
   font-size: 1rem;
   font-weight: 700;
 }
+
+.shadowed {
+  text-shadow: 0 0 0.1rem #000;
+}
