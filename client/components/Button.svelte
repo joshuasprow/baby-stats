@@ -29,7 +29,6 @@
     font-weight: 700;
     color: #666;
     padding: 0.1rem 0.25rem;
-    margin-bottom: 0.5rem;
     border: var(--border);
 
     border-radius: var(--border-radius);

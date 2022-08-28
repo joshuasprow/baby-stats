@@ -18,15 +18,13 @@
 <style>
   footer {
     position: fixed;
-    right: 0;
     bottom: 0;
-    left: 0;
     bottom: env(safe-area-inset-bottom);
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
+    width: 100%;
     height: var(--action-bar-height);
-    padding: 0 0.25rem;
     background-color: buttonface;
   }
 </style>
