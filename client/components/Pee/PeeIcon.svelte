@@ -1,6 +1,5 @@
 <script lang="ts">
   import EntryIcon from "$components/Entry/EntryIcon.svelte";
-
   import type { PeeAmount } from "baby-stats-models/pees";
 
   export let amount: PeeAmount;

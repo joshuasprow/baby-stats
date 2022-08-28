@@ -13,9 +13,3 @@
     {/each}
   </span>
 </EntryIcon>
-
-<style>
-  .shadowed {
-    margin: 0 1px;
-  }
-</style>
