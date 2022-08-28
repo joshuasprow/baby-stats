@@ -18,8 +18,6 @@
 
 <style>
   :global(button) {
-    --border-color: #888;
-
     background: transparent;
     display: flex;
     align-items: center;

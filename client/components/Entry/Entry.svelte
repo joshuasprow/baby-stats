@@ -48,6 +48,7 @@
     display: grid;
     grid-template-columns: 1fr 2fr;
     align-content: center;
+    align-items: center;
     margin-bottom: 0.5rem;
   }
 

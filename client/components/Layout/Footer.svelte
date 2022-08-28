@@ -25,6 +25,10 @@
     align-items: center;
     width: 100%;
     height: var(--action-bar-height);
-    background-color: buttonface;
+    background-color: #fff;
+
+    border-top: var(--border);
+    border-bottom: var(--border);
+    box-shadow: 0 -0.1rem 0.3rem var(--border-color);
   }
 </style>
