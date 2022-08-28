@@ -67,7 +67,8 @@
   .modal {
     color: #000;
     background: #fff;
-    border-radius: 0.5rem;
+    border: var(--border-width) solid #666;
+    border-radius: var(--border-radius);
     padding: 0.5rem;
   }
 </style>

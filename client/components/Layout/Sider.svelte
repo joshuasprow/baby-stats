@@ -22,7 +22,7 @@
   <div class="backdrop" on:click={close} transition:fade />
 
   <aside transition:fly={{ x: window.innerWidth }}>
-    <Button on:click={toggle}>⨉</Button>
+    <Button on:click={toggle}>✖️</Button>
 
     <span>
       {#if $user}
@@ -42,7 +42,7 @@
 
 <style>
   :global(.sider-toggle-button) {
-    box-shadow: 0 0 0.3rem var(--border-color);
+    box-shadow: 0.1rem 0.1rem 0.3rem var(--border-color);
   }
 
   .backdrop {
@@ -61,5 +61,9 @@
     flex-direction: column;
     align-items: flex-start;
     border-left: var(--border-width) solid #666;
+  }
+
+  aside span {
+    margin: 0.5rem 0;
   }
 </style>
