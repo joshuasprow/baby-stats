@@ -63,7 +63,7 @@
 </script>
 
 <EntryModal bind:open>
-  <Button slot="button" {label} on:click={handleOpenClick} />
+  <Button class="day-button" slot="button" {label} on:click={handleOpenClick} />
 
   <section>
     <p>{label}</p>
@@ -82,6 +82,10 @@
 </article>
 
 <style>
+  :global(.day-button) {
+    margin-bottom: 0.5rem;
+  }
+
   p {
     margin: 0 0 0.5rem 0;
   }

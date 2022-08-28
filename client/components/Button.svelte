@@ -3,13 +3,11 @@
 
   export let disabled = false;
   export let label = "";
-  let _class = "";
-  export { _class as class };
 </script>
 
 <button
   aria-disabled={disabled}
-  class={_class}
+  class={$$props.class}
   {disabled}
   on:click
   transition:fade
