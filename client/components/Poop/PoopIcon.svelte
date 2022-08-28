@@ -16,6 +16,6 @@
 
 <style>
   .shadowed {
-    margin: 0 0.1rem;
+    margin: 0 1px;
   }
 </style>
