@@ -42,7 +42,6 @@
 
 <style>
   :global(.sider-toggle-button) {
-    background-color: #fff;
     box-shadow: 0 0 0.3rem var(--border-color);
   }
 
@@ -61,6 +60,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    border-left: var(--border-width) solid #000;
+    border-left: var(--border-width) solid #666;
   }
 </style>

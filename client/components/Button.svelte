@@ -18,7 +18,10 @@
 
 <style>
   :global(button) {
-    background: transparent;
+    --button-lightness: 100%;
+    --button-color: hsl(0, 0%, var(--button-lightness));
+
+    background: var(--button-color);
     display: flex;
     align-items: center;
     font-size: 0.75rem;
@@ -37,13 +40,11 @@
 
   :global(button:hover) {
     --border-color: #666;
-
-    background: rgba(0, 0, 0, 0.1);
+    --button-lightness: 90%;
   }
 
   :global(button:active) {
     --border-color: #666;
-
-    background: rgba(0, 0, 0, 0.2);
+    --button-lightness: 80%;
   }
 </style>
