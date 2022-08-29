@@ -33,14 +33,6 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-
-  --action-bar-color: rgba(255, 255, 255, 0.7);
-  --action-bar-height: 54px;
-
-  --border-width: 0.1rem;
-  --border-color: #888;
-  --border: var(--border-width) solid var(--border-color);
-  --border-radius: 0.25rem;
 }
 
 body {

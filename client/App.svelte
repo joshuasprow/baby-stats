@@ -3,6 +3,7 @@
   // TODO: add baby name to title
   // import { user } from "$stores/user";
   import "./main.css";
+  import "./variables.css";
 </script>
 
 <svelte:head>

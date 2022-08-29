@@ -1,6 +1,3 @@
-<script context="module" lang="ts">
-</script>
-
 <script lang="ts">
   import Button from "$components/Button.svelte";
   import SignInButton from "$components/SignInButton.svelte";
@@ -11,8 +8,6 @@
   import { fade, fly } from "svelte/transition";
 
   export let open = false;
-
-  const borderColor = getColorVariableValue("--border-color");
 
   const close = () => {
     open = false;
@@ -36,23 +31,27 @@
   <div class="backdrop" on:click={close} transition:fade />
 
   <aside transition:fly={{ x: window.innerWidth }}>
-    <Button on:click={toggle}>✖️</Button>
+    <header>
+      <Button on:click={toggle}>✖️</Button>
+    </header>
 
-    <span>
+    <section>
+      <p>
+        {#if $user}
+          Hi {$user.displayName}
+        {:else}
+          Hello, please sign in below
+        {/if}
+      </p>
+    </section>
+
+    <section>
       {#if $user}
-        Hi {$user.displayName}
+        <SignOutButton />
       {:else}
-        Hello, please sign in below
+        <SignInButton />
       {/if}
-    </span>
-
-    {#if $user}
-      <SignOutButton />
-    {:else}
-      <SignInButton />
-    {/if}
-
-    <input on:input={handleColorChange} type="color" value={borderColor} />
+    </section>
   </aside>
 {/if}
 
@@ -79,7 +78,11 @@
     border-left: var(--border-width) solid #666;
   }
 
-  aside span {
-    margin: 0.5rem 0;
+  header {
+    margin-left: auto;
+  }
+
+  section {
+    margin-bottom: 0.5rem;
   }
 </style>

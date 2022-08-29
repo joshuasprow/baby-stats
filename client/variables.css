@@ -1,0 +1,16 @@
+:root {
+  --action-bar-height: 54px;
+
+  --border-color-hue: 0;
+  --border-color-saturation: 0%;
+  --border-color-lightness: 53%;
+  --border-color: hsl(
+    var(--border-color-hue),
+    var(--border-color-saturation),
+    var(--border-color-lightness)
+  );
+
+  --border-width: 0.1rem;
+  --border-radius: 0.25rem;
+  --border: var(--border-width) solid var(--border-color);
+}
