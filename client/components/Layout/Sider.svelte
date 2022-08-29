@@ -46,7 +46,7 @@
     </section>
 
     <section>
-      <ColorPicker />
+      <ColorPicker colorType="border" />
     </section>
   </aside>
 {/if}

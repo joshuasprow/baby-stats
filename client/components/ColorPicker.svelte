@@ -1,4 +1,10 @@
 <script context="module" lang="ts">
+  type ColorType = "border" | "button";
+  type HslKey =
+    | `--${ColorType}--color-hue`
+    | `--${ColorType}--color-saturation`
+    | `--${ColorType}--color-lightness`;
+
   const getCssVariable = (variable: string) => {
     const value = getComputedStyle(document.documentElement).getPropertyValue(
       variable
@@ -21,16 +27,16 @@
     document.documentElement.style.setProperty(variable, value);
   };
 
-  const getBorderColor = () => {
+  const getHslColor = (colorType: ColorType) => {
     const [hue, saturation, lightness] = [
-      "--border-color-hue",
-      "--border-color-saturation",
-      "--border-color-lightness",
+      `--${colorType}-color-hue`,
+      `--${colorType}-color-saturation`,
+      `--${colorType}-color-lightness`,
     ].map(getCssVariable);
 
     if (!hue || !saturation || !lightness) {
       console.warn(
-        `missing border color variables: ${hue}, ${saturation}, ${lightness}`
+        `missing ${colorType} color variables: h=${hue}, s=${saturation}, l=${lightness}`
       );
       return null;
     }
@@ -42,14 +48,14 @@
     };
   };
 
-  const setBorderColor = (hsl: HslColor | null) => {
+  const setHslColor = (colorType: ColorType, hsl: HslColor | null) => {
     if (!hsl) return;
 
     const { hue, saturation, lightness } = hsl;
 
-    setCssVariable("--border-color-hue", `${hue}`);
-    setCssVariable("--border-color-saturation", `${saturation}%`);
-    setCssVariable("--border-color-lightness", `${lightness}%`);
+    setCssVariable(`--${colorType}-color-hue`, `${hue}`);
+    setCssVariable(`--${colorType}-color-saturation`, `${saturation}%`);
+    setCssVariable(`--${colorType}-color-lightness`, `${lightness}%`);
   };
 </script>
 
@@ -57,17 +63,18 @@
   import { hexToHsl, hslToHex, type HslColor } from "baby-stats-lib/colors";
   import type { ChangeEvent } from "baby-stats-lib/dom";
 
-  let borderColor = getBorderColor();
+  export let colorType: ColorType;
 
-  $: borderColorHex = borderColor ? hslToHex(borderColor) : undefined;
+  $: color = getHslColor(colorType);
+  $: colorHex = color ? hslToHex(color) : undefined;
 
   const handleColorChange = (e: ChangeEvent) => {
     const hex = e.currentTarget.value;
 
-    borderColor = hexToHsl(hex);
+    color = hexToHsl(hex);
 
-    setBorderColor(borderColor);
+    setHslColor(colorType, color);
   };
 </script>
 
-<input on:input={handleColorChange} type="color" value={borderColorHex} />
+<input on:input={handleColorChange} type="color" value={colorHex} />
