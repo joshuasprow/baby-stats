@@ -29,13 +29,9 @@
     color: #666;
     padding: 0.1rem 0.25rem;
     border: var(--border);
-
     border-radius: var(--border-radius);
-    border-color: var(--border-color);
-
     transition-duration: 0.25s;
     transition-property: background, border-color;
-    transition-timing-function: ease-in;
   }
 
   :global(button:hover) {
