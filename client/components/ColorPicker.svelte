@@ -65,8 +65,8 @@
   $: color = getHslColor(colorType);
   $: colorHex = color ? hslToHex(color) : undefined;
 
-  const getContrastRatio = () => {
-    if (!color) {
+  const getContrastRatio = (c: HslColor) => {
+    if (!c) {
       console.warn(`missing ${colorType} color`);
       return;
     }
@@ -78,17 +78,19 @@
       return;
     }
 
-    const lighter =
-      font.lightness > color.lightness ? font.lightness : color.lightness;
-    const darker =
-      font.lightness < color.lightness ? font.lightness : color.lightness;
+    const lighter = font.lightness > c.lightness ? font.lightness : c.lightness;
+    const darker = font.lightness < c.lightness ? font.lightness : c.lightness;
 
     console.log(`lighter: ${lighter === font.lightness ? "font" : "color"}`);
 
     const contrastRatio = (lighter + 0.05) / (darker + 0.05);
 
     console.log(`contrast ratio: ${contrastRatio}`);
+
+    return contrastRatio.toFixed(2);
   };
+
+  $: contrastRatio = color ? getContrastRatio(color) : "n/a";
 
   const handleColorChange = (e: ChangeEvent) => {
     const hex = e.currentTarget.value;
@@ -97,8 +99,18 @@
 
     setHslColor(colorType, color);
 
-    getContrastRatio();
+    getContrastRatio(color);
   };
 </script>
 
-<input on:input={handleColorChange} {id} type="color" value={colorHex} />
+<label for={id}>
+  {colorType}
+  <input on:input={handleColorChange} {id} type="color" value={colorHex} />
+  {`${contrastRatio}`}
+</label>
+
+<style>
+  label {
+    display: block;
+  }
+</style>

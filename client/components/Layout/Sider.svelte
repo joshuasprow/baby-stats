@@ -46,14 +46,9 @@
     </section>
 
     <section>
-      <label for="border-color">
-        border:
-        <ColorPicker id="border-color" colorType="border" />
-      </label>
-      <label for="button-color">
-        button:
-        <ColorPicker id="button-color" colorType="button" />
-      </label>
+      <ColorPicker id="border-color" colorType="border" />
+
+      <ColorPicker id="button-color" colorType="button" />
     </section>
   </aside>
 {/if}
