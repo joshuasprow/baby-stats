@@ -17,11 +17,8 @@
 </button>
 
 <style>
-  :global(button) {
-    --button-lightness: 100%;
-    --button-color: hsl(0, 0%, var(--button-lightness));
-
-    background: var(--button-color);
+  button {
+    background-color: var(--button-color);
     display: flex;
     align-items: center;
     font-size: 0.75rem;
@@ -31,16 +28,16 @@
     border: var(--border);
     border-radius: var(--border-radius);
     transition-duration: 0.25s;
-    transition-property: background, border-color;
+    transition-property: background-color, border-color;
   }
 
-  :global(button:hover) {
-    --border-color: var(--border-color-hover);
-    --button-lightness: 90%;
+  button:hover {
+    background-color: var(--button-color-hover);
+    border-color: var(--border-color-hover);
   }
 
-  :global(button:active) {
-    --border-color: var(--border-color-active);
-    --button-lightness: 80%;
+  button:active {
+    background-color: var(--border-color-active);
+    border-color: var(--border-color-active);
   }
 </style>

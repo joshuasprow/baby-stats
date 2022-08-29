@@ -1,9 +1,5 @@
 <script context="module" lang="ts">
   type ColorType = "border" | "button";
-  type HslKey =
-    | `--${ColorType}--color-hue`
-    | `--${ColorType}--color-saturation`
-    | `--${ColorType}--color-lightness`;
 
   const getCssVariable = (variable: string) => {
     const value = getComputedStyle(document.documentElement).getPropertyValue(
@@ -63,6 +59,7 @@
   import { hexToHsl, hslToHex, type HslColor } from "baby-stats-lib/colors";
   import type { ChangeEvent } from "baby-stats-lib/dom";
 
+  export let id = "";
   export let colorType: ColorType;
 
   $: color = getHslColor(colorType);
@@ -77,4 +74,4 @@
   };
 </script>
 
-<input on:input={handleColorChange} type="color" value={colorHex} />
+<input on:input={handleColorChange} {id} type="color" value={colorHex} />

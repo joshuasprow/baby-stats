@@ -27,4 +27,14 @@
   --border: var(--border-width) solid var(--border-color);
   --border-hover: var(--border-width) solid var(--border-color-hover);
   --border-active: var(--border-width) solid var(--border-color-active);
+
+  --button-color-hue: 0;
+  --button-color-saturation: 0%;
+  --button-color-lightness: 100%;
+
+  --button-color: hsl(
+    var(--button-color-hue),
+    var(--button-color-saturation),
+    var(--button-color-lightness)
+  );
 }
