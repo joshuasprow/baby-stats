@@ -39,12 +39,12 @@
   }
 
   :global(button:hover) {
-    --border-color-lightness: calc(var(--border-color-lightness) - 20%);
+    --border-color: var(--border-color-hover);
     --button-lightness: 90%;
   }
 
   :global(button:active) {
-    --border-color: #666;
+    --border-color: var(--border-color-active);
     --button-lightness: 80%;
   }
 </style>

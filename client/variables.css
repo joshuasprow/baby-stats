@@ -4,13 +4,27 @@
   --border-color-hue: 0;
   --border-color-saturation: 0%;
   --border-color-lightness: 53%;
+
   --border-color: hsl(
     var(--border-color-hue),
     var(--border-color-saturation),
     var(--border-color-lightness)
   );
+  --border-color-hover: hsl(
+    var(--border-color-hue),
+    var(--border-color-saturation),
+    calc(var(--border-color-lightness) - 10%)
+  );
+  --border-color-active: hsl(
+    var(--border-color-hue),
+    var(--border-color-saturation),
+    calc(var(--border-color-lightness) - 20%)
+  );
 
   --border-width: 0.1rem;
   --border-radius: 0.25rem;
+
   --border: var(--border-width) solid var(--border-color);
+  --border-hover: var(--border-width) solid var(--border-color-hover);
+  --border-active: var(--border-width) solid var(--border-color-active);
 }
