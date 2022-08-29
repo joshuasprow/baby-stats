@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-  type ColorType = "border" | "button";
+  type ColorType = "border" | "button" | "button-font";
 
   const getCssVariable = (variable: string) => {
     const value = getComputedStyle(document.documentElement).getPropertyValue(
@@ -65,12 +65,39 @@
   $: color = getHslColor(colorType);
   $: colorHex = color ? hslToHex(color) : undefined;
 
+  const getContrastRatio = () => {
+    if (!color) {
+      console.warn(`missing ${colorType} color`);
+      return;
+    }
+
+    const font = getHslColor("button-font");
+
+    if (!font) {
+      console.warn(`missing font color`);
+      return;
+    }
+
+    const lighter =
+      font.lightness > color.lightness ? font.lightness : color.lightness;
+    const darker =
+      font.lightness < color.lightness ? font.lightness : color.lightness;
+
+    console.log(`lighter: ${lighter === font.lightness ? "font" : "color"}`);
+
+    const contrastRatio = (lighter + 0.05) / (darker + 0.05);
+
+    console.log(`contrast ratio: ${contrastRatio}`);
+  };
+
   const handleColorChange = (e: ChangeEvent) => {
     const hex = e.currentTarget.value;
 
     color = hexToHsl(hex);
 
     setHslColor(colorType, color);
+
+    getContrastRatio();
   };
 </script>
 

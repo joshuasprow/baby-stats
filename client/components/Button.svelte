@@ -23,7 +23,7 @@
     align-items: center;
     font-size: 0.75rem;
     font-weight: 700;
-    color: #666;
+    color: var(--button-font-color);
     padding: 0.1rem 0.25rem;
     border: var(--border);
     border-radius: var(--border-radius);

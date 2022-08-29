@@ -55,10 +55,7 @@ export const hexToHsl = (hex: string) => {
   s = +(s * 100).toFixed(1);
   l = +(l * 100).toFixed(1);
 
-  const hsl = { hue: h, saturation: s, lightness: l };
-  console.log(hsl);
-
-  return hsl;
+  return { hue: h, saturation: s, lightness: l };
 };
 
 export const hslToHex = ({
@@ -116,7 +113,5 @@ export const hslToHex = ({
   if (G.length == 1) G = `0${G}`;
   if (B.length == 1) B = `0${B}`;
 
-  const hex = "#" + R + G + B;
-  console.log({ hex });
-  return hex;
+  return "#" + R + G + B;
 };
