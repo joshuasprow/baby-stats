@@ -1,10 +1,9 @@
 <script lang="ts">
   import Button from "$components/Button.svelte";
+  import ColorPicker from "$components/ColorPicker.svelte";
   import SignInButton from "$components/SignInButton.svelte";
   import SignOutButton from "$components/SignOutButton.svelte";
   import { user } from "$stores/user";
-  import { getColorVariableValue, hexToHsl } from "baby-stats-lib/colors";
-  import type { ChangeEvent } from "baby-stats-lib/dom";
   import { fade, fly } from "svelte/transition";
 
   export let open = false;
@@ -15,13 +14,6 @@
 
   const toggle = () => {
     open = !open;
-  };
-
-  const handleColorChange = (e: ChangeEvent) => {
-    const hex = e.currentTarget.value;
-    const hsl = hexToHsl(hex);
-
-    document.documentElement.style.setProperty("--border-color", hsl);
   };
 </script>
 
@@ -51,6 +43,10 @@
       {:else}
         <SignInButton />
       {/if}
+    </section>
+
+    <section>
+      <ColorPicker />
     </section>
   </aside>
 {/if}

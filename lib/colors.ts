@@ -1,3 +1,10 @@
+export type HexColor = string;
+export interface HslColor {
+  hue: number;
+  saturation: number;
+  lightness: number;
+}
+
 // Thanks! https://css-tricks.com/converting-color-spaces-in-javascript/#aa-hex-to-hsl
 export const hexToHsl = (hex: string) => {
   // convert hex to RGB first
@@ -48,41 +55,52 @@ export const hexToHsl = (hex: string) => {
   s = +(s * 100).toFixed(1);
   l = +(l * 100).toFixed(1);
 
-  return "hsl(" + h + "," + s + "%," + l + "%)";
+  const hsl = { hue: h, saturation: s, lightness: l };
+  console.log(hsl);
+
+  return hsl;
 };
 
-const hslToHex = (h: number, s: number, l: number) => {
-  s /= 100;
-  l /= 100;
+export const hslToHex = ({
+  hue,
+  saturation,
+  lightness,
+}: {
+  hue: number;
+  saturation: number;
+  lightness: number;
+}) => {
+  saturation /= 100;
+  lightness /= 100;
 
-  let c = (1 - Math.abs(2 * l - 1)) * s,
-    x = c * (1 - Math.abs(((h / 60) % 2) - 1)),
-    m = l - c / 2,
+  let c = (1 - Math.abs(2 * lightness - 1)) * saturation,
+    x = c * (1 - Math.abs(((hue / 60) % 2) - 1)),
+    m = lightness - c / 2,
     r = 0,
     g = 0,
     b = 0;
 
-  if (0 <= h && h < 60) {
+  if (0 <= hue && hue < 60) {
     r = c;
     g = x;
     b = 0;
-  } else if (60 <= h && h < 120) {
+  } else if (60 <= hue && hue < 120) {
     r = x;
     g = c;
     b = 0;
-  } else if (120 <= h && h < 180) {
+  } else if (120 <= hue && hue < 180) {
     r = 0;
     g = c;
     b = x;
-  } else if (180 <= h && h < 240) {
+  } else if (180 <= hue && hue < 240) {
     r = 0;
     g = x;
     b = c;
-  } else if (240 <= h && h < 300) {
+  } else if (240 <= hue && hue < 300) {
     r = x;
     g = 0;
     b = c;
-  } else if (300 <= h && h < 360) {
+  } else if (300 <= hue && hue < 360) {
     r = c;
     g = 0;
     b = x;
@@ -94,23 +112,11 @@ const hslToHex = (h: number, s: number, l: number) => {
   let B = Math.round((b + m) * 255).toString(16);
 
   // Prepend 0s, if necessary
-  if (R.length == 1) R = `0${r}`;
-  if (G.length == 1) G = `0${g}`;
-  if (B.length == 1) B = `0${b}`;
+  if (R.length == 1) R = `0${R}`;
+  if (G.length == 1) G = `0${G}`;
+  if (B.length == 1) B = `0${B}`;
 
-  return "#" + r + g + b;
-};
-
-export const getColorVariableValue = (variable: string) => {
-  const raw = getComputedStyle(document.documentElement).getPropertyValue(
-    variable
-  );
-
-  const value = raw.trim().replaceAll("#", "");
-
-  if (value.length === 6) return `#${value}`;
-
-  const [r, g, b] = value;
-
-  return `#${r}${r}${g}${g}${b}${b}`;
+  const hex = "#" + R + G + B;
+  console.log({ hex });
+  return hex;
 };
