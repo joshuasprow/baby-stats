@@ -54,10 +54,6 @@
 {/if}
 
 <style>
-  :global(.sider-toggle-button) {
-    box-shadow: 0.1rem 0.1rem 0.3rem var(--border-color);
-  }
-
   .backdrop {
     position: fixed;
     inset: 0;
