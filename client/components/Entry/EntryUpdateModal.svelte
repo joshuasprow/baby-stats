@@ -1,6 +1,5 @@
 <script lang="ts">
   import Button from "$components/Button.svelte";
-
   import DateTimePicker from "$components/DateTimePicker.svelte";
   import EntryModal from "$components/Entry/EntryModal.svelte";
   import type { Timestamp } from "baby-stats-firebase";
@@ -42,14 +41,9 @@
 </script>
 
 <EntryModal {loading} on:close={handleClose} on:open={handleOpen} {open}>
-  <button
-    class="update-button"
-    disabled={loading}
-    on:click={handleOpen}
-    slot="button"
-  >
+  <Button disabled={loading} on:click={handleOpen} slot="button">
     <slot name="icon" />
-  </button>
+  </Button>
 
   {#if timestamp}
     <DateTimePicker on:change={handleTimestamp} {timestamp} />
@@ -59,9 +53,3 @@
 
   <Button disabled={loading} on:click={handleRemove}>remove</Button>
 </EntryModal>
-
-<style>
-  .update-button {
-    background-color: #eee;
-  }
-</style>
