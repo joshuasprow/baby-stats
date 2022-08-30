@@ -168,9 +168,6 @@
 </EntryUpdateModal>
 
 <style>
-  .amount-input {
-    display: flex;
-  }
   .source-input {
     margin: 0.25rem 0;
   }
