@@ -1,9 +1,13 @@
+import { z } from "zod";
+
 export type HexColor = string;
-export interface HslColor {
-  hue: number;
-  saturation: number;
-  lightness: number;
-}
+
+export const HslColor = z.object({
+  hue: z.number().min(0).max(255),
+  saturation: z.number().min(0).max(100),
+  lightness: z.number().min(0).max(100),
+});
+export type HslColor = z.infer<typeof HslColor>;
 
 // Thanks! https://css-tricks.com/converting-color-spaces-in-javascript/#aa-hex-to-hsl
 export const hexToHsl = (hex: string) => {
