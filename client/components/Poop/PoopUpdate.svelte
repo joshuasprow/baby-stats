@@ -91,6 +91,10 @@
 </EntryUpdateModal>
 
 <style>
+  article {
+    margin: 0.25rem 0;
+  }
+
   .error {
     color: red;
     font-weight: bold;

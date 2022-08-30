@@ -49,3 +49,15 @@
   </select>
   oz
 </label>
+
+<style>
+  label {
+    display: block;
+    margin: 0.25rem 0 0.25rem auto;
+  }
+
+  select {
+    border: var(--border);
+    border-radius: var(--border-radius);
+  }
+</style>

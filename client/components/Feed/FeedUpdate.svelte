@@ -148,7 +148,7 @@
     {/if}
   </article>
 
-  <article>
+  <article class="source-input">
     <FeedSourceInput
       {loading}
       on:change={handleSource}
@@ -168,6 +168,13 @@
 </EntryUpdateModal>
 
 <style>
+  .amount-input {
+    display: flex;
+  }
+  .source-input {
+    margin: 0.25rem 0;
+  }
+
   .error {
     color: red;
     font-weight: bold;
