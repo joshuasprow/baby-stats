@@ -15,16 +15,11 @@
     hours: start.toDate().getHours(),
     minutes: start.toDate().getMinutes(),
   };
+
   let endTime: Time = {
     hours: end.toDate().getHours(),
     minutes: end.toDate().getMinutes(),
   };
-
-  // const timeIsLessThan = (a: Time, b: Time) => {
-  //   if (a.hours < b.hours) return true;
-  //   if (a.hours !== b.hours) return false;
-  //   return a.minutes < b.minutes;
-  // };
 
   const dispatch = createEventDispatcher<{ change: TimeRangeAmount }>();
 
@@ -62,22 +57,25 @@
   };
 </script>
 
-<DatePicker on:change={handleDateChange} {date} />
-<TimePicker on:change={handleStartTimeChange} time={startTime} />
+<article>
+  <DatePicker on:change={handleDateChange} {date} />
+  <TimePicker on:change={handleStartTimeChange} time={startTime} />
 
-<div>
   <span>end time:</span>
   <TimePicker on:change={handleEndTimeChange} time={endTime} />
-</div>
+</article>
 
 <style>
-  div {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+  article {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: stretch;
+    row-gap: 0.25rem;
+    column-gap: 0.25rem;
+    margin-bottom: 0.5rem;
   }
 
   span {
-    margin-right: 0.5rem;
+    margin-left: auto;
   }
 </style>

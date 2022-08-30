@@ -82,7 +82,13 @@
 </article>
 
 <style>
-  :global(.day-button) {
+  :global(button.day-button) {
+    background-color: hsl(
+      var(--button-color-hue),
+      var(--button-color-saturation),
+      calc(var(--button-color-lightness) + 20%)
+    );
+    font-size: 0.75rem;
     margin-bottom: 0.5rem;
   }
 

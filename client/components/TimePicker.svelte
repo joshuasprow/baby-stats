@@ -41,3 +41,10 @@
   type="time"
   {value}
 />
+
+<style>
+  input {
+    border: var(--border);
+    border-radius: var(--border-radius);
+  }
+</style>

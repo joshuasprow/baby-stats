@@ -26,3 +26,10 @@
   type="date"
   {value}
 />
+
+<style>
+  input {
+    border: var(--border);
+    border-radius: var(--border-radius);
+  }
+</style>

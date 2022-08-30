@@ -42,6 +42,7 @@
   div {
     display: flex;
     flex-wrap: wrap;
+    column-gap: 0.25rem;
     justify-content: flex-start;
   }
 </style>

@@ -21,7 +21,6 @@
     background-color: var(--button-color);
     display: flex;
     align-items: center;
-    font-size: 0.75rem;
     font-weight: 700;
     color: var(--button-font-color);
     padding: 0.1rem 0.25rem;
