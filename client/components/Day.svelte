@@ -86,7 +86,7 @@
     background-color: hsl(
       var(--button-color-hue),
       var(--button-color-saturation),
-      calc(var(--button-color-lightness) + 20%)
+      calc(var(--button-color-lightness) + 10%)
     );
     font-size: 0.75rem;
     margin-bottom: 0.5rem;

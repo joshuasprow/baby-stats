@@ -34,6 +34,7 @@
 <style>
   main {
     padding: 0.5rem 0.5rem var(--action-bar-height) 0.5rem;
+    background-color: var(--background-color);
   }
 
   .centered {
