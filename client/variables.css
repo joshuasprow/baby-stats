@@ -13,12 +13,12 @@
   --border-color-hover: hsl(
     var(--border-color-hue),
     var(--border-color-saturation),
-    calc(var(--border-color-lightness) - 10%)
+    calc(var(--border-color-lightness) - 5%)
   );
   --border-color-active: hsl(
     var(--border-color-hue),
     var(--border-color-saturation),
-    calc(var(--border-color-lightness) - 20%)
+    calc(var(--border-color-lightness) - 10%)
   );
 
   --border-width: 0.1rem;
@@ -36,6 +36,16 @@
     var(--button-color-hue),
     var(--button-color-saturation),
     var(--button-color-lightness)
+  );
+  --button-color-hover: hsl(
+    var(--button-color-hue),
+    var(--button-color-saturation),
+    calc(var(--button-color-lightness) - 5%)
+  );
+  --button-color-active: hsl(
+    var(--button-color-hue),
+    var(--button-color-saturation),
+    calc(var(--button-color-lightness) - 10%)
   );
 
   --button-font-color: hsl(0, 0%, 0%);

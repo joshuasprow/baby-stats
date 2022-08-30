@@ -37,7 +37,7 @@
   }
 
   button:active {
-    background-color: var(--border-color-active);
+    background-color: var(--button-color-active);
     border-color: var(--border-color-active);
   }
 </style>
