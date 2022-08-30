@@ -1,6 +1,18 @@
 :root {
   --action-bar-height: 54px;
 
+  --background-color-hue: 0;
+  --background-color-saturation: 0%;
+  --background-color-lightness: 100%;
+
+  --background-color: hsl(
+    var(--background-color-hue),
+    var(--background-color-saturation),
+    var(--background-color-lightness)
+  );
+
+  --background-font-color: hsl(0, 0%, 0%);
+
   --border-color-hue: 0;
   --border-color-saturation: 0%;
   --border-color-lightness: 53%;

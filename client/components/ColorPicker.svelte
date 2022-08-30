@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-  type ColorType = "border" | "button";
+  type ColorType = "background" | "border" | "button";
 
   const getCssVariable = (variable: string) => {
     const value = getComputedStyle(document.documentElement).getPropertyValue(
@@ -72,12 +72,13 @@
 
     setHslColor(colorType, color);
 
-    if (colorType !== "button") return;
-
-    setCssVariable(
-      "--button-font-color",
-      color.lightness > 60 ? "black" : "white"
-    );
+    if (["background", "button"].includes(colorType)) {
+      setCssVariable(
+        `--${colorType}-font-color`,
+        color.lightness > 60 ? "black" : "white"
+      );
+      console.log("set");
+    }
   };
 </script>
 

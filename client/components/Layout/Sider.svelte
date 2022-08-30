@@ -46,8 +46,8 @@
     </section>
 
     <section>
+      <ColorPicker id="background-color" colorType="background" />
       <ColorPicker id="border-color" colorType="border" />
-
       <ColorPicker id="button-color" colorType="button" />
     </section>
   </aside>
@@ -64,12 +64,14 @@
     position: fixed;
     inset: 0;
     left: 1rem;
-    background: #fff;
+    background-color: var(--background-color);
     padding: 0.25rem 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     border-left: var(--border-width) solid #666;
+
+    color: var(--background-font-color);
   }
 
   header {
