@@ -38,13 +38,5 @@
     var(--button-color-lightness)
   );
 
-  --button-font-color-hue: 0;
-  --button-font-color-saturation: 0%;
-  --button-font-color-lightness: 0%;
-
-  --button--font-color: hsl(
-    var(--button-font-color-hue),
-    var(--button-font-color-saturation),
-    var(--button-font-color-lightness)
-  );
+  --button-font-color: hsl(0, 0%, 0%);
 }

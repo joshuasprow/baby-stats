@@ -1,5 +1,5 @@
 <script context="module" lang="ts">
-  type ColorType = "border" | "button" | "button-font";
+  type ColorType = "border" | "button";
 
   const getCssVariable = (variable: string) => {
     const value = getComputedStyle(document.documentElement).getPropertyValue(
@@ -24,23 +24,23 @@
   };
 
   const getHslColor = (colorType: ColorType) => {
-    const [hue, saturation, lightness] = [
+    const [h, s, l] = [
       `--${colorType}-color-hue`,
       `--${colorType}-color-saturation`,
       `--${colorType}-color-lightness`,
     ].map(getCssVariable);
 
-    if (!hue || !saturation || !lightness) {
+    if (!h || !s || !l) {
       console.warn(
-        `missing ${colorType} color variables: h=${hue}, s=${saturation}, l=${lightness}`
+        `missing ${colorType} color variables: h=${h}, s=${s}, l=${l}`
       );
       return null;
     }
 
     return {
-      hue: parseInt(hue, 10),
-      saturation: parseInt(saturation, 10),
-      lightness: parseInt(lightness, 10),
+      hue: parseInt(h, 10),
+      saturation: parseInt(s, 10),
+      lightness: parseInt(l, 10),
     };
   };
 
@@ -65,33 +65,6 @@
   $: color = getHslColor(colorType);
   $: colorHex = color ? hslToHex(color) : undefined;
 
-  const getContrastRatio = (c: HslColor) => {
-    if (!c) {
-      console.warn(`missing ${colorType} color`);
-      return;
-    }
-
-    const font = getHslColor("button-font");
-
-    if (!font) {
-      console.warn(`missing font color`);
-      return;
-    }
-
-    const lighter = font.lightness > c.lightness ? font.lightness : c.lightness;
-    const darker = font.lightness < c.lightness ? font.lightness : c.lightness;
-
-    console.log(`lighter: ${lighter === font.lightness ? "font" : "color"}`);
-
-    const contrastRatio = (lighter + 0.05) / (darker + 0.05);
-
-    console.log(`contrast ratio: ${contrastRatio}`);
-
-    return contrastRatio.toFixed(2);
-  };
-
-  $: contrastRatio = color ? getContrastRatio(color) : "n/a";
-
   const handleColorChange = (e: ChangeEvent) => {
     const hex = e.currentTarget.value;
 
@@ -99,14 +72,18 @@
 
     setHslColor(colorType, color);
 
-    getContrastRatio(color);
+    if (colorType !== "button") return;
+
+    setCssVariable(
+      "--button-font-color",
+      color.lightness > 60 ? "black" : "white"
+    );
   };
 </script>
 
 <label for={id}>
   {colorType}
   <input on:input={handleColorChange} {id} type="color" value={colorHex} />
-  {`${contrastRatio}`}
 </label>
 
 <style>
