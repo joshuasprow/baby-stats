@@ -1,6 +1,9 @@
 <script lang="ts">
-  import type { HexColor } from "baby-stats-models/colors";
+  import type { Colors, HexColor } from "baby-stats-models/colors";
   import ColorPicker from "./ColorPicker.svelte";
+
+  // TODO: get defaults from 1. firestore; 2. css variables
+  let colors: Colors;
 
   const handleBackground = (e: CustomEvent<HexColor>) => {
     console.log("background", e.detail);
