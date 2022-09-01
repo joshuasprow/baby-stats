@@ -10,6 +10,7 @@ export default defineConfig({
   build: {
     outDir: dir("../dist"),
   },
+  envDir: dir("../"),
   resolve: {
     alias: {
       $components: dir("components"),
