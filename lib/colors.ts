@@ -1,16 +1,7 @@
-import { z } from "zod";
-
-export type HexColor = string;
-
-export const HslColor = z.object({
-  hue: z.number().min(0).max(255),
-  saturation: z.number().min(0).max(100),
-  lightness: z.number().min(0).max(100),
-});
-export type HslColor = z.infer<typeof HslColor>;
+import type { HexColor, HslColor } from "baby-stats-models/colors";
 
 // Thanks! https://css-tricks.com/converting-color-spaces-in-javascript/#aa-hex-to-hsl
-export const hexToHsl = (hex: string) => {
+export const hexToHsl = (hex: string): HslColor => {
   // convert hex to RGB first
   let r = 0;
   let g = 0;
@@ -70,7 +61,7 @@ export const hslToHex = ({
   hue: number;
   saturation: number;
   lightness: number;
-}) => {
+}): HexColor => {
   saturation /= 100;
   lightness /= 100;
 

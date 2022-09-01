@@ -56,7 +56,8 @@
 </script>
 
 <script lang="ts">
-  import { hexToHsl, hslToHex, type HslColor } from "baby-stats-lib/colors";
+  import { hexToHsl, hslToHex } from "baby-stats-lib/colors";
+  import type { HslColor } from "baby-stats-models/colors";
   import type { ChangeEvent } from "baby-stats-lib/dom";
 
   export let id = "";
@@ -72,7 +73,7 @@
 
     setHslColor(colorType, color);
 
-    if (["background", "button"].includes(colorType)) {
+    if (color && ["background", "button"].includes(colorType)) {
       setCssVariable(
         `--${colorType}-font-color`,
         color.lightness > 60 ? "black" : "white"
