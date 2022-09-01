@@ -10,7 +10,7 @@
     "models"
   ],
   "scripts": {
-    "build": "turbo run build",
+    "build": "turbo run --filter=baby-stats-client build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
