@@ -1,4 +1,4 @@
-import { HslColor, HslColorAdd } from "baby-stats-lib/colors";
+import { Colors, ColorsAdd } from "baby-stats-models/colors";
 import {
   collection,
   deleteDoc,
@@ -11,38 +11,38 @@ import {
 } from "firebase/firestore";
 import { firestore } from "./index";
 
-const getHslColorsCollection = (uid: string) =>
+const getColorsCollection = (uid: string) =>
   collection(firestore, `users/${uid}/colors`);
 
-const getHslColorDoc = (uid: string, id: string) =>
+const getColorDoc = (uid: string, id: string) =>
   doc(firestore, `users/${uid}/colors/${id}`);
 
-export const subscribeToHslColors = (
+export const subscribeToColors = (
   uid: string,
-  set: (colors: HslColor[]) => void
+  set: (colors: Colors[]) => void
 ) =>
   onSnapshot(
-    query(getHslColorsCollection(uid), orderBy("timestamp", "desc")),
-    (snap) => set(snap.docs.map((doc) => HslColor.parse(doc.data())))
+    query(getColorsCollection(uid), orderBy("timestamp", "desc")),
+    (snap) => set(snap.docs.map((doc) => Colors.parse(doc.data())))
   );
 
-export const addHslColor = async (uid: string, value: HslColorAdd) => {
-  const add = HslColorAdd.parse({ ...value });
-  const ref = doc(getHslColorsCollection(uid));
-  const color = HslColor.parse({ ...add, id: ref.id });
+export const addColor = async (uid: string, value: ColorsAdd) => {
+  const add = ColorsAdd.parse({ ...value });
+  const ref = doc(getColorsCollection(uid));
+  const color = Colors.parse({ ...add, id: ref.id });
 
   await setDoc(ref, color);
 
   return color;
 };
 
-export const updateHslColor = async (uid: string, value: HslColor) => {
-  const color = HslColor.parse({ ...value });
-  const ref = getHslColorDoc(uid, color.id);
+export const updateColor = async (uid: string, value: Colors) => {
+  const color = Colors.parse({ ...value });
+  const ref = getColorDoc(uid, color.id);
 
   await updateDoc(ref, color);
 };
 
-export const removeHslColor = async (uid: string, id: string) => {
-  await deleteDoc(getHslColorDoc(uid, id));
+export const removeColor = async (uid: string, id: string) => {
+  await deleteDoc(getColorDoc(uid, id));
 };

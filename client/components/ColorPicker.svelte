@@ -57,28 +57,38 @@
 
 <script lang="ts">
   import { hexToHsl, hslToHex } from "baby-stats-lib/colors";
-  import type { HslColor } from "baby-stats-models/colors";
   import type { ChangeEvent } from "baby-stats-lib/dom";
+  import { HexColor, type HslColor } from "baby-stats-models/colors";
+  import { createEventDispatcher } from "svelte";
 
   export let id = "";
   export let colorType: ColorType;
 
-  $: color = getHslColor(colorType);
-  $: colorHex = color ? hslToHex(color) : undefined;
+  const dispatch = createEventDispatcher<{ change: HexColor }>();
+
+  let color = getHslColor(colorType);
+  let colorHex = color ? hslToHex(color) : undefined;
 
   const handleColorChange = (e: ChangeEvent) => {
     const hex = e.currentTarget.value;
 
     color = hexToHsl(hex);
 
+    if (!color) return;
+
     setHslColor(colorType, color);
 
-    if (color && ["background", "button"].includes(colorType)) {
+    try {
+      dispatch("change", HexColor.parse(hex));
+    } catch (error) {
+      console.error(error);
+    }
+
+    if (["background", "button"].includes(colorType)) {
       setCssVariable(
         `--${colorType}-font-color`,
         color.lightness > 60 ? "black" : "white"
       );
-      console.log("set");
     }
   };
 </script>
