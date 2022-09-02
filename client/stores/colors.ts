@@ -2,7 +2,6 @@ import { HslColor } from "baby-stats-lib/colors";
 import { onMount } from "svelte";
 import { writable } from "svelte/store";
 import { z } from "zod";
-import "./colors.css";
 
 export const Colors = z.object({
   background: HslColor,
