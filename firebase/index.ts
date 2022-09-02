@@ -1,18 +1,29 @@
-import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { config } from "./config";
+import {
+  initializeApp,
+  type FirebaseApp,
+  type FirebaseOptions,
+} from "firebase/app";
+import { getAuth, type Auth } from "firebase/auth";
+import { getFirestore, type Firestore } from "firebase/firestore";
 
-export const app = initializeApp(config);
+let app: FirebaseApp;
 
-export const auth = getAuth(app);
-export const firestore = getFirestore(app);
+export let auth: Auth;
+export let firestore: Firestore;
 
+export const initialize = (options: FirebaseOptions) => {
+  app = initializeApp(options);
+  auth = getAuth(app);
+  firestore = getFirestore(app);
+};
+
+export type { FirebaseOptions } from "firebase/app";
 export {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
   signOut,
+  type Auth,
   type User,
   type UserInfo,
 } from "firebase/auth";
@@ -30,4 +41,5 @@ export {
   Timestamp,
   Transaction,
   updateDoc,
+  type Firestore,
 } from "firebase/firestore";
