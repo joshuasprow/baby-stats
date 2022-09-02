@@ -2,23 +2,19 @@
   import Entries from "$components/Entries.svelte";
   import Footer from "$components/Layout/Footer.svelte";
   import Header from "$components/Layout/Header.svelte";
-  import SignInButton from "$components/SignInButton.svelte";
-  import { days } from "$stores/days";
   import { entriesLoaded } from "$stores/entries";
   import { user } from "$stores/user";
 </script>
 
-<!-- user is loading if undefined -->
-{#if $user === undefined || !$entriesLoaded}
+{#if $user === undefined}
   <main class="centered">
     <span>⏳</span>
   </main>
 {:else if $user === null}
   <main class="centered">
     <span>Please sign in below</span>
-    <SignInButton />
   </main>
-{:else if $days.length === 0}
+{:else if !entriesLoaded}
   <main class="centered">
     <span>Use the buttons below to add new entries</span>
   </main>

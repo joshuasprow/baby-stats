@@ -55,8 +55,6 @@ const parseUser = (_user: AuthUser) => {
   const createdAt = parseTimeStringField(json, "createdAt");
   const lastLoginAt = parseTimeStringField(json, "lastLoginAt");
 
-  console.log({ createdAt, lastLoginAt });
-
   const email = z
     .string()
     .nullable()
@@ -89,6 +87,8 @@ const updateUserDoc = async (_user: User) => {
 
 export const user = readable<User | null | undefined>(undefined, (set) => {
   const unsubscribe = onAuthStateChanged(auth, async (_user) => {
+    console.log(_user);
+
     if (!_user) {
       set(_user);
       return;
