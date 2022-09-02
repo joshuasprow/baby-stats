@@ -29,7 +29,7 @@ const copyEntriesToSnapshot = async <K extends EntryKind>(
   tx: Transaction,
   uid: string,
   kind: K,
-  timestamp: string
+  timestamp: string,
 ) => {
   const entriesPath = `users/${uid}/${kind}`;
   const entries = await getDocs(collection(firestore, entriesPath));
@@ -57,8 +57,8 @@ const takeEntriesSnapshot = async (uid: string) => {
 
       return Promise.all(
         ENTRY_KINDS.map((kind) =>
-          copyEntriesToSnapshot(tx, uid, kind, timestamp)
-        )
+          copyEntriesToSnapshot(tx, uid, kind, timestamp),
+        ),
       );
     });
   } catch (error) {
@@ -71,8 +71,8 @@ const getLatestSnapshot = async (uid: string) => {
     query(
       collection(firestore, `users/${uid}/snapshots`),
       orderBy("createdAt", "desc"),
-      limit(1)
-    )
+      limit(1),
+    ),
   );
 
   if (docs.length === 0) return null;

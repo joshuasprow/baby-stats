@@ -20,7 +20,7 @@ const getPeeDoc = (uid: string, id: string) =>
 export const subscribeToPees = (uid: string, set: (pees: Pee[]) => void) =>
   onSnapshot(
     query(getPeesCollection(uid), orderBy("timestamp", "desc")),
-    (spee) => set(spee.docs.map((doc) => Pee.parse(doc.data())))
+    (spee) => set(spee.docs.map((doc) => Pee.parse(doc.data()))),
   );
 
 export const addPee = async (uid: string, value: PeeAdd) => {

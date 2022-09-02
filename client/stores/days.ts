@@ -14,7 +14,7 @@ import { user } from "./user";
 
 export type DayEntry<K extends EntryKind> = [
   timestamp: number,
-  entry: Entry<K>
+  entry: Entry<K>,
 ];
 
 export type Day = [daystamp: number, entries: DayEntry<EntryKind>[]];
@@ -30,7 +30,7 @@ const encodeDayTimestamp = (timestamp: Timestamp): number => {
     0,
     0,
     0,
-    0
+    0,
   );
 
   return date.getTime();
@@ -45,11 +45,11 @@ const combineEntries = (
   $feeds: Feed[],
   $naps: Nap[],
   $pees: Pee[],
-  $poops: Poop[]
+  $poops: Poop[],
 ) => {
   const combined = [...$feeds, ...$naps, ...$pees, ...$poops];
   const sorted = combined.sort(
-    (a, b) => b.timestamp.seconds - a.timestamp.seconds
+    (a, b) => b.timestamp.seconds - a.timestamp.seconds,
   );
 
   return sorted;
@@ -59,7 +59,7 @@ const buildDays = ([_feeds = [], _naps = [], _pees = [], _poops = []]: [
   Feed[],
   Nap[],
   Pee[],
-  Poop[]
+  Poop[],
 ]) => {
   const days: Days = [];
   const entries = combineEntries(_feeds, _naps, _pees, _poops);
@@ -91,5 +91,5 @@ export const days = derived(
     takeSnapshot(_user.uid);
 
     return buildDays(stores);
-  }
+  },
 );

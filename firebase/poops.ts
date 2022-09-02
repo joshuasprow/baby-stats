@@ -20,7 +20,7 @@ const getPoopDoc = (uid: string, id: string) =>
 export const subscribeToPoops = (uid: string, set: (poops: Poop[]) => void) =>
   onSnapshot(
     query(getPoopsCollection(uid), orderBy("timestamp", "desc")),
-    (spoop) => set(spoop.docs.map((doc) => Poop.parse(doc.data())))
+    (spoop) => set(spoop.docs.map((doc) => Poop.parse(doc.data()))),
   );
 
 export const addPoop = async (uid: string, value: PoopAdd) => {

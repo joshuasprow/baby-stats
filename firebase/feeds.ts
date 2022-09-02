@@ -20,7 +20,7 @@ const getFeedDoc = (uid: string, id: string) =>
 export const subscribeToFeeds = (uid: string, set: (feeds: Feed[]) => void) =>
   onSnapshot(
     query(getFeedsCollection(uid), orderBy("timestamp", "desc")),
-    (snap) => set(snap.docs.map((doc) => Feed.parse(doc.data())))
+    (snap) => set(snap.docs.map((doc) => Feed.parse(doc.data()))),
   );
 
 export const addFeed = async (uid: string, value: FeedAdd) => {

@@ -20,7 +20,7 @@ const getNapDoc = (uid: string, id: string) =>
 export const subscribeToNaps = (uid: string, set: (naps: Nap[]) => void) =>
   onSnapshot(
     query(getNapsCollection(uid), orderBy("timestamp", "desc")),
-    (snap) => set(snap.docs.map((doc) => Nap.parse(doc.data())))
+    (snap) => set(snap.docs.map((doc) => Nap.parse(doc.data()))),
   );
 
 export const addNap = async (uid: string, value: NapAdd) => {

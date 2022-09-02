@@ -29,7 +29,7 @@ const hasProperty = (obj: unknown, key: string) =>
 
 const parseTimeStringField = (
   json: object,
-  field: "createdAt" | "lastLoginAt"
+  field: "createdAt" | "lastLoginAt",
 ) => {
   if (!hasProperty(json, "createdAt")) {
     throw new Error(`User has no ${field}`);

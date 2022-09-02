@@ -30,7 +30,7 @@ export const feeds = derived<typeof user, Feed[]>(user, ($user, set) => {
 
 export const convertAmountToBreast = (
   amount: Feed["amount"],
-  timestamp: Timestamp
+  timestamp: Timestamp,
 ) => {
   if (typeof amount !== "number") return amount;
 
