@@ -14,7 +14,8 @@ export const ColorType = z.enum(["background", "border", "button"]);
 export type ColorType = z.infer<typeof ColorType>;
 
 export const Colors = z.object({
-  id: z.string(),
+  id: z.string().min(1),
+  name: z.string().min(1),
   background: HexColor,
   border: HexColor,
   button: HexColor,
