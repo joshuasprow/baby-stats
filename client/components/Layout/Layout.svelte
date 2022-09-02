@@ -2,6 +2,7 @@
   import Entries from "$components/Entries.svelte";
   import Footer from "$components/Layout/Footer.svelte";
   import Header from "$components/Layout/Header.svelte";
+  import SignInButton from "$components/SignInButton.svelte";
   import { entriesLoaded } from "$stores/entries";
   import { user } from "$stores/user";
 </script>
@@ -13,6 +14,7 @@
 {:else if $user === null}
   <main class="centered">
     <span>Please sign in below</span>
+    <SignInButton />
   </main>
 {:else if !entriesLoaded}
   <main class="centered">
