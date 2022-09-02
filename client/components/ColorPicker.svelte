@@ -7,7 +7,7 @@
   } from "baby-stats-lib/colors";
   import { setCssVariable } from "baby-stats-lib/css";
   import type { ChangeEvent } from "baby-stats-lib/dom";
-  import { ColorType, HexColor, type HslColor } from "baby-stats-models/colors";
+  import { ColorType, HexColor } from "baby-stats-models/colors";
   import { createEventDispatcher } from "svelte";
 
   export let id = "";

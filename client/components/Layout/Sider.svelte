@@ -1,8 +1,8 @@
 <script lang="ts">
   import Button from "$components/Button.svelte";
-  import ColorPickers from "$components/ColorPickers.svelte";
   import SignInButton from "$components/SignInButton.svelte";
   import SignOutButton from "$components/SignOutButton.svelte";
+  import ThemeControls from "$components/ThemeControls.svelte";
   import { user } from "$stores/user";
   import { fade, fly } from "svelte/transition";
 
@@ -47,7 +47,7 @@
 
     {#if $user}
       <section transition:fly>
-        <ColorPickers user={$user} />
+        <ThemeControls user={$user} />
       </section>
     {/if}
   </aside>
