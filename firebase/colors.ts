@@ -14,7 +14,7 @@ import {
 const getColorsCollection = (db: Firestore, uid: string) =>
   collection(db, `users/${uid}/colors`);
 
-const getColorDoc = (db: Firestore, uid: string, id: string) =>
+const getColorsDoc = (db: Firestore, uid: string, id: string) =>
   doc(db, `users/${uid}/colors/${id}`);
 
 export const subscribeToColors = (
@@ -27,7 +27,7 @@ export const subscribeToColors = (
     (snap) => set(snap.docs.map((doc) => Colors.parse(doc.data()))),
   );
 
-export const addColor = async (
+export const addColors = async (
   db: Firestore,
   uid: string,
   value: ColorsAdd,
@@ -41,17 +41,17 @@ export const addColor = async (
   return color;
 };
 
-export const updateColor = async (
+export const updateColors = async (
   db: Firestore,
   uid: string,
   value: Colors,
 ) => {
   const color = Colors.parse({ ...value });
-  const ref = getColorDoc(db, uid, color.id);
+  const ref = getColorsDoc(db, uid, color.id);
 
   await updateDoc(ref, color);
 };
 
-export const removeColor = async (db: Firestore, uid: string, id: string) => {
-  await deleteDoc(getColorDoc(db, uid, id));
+export const removeColors = async (db: Firestore, uid: string, id: string) => {
+  await deleteDoc(getColorsDoc(db, uid, id));
 };

@@ -1,14 +1,21 @@
 <script lang="ts">
+  import { addColors } from "baby-stats-firebase/colors";
   import { getHslColors, hexToHsl } from "baby-stats-lib/colors";
-  import type { Colors, ColorsAdd, HexColor } from "baby-stats-models/colors";
+  import type { Colors, HexColor } from "baby-stats-models/colors";
+  import type { User } from "baby-stats-models/users";
   import { onMount } from "svelte";
+  import { db } from "../firebase";
   import ColorPicker from "./ColorPicker.svelte";
 
   // TODO: get defaults from 1. firestore; 2. css variables
 
+  export let user: User;
+
   let id: string | null = null;
   let name = "Default";
   let colors: Omit<Colors, "id" | "name">;
+
+  let loading = false;
 
   const handleBackground = (e: CustomEvent<HexColor>) => {
     const hsl = hexToHsl(e.detail);
@@ -25,8 +32,16 @@
     colors.button = hsl;
   };
 
-  const handleSave = () => {
-    console.log(colors);
+  const handleSave = async () => {
+    loading = true;
+
+    try {
+      await addColors(db, user.uid, { ...colors, name });
+    } catch (error) {
+      console.error(error);
+    }
+
+    loading = false;
   };
 
   onMount(() => {
@@ -48,11 +63,11 @@
 <ColorPicker id="border-color" colorType="border" on:change={handleBorder} />
 <ColorPicker id="button-color" colorType="button" on:change={handleButton} />
 
-<form on:submit|preventDefault={handleSave}>
+<form disabled={loading} on:submit|preventDefault={handleSave}>
   <label for="name">
     name
-    <input id="name" type="text" bind:value={name} />
+    <input disabled={loading} id="name" type="text" bind:value={name} />
   </label>
 
-  <button type="submit">save</button>
+  <button disabled={loading} type="submit">save</button>
 </form>

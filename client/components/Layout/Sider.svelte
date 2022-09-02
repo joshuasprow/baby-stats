@@ -45,9 +45,11 @@
       {/if}
     </section>
 
-    <section>
-      <ColorPickers />
-    </section>
+    {#if $user}
+      <section transition:fly>
+        <ColorPickers user={$user} />
+      </section>
+    {/if}
   </aside>
 {/if}
 
