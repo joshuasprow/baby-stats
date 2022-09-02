@@ -1,5 +1,6 @@
 import { subscribeToPoops } from "baby-stats-firebase/poops";
 import type { Poop } from "baby-stats-models/poops";
+import { db } from "../firebase";
 import { derived, writable } from "svelte/store";
 import { user } from "./user";
 
@@ -14,7 +15,7 @@ export const poops = derived<typeof user, Poop[]>(user, ($user, set) => {
     return unsubscribe;
   }
 
-  unsubscribe = subscribeToPoops($user.uid, set);
+  unsubscribe = subscribeToPoops(db, $user.uid, set);
 
   poopsLoaded.set(true);
 

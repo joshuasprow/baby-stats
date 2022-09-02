@@ -8,24 +8,28 @@ import {
   query,
   setDoc,
   updateDoc,
+  type Firestore,
 } from "firebase/firestore";
-import { firestore } from "./index";
 
-const getFeedsCollection = (uid: string) =>
-  collection(firestore, `users/${uid}/feeds`);
+const getFeedsCollection = (db: Firestore, uid: string) =>
+  collection(db, `users/${uid}/feeds`);
 
-const getFeedDoc = (uid: string, id: string) =>
-  doc(firestore, `users/${uid}/feeds/${id}`);
+const getFeedDoc = (db: Firestore, uid: string, id: string) =>
+  doc(db, `users/${uid}/feeds/${id}`);
 
-export const subscribeToFeeds = (uid: string, set: (feeds: Feed[]) => void) =>
+export const subscribeToFeeds = (
+  db: Firestore,
+  uid: string,
+  set: (feeds: Feed[]) => void,
+) =>
   onSnapshot(
-    query(getFeedsCollection(uid), orderBy("timestamp", "desc")),
+    query(getFeedsCollection(db, uid), orderBy("timestamp", "desc")),
     (snap) => set(snap.docs.map((doc) => Feed.parse(doc.data()))),
   );
 
-export const addFeed = async (uid: string, value: FeedAdd) => {
+export const addFeed = async (db: Firestore, uid: string, value: FeedAdd) => {
   const add = FeedAdd.parse({ ...value });
-  const ref = doc(getFeedsCollection(uid));
+  const ref = doc(getFeedsCollection(db, uid));
   const feed = Feed.parse({ ...add, id: ref.id });
 
   await setDoc(ref, feed);
@@ -33,13 +37,13 @@ export const addFeed = async (uid: string, value: FeedAdd) => {
   return feed;
 };
 
-export const updateFeed = async (uid: string, value: Feed) => {
+export const updateFeed = async (db: Firestore, uid: string, value: Feed) => {
   const feed = Feed.parse({ ...value });
-  const ref = getFeedDoc(uid, feed.id);
+  const ref = getFeedDoc(db, uid, feed.id);
 
   await updateDoc(ref, feed);
 };
 
-export const removeFeed = async (uid: string, id: string) => {
-  await deleteDoc(getFeedDoc(uid, id));
+export const removeFeed = async (db: Firestore, uid: string, id: string) => {
+  await deleteDoc(getFeedDoc(db, uid, id));
 };

@@ -1,4 +1,4 @@
-import type { Timestamp } from "baby-stats-firebase";
+import type { Timestamp } from "@firebase/firestore";
 import type { Entry, EntryKind } from "baby-stats-models/entries";
 import type { Feed } from "baby-stats-models/feeds";
 import type { Nap } from "baby-stats-models/naps";

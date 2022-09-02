@@ -8,24 +8,28 @@ import {
   query,
   setDoc,
   updateDoc,
+  type Firestore,
 } from "firebase/firestore";
-import { firestore } from "./index";
 
-const getNapsCollection = (uid: string) =>
-  collection(firestore, `users/${uid}/naps`);
+const getNapsCollection = (db: Firestore, uid: string) =>
+  collection(db, `users/${uid}/naps`);
 
-const getNapDoc = (uid: string, id: string) =>
-  doc(firestore, `users/${uid}/naps/${id}`);
+const getNapDoc = (db: Firestore, uid: string, id: string) =>
+  doc(db, `users/${uid}/naps/${id}`);
 
-export const subscribeToNaps = (uid: string, set: (naps: Nap[]) => void) =>
+export const subscribeToNaps = (
+  db: Firestore,
+  uid: string,
+  set: (naps: Nap[]) => void,
+) =>
   onSnapshot(
-    query(getNapsCollection(uid), orderBy("timestamp", "desc")),
+    query(getNapsCollection(db, uid), orderBy("timestamp", "desc")),
     (snap) => set(snap.docs.map((doc) => Nap.parse(doc.data()))),
   );
 
-export const addNap = async (uid: string, value: NapAdd) => {
+export const addNap = async (db: Firestore, uid: string, value: NapAdd) => {
   const add = NapAdd.parse({ ...value });
-  const ref = doc(getNapsCollection(uid));
+  const ref = doc(getNapsCollection(db, uid));
   const nap = Nap.parse({ ...add, id: ref.id });
 
   await setDoc(ref, nap);
@@ -33,13 +37,13 @@ export const addNap = async (uid: string, value: NapAdd) => {
   return nap;
 };
 
-export const updateNap = async (uid: string, value: Nap) => {
+export const updateNap = async (db: Firestore, uid: string, value: Nap) => {
   const nap = Nap.parse({ ...value });
-  const ref = getNapDoc(uid, nap.id);
+  const ref = getNapDoc(db, uid, nap.id);
 
   await updateDoc(ref, nap);
 };
 
-export const removeNap = async (uid: string, id: string) => {
-  await deleteDoc(getNapDoc(uid, id));
+export const removeNap = async (db: Firestore, uid: string, id: string) => {
+  await deleteDoc(getNapDoc(db, uid, id));
 };

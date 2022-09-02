@@ -3,11 +3,12 @@
   import PoopAmountInput from "$components/Poop/PoopAmountInput.svelte";
   import PoopIcon from "$components/Poop/PoopIcon.svelte";
   import { addEntryFields } from "$stores/entries";
-  import type { Timestamp } from "baby-stats-firebase";
+  import type { Timestamp } from "@firebase/firestore";
   import { removePoop, updatePoop } from "baby-stats-firebase/poops";
   import { parseError } from "baby-stats-lib/error";
   import { Poop, type PoopAmount } from "baby-stats-models/poops";
   import type { User } from "baby-stats-models/users";
+  import { db } from "../../firebase";
 
   export let entry: Poop;
   export let user: User;
@@ -36,7 +37,7 @@
     loading = true;
 
     try {
-      await updatePoop(user.uid, update);
+      await updatePoop(db, user.uid, update);
     } catch (e) {
       error = parseError(e).message;
     }
@@ -60,7 +61,7 @@
     loading = true;
 
     try {
-      await removePoop(user.uid, entry.id);
+      await removePoop(db, user.uid, entry.id);
     } catch (e) {
       error = parseError(e).message;
     }

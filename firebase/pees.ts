@@ -8,24 +8,28 @@ import {
   query,
   setDoc,
   updateDoc,
+  type Firestore,
 } from "firebase/firestore";
-import { firestore } from "./index";
 
-const getPeesCollection = (uid: string) =>
-  collection(firestore, `users/${uid}/pees`);
+const getPeesCollection = (db: Firestore, uid: string) =>
+  collection(db, `users/${uid}/pees`);
 
-const getPeeDoc = (uid: string, id: string) =>
-  doc(firestore, `users/${uid}/pees/${id}`);
+const getPeeDoc = (db: Firestore, uid: string, id: string) =>
+  doc(db, `users/${uid}/pees/${id}`);
 
-export const subscribeToPees = (uid: string, set: (pees: Pee[]) => void) =>
+export const subscribeToPees = (
+  db: Firestore,
+  uid: string,
+  set: (pees: Pee[]) => void,
+) =>
   onSnapshot(
-    query(getPeesCollection(uid), orderBy("timestamp", "desc")),
+    query(getPeesCollection(db, uid), orderBy("timestamp", "desc")),
     (spee) => set(spee.docs.map((doc) => Pee.parse(doc.data()))),
   );
 
-export const addPee = async (uid: string, value: PeeAdd) => {
+export const addPee = async (db: Firestore, uid: string, value: PeeAdd) => {
   const add = PeeAdd.parse({ ...value });
-  const ref = doc(getPeesCollection(uid));
+  const ref = doc(getPeesCollection(db, uid));
   const pee = Pee.parse({ ...add, id: ref.id });
 
   await setDoc(ref, pee);
@@ -33,13 +37,13 @@ export const addPee = async (uid: string, value: PeeAdd) => {
   return pee;
 };
 
-export const updatePee = async (uid: string, value: Pee) => {
+export const updatePee = async (db: Firestore, uid: string, value: Pee) => {
   const pee = Pee.parse({ ...value });
-  const ref = getPeeDoc(uid, pee.id);
+  const ref = getPeeDoc(db, uid, pee.id);
 
   await updateDoc(ref, pee);
 };
 
-export const removePee = async (uid: string, id: string) => {
-  await deleteDoc(getPeeDoc(uid, id));
+export const removePee = async (db: Firestore, uid: string, id: string) => {
+  await deleteDoc(getPeeDoc(db, uid, id));
 };

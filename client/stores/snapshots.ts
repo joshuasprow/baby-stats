@@ -1,7 +1,6 @@
 import {
   collection,
   doc,
-  firestore,
   getDocs,
   limit,
   orderBy,
@@ -9,10 +8,11 @@ import {
   runTransaction,
   Timestamp as FirestoreTimestamp,
   Transaction,
-} from "baby-stats-firebase";
+} from "@firebase/firestore";
 import { addDays } from "baby-stats-lib/dates";
 import { ENTRY_KINDS, type EntryKind } from "baby-stats-models/entries";
 import { z } from "zod";
+import { db } from "../firebase";
 
 const Timestamp = z.instanceof(FirestoreTimestamp);
 
@@ -23,7 +23,7 @@ const Snapshot = z.object({
 type Snapshot = z.infer<typeof Snapshot>;
 
 const getSnapshotDoc = (uid: string, timestamp: string) =>
-  doc(firestore, `users/${uid}/snapshots/${timestamp}`);
+  doc(db, `users/${uid}/snapshots/${timestamp}`);
 
 const copyEntriesToSnapshot = async <K extends EntryKind>(
   tx: Transaction,
@@ -32,12 +32,12 @@ const copyEntriesToSnapshot = async <K extends EntryKind>(
   timestamp: string,
 ) => {
   const entriesPath = `users/${uid}/${kind}`;
-  const entries = await getDocs(collection(firestore, entriesPath));
+  const entries = await getDocs(collection(db, entriesPath));
 
   for (const entry of entries.docs) {
     const path = `users/${uid}/snapshots/${timestamp}/${kind}/${entry.id}`;
 
-    tx.set(doc(firestore, path), entry.data());
+    tx.set(doc(db, path), entry.data());
   }
 };
 
@@ -50,7 +50,7 @@ const takeEntriesSnapshot = async (uid: string) => {
 
     const timestamp = createdAt.getTime().toString();
 
-    await runTransaction(firestore, (tx) => {
+    await runTransaction(db, (tx) => {
       const ref = getSnapshotDoc(uid, timestamp);
 
       tx.set(ref, { createdAt, expiresAt });
@@ -69,7 +69,7 @@ const takeEntriesSnapshot = async (uid: string) => {
 const getLatestSnapshot = async (uid: string) => {
   const { docs } = await getDocs(
     query(
-      collection(firestore, `users/${uid}/snapshots`),
+      collection(db, `users/${uid}/snapshots`),
       orderBy("createdAt", "desc"),
       limit(1),
     ),

@@ -1,19 +1,15 @@
+import type { User as AuthUser, UserInfo } from "@firebase/auth";
 import {
-  auth,
-  doc,
-  firestore,
   GoogleAuthProvider,
   onAuthStateChanged,
-  setDoc,
   signInWithPopup,
   signOut as _signOut,
-  Timestamp,
-  type User as AuthUser,
-  type UserInfo,
-} from "baby-stats-firebase";
+} from "@firebase/auth";
+import { doc, setDoc, Timestamp } from "@firebase/firestore";
 import { ProviderData, User } from "baby-stats-models/users";
 import { readable } from "svelte/store";
 import { z } from "zod";
+import { auth, db } from "../firebase";
 
 const parseProviderData = (providerData: UserInfo): ProviderData => ({
   providerId: providerData.providerId,
@@ -79,7 +75,7 @@ const parseUser = (_user: AuthUser) => {
   });
 };
 
-const getUserDoc = (uid: string) => doc(firestore, `users/${uid}`);
+const getUserDoc = (uid: string) => doc(db, `users/${uid}`);
 
 const updateUserDoc = async (_user: User) => {
   try {
