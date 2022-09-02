@@ -1,4 +1,4 @@
-import type { Timestamp } from "baby-stats-firebase";
+import type { Timestamp } from "@firebase/firestore";
 import { subscribeToFeeds } from "baby-stats-firebase/feeds";
 import {
   getTimeRangeDiffInMinutes,
@@ -6,6 +6,7 @@ import {
 } from "baby-stats-lib/dates";
 import type { Feed } from "baby-stats-models/feeds";
 import { derived, writable } from "svelte/store";
+import { db } from "../firebase";
 import { user } from "./user";
 
 export const feedsLoaded = writable(false);
@@ -21,7 +22,7 @@ export const feeds = derived<typeof user, Feed[]>(user, ($user, set) => {
 
   const { uid } = $user;
 
-  unsubscribe = subscribeToFeeds(uid, set);
+  unsubscribe = subscribeToFeeds(db, uid, set);
 
   feedsLoaded.set(true);
 
@@ -30,7 +31,7 @@ export const feeds = derived<typeof user, Feed[]>(user, ($user, set) => {
 
 export const convertAmountToBreast = (
   amount: Feed["amount"],
-  timestamp: Timestamp
+  timestamp: Timestamp,
 ) => {
   if (typeof amount !== "number") return amount;
 

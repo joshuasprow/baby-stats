@@ -2,11 +2,12 @@
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import PoopAmountInput from "$components/Poop/PoopAmountInput.svelte";
   import { addEntryFields } from "$stores/entries";
-  import { Timestamp } from "baby-stats-firebase";
+  import { Timestamp } from "@firebase/firestore";
   import { addPoop } from "baby-stats-firebase/poops";
   import { parseError } from "baby-stats-lib/error";
   import { PoopAdd, type PoopAmount } from "baby-stats-models/poops";
   import type { User } from "baby-stats-models/users";
+  import { db } from "../../firebase";
 
   export let user: User;
 
@@ -41,7 +42,7 @@
     loading = true;
 
     try {
-      await addPoop(user.uid, add);
+      await addPoop(db, user.uid, add);
     } catch (e) {
       error = parseError(e).message;
     }

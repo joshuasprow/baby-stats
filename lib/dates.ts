@@ -78,7 +78,7 @@ export const getDateTimeFromStrings = ({
   const [h, mi] = time.split(":"); // [h, mi] = ["15", "23"]
 
   const [Y, MO, D, H, MI] = [y, mo, d, h, mi].map(
-    Number
+    Number,
   ); /* [2022, 7, 31, 15, 23] */
 
   return new Date(Y, MO - 1, D, H, MI, 0);
@@ -93,7 +93,7 @@ export const getTimeRangeDiffInMinutes = ({ start, end }: TimeRangeAmount) => {
 /** Convert a number of minutes and a start time to a TimeRangeAmount */
 export const getTimeRangeFromMinutes = (
   timestamp: Timestamp,
-  minutes: number
+  minutes: number,
 ): TimeRangeAmount => {
   const start = timestamp.toDate();
   const end = timestamp.toDate();

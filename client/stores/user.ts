@@ -1,19 +1,15 @@
+import type { User as AuthUser, UserInfo } from "@firebase/auth";
 import {
-  auth,
-  doc,
-  firestore,
   GoogleAuthProvider,
   onAuthStateChanged,
-  setDoc,
   signInWithPopup,
   signOut as _signOut,
-  Timestamp,
-  type User as AuthUser,
-  type UserInfo,
-} from "baby-stats-firebase";
+} from "@firebase/auth";
+import { doc, setDoc, Timestamp } from "@firebase/firestore";
 import { ProviderData, User } from "baby-stats-models/users";
 import { readable } from "svelte/store";
 import { z } from "zod";
+import { auth, db } from "../firebase";
 
 const parseProviderData = (providerData: UserInfo): ProviderData => ({
   providerId: providerData.providerId,
@@ -29,7 +25,7 @@ const hasProperty = (obj: unknown, key: string) =>
 
 const parseTimeStringField = (
   json: object,
-  field: "createdAt" | "lastLoginAt"
+  field: "createdAt" | "lastLoginAt",
 ) => {
   if (!hasProperty(json, "createdAt")) {
     throw new Error(`User has no ${field}`);
@@ -59,8 +55,6 @@ const parseUser = (_user: AuthUser) => {
   const createdAt = parseTimeStringField(json, "createdAt");
   const lastLoginAt = parseTimeStringField(json, "lastLoginAt");
 
-  console.log({ createdAt, lastLoginAt });
-
   const email = z
     .string()
     .nullable()
@@ -79,7 +73,7 @@ const parseUser = (_user: AuthUser) => {
   });
 };
 
-const getUserDoc = (uid: string) => doc(firestore, `users/${uid}`);
+const getUserDoc = (uid: string) => doc(db, `users/${uid}`);
 
 const updateUserDoc = async (_user: User) => {
   try {
@@ -93,6 +87,8 @@ const updateUserDoc = async (_user: User) => {
 
 export const user = readable<User | null | undefined>(undefined, (set) => {
   const unsubscribe = onAuthStateChanged(auth, async (_user) => {
+    console.log(_user);
+
     if (!_user) {
       set(_user);
       return;

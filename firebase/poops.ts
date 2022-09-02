@@ -8,24 +8,28 @@ import {
   query,
   setDoc,
   updateDoc,
+  type Firestore,
 } from "firebase/firestore";
-import { firestore } from "./index";
 
-const getPoopsCollection = (uid: string) =>
-  collection(firestore, `users/${uid}/poops`);
+const getPoopsCollection = (db: Firestore, uid: string) =>
+  collection(db, `users/${uid}/poops`);
 
-const getPoopDoc = (uid: string, id: string) =>
-  doc(firestore, `users/${uid}/poops/${id}`);
+const getPoopDoc = (db: Firestore, uid: string, id: string) =>
+  doc(db, `users/${uid}/poops/${id}`);
 
-export const subscribeToPoops = (uid: string, set: (poops: Poop[]) => void) =>
+export const subscribeToPoops = (
+  db: Firestore,
+  uid: string,
+  set: (poops: Poop[]) => void,
+) =>
   onSnapshot(
-    query(getPoopsCollection(uid), orderBy("timestamp", "desc")),
-    (spoop) => set(spoop.docs.map((doc) => Poop.parse(doc.data())))
+    query(getPoopsCollection(db, uid), orderBy("timestamp", "desc")),
+    (spoop) => set(spoop.docs.map((doc) => Poop.parse(doc.data()))),
   );
 
-export const addPoop = async (uid: string, value: PoopAdd) => {
+export const addPoop = async (db: Firestore, uid: string, value: PoopAdd) => {
   const add = PoopAdd.parse({ ...value });
-  const ref = doc(getPoopsCollection(uid));
+  const ref = doc(getPoopsCollection(db, uid));
   const poop = Poop.parse({ ...add, id: ref.id });
 
   await setDoc(ref, poop);
@@ -33,13 +37,13 @@ export const addPoop = async (uid: string, value: PoopAdd) => {
   return poop;
 };
 
-export const updatePoop = async (uid: string, value: Poop) => {
+export const updatePoop = async (db: Firestore, uid: string, value: Poop) => {
   const poop = Poop.parse({ ...value });
-  const ref = getPoopDoc(uid, poop.id);
+  const ref = getPoopDoc(db, uid, poop.id);
 
   await updateDoc(ref, poop);
 };
 
-export const removePoop = async (uid: string, id: string) => {
-  await deleteDoc(getPoopDoc(uid, id));
+export const removePoop = async (db: Firestore, uid: string, id: string) => {
+  await deleteDoc(getPoopDoc(db, uid, id));
 };

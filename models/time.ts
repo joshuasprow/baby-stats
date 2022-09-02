@@ -1,4 +1,4 @@
-import { Timestamp } from "baby-stats-firebase";
+import { Timestamp } from "@firebase/firestore";
 import { z } from "zod";
 
 export const TimeRangeAmount = z

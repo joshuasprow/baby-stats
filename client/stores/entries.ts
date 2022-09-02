@@ -13,7 +13,7 @@ type _Entry = Feed | FeedAdd | Nap | NapAdd | Pee | PeeAdd | Poop | PoopAdd;
 
 export const parseEntry = <E extends _Entry>(
   type: ZodType<E>,
-  feed: E
+  feed: E,
 ): [E, null] | [null, ZodError<E>] => {
   try {
     return [type.parse(feed), null];
@@ -25,10 +25,10 @@ export const parseEntry = <E extends _Entry>(
 export const addEntryFields = <E extends _Entry>(
   type: ZodType<E>,
   entry: E,
-  fields: Partial<E>
+  fields: Partial<E>,
 ) => parseEntry(type, { ...entry, ...fields });
 
 export const entriesLoaded = derived(
   [feedsLoaded, napsLoaded, peesLoaded, poopsLoaded],
-  ([f, n, p, po]) => f && n && p && po
+  ([f, n, p, po]) => f && n && p && po,
 );

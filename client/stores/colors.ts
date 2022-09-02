@@ -16,7 +16,7 @@ export type ColorType = z.infer<typeof ColorType>;
 
 const getCssVariable = (variable: string) => {
   const value = getComputedStyle(document.documentElement).getPropertyValue(
-    variable
+    variable,
   );
 
   if (!value) {
@@ -45,7 +45,7 @@ const getHslColor = (colorType: ColorType) => {
 
   if (!h || !s || !l) {
     console.warn(
-      `missing ${colorType} color variables: h=${h}, s=${s}, l=${l}`
+      `missing ${colorType} color variables: h=${h}, s=${s}, l=${l}`,
     );
     return null;
   }

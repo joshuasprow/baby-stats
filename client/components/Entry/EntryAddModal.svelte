@@ -2,7 +2,7 @@
   import Button from "$components/Button.svelte";
   import DateTimePicker from "$components/DateTimePicker.svelte";
   import EntryModal from "$components/Entry/EntryModal.svelte";
-  import type { Timestamp } from "baby-stats-firebase";
+  import type { Timestamp } from "@firebase/firestore";
   import { createEventDispatcher } from "svelte";
 
   type T = $$Generic<Timestamp | undefined>;
