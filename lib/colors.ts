@@ -1,4 +1,53 @@
-import type { HexColor, HslColor } from "baby-stats-models/colors";
+import type { ColorType, HexColor, HslColor } from "baby-stats-models/colors";
+import { getCssVariable, setCssVariable } from "./css";
+
+const BLACK: HslColor = {
+  hue: 0,
+  saturation: 0,
+  lightness: 0,
+};
+
+export const getHslColor = (colorType: ColorType) => {
+  const [h, s, l] = [
+    `--${colorType}-color-hue`,
+    `--${colorType}-color-saturation`,
+    `--${colorType}-color-lightness`,
+  ].map(getCssVariable);
+
+  if (!h || !s || !l) {
+    console.warn(
+      `missing ${colorType} color variables: h=${h}, s=${s}, l=${l}`,
+    );
+    return null;
+  }
+
+  return {
+    hue: parseInt(h, 10),
+    saturation: parseInt(s, 10),
+    lightness: parseInt(l, 10),
+  };
+};
+
+export const getHslColors = (...colorTypes: ColorType[]) =>
+  colorTypes.map((colorType) => {
+    const color = getHslColor(colorType);
+
+    if (!color) {
+      console.warn(`missing ${colorType} color variable`);
+    }
+
+    return color || BLACK;
+  });
+
+export const setHslColor = (colorType: ColorType, hsl: HslColor | null) => {
+  if (!hsl) return;
+
+  const { hue, saturation, lightness } = hsl;
+
+  setCssVariable(`--${colorType}-color-hue`, `${hue}`);
+  setCssVariable(`--${colorType}-color-saturation`, `${saturation}%`);
+  setCssVariable(`--${colorType}-color-lightness`, `${lightness}%`);
+};
 
 // Thanks! https://css-tricks.com/converting-color-spaces-in-javascript/#aa-hex-to-hsl
 export const hexToHsl = (hex: string): HslColor => {

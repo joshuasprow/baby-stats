@@ -16,9 +16,9 @@ export type ColorType = z.infer<typeof ColorType>;
 export const Colors = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
-  background: HexColor,
-  border: HexColor,
-  button: HexColor,
+  background: HslColor,
+  border: HslColor,
+  button: HslColor,
 });
 export type Colors = z.infer<typeof Colors>;
 

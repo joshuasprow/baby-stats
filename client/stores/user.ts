@@ -87,8 +87,6 @@ const updateUserDoc = async (_user: User) => {
 
 export const user = readable<User | null | undefined>(undefined, (set) => {
   const unsubscribe = onAuthStateChanged(auth, async (_user) => {
-    console.log(_user);
-
     if (!_user) {
       set(_user);
       return;

@@ -1,13 +1,12 @@
 <script lang="ts">
   import Button from "$components/Button.svelte";
-  import ColorPicker from "$components/ColorPicker.svelte";
   import ColorPickers from "$components/ColorPickers.svelte";
   import SignInButton from "$components/SignInButton.svelte";
   import SignOutButton from "$components/SignOutButton.svelte";
   import { user } from "$stores/user";
   import { fade, fly } from "svelte/transition";
 
-  export let open = false;
+  export let open = true;
 
   const close = () => {
     open = false;
