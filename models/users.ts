@@ -21,5 +21,6 @@ export const User = z.object({
   providerData: z.array(ProviderData),
   createdAt: z.instanceof(Timestamp),
   lastLoginAt: z.instanceof(Timestamp),
+  themeId: z.string().nullable(),
 });
 export type User = z.infer<typeof User>;

@@ -1,6 +1,10 @@
 <script lang="ts">
-  import { addColors } from "baby-stats-firebase/colors";
-  import { getHslColors, hexToHsl } from "baby-stats-lib/colors";
+  import {
+    addColors,
+    getUserTheme,
+    updateColors,
+  } from "baby-stats-firebase/colors";
+  import { hexToHsl } from "baby-stats-lib/colors";
   import type { Colors, HexColor } from "baby-stats-models/colors";
   import type { User } from "baby-stats-models/users";
   import { onMount } from "svelte";
@@ -44,14 +48,29 @@
     loading = false;
   };
 
-  onMount(() => {
-    const [background, border, button] = getHslColors(
-      "background",
-      "border",
-      "button",
-    );
+  const handleUpdate = async () => {
+    loading = true;
 
-    colors = { background, border, button };
+    try {
+      if (!id) return;
+
+      await updateColors(db, user.uid, { ...colors, id, name });
+    } catch (error) {
+      console.error(error);
+    }
+
+    loading = false;
+  };
+
+  onMount(async () => {
+    console.log(await getUserTheme(db, user.uid, user.themeId));
+    // const [background, border, button] = getHslColors(
+    //   "background",
+    //   "border",
+    //   "button",
+    // );
+    // colors = { background, border, button };
+    // console.log(JSON.stringify({ name, ...colors }));
   });
 </script>
 
