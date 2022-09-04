@@ -6,10 +6,8 @@ import {
   Timestamp,
   type Firestore,
 } from "@firebase/firestore";
-import type { Theme } from "baby-stats-models/theme";
-import { ProviderData, AuthUser, User } from "baby-stats-models/users";
+import { AuthUser, ProviderData, User } from "baby-stats-models/users";
 import { z } from "zod";
-import { validateUserTheme } from "./user-themes";
 
 const parseProviderData = (providerData: UserInfo): ProviderData => ({
   providerId: providerData.providerId,
