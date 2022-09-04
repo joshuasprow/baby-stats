@@ -38,18 +38,6 @@
     theme.button = hsl;
   };
 
-  const handleSave = async () => {
-    loading = true;
-
-    try {
-      await addTheme(db, user.uid, { ...DEFAULT_THEME, ...theme, name });
-    } catch (error) {
-      console.error(error);
-    }
-
-    loading = false;
-  };
-
   const handleUpdate = async () => {
     loading = true;
 
@@ -57,6 +45,29 @@
       if (!id) return;
 
       await updateTheme(db, user.uid, { ...theme, id, name });
+    } catch (error) {
+      console.error(error);
+    }
+
+    loading = false;
+  };
+
+  const handleSave = async () => {
+    loading = true;
+
+    try {
+      const idx = $themes.findIndex((t) => t.name === name);
+
+      console.log(idx);
+
+      if (idx !== -1) {
+        const id = $themes[idx].id;
+        console.log(id);
+
+        await updateTheme(db, user.uid, { ...theme, id, name });
+      } else {
+        await addTheme(db, user.uid, { ...DEFAULT_THEME, ...theme, name });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -87,7 +98,13 @@
 <form disabled={loading} on:submit|preventDefault={handleSave}>
   <label for="name">
     name
-    <input disabled={loading} id="name" type="search" bind:value={name} />
+    <input
+      disabled={loading}
+      id="name"
+      list="themes"
+      type="search"
+      bind:value={name}
+    />
 
     <datalist id="themes">
       {#if $themesLoaded}

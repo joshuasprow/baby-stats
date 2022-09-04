@@ -1,17 +1,6 @@
-import { HslColor } from "baby-stats-models/theme";
+import { HslColor, Theme, ThemeElement } from "baby-stats-models/theme";
 import { onMount } from "svelte";
 import { writable } from "svelte/store";
-import { z } from "zod";
-
-export const Colors = z.object({
-  background: HslColor,
-  border: HslColor,
-  button: HslColor,
-});
-export type Colors = z.infer<typeof Colors>;
-
-const ColorType = Colors.keyof();
-export type ColorType = z.infer<typeof ColorType>;
 
 const getCssVariable = (variable: string) => {
   const value = getComputedStyle(document.documentElement).getPropertyValue(
@@ -35,16 +24,16 @@ const setCssVariable = (variable: string, value: string) => {
   document.documentElement.style.setProperty(variable, value);
 };
 
-const getHslColor = (colorType: ColorType) => {
+const getHslColor = (themeElement: ThemeElement) => {
   const [h, s, l] = [
-    `--${colorType}-color-hue`,
-    `--${colorType}-color-saturation`,
-    `--${colorType}-color-lightness`,
+    `--${themeElement}-color-hue`,
+    `--${themeElement}-color-saturation`,
+    `--${themeElement}-color-lightness`,
   ].map(getCssVariable);
 
   if (!h || !s || !l) {
     console.warn(
-      `missing ${colorType} color variables: h=${h}, s=${s}, l=${l}`,
+      `missing ${themeElement} color variables: h=${h}, s=${s}, l=${l}`,
     );
     return null;
   }
@@ -56,7 +45,7 @@ const getHslColor = (colorType: ColorType) => {
   };
 };
 
-const setHslColor = (colorType: ColorType, hsl: HslColor | null) => {
+const setHslColor = (colorType: ThemeElement, hsl: HslColor | null) => {
   if (!hsl) return;
 
   const { hue, saturation, lightness } = hsl;
@@ -66,12 +55,12 @@ const setHslColor = (colorType: ColorType, hsl: HslColor | null) => {
   setCssVariable(`--${colorType}-color-lightness`, `${lightness}%`);
 };
 
-export const colors = writable<Colors | null>(null);
+export const colors = writable<Theme | null>(null);
 
 onMount(() => {
-  const partial: Partial<Colors> = {};
+  const partial: Partial<Theme> = {};
 
-  for (const colorType of Object.keys(ColorType.Values) as ColorType[]) {
+  for (const colorType of Object.keys(ThemeElement.Values) as ThemeElement[]) {
     const hsl = getHslColor(colorType);
 
     if (hsl) {
@@ -86,7 +75,7 @@ onMount(() => {
       throw new Error("No colors found");
     }
 
-    const _colors = Colors.parse(partial);
+    const _colors = Theme.parse(partial);
 
     colors.set(_colors);
   } catch (e) {
