@@ -2,25 +2,31 @@ import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
-  signOut as _signOut,
+  signOut as authSignOut,
 } from "@firebase/auth";
-import { validateUser, updateUserDoc } from "baby-stats-firebase/users";
+import {
+  validateAuthUser,
+  updateUserDoc,
+  getUserDoc,
+} from "baby-stats-firebase/users";
 import type { User } from "baby-stats-models/users";
 import { readable } from "svelte/store";
 import { auth, db } from "../firebase";
 
 export const user = readable<User | null | undefined>(undefined, (set) => {
-  const unsubscribe = onAuthStateChanged(auth, async (_user) => {
-    if (!_user) {
-      set(_user);
+  const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
+    if (!authUser) {
+      set(authUser);
       return;
     }
 
-    const parsed = validateUser(_user);
+    let user = await getUserDoc(db, authUser.uid);
 
-    set(parsed);
+    const au = validateAuthUser(authUser);
 
-    await updateUserDoc(db, parsed);
+    user = await updateUserDoc(db, { ...user, ...au });
+
+    set(user);
   });
 
   return unsubscribe;
@@ -31,5 +37,5 @@ export const signIn = async () => {
 };
 
 export const signOut = async () => {
-  await _signOut(auth);
+  await authSignOut(auth);
 };

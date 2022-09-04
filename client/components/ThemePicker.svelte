@@ -1,6 +1,6 @@
 <script lang="ts">
   import { addTheme, updateTheme } from "baby-stats-firebase/themes";
-  import { getUser } from "baby-stats-firebase/users";
+  import { getUserDoc } from "baby-stats-firebase/users";
   import { hexToHsl } from "baby-stats-lib/theme";
   import {
     DEFAULT_THEME,
@@ -76,7 +76,7 @@
   };
 
   onMount(async () => {
-    console.log(await getUser(db, user.uid));
+    console.log(await getUserDoc(db, user.uid));
     // const [background, border, button] = getHslTheme(
     //   "background",
     //   "border",

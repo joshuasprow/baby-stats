@@ -11,7 +11,7 @@ export const ProviderData = z.object({
 });
 export type ProviderData = z.infer<typeof ProviderData>;
 
-export const User = z.object({
+export const AuthUser = z.object({
   uid: z.string(),
   email: z.string().email().nullable(),
   emailVerified: z.boolean(),
@@ -21,6 +21,12 @@ export const User = z.object({
   providerData: z.array(ProviderData),
   createdAt: z.instanceof(Timestamp),
   lastLoginAt: z.instanceof(Timestamp),
-  themeId: z.string().nullable(),
 });
+export type AuthUser = z.infer<typeof AuthUser>;
+
+export const User = AuthUser.merge(
+  z.object({
+    themeId: z.string().nullable().default(null),
+  }),
+);
 export type User = z.infer<typeof User>;

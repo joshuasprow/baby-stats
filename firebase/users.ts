@@ -1,4 +1,4 @@
-import type { User as AuthUser, UserInfo } from "@firebase/auth";
+import type { User as FirebaseUser, UserInfo } from "@firebase/auth";
 import {
   doc,
   getDoc,
@@ -7,7 +7,7 @@ import {
   type Firestore,
 } from "@firebase/firestore";
 import type { Theme } from "baby-stats-models/theme";
-import { ProviderData, User } from "baby-stats-models/users";
+import { ProviderData, AuthUser, User } from "baby-stats-models/users";
 import { z } from "zod";
 import { validateUserTheme } from "./user-themes";
 
@@ -44,8 +44,8 @@ const parseTimeStringField = (
 
 /** Validates an incoming user object, setting defaults for fields that are
  * undefined or invalid */
-export const validateUser = (user: AuthUser) => {
-  const json = user.toJSON();
+export const validateAuthUser = (authUser: FirebaseUser) => {
+  const json = authUser.toJSON();
 
   if (!hasProperty(json, "lastLoginAt")) {
     throw new Error("User has no lastLoginAt");
@@ -62,35 +62,33 @@ export const validateUser = (user: AuthUser) => {
     .nullable()
     .parse((json as any).email);
 
-  return User.parse({
-    uid: user.uid,
+  return AuthUser.parse({
+    uid: authUser.uid,
     email,
-    emailVerified: user.emailVerified,
-    displayName: user.displayName,
-    isAnonymous: user.isAnonymous,
-    photoURL: user.photoURL,
-    providerData: user.providerData.map(parseProviderData),
+    emailVerified: authUser.emailVerified,
+    displayName: authUser.displayName,
+    isAnonymous: authUser.isAnonymous,
+    photoURL: authUser.photoURL,
+    providerData: authUser.providerData.map(parseProviderData),
     createdAt,
     lastLoginAt,
-    themeId: (user as unknown as User).themeId || null,
   });
 };
 
 const getUserRef = (db: Firestore, uid: string) => doc(db, `users/${uid}`);
 
-export const getUser = async (
-  db: Firestore,
-  uid: string,
-): Promise<{ user: User; theme: Theme }> => {
+export const getUserDoc = async (db: Firestore, uid: string): Promise<User> => {
   const doc = await getDoc(getUserRef(db, uid));
-  const user = User.parse(doc.data());
-  const theme = await validateUserTheme(db, user);
 
-  return { user, theme };
+  return User.parse(doc.data());
 };
 
 export const updateUserDoc = async (db: Firestore, user: User) => {
   const ref = getUserRef(db, user.uid);
 
   await setDoc(ref, user);
+
+  const doc = await getDoc(ref);
+
+  return User.parse(doc.data());
 };
