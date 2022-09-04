@@ -76,7 +76,6 @@
   };
 
   onMount(async () => {
-    console.log(await getUserDoc(db, user.uid));
     // const [background, border, button] = getHslTheme(
     //   "background",
     //   "border",
