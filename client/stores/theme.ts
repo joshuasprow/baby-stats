@@ -55,7 +55,7 @@ const setHslColor = (colorType: ThemeElement, hsl: HslColor | null) => {
   setCssVariable(`--${colorType}-color-lightness`, `${lightness}%`);
 };
 
-export const colors = writable<Theme | null>(null);
+export const theme = writable<Theme | null>(null);
 
 onMount(() => {
   const partial: Partial<Theme> = {};
@@ -75,9 +75,7 @@ onMount(() => {
       throw new Error("No colors found");
     }
 
-    const _colors = Theme.parse(partial);
-
-    colors.set(_colors);
+    theme.set(Theme.parse(partial));
   } catch (e) {
     console.error(e);
   }
