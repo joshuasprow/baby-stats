@@ -10,6 +10,7 @@
   import type { User } from "baby-stats-models/users";
   import { onMount } from "svelte";
   import { db } from "../firebase";
+  import { themes, themesLoaded } from "../stores/themes";
   import ColorPicker from "./ColorPicker.svelte";
 
   // TODO: get defaults from 1. firestore; 2. css variables
@@ -86,7 +87,15 @@
 <form disabled={loading} on:submit|preventDefault={handleSave}>
   <label for="name">
     name
-    <input disabled={loading} id="name" type="text" bind:value={name} />
+    <input disabled={loading} id="name" type="search" bind:value={name} />
+
+    <datalist id="themes">
+      {#if $themesLoaded}
+        {#each $themes as theme}
+          <option value={theme.name} />
+        {/each}
+      {/if}
+    </datalist>
   </label>
 
   <button disabled={loading} type="submit">save</button>

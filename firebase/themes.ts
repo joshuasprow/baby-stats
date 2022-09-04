@@ -18,17 +18,24 @@ export const getThemeCollection = (db: Firestore, uid: string) =>
 export const getThemeRef = (db: Firestore, uid: string, id: string) =>
   doc(db, `users/${uid}/colors/${id}`);
 
-const handleThemeSnapshot =
-  (db: Firestore, uid: string, set: (colors: Theme[]) => void) =>
-  async (snap: QuerySnapshot) => {
-    let colors = snap.docs.map((doc) => Theme.parse(doc.data()));
+const handleThemeSnapshot = (
+  db: Firestore,
+  uid: string,
+  set: (theme: Theme[]) => void,
+) => {
+  // sets default value
+  set([]);
 
-    if (colors.length > 0) return set(colors);
+  return async (snap: QuerySnapshot) => {
+    let theme = snap.docs.map((doc) => Theme.parse(doc.data()));
+
+    if (theme.length > 0) return set(theme);
 
     const defaultColor = await addTheme(db, uid, DEFAULT_THEME);
 
     return set([defaultColor]);
   };
+};
 
 export const subscribeToTheme = (
   db: Firestore,
