@@ -3,8 +3,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDoc,
-  getDocs,
   onSnapshot,
   orderBy,
   query,
@@ -13,12 +11,11 @@ import {
   updateDoc,
   type Firestore,
 } from "firebase/firestore";
-import { getUser } from "./users";
 
-const getColorsCollection = (db: Firestore, uid: string) =>
+export const getColorsCollection = (db: Firestore, uid: string) =>
   collection(db, `users/${uid}/colors`);
 
-const getColorsRef = (db: Firestore, uid: string, id: string) =>
+export const getColorsRef = (db: Firestore, uid: string, id: string) =>
   doc(db, `users/${uid}/colors/${id}`);
 
 const handleColorsSnapshot =
@@ -42,34 +39,6 @@ export const subscribeToColors = (
     query(getColorsCollection(db, uid), orderBy("timestamp", "desc")),
     handleColorsSnapshot(db, uid, set),
   );
-
-export const getUserTheme = async (
-  db: Firestore,
-  uid: string,
-  themeId: null | string,
-) => {
-  if (!themeId) return null;
-
-  const doc = await getDoc(getColorsRef(db, uid, themeId));
-
-  return Colors.parse(doc.data());
-};
-
-export const getUserThemes = async (db: Firestore, uid: string) => {
-  const docs = await getDocs(getColorsCollection(db, uid));
-
-  const themes: Colors[] = [];
-
-  docs.forEach((doc) => {
-    try {
-      themes.push(Colors.parse(doc.data()));
-    } catch (error) {
-      console.error(error);
-    }
-  });
-
-  return themes;
-};
 
 export const addColors = async (
   db: Firestore,
