@@ -11,20 +11,20 @@ import {
   type Firestore,
 } from "firebase/firestore";
 
-// TODO: figure out why  colors are coming back empty
+// TODO: figure out why  themes are coming back empty
 export const getThemesCollection = (db: Firestore, uid: string) => {
-  const path = `users/${uid}/colors`;
+  const path = `users/${uid}/themes`;
   console.log({ path });
   return collection(db, path);
 };
 
 export const getThemeRef = (db: Firestore, uid: string, id: string) =>
-  doc(db, `users/${uid}/colors/${id}`);
+  doc(db, `users/${uid}/themes/${id}`);
 
 export const subscribeToThemes = (
   db: Firestore,
   uid: string,
-  set: (colors: Theme[]) => void,
+  set: (themes: Theme[]) => void,
 ) => {
   set([]);
 
@@ -50,18 +50,18 @@ export const addTheme = async (db: Firestore, uid: string, value: ThemeAdd) => {
   const add = ThemeAdd.parse({ ...value });
 
   const ref = doc(getThemesCollection(db, uid));
-  const color = Theme.parse({ ...add, id: ref.id });
+  const theme = Theme.parse({ ...add, id: ref.id });
 
-  await setDoc(ref, color);
+  await setDoc(ref, theme);
 
-  return color;
+  return theme;
 };
 
 export const updateTheme = async (db: Firestore, uid: string, value: Theme) => {
-  const color = Theme.parse({ ...value });
-  const ref = getThemeRef(db, uid, color.id);
+  const theme = Theme.parse({ ...value });
+  const ref = getThemeRef(db, uid, theme.id);
 
-  await updateDoc(ref, color);
+  await updateDoc(ref, theme);
 };
 
 export const removeTheme = async (db: Firestore, uid: string, id: string) => {

@@ -58,8 +58,6 @@
     try {
       const idx = $themes.findIndex((t) => t.name === name);
 
-      console.log(idx);
-
       if (idx !== -1) {
         const id = $themes[idx].id;
         console.log(id);
