@@ -1,4 +1,4 @@
-import type { ColorType, HexColor, HslColor } from "baby-stats-models/colors";
+import type { ThemeElement, HexColor, HslColor } from "baby-stats-models/theme";
 import { getCssVariable, setCssVariable } from "./css";
 
 const BLACK: HslColor = {
@@ -7,7 +7,7 @@ const BLACK: HslColor = {
   lightness: 0,
 };
 
-export const getHslColor = (colorType: ColorType) => {
+export const getHslColor = (colorType: ThemeElement) => {
   const [h, s, l] = [
     `--${colorType}-color-hue`,
     `--${colorType}-color-saturation`,
@@ -28,7 +28,7 @@ export const getHslColor = (colorType: ColorType) => {
   };
 };
 
-export const getHslColors = (...colorTypes: ColorType[]) =>
+export const getHslColors = (...colorTypes: ThemeElement[]) =>
   colorTypes.map((colorType) => {
     const color = getHslColor(colorType);
 
@@ -39,7 +39,7 @@ export const getHslColors = (...colorTypes: ColorType[]) =>
     return color || BLACK;
   });
 
-export const setHslColor = (colorType: ColorType, hsl: HslColor | null) => {
+export const setHslColor = (colorType: ThemeElement, hsl: HslColor | null) => {
   if (!hsl) return;
 
   const { hue, saturation, lightness } = hsl;

@@ -2,7 +2,7 @@
   import Button from "$components/Button.svelte";
   import SignInButton from "$components/SignInButton.svelte";
   import SignOutButton from "$components/SignOutButton.svelte";
-  import ThemeControls from "$components/ThemeControls.svelte";
+  import ThemeControls from "$components/ThemePicker.svelte";
   import { user } from "$stores/user";
   import { fade, fly } from "svelte/transition";
 

@@ -1,7 +1,7 @@
 import { getDoc, getDocs, type Firestore } from "@firebase/firestore";
-import { Colors, DEFAULT_THEME } from "baby-stats-models/colors";
+import { Theme, DEFAULT_THEME } from "baby-stats-models/theme";
 import type { User } from "baby-stats-models/users";
-import { addColors, getColorsCollection, getColorsRef } from "./colors";
+import { addTheme, getThemeCollection, getThemeRef } from "./themes";
 import { updateUserDoc } from "./users";
 
 export const getUserTheme = async (
@@ -9,19 +9,19 @@ export const getUserTheme = async (
   uid: string,
   themeId: string,
 ) => {
-  const doc = await getDoc(getColorsRef(db, uid, themeId));
+  const doc = await getDoc(getThemeRef(db, uid, themeId));
 
-  return Colors.parse(doc.data());
+  return Theme.parse(doc.data());
 };
 
 export const getUserThemes = async (db: Firestore, uid: string) => {
-  const docs = await getDocs(getColorsCollection(db, uid));
+  const docs = await getDocs(getThemeCollection(db, uid));
 
-  const themes: Colors[] = [];
+  const themes: Theme[] = [];
 
   docs.forEach((doc) => {
     try {
-      themes.push(Colors.parse(doc.data()));
+      themes.push(Theme.parse(doc.data()));
     } catch (error) {
       console.error(error);
     }
@@ -38,17 +38,17 @@ export const getUserThemes = async (db: Firestore, uid: string) => {
 export const validateUserTheme = async (
   db: Firestore,
   user: User,
-): Promise<Colors> => {
+): Promise<Theme> => {
   if (user.themeId) return getUserTheme(db, user.uid, user.themeId);
 
   const themes = await getUserThemes(db, user.uid);
 
-  let theme: Colors;
+  let theme: Theme;
 
   if (themes.length > 0) {
     theme = themes[0];
   } else {
-    theme = await addColors(db, user.uid, DEFAULT_THEME);
+    theme = await addTheme(db, user.uid, DEFAULT_THEME);
   }
 
   await updateUserDoc(db, { ...user, themeId: theme.id });

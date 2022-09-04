@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { addColors, updateColors } from "baby-stats-firebase/colors";
+  import { addTheme, updateTheme } from "baby-stats-firebase/themes";
   import { getUser } from "baby-stats-firebase/users";
-  import { hexToHsl } from "baby-stats-lib/colors";
+  import { hexToHsl } from "baby-stats-lib/theme";
   import {
     DEFAULT_THEME,
-    type Colors,
     type HexColor,
-  } from "baby-stats-models/colors";
+    type Theme,
+  } from "baby-stats-models/theme";
   import type { User } from "baby-stats-models/users";
   import { onMount } from "svelte";
   import { db } from "../firebase";
@@ -18,30 +18,30 @@
 
   let id: string | null = null;
   let name = "Default";
-  let colors: Omit<Colors, "id" | "name">;
+  let theme: Omit<Theme, "id" | "name">;
 
   let loading = false;
 
   const handleBackground = (e: CustomEvent<HexColor>) => {
     const hsl = hexToHsl(e.detail);
-    colors.background = hsl;
+    theme.background = hsl;
   };
 
   const handleBorder = (e: CustomEvent<HexColor>) => {
     const hsl = hexToHsl(e.detail);
-    colors.border = hsl;
+    theme.border = hsl;
   };
 
   const handleButton = (e: CustomEvent<HexColor>) => {
     const hsl = hexToHsl(e.detail);
-    colors.button = hsl;
+    theme.button = hsl;
   };
 
   const handleSave = async () => {
     loading = true;
 
     try {
-      await addColors(db, user.uid, { ...DEFAULT_THEME, ...colors, name });
+      await addTheme(db, user.uid, { ...DEFAULT_THEME, ...theme, name });
     } catch (error) {
       console.error(error);
     }
@@ -55,7 +55,7 @@
     try {
       if (!id) return;
 
-      await updateColors(db, user.uid, { ...colors, id, name });
+      await updateTheme(db, user.uid, { ...theme, id, name });
     } catch (error) {
       console.error(error);
     }
@@ -65,23 +65,23 @@
 
   onMount(async () => {
     console.log(await getUser(db, user.uid));
-    // const [background, border, button] = getHslColors(
+    // const [background, border, button] = getHslTheme(
     //   "background",
     //   "border",
     //   "button",
     // );
-    // colors = { background, border, button };
-    // console.log(JSON.stringify({ name, ...colors }));
+    // theme = { background, border, button };
+    // console.log(JSON.stringify({ name, ...theme }));
   });
 </script>
 
 <ColorPicker
   id="background-color"
-  colorType="background"
+  element="background"
   on:change={handleBackground}
 />
-<ColorPicker id="border-color" colorType="border" on:change={handleBorder} />
-<ColorPicker id="button-color" colorType="button" on:change={handleButton} />
+<ColorPicker id="border-color" element="border" on:change={handleBorder} />
+<ColorPicker id="button-color" element="button" on:change={handleButton} />
 
 <form disabled={loading} on:submit|preventDefault={handleSave}>
   <label for="name">

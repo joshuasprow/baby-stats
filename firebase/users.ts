@@ -6,7 +6,7 @@ import {
   Timestamp,
   type Firestore,
 } from "@firebase/firestore";
-import type { Colors } from "baby-stats-models/colors";
+import type { Theme } from "baby-stats-models/theme";
 import { ProviderData, User } from "baby-stats-models/users";
 import { z } from "zod";
 import { validateUserTheme } from "./user-themes";
@@ -81,7 +81,7 @@ const getUserRef = (db: Firestore, uid: string) => doc(db, `users/${uid}`);
 export const getUser = async (
   db: Firestore,
   uid: string,
-): Promise<{ user: User; theme: Colors }> => {
+): Promise<{ user: User; theme: Theme }> => {
   const doc = await getDoc(getUserRef(db, uid));
   const user = User.parse(doc.data());
   const theme = await validateUserTheme(db, user);

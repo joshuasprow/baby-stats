@@ -1,4 +1,4 @@
-import { HslColor } from "baby-stats-models/colors";
+import { HslColor } from "baby-stats-models/theme";
 import { onMount } from "svelte";
 import { writable } from "svelte/store";
 import { z } from "zod";
