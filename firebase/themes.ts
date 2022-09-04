@@ -4,19 +4,13 @@ import {
   deleteDoc,
   doc,
   onSnapshot,
-  orderBy,
-  query,
   setDoc,
   updateDoc,
   type Firestore,
 } from "firebase/firestore";
 
-// TODO: figure out why  themes are coming back empty
-export const getThemesCollection = (db: Firestore, uid: string) => {
-  const path = `users/${uid}/themes`;
-  console.log({ path });
-  return collection(db, path);
-};
+export const getThemesCollection = (db: Firestore, uid: string) =>
+  collection(db, `users/${uid}/themes`);
 
 export const getThemeRef = (db: Firestore, uid: string, id: string) =>
   doc(db, `users/${uid}/themes/${id}`);
@@ -28,22 +22,19 @@ export const subscribeToThemes = (
 ) => {
   set([]);
 
-  return onSnapshot(
-    query(getThemesCollection(db, uid), orderBy("timestamp", "desc")),
-    (snap) => {
-      const themes: Theme[] = [];
+  return onSnapshot(getThemesCollection(db, uid), (snap) => {
+    const themes: Theme[] = [];
 
-      for (const doc of snap.docs) {
-        try {
-          themes.push(Theme.parse(doc.data()));
-        } catch (error) {
-          console.error(error);
-        }
+    for (const doc of snap.docs) {
+      try {
+        themes.push(Theme.parse(doc.data()));
+      } catch (error) {
+        console.error(error);
       }
+    }
 
-      set(themes);
-    },
-  );
+    set(themes);
+  });
 };
 
 export const addTheme = async (db: Firestore, uid: string, value: ThemeAdd) => {
