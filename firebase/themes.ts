@@ -28,17 +28,19 @@ export const subscribeToThemes = (
 ) => {
   set([]);
 
-  onSnapshot(
+  return onSnapshot(
     query(getThemesCollection(db, uid), orderBy("timestamp", "desc")),
     (snap) => {
       const themes: Theme[] = [];
-      snap.forEach((doc) => {
+
+      for (const doc of snap.docs) {
         try {
           themes.push(Theme.parse(doc.data()));
         } catch (error) {
           console.error(error);
         }
-      });
+      }
+
       set(themes);
     },
   );
