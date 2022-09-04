@@ -1,4 +1,4 @@
-import { subscribeToTheme } from "baby-stats-firebase/themes";
+import { subscribeToThemes } from "baby-stats-firebase/themes";
 import type { Theme } from "baby-stats-models/theme";
 import { derived, writable } from "svelte/store";
 import { db } from "../firebase";
@@ -15,7 +15,7 @@ export const themes = derived<typeof user, Theme[]>(user, ($user, set) => {
     return unsubscribe;
   }
 
-  unsubscribe = subscribeToTheme(db, $user.uid, set);
+  unsubscribe = subscribeToThemes(db, $user.uid, set);
 
   themesLoaded.set(true);
 

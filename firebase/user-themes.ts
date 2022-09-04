@@ -1,7 +1,7 @@
 import { getDoc, getDocs, type Firestore } from "@firebase/firestore";
 import { Theme, DEFAULT_THEME } from "baby-stats-models/theme";
 import type { User } from "baby-stats-models/users";
-import { addTheme, getThemeCollection, getThemeRef } from "./themes";
+import { addTheme, getThemesCollection, getThemeRef } from "./themes";
 import { updateUserDoc } from "./users";
 
 export const getUserTheme = async (
@@ -15,7 +15,7 @@ export const getUserTheme = async (
 };
 
 export const getUserThemes = async (db: Firestore, uid: string) => {
-  const docs = await getDocs(getThemeCollection(db, uid));
+  const docs = await getDocs(getThemesCollection(db, uid));
 
   const themes: Theme[] = [];
 
