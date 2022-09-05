@@ -3,6 +3,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   onSnapshot,
   setDoc,
   updateDoc,
@@ -35,6 +36,12 @@ export const subscribeToThemes = (
 
     set(themes);
   });
+};
+
+export const getTheme = async (db: Firestore, uid: string, id: string) => {
+  const doc = await getDoc(getThemeRef(db, uid, id));
+
+  return Theme.parse(doc.data());
 };
 
 export const addTheme = async (db: Firestore, uid: string, value: ThemeAdd) => {

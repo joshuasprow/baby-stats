@@ -1,6 +1,16 @@
-import { HslColor, Theme, ThemeElement } from "baby-stats-models/theme";
+import { getTheme } from "baby-stats-firebase/themes";
+import {
+  DEFAULT_THEME,
+  HslColor,
+  Theme,
+  ThemeAdd,
+  ThemeElement,
+} from "baby-stats-models/theme";
+import type { User } from "baby-stats-models/users";
+import { db } from "firebase";
 import { onMount } from "svelte";
-import { writable } from "svelte/store";
+import { derived, get, type Readable } from "svelte/store";
+import { user } from "./user";
 
 const getCssVariable = (variable: string) => {
   const value = getComputedStyle(document.documentElement).getPropertyValue(
@@ -55,28 +65,56 @@ const setHslColor = (colorType: ThemeElement, hsl: HslColor | null) => {
   setCssVariable(`--${colorType}-color-lightness`, `${lightness}%`);
 };
 
-export const theme = writable<Theme | null>(null);
+let fetchingTheme = false;
 
-onMount(() => {
-  const partial: Partial<Theme> = {};
+export const theme = derived<Readable<User | null | undefined>, ThemeAdd>(
+  user,
+  ($user, set) => {
+    let $theme = get(theme);
 
-  for (const colorType of Object.keys(ThemeElement.Values) as ThemeElement[]) {
-    const hsl = getHslColor(colorType);
+    if ($theme) return;
 
-    if (hsl) {
-      partial[colorType] = hsl;
+    $theme = DEFAULT_THEME;
 
-      setHslColor(colorType, hsl);
-    }
-  }
+    for (const element of Object.keys($theme) as ThemeElement[]) {
+      const hsl = getHslColor(element);
 
-  try {
-    if (Object.keys(partial).length === 0) {
-      throw new Error("No colors found");
+      if (hsl) setHslColor(element, hsl);
     }
 
-    theme.set(Theme.parse(partial));
-  } catch (e) {
-    console.error(e);
-  }
-});
+    set(DEFAULT_THEME);
+
+    if (!$user || fetchingTheme) return;
+
+    if (!$user.themeId) {
+      console.warn("User is missing theme id");
+      return;
+    }
+
+    getTheme(db, $user.uid, $user.themeId).then(set).catch(console.error);
+  },
+);
+
+// onMount(() => {
+//   const partial: Partial<Theme> = {};
+
+//   for (const colorType of Object.keys(ThemeElement.Values) as ThemeElement[]) {
+//     const hsl = getHslColor(colorType);
+
+//     if (hsl) {
+//       partial[colorType] = hsl;
+
+//       setHslColor(colorType, hsl);
+//     }
+//   }
+
+//   try {
+//     if (Object.keys(partial).length === 0) {
+//       throw new Error("No colors found");
+//     }
+
+//     theme.set(Theme.parse(partial));
+//   } catch (e) {
+//     console.error(e);
+//   }
+// });

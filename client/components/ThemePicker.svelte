@@ -1,14 +1,8 @@
 <script lang="ts">
   import { addTheme, updateTheme } from "baby-stats-firebase/themes";
-  import { getUserDoc } from "baby-stats-firebase/users";
   import { hexToHsl } from "baby-stats-lib/theme";
-  import {
-    DEFAULT_THEME,
-    type HexColor,
-    type Theme,
-  } from "baby-stats-models/theme";
+  import { DEFAULT_THEME, type HexColor } from "baby-stats-models/theme";
   import type { User } from "baby-stats-models/users";
-  import { onMount } from "svelte";
   import { db } from "../firebase";
   import { themes, themesLoaded } from "../stores/themes";
   import ColorPicker from "./ColorPicker.svelte";
@@ -19,7 +13,7 @@
 
   let id: string | null = null;
   let name = "Default";
-  let theme: Omit<Theme, "id" | "name">;
+  let theme = DEFAULT_THEME;
 
   let loading = false;
 
@@ -42,7 +36,10 @@
     loading = true;
 
     try {
-      if (!id) return;
+      if (!id) {
+        console.error("No theme id available to update");
+        return;
+      }
 
       await updateTheme(db, user.uid, { ...theme, id, name });
     } catch (error) {
@@ -56,15 +53,10 @@
     loading = true;
 
     try {
-      const idx = $themes.findIndex((t) => t.name === name);
-
-      if (idx !== -1) {
-        const id = $themes[idx].id;
-        console.log(id);
-
-        await updateTheme(db, user.uid, { ...theme, id, name });
+      if ($themes.some((t) => t.name === name)) {
+        await handleUpdate();
       } else {
-        await addTheme(db, user.uid, { ...DEFAULT_THEME, ...theme, name });
+        await addTheme(db, user.uid, { ...theme, name });
       }
     } catch (error) {
       console.error(error);
@@ -72,16 +64,6 @@
 
     loading = false;
   };
-
-  onMount(async () => {
-    // const [background, border, button] = getHslTheme(
-    //   "background",
-    //   "border",
-    //   "button",
-    // );
-    // theme = { background, border, button };
-    // console.log(JSON.stringify({ name, ...theme }));
-  });
 </script>
 
 <ColorPicker
