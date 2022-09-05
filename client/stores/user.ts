@@ -4,11 +4,13 @@ import {
   signInWithPopup,
   signOut as authSignOut,
 } from "@firebase/auth";
+import { addTheme, getThemes } from "baby-stats-firebase/themes";
 import {
-  validateAuthUser,
+  fixAuthUser,
   updateUserDoc,
   getUserDoc,
 } from "baby-stats-firebase/users";
+import { DEFAULT_THEME } from "baby-stats-models/theme";
 import type { User } from "baby-stats-models/users";
 import { readable } from "svelte/store";
 import { auth, db } from "../firebase";
@@ -22,9 +24,9 @@ export const user = readable<User | null | undefined>(undefined, (set) => {
 
     let user = await getUserDoc(db, authUser.uid);
 
-    const au = validateAuthUser(authUser);
+    const fixed = fixAuthUser(db, authUser);
 
-    user = await updateUserDoc(db, { ...user, ...au });
+    user = await updateUserDoc(db, { ...user, ...fixed });
 
     set(user);
   });

@@ -4,6 +4,7 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  getDocs,
   onSnapshot,
   setDoc,
   updateDoc,
@@ -42,6 +43,20 @@ export const getTheme = async (db: Firestore, uid: string, id: string) => {
   const doc = await getDoc(getThemeRef(db, uid, id));
 
   return Theme.parse(doc.data());
+};
+
+export const getThemes = async (db: Firestore, uid: string) => {
+  const snap = await getDocs(getThemesCollection(db, uid));
+
+  if (snap.empty) return [];
+
+  const themes: Theme[] = [];
+
+  for (const doc of snap.docs) {
+    themes.push(Theme.parse(doc.data()));
+  }
+
+  return themes;
 };
 
 export const addTheme = async (db: Firestore, uid: string, value: ThemeAdd) => {
