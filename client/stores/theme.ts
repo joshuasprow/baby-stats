@@ -1,4 +1,3 @@
-import { getTheme } from "baby-stats-firebase/themes";
 import {
   DEFAULT_THEME,
   HslColor,
@@ -6,21 +5,14 @@ import {
   ThemeAdd,
   ThemeElement,
 } from "baby-stats-models/theme";
-import type { User } from "baby-stats-models/users";
-import { db } from "firebase";
-import { onMount } from "svelte";
-import { derived, get, type Readable } from "svelte/store";
-import { user } from "./user";
+import { writable } from "svelte/store";
 
 const getCssVariable = (variable: string) => {
   const value = getComputedStyle(document.documentElement).getPropertyValue(
     variable,
   );
 
-  if (!value) {
-    console.warn(`missing color variable: ${variable}`);
-    return null;
-  }
+  if (!value) return null;
 
   return value;
 };
@@ -41,12 +33,7 @@ const getHslColor = (themeElement: ThemeElement) => {
     `--${themeElement}-color-lightness`,
   ].map(getCssVariable);
 
-  if (!h || !s || !l) {
-    console.warn(
-      `missing ${themeElement} color variables: h=${h}, s=${s}, l=${l}`,
-    );
-    return null;
-  }
+  if (!h || !s || !l) return null;
 
   return {
     hue: parseInt(h, 10),
@@ -65,56 +52,14 @@ const setHslColor = (colorType: ThemeElement, hsl: HslColor | null) => {
   setCssVariable(`--${colorType}-color-lightness`, `${lightness}%`);
 };
 
-let fetchingTheme = false;
+export const theme = writable<Theme | ThemeAdd>(DEFAULT_THEME);
 
-export const theme = derived<Readable<User | null | undefined>, ThemeAdd>(
-  user,
-  ($user, set) => {
-    let $theme = get(theme);
+export const setTheme = (value: ThemeAdd) => {
+  theme.set(value);
 
-    if ($theme) return;
+  for (const element of Object.keys(value) as ThemeElement[]) {
+    const hsl = getHslColor(element);
 
-    $theme = DEFAULT_THEME;
-
-    for (const element of Object.keys($theme) as ThemeElement[]) {
-      const hsl = getHslColor(element);
-
-      if (hsl) setHslColor(element, hsl);
-    }
-
-    set(DEFAULT_THEME);
-
-    if (!$user || fetchingTheme) return;
-
-    if (!$user.themeId) {
-      console.warn("User is missing theme id");
-      return;
-    }
-
-    getTheme(db, $user.uid, $user.themeId).then(set).catch(console.error);
-  },
-);
-
-// onMount(() => {
-//   const partial: Partial<Theme> = {};
-
-//   for (const colorType of Object.keys(ThemeElement.Values) as ThemeElement[]) {
-//     const hsl = getHslColor(colorType);
-
-//     if (hsl) {
-//       partial[colorType] = hsl;
-
-//       setHslColor(colorType, hsl);
-//     }
-//   }
-
-//   try {
-//     if (Object.keys(partial).length === 0) {
-//       throw new Error("No colors found");
-//     }
-
-//     theme.set(Theme.parse(partial));
-//   } catch (e) {
-//     console.error(e);
-//   }
-// });
+    if (hsl) setHslColor(element, hsl);
+  }
+};
