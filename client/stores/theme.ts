@@ -26,22 +26,6 @@ const setCssVariable = (variable: string, value: string) => {
   document.documentElement.style.setProperty(variable, value);
 };
 
-const getHslColor = (themeElement: ThemeElement) => {
-  const [h, s, l] = [
-    `--${themeElement}-color-hue`,
-    `--${themeElement}-color-saturation`,
-    `--${themeElement}-color-lightness`,
-  ].map(getCssVariable);
-
-  if (!h || !s || !l) return null;
-
-  return {
-    hue: parseInt(h, 10),
-    saturation: parseInt(s, 10),
-    lightness: parseInt(l, 10),
-  };
-};
-
 const setHslColor = (colorType: ThemeElement, hsl: HslColor | null) => {
   if (!hsl) return;
 
@@ -57,9 +41,9 @@ export const theme = writable<Theme | ThemeAdd>(DEFAULT_THEME);
 export const setTheme = (value: ThemeAdd) => {
   theme.set(value);
 
-  for (const element of Object.keys(value) as ThemeElement[]) {
-    const hsl = getHslColor(element);
+  for (const element of Object.keys(ThemeElement.Values) as ThemeElement[]) {
+    const hsl = value[element];
 
-    if (hsl) setHslColor(element, hsl);
+    setHslColor(element, hsl);
   }
 };
