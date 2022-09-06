@@ -114,7 +114,10 @@ export const getUserDoc = async (db: Firestore, uid: string): Promise<User> => {
   return User.parse(doc.data());
 };
 
-export const updateUserDoc = async (db: Firestore, user: User) => {
+export const updateUserDoc = async (
+  db: Firestore,
+  user: Pick<User, "uid"> & Partial<User>,
+) => {
   const ref = getUserRef(db, user.uid);
 
   await setDoc(ref, user);

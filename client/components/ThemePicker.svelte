@@ -1,5 +1,6 @@
 <script lang="ts">
   import { addTheme, updateTheme } from "baby-stats-firebase/themes";
+  import { updateUserDoc } from "baby-stats-firebase/users";
   import { hexToHsl } from "baby-stats-lib/theme";
   import { DEFAULT_THEME, type HexColor } from "baby-stats-models/theme";
   import type { User } from "baby-stats-models/users";
@@ -8,6 +9,7 @@
   import ColorPicker from "./ColorPicker.svelte";
 
   // TODO: get defaults from 1. firestore; 2. css variables
+  // TODO: make button to set theme as default
 
   export let user: User;
 
@@ -64,6 +66,22 @@
 
     loading = false;
   };
+
+  const handleSetDefault = async () => {
+    loading = true;
+
+    try {
+      if (!id) {
+        throw new Error("No theme id available to set as default");
+      }
+
+      await updateUserDoc(db, { uid: user.uid, themeId: id });
+    } catch (error) {
+      console.error(error);
+    }
+
+    loading = false;
+  };
 </script>
 
 <ColorPicker
@@ -86,13 +104,14 @@
     />
 
     <datalist id="themes">
-      {#if $themesLoaded}
-        {#each $themes as theme}
-          <option value={theme.name} />
-        {/each}
-      {/if}
+      {#each $themes as theme}
+        <option value={theme.name} />
+      {/each}
     </datalist>
   </label>
 
   <button disabled={loading} type="submit">save</button>
+  <button disabled={loading} on:click|preventDefault={handleSetDefault}>
+    set as default
+  </button>
 </form>
