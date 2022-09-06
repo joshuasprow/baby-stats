@@ -1,12 +1,15 @@
 <script lang="ts">
+  import { setTheme } from "$stores/theme";
+
   import { addTheme, updateTheme } from "baby-stats-firebase/themes";
   import { updateUserDoc } from "baby-stats-firebase/users";
   import { hexToHsl } from "baby-stats-lib/theme";
-  import { DEFAULT_THEME, type HexColor } from "baby-stats-models/theme";
+  import { DEFAULT_THEME, Theme, type HexColor } from "baby-stats-models/theme";
   import type { User } from "baby-stats-models/users";
   import { db } from "../firebase";
-  import { themes, themesLoaded } from "../stores/themes";
+  import { themes } from "../stores/themes";
   import ColorPicker from "./ColorPicker.svelte";
+  import ThemeSelect from "./ThemeSelect.svelte";
 
   // TODO: get defaults from 1. firestore; 2. css variables
   // TODO: make button to set theme as default
@@ -67,6 +70,15 @@
     loading = false;
   };
 
+  const handleSelect = (e: CustomEvent<Theme>) => {
+    id = e.detail.id;
+    name = e.detail.name;
+    theme = e.detail;
+
+    console.log("selected theme", e.detail);
+    setTheme(theme);
+  };
+
   const handleSetDefault = async () => {
     loading = true;
 
@@ -95,20 +107,10 @@
 <form disabled={loading} on:submit|preventDefault={handleSave}>
   <label for="name">
     name
-    <input
-      disabled={loading}
-      id="name"
-      list="themes"
-      type="search"
-      bind:value={name}
-    />
-
-    <datalist id="themes">
-      {#each $themes as theme}
-        <option value={theme.name} />
-      {/each}
-    </datalist>
+    <input disabled={loading} id="name" type="search" bind:value={name} />
   </label>
+
+  <ThemeSelect on:select={handleSelect} />
 
   <button disabled={loading} type="submit">save</button>
   <button disabled={loading} on:click|preventDefault={handleSetDefault}>
