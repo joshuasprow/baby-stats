@@ -39,7 +39,7 @@ const setHslColor = (colorType: ThemeElement, hsl: HslColor | null) => {
 export const theme = writable<Theme | ThemeAdd>(DEFAULT_THEME);
 
 export const setTheme = (value: ThemeAdd) => {
-  theme.set(value);
+  theme.set({ ...value });
 
   for (const element of Object.keys(ThemeElement.Values) as ThemeElement[]) {
     const hsl = value[element];

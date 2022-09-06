@@ -1,13 +1,12 @@
 <script lang="ts">
-  import { setTheme } from "$stores/theme";
-
+  import { setTheme, theme } from "$stores/theme";
+  import { themes } from "$stores/themes";
   import { addTheme, updateTheme } from "baby-stats-firebase/themes";
   import { updateUserDoc } from "baby-stats-firebase/users";
   import { hexToHsl } from "baby-stats-lib/theme";
-  import { DEFAULT_THEME, Theme, type HexColor } from "baby-stats-models/theme";
+  import { isTheme, type HexColor, type Theme } from "baby-stats-models/theme";
   import type { User } from "baby-stats-models/users";
   import { db } from "../firebase";
-  import { themes } from "../stores/themes";
   import ColorPicker from "./ColorPicker.svelte";
   import ThemeSelect from "./ThemeSelect.svelte";
 
@@ -16,25 +15,22 @@
 
   export let user: User;
 
-  let id: string | null = null;
-  let name = "Default";
-  let theme = DEFAULT_THEME;
-
+  let id = isTheme($theme) ? $theme.id : null;
   let loading = false;
 
   const handleBackground = (e: CustomEvent<HexColor>) => {
     const hsl = hexToHsl(e.detail);
-    theme.background = hsl;
+    $theme.background = hsl;
   };
 
   const handleBorder = (e: CustomEvent<HexColor>) => {
     const hsl = hexToHsl(e.detail);
-    theme.border = hsl;
+    $theme.border = hsl;
   };
 
   const handleButton = (e: CustomEvent<HexColor>) => {
     const hsl = hexToHsl(e.detail);
-    theme.button = hsl;
+    $theme.button = hsl;
   };
 
   const handleUpdate = async () => {
@@ -46,7 +42,7 @@
         return;
       }
 
-      await updateTheme(db, user.uid, { ...theme, id, name });
+      await updateTheme(db, user.uid, { ...$theme, id });
     } catch (error) {
       console.error(error);
     }
@@ -58,10 +54,10 @@
     loading = true;
 
     try {
-      if ($themes.some((t) => t.name === name)) {
+      if ($themes.some((t) => t.name === $theme.name)) {
         await handleUpdate();
       } else {
-        await addTheme(db, user.uid, { ...theme, name });
+        await addTheme(db, user.uid, { ...$theme });
       }
     } catch (error) {
       console.error(error);
@@ -70,14 +66,7 @@
     loading = false;
   };
 
-  const handleSelect = (e: CustomEvent<Theme>) => {
-    id = e.detail.id;
-    name = e.detail.name;
-    theme = e.detail;
-
-    console.log("selected theme", e.detail);
-    setTheme(theme);
-  };
+  const handleSelect = (e: CustomEvent<Theme>) => setTheme(e.detail);
 
   const handleSetDefault = async () => {
     loading = true;
@@ -107,7 +96,12 @@
 <form disabled={loading} on:submit|preventDefault={handleSave}>
   <label for="name">
     name
-    <input disabled={loading} id="name" type="search" bind:value={name} />
+    <input
+      disabled={loading}
+      id="name"
+      type="search"
+      bind:value={$theme.name}
+    />
   </label>
 
   <ThemeSelect on:select={handleSelect} />

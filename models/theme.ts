@@ -13,7 +13,6 @@ export type HslColor = z.infer<typeof HslColor>;
 export const ThemeElement = z.enum(["background", "border", "button"]);
 export type ThemeElement = z.infer<typeof ThemeElement>;
 
-// TODO: rename to Theme
 export const Theme = z.object({
   id: z.string().min(1),
   name: z.string().min(1),
@@ -22,6 +21,13 @@ export const Theme = z.object({
   button: HslColor,
 });
 export type Theme = z.infer<typeof Theme>;
+export const isTheme = (value: unknown): value is Theme => {
+  try {
+    Theme.parse(value);
+    return true;
+  } catch {}
+  return false;
+};
 
 export const ThemeAdd = Theme.omit({ id: true });
 export type ThemeAdd = z.infer<typeof ThemeAdd>;
