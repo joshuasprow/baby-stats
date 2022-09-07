@@ -53,7 +53,11 @@ export const getThemes = async (db: Firestore, uid: string) => {
   const themes: Theme[] = [];
 
   for (const doc of snap.docs) {
-    themes.push(Theme.parse(doc.data()));
+    try {
+      themes.push(Theme.parse(doc.data()));
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return themes;

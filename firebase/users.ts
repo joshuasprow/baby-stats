@@ -1,13 +1,8 @@
 import type { User as FirebaseUser, UserInfo } from "@firebase/auth";
-import {
-  doc,
-  getDoc,
-  setDoc,
-  Timestamp,
-  type Firestore,
-} from "@firebase/firestore";
+import { doc, getDoc, Timestamp, type Firestore } from "@firebase/firestore";
 import { DEFAULT_THEME } from "baby-stats-models/theme";
-import { AuthUser, ProviderData, User } from "baby-stats-models/users";
+import { ProviderData, User } from "baby-stats-models/users";
+import { updateDoc } from "firebase/firestore";
 import { z } from "zod";
 import { addTheme, getThemes } from "./themes";
 
@@ -81,18 +76,21 @@ export const fixAuthUser = async (
     .nullable()
     .parse((json as any).email);
 
-  let { themeId } = await getUserDefaults(
-    db,
-    authUser.uid,
-    (authUser as unknown as User).themeId,
-  );
+  // TODO: make this less messy
+  const [defaults, user] = await Promise.all([
+    getUserDefaults(db, authUser.uid, (authUser as unknown as User).themeId),
+    getUserDoc(db, authUser.uid),
+  ]);
 
-  if (!themeId) {
+  let themeId = defaults.themeId;
+
+  if (!defaults.themeId) {
     const theme = await addTheme(db, authUser.uid, DEFAULT_THEME);
     themeId = theme.id;
   }
 
   return User.parse({
+    ...user,
     uid: authUser.uid,
     email,
     emailVerified: authUser.emailVerified,
@@ -111,18 +109,14 @@ const getUserRef = (db: Firestore, uid: string) => doc(db, `users/${uid}`);
 export const getUserDoc = async (db: Firestore, uid: string): Promise<User> => {
   const doc = await getDoc(getUserRef(db, uid));
 
-  return User.parse(doc.data());
+  return doc.data() as User;
 };
 
 export const updateUserDoc = async (
   db: Firestore,
-  user: Pick<User, "uid"> & Partial<User>,
+  update: Pick<User, "uid"> & Partial<User>,
 ) => {
-  const ref = getUserRef(db, user.uid);
+  const ref = getUserRef(db, update.uid);
 
-  await setDoc(ref, user);
-
-  const doc = await getDoc(ref);
-
-  return User.parse(doc.data());
+  await updateDoc(ref, update);
 };

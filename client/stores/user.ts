@@ -5,12 +5,8 @@ import {
   signOut as authSignOut,
 } from "@firebase/auth";
 import { getTheme } from "baby-stats-firebase/themes";
-import {
-  fixAuthUser,
-  getUserDoc,
-  updateUserDoc,
-} from "baby-stats-firebase/users";
-import { DEFAULT_THEME, ThemeAdd } from "baby-stats-models/theme";
+import { fixAuthUser } from "baby-stats-firebase/users";
+import { DEFAULT_THEME } from "baby-stats-models/theme";
 import type { User } from "baby-stats-models/users";
 import type { Firestore } from "firebase/firestore";
 import { readable } from "svelte/store";
@@ -33,15 +29,8 @@ export const user = readable<User | null | undefined>(undefined, (set) => {
       return;
     }
 
-    let _user = await getUserDoc(db, authUser.uid);
-    let _theme: ThemeAdd | null = DEFAULT_THEME;
-
-    const fixed = fixAuthUser(db, authUser);
-
-    [_user, _theme] = await Promise.all([
-      updateUserDoc(db, { ..._user, ...fixed }),
-      getUserTheme(db, _user),
-    ]);
+    const _user = await fixAuthUser(db, authUser);
+    const _theme = await getUserTheme(db, _user);
 
     set(_user);
     setTheme(_theme || DEFAULT_THEME);
