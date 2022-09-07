@@ -23,6 +23,8 @@ const setCssVariable = (variable: string, value: string) => {
     return;
   }
 
+  console.log(`setting ${variable} to ${value}`);
+
   document.documentElement.style.setProperty(variable, value);
 };
 
@@ -38,12 +40,21 @@ const setHslColor = (colorType: ThemeElement, hsl: HslColor | null) => {
 
 export const theme = writable<Theme | ThemeAdd>(DEFAULT_THEME);
 
-export const setTheme = (value: ThemeAdd) => {
-  theme.set({ ...value });
-
+const setCssTheme = (value: ThemeAdd) => {
   for (const element of Object.keys(ThemeElement.Values) as ThemeElement[]) {
     const hsl = value[element];
 
     setHslColor(element, hsl);
   }
 };
+
+export const setTheme = (value: ThemeAdd) => {
+  theme.set({ ...value });
+
+  setCssTheme(value);
+};
+
+theme.subscribe(($theme) => {
+  console.log($theme);
+  setCssTheme($theme);
+});

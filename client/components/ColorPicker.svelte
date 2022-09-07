@@ -1,50 +1,43 @@
+<script context="module" lang="ts">
+  let count = 0;
+
+  const getId = () => {
+    count += 1;
+    return `color-picker-${count}`;
+  };
+</script>
+
 <script lang="ts">
-  import {
-    getHslColor,
-    hexToHsl,
-    hslToHex,
-    setHslColor,
-  } from "baby-stats-lib/theme";
-  import { setCssVariable } from "baby-stats-lib/css";
+  import { setTheme, theme } from "$stores/theme";
   import type { ChangeEvent } from "baby-stats-lib/dom";
-  import { ThemeElement, HexColor } from "baby-stats-models/theme";
-  import { createEventDispatcher } from "svelte";
+  import { hexToHsl, hslToHex } from "baby-stats-lib/theme";
+  import type { Theme, ThemeElement } from "baby-stats-models/theme";
 
-  export let id = "";
-  export let element: ThemeElement;
+  type E = $$Generic<ThemeElement>;
 
-  const dispatch = createEventDispatcher<{ change: HexColor }>();
+  let id = getId();
+  export let element: E;
+  export let value: Theme[E];
 
-  let color = getHslColor(element);
-  let colorHex = color ? hslToHex(color) : undefined;
+  let hex = hslToHex(value);
+  let hsl = hexToHsl(hex);
 
-  const handleColorChange = (e: ChangeEvent) => {
-    const hex = e.currentTarget.value;
-
-    color = hexToHsl(hex);
-
-    if (!color) return;
-
-    setHslColor(element, color);
-
-    try {
-      dispatch("change", HexColor.parse(hex));
-    } catch (error) {
-      console.error(error);
-    }
-
-    if (["background", "button"].includes(element)) {
-      setCssVariable(
-        `--${element}-font-color`,
-        color.lightness > 60 ? "black" : "white",
-      );
-    }
+  const handleChange = (e: ChangeEvent) => {
+    hex = e.currentTarget.value;
+    hsl = hexToHsl(hex);
+    setTheme({ ...$theme, [element]: hsl });
   };
 </script>
 
 <label for={id}>
   {element}
-  <input on:input={handleColorChange} {id} type="color" value={colorHex} />
+  <input
+    {id}
+    type="color"
+    on:change={handleChange}
+    on:input={handleChange}
+    value={hex}
+  />
 </label>
 
 <style>

@@ -3,35 +3,16 @@
   import { themes } from "$stores/themes";
   import { addTheme, updateTheme } from "baby-stats-firebase/themes";
   import { updateUserDoc } from "baby-stats-firebase/users";
-  import { hexToHsl } from "baby-stats-lib/theme";
-  import { isTheme, type HexColor, type Theme } from "baby-stats-models/theme";
+  import { isTheme, type Theme } from "baby-stats-models/theme";
   import type { User } from "baby-stats-models/users";
   import { db } from "../firebase";
   import ColorPicker from "./ColorPicker.svelte";
   import ThemeSelect from "./ThemeSelect.svelte";
 
-  // TODO: get defaults from 1. firestore; 2. css variables
-  // TODO: make button to set theme as default
-
   export let user: User;
 
   let id = isTheme($theme) ? $theme.id : null;
   let loading = false;
-
-  const handleBackground = (e: CustomEvent<HexColor>) => {
-    const hsl = hexToHsl(e.detail);
-    $theme.background = hsl;
-  };
-
-  const handleBorder = (e: CustomEvent<HexColor>) => {
-    const hsl = hexToHsl(e.detail);
-    $theme.border = hsl;
-  };
-
-  const handleButton = (e: CustomEvent<HexColor>) => {
-    const hsl = hexToHsl(e.detail);
-    $theme.button = hsl;
-  };
 
   const handleUpdate = async () => {
     loading = true;
@@ -85,13 +66,9 @@
   };
 </script>
 
-<ColorPicker
-  id="background-color"
-  element="background"
-  on:change={handleBackground}
-/>
-<ColorPicker id="border-color" element="border" on:change={handleBorder} />
-<ColorPicker id="button-color" element="button" on:change={handleButton} />
+<ColorPicker element="background" bind:value={$theme.background} />
+<ColorPicker element="border" bind:value={$theme.border} />
+<ColorPicker element="button" bind:value={$theme.button} />
 
 <form disabled={loading} on:submit|preventDefault={handleSave}>
   <label for="name">
