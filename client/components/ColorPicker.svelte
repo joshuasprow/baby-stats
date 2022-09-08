@@ -50,4 +50,34 @@
     grid-template-columns: 6rem 6rem;
     margin-bottom: 0.25rem;
   }
+
+  input[type="color"] {
+    -webkit-appearance: none;
+    background: none;
+    border: none;
+    padding: 0;
+    border: var(--border);
+    border-radius: var(--border-radius);
+    transition-duration: 0.25s;
+    transition-property: background-color, border-color;
+    width: 100%;
+  }
+
+  input[type="color"]:hover {
+    background-color: var(--button-color-hover);
+    border-color: var(--border-color-hover);
+  }
+
+  input[type="color"]:active {
+    background-color: var(--button-color-active);
+    border-color: var(--border-color-active);
+  }
+
+  input[type="color"]::-webkit-color-swatch-wrapper {
+    padding: 0;
+  }
+
+  input[type="color"]::-webkit-color-swatch {
+    border: none;
+  }
 </style>
