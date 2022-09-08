@@ -23,8 +23,6 @@ const setCssVariable = (variable: string, value: string) => {
     return;
   }
 
-  console.log(`setting ${variable} to ${value}`);
-
   document.documentElement.style.setProperty(variable, value);
 };
 
@@ -54,7 +52,4 @@ export const setTheme = (value: ThemeAdd) => {
   setCssTheme(value);
 };
 
-theme.subscribe(($theme) => {
-  console.log($theme);
-  setCssTheme($theme);
-});
+theme.subscribe(setCssTheme);

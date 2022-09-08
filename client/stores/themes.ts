@@ -15,10 +15,7 @@ export const themes = derived<typeof user, Theme[]>(user, ($user, set) => {
     return unsubscribe;
   }
 
-  unsubscribe = subscribeToThemes(db, $user.uid, ($themes) => {
-    console.log($themes);
-    set($themes);
-  });
+  unsubscribe = subscribeToThemes(db, $user.uid, set);
 
   themesLoaded.set(true);
 
