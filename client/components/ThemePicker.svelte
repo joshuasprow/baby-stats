@@ -3,7 +3,7 @@
   import { themes } from "$stores/themes";
   import { addTheme, updateTheme } from "baby-stats-firebase/themes";
   import { updateUserDoc } from "baby-stats-firebase/users";
-  import { isTheme, type Theme } from "baby-stats-models/theme";
+  import { isTheme, ThemeElement, type Theme } from "baby-stats-models/theme";
   import type { User } from "baby-stats-models/users";
   import { db } from "../firebase";
   import ColorPicker from "./ColorPicker.svelte";
@@ -47,6 +47,14 @@
     loading = false;
   };
 
+  const handleElementChange = <E extends ThemeElement>(
+    event: CustomEvent<{ element: E; value: Theme[E] }>,
+  ) => {
+    const { element, value } = event.detail;
+
+    setTheme({ ...$theme, [element]: value });
+  };
+
   const handleSelect = (e: CustomEvent<Theme>) => setTheme(e.detail);
 
   const handleSetDefault = async () => {
@@ -66,9 +74,9 @@
   };
 </script>
 
-<ColorPicker element="background" bind:value={$theme.background} />
-<ColorPicker element="border" bind:value={$theme.border} />
-<ColorPicker element="button" bind:value={$theme.button} />
+<ColorPicker element="background" on:change={handleElementChange} />
+<ColorPicker element="border" on:change={handleElementChange} />
+<ColorPicker element="button" on:change={handleElementChange} />
 
 <form disabled={loading} on:submit|preventDefault={handleSave}>
   <label for="name">
