@@ -46,6 +46,8 @@
 
 <style>
   label {
-    display: block;
+    display: grid;
+    grid-template-columns: 6rem 6rem;
+    margin-bottom: 0.25rem;
   }
 </style>

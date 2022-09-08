@@ -6,6 +6,7 @@
   import { isTheme, ThemeElement, type Theme } from "baby-stats-models/theme";
   import type { User } from "baby-stats-models/users";
   import { db } from "../firebase";
+  import Button from "./Button.svelte";
   import ColorPicker from "./ColorPicker.svelte";
   import ThemeSelect from "./ThemeSelect.svelte";
 
@@ -74,25 +75,42 @@
   };
 </script>
 
-<ColorPicker element="background" on:change={handleElementChange} />
-<ColorPicker element="border" on:change={handleElementChange} />
-<ColorPicker element="button" on:change={handleElementChange} />
+<section>
+  <ColorPicker element="background" on:change={handleElementChange} />
+  <ColorPicker element="border" on:change={handleElementChange} />
+  <ColorPicker element="button" on:change={handleElementChange} />
 
-<form disabled={loading} on:submit|preventDefault={handleSave}>
-  <label for="name">
-    name
-    <input
-      disabled={loading}
-      id="name"
-      type="search"
-      bind:value={$theme.name}
-    />
-  </label>
+  <form disabled={loading} on:submit|preventDefault={handleSave}>
+    <label for="name">
+      name
+      <input
+        disabled={loading}
+        id="name"
+        type="search"
+        bind:value={$theme.name}
+      />
+    </label>
 
-  <ThemeSelect on:select={handleSelect} />
+    <ThemeSelect id="theme" on:select={handleSelect} />
 
-  <button disabled={loading} type="submit">save</button>
-  <button disabled={loading} on:click|preventDefault={handleSetDefault}>
-    set as default
-  </button>
-</form>
+    <div class="controls">
+      <Button disabled={loading} type="submit">save</Button>
+      <Button disabled={loading} on:click={handleSetDefault}>
+        set as default
+      </Button>
+    </div>
+  </form>
+</section>
+
+<style>
+  label {
+    display: grid;
+    grid-template-columns: 6rem 6rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .controls {
+    display: flex;
+    gap: 0.5rem;
+  }
+</style>

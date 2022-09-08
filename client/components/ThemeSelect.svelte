@@ -3,16 +3,17 @@
   import type { Theme } from "baby-stats-models/theme";
   import { createEventDispatcher } from "svelte";
 
+  export let id = "theme";
+
   const dispatch = createEventDispatcher<{ select: Theme }>();
 
   const handleChange = async (e: Event) => {
-    const target = e.target as HTMLSelectElement;
-    const id = target.value;
+    const value = (e.target as HTMLSelectElement).value;
 
-    const theme = $themes.find((t) => t.id === id);
+    const theme = $themes.find((t) => t.id === value);
 
     if (!theme) {
-      console.error(`No theme found with selected id: ${id}`);
+      console.error(`No theme found with selected id: ${value}`);
       return;
     }
 
@@ -20,8 +21,22 @@
   };
 </script>
 
-<select id="theme" on:change={handleChange}>
-  {#each $themes as { id, name }}
-    <option value={id}>{name}</option>
-  {/each}
-</select>
+<label for={id}>
+  <select {id} on:change={handleChange}>
+    {#each $themes as { id, name }}
+      <option value={id}>{name}</option>
+    {/each}
+  </select>
+</label>
+
+<style>
+  label {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 0.5rem;
+  }
+
+  select {
+    grid-column-start: 2;
+  }
+</style>
