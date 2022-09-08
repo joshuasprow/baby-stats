@@ -1,3 +1,4 @@
+import { BLACK, getContrastRatio, WHITE } from "baby-stats-lib/theme";
 import {
   DEFAULT_THEME,
   HslColor,
@@ -26,14 +27,20 @@ const setCssVariable = (variable: string, value: string) => {
   document.documentElement.style.setProperty(variable, value);
 };
 
-const setHslColor = (colorType: ThemeElement, hsl: HslColor | null) => {
+const setHslColor = (element: ThemeElement, hsl: HslColor | null) => {
   if (!hsl) return;
 
   const { hue, saturation, lightness } = hsl;
 
-  setCssVariable(`--${colorType}-color-hue`, `${hue}`);
-  setCssVariable(`--${colorType}-color-saturation`, `${saturation}%`);
-  setCssVariable(`--${colorType}-color-lightness`, `${lightness}%`);
+  const black = getContrastRatio(hsl, BLACK);
+  const white = getContrastRatio(hsl, WHITE);
+
+  const font = black > white ? `hsl(0, 100%, 100%)` : `hsl(0, 0%, 0%)`;
+
+  setCssVariable(`--${element}-color-hue`, `${hue}`);
+  setCssVariable(`--${element}-color-saturation`, `${saturation}%`);
+  setCssVariable(`--${element}-color-lightness`, `${lightness}%`);
+  setCssVariable(`--${element}-font-color`, font);
 };
 
 export const theme = writable<Theme | ThemeAdd>(DEFAULT_THEME);

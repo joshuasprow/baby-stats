@@ -1,10 +1,21 @@
-import type { ThemeElement, HexColor, HslColor } from "baby-stats-models/theme";
+import {
+  ThemeElement,
+  HexColor,
+  HslColor,
+  RgbColor,
+} from "baby-stats-models/theme";
 import { getCssVariable, setCssVariable } from "./css";
 
-const BLACK: HslColor = {
+export const BLACK: HslColor = {
   hue: 0,
   saturation: 0,
   lightness: 0,
+};
+
+export const WHITE: HslColor = {
+  hue: 0,
+  saturation: 100,
+  lightness: 100,
 };
 
 export const getHslColor = (colorType: ThemeElement) => {
@@ -158,4 +169,53 @@ export const hslToHex = ({
   if (B.length == 1) B = `0${B}`;
 
   return "#" + R + G + B;
+};
+
+// Thanks! https://dev.to/alvaromontoro/building-your-own-color-contrast-checker-4j7o
+
+const hexToRgb = (hex: string) => {
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+
+  hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+    return r + r + g + g + b + b;
+  });
+
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+
+  if (!result) return null;
+
+  const rgb = RgbColor.parse({
+    red: parseInt(result[1], 16),
+    green: parseInt(result[2], 16),
+    blue: parseInt(result[3], 16),
+  });
+
+  return rgb;
+};
+
+const getLuminance = ({ red, green, blue }: RgbColor) => {
+  const a = [red, green, blue].map((v) => {
+    v /= 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+
+  return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+};
+
+export const getContrastRatio = (hslA: HslColor, hslB: HslColor) => {
+  const hexA = hslToHex(hslA);
+  const rgbA = hexToRgb(hexA);
+
+  const hexB = hslToHex(hslB);
+  const rgbB = hexToRgb(hexB);
+
+  if (!rgbA) throw new Error(`Invalid color A: ${hexA}`);
+  if (!rgbB) throw new Error(`Invalid color B: ${hexB}`);
+
+  const lumA = getLuminance(rgbA);
+  const lumB = getLuminance(rgbB);
+
+  return lumA > lumB
+    ? (lumB + 0.05) / (lumA + 0.05)
+    : (lumA + 0.05) / (lumB + 0.05);
 };

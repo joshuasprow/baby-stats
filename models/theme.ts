@@ -10,6 +10,13 @@ export const HslColor = z.object({
 });
 export type HslColor = z.infer<typeof HslColor>;
 
+export const RgbColor = z.object({
+  red: z.number().min(0).max(255),
+  green: z.number().min(0).max(255),
+  blue: z.number().min(0).max(255),
+});
+export type RgbColor = z.infer<typeof RgbColor>;
+
 export const ThemeElement = z.enum(["background", "border", "button"]);
 export type ThemeElement = z.infer<typeof ThemeElement>;
 
