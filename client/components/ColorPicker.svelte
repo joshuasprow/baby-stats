@@ -62,6 +62,7 @@
     transition-duration: 0.25s;
     transition-property: background-color, border-color;
     width: 100%;
+    height: 1.5rem;
   }
 
   input.color-input::-webkit-color-swatch {

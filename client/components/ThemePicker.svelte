@@ -121,6 +121,8 @@
   }
 
   .theme-name-input {
+    background: var(--background);
+    color: var(--background-font-color);
     border: var(--border);
     border-radius: var(--border-radius);
   }
