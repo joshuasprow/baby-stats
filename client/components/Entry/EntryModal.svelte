@@ -65,9 +65,9 @@
   }
 
   .modal {
-    color: #000;
-    background: #fff;
-    border: var(--border-width) solid #666;
+    color: var(--background-font-color);
+    background: var(--background-color);
+    border: var(--border-width) solid var(--border-color-dark);
     border-radius: var(--border-radius);
     padding: 0.5rem;
   }

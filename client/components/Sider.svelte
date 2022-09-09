@@ -5,6 +5,7 @@
   import ThemeControls from "$components/ThemePicker.svelte";
   import { user } from "$stores/user";
   import { fade, fly } from "svelte/transition";
+  import CloseIcon from "./CloseIcon.svelte";
 
   export let open = true;
 
@@ -24,7 +25,9 @@
 
   <aside transition:fly={{ x: window.innerWidth }}>
     <header>
-      <Button class="sider-close-button" on:click={toggle}>✖️</Button>
+      <Button class="sider-close-button" on:click={toggle}>
+        <CloseIcon />
+      </Button>
     </header>
 
     <main>
@@ -72,7 +75,7 @@
     left: 1rem;
     background-color: var(--background-color);
     padding: 0.25rem 0.5rem;
-    border-left: var(--border-width) solid #666;
+    border-left: var(--border-width) solid var(--border-color-dark);
     color: var(--background-font-color);
   }
 

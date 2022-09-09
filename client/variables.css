@@ -33,6 +33,12 @@
     calc(var(--border-color-lightness) - 10%)
   );
 
+  --border-color-dark: hsl(
+    var(--border-color-hue),
+    var(--border-color-saturation),
+    calc(var(--border-color-lightness) - 20%)
+  );
+
   --border-width: 0.1rem;
   --border-radius: 0.25rem;
 
