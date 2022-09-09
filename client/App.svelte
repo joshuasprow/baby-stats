@@ -2,6 +2,7 @@
   import Entries from "$components/Entries.svelte";
   import Footer from "$components/Footer.svelte";
   import Sider from "$components/Sider.svelte";
+  import SignInButton from "$components/SignInButton.svelte";
   import { entriesLoaded } from "$stores/entries";
   import { user } from "$stores/user";
   // TODO: add baby name to title
@@ -20,7 +21,8 @@
   </main>
 {:else if $user === null}
   <main class="centered">
-    <span>Please sign in below</span>
+    <span class="sign-in-label">Please sign in below</span>
+    <SignInButton />
   </main>
 {:else if !entriesLoaded}
   <main class="centered">
@@ -48,5 +50,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+
+  .sign-in-label {
+    margin-bottom: 1rem;
   }
 </style>
