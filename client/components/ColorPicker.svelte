@@ -36,6 +36,7 @@
 <label for={id}>
   {element}
   <input
+    class="color-input"
     {id}
     type="color"
     on:change={handleChange}
@@ -48,36 +49,41 @@
   label {
     display: grid;
     grid-template-columns: 6rem 6rem;
+    align-items: center;
     margin-bottom: 0.25rem;
   }
 
-  input[type="color"] {
+  input {
     -webkit-appearance: none;
-    background: none;
-    border: none;
+    background: var(--button-color);
     padding: 0;
-    border: var(--border);
+    border: none;
     border-radius: var(--border-radius);
     transition-duration: 0.25s;
     transition-property: background-color, border-color;
     width: 100%;
   }
 
-  input[type="color"]:hover {
+  input.color-input::-webkit-color-swatch {
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--border-radius);
+  }
+
+  input:hover {
     background-color: var(--button-color-hover);
     border-color: var(--border-color-hover);
   }
 
-  input[type="color"]:active {
+  input:active {
     background-color: var(--button-color-active);
     border-color: var(--border-color-active);
   }
 
-  input[type="color"]::-webkit-color-swatch-wrapper {
+  input::-webkit-color-swatch-wrapper {
     padding: 0;
   }
 
-  input[type="color"]::-webkit-color-swatch {
+  input::-webkit-color-swatch {
     border: none;
   }
 </style>

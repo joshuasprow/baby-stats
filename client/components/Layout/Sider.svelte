@@ -35,9 +35,7 @@
           Hello, please sign in below
         {/if}
       </p>
-    </section>
 
-    <section>
       {#if $user}
         <SignOutButton />
       {:else}
@@ -54,10 +52,17 @@
 {/if}
 
 <style>
+  :global(.sider-toggle-button) {
+    position: fixed;
+    top: 0.25rem;
+    right: 0.5rem;
+  }
+
   .backdrop {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
   }
 
   aside {
@@ -79,6 +84,12 @@
   }
 
   section {
-    margin-bottom: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    margin: 0 0.5rem;
   }
 </style>

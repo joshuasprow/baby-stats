@@ -33,6 +33,7 @@
   label {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    align-items: center;
     margin-bottom: 0.5rem;
   }
 

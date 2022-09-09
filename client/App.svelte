@@ -2,6 +2,7 @@
   import Entries from "$components/Entries.svelte";
   import Footer from "$components/Layout/Footer.svelte";
   import Header from "$components/Layout/Header.svelte";
+  import Sider from "$components/Layout/Sider.svelte";
   import { entriesLoaded } from "$stores/entries";
   import { user } from "$stores/user";
   // TODO: add baby name to title
@@ -31,7 +32,7 @@
     <Entries user={$user} />
   </main>
 
-  <Header />
+  <Sider />
   <Footer user={$user} />
 {/if}
 

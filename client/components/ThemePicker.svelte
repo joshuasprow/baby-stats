@@ -75,12 +75,12 @@
   };
 </script>
 
-<section>
-  <ColorPicker element="background" on:change={handleElementChange} />
-  <ColorPicker element="border" on:change={handleElementChange} />
-  <ColorPicker element="button" on:change={handleElementChange} />
+<form disabled={loading} on:submit|preventDefault={handleSave}>
+  <div class="inputs">
+    <ColorPicker element="background" on:change={handleElementChange} />
+    <ColorPicker element="border" on:change={handleElementChange} />
+    <ColorPicker element="button" on:change={handleElementChange} />
 
-  <form disabled={loading} on:submit|preventDefault={handleSave}>
     <label for="name">
       name
       <input
@@ -92,25 +92,31 @@
     </label>
 
     <ThemeSelect id="theme" on:select={handleSelect} />
+  </div>
 
-    <div class="controls">
-      <Button disabled={loading} type="submit">save</Button>
-      <Button disabled={loading} on:click={handleSetDefault}>
-        set as default
-      </Button>
-    </div>
-  </form>
-</section>
+  <div class="controls">
+    <Button disabled={loading} type="submit">save</Button>
+    <Button disabled={loading} on:click={handleSetDefault}>
+      set as default
+    </Button>
+  </div>
+</form>
 
 <style>
+  .inputs {
+    margin-bottom: 1rem;
+  }
+
   label {
     display: grid;
     grid-template-columns: 6rem 6rem;
     margin-bottom: 0.5rem;
+    align-items: center;
   }
 
   .controls {
     display: flex;
+    justify-content: space-evenly;
     gap: 0.5rem;
   }
 </style>
