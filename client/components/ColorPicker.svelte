@@ -50,7 +50,7 @@
     display: grid;
     grid-template-columns: 6rem 6rem;
     align-items: center;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
   }
 
   input {

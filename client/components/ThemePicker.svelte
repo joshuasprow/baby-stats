@@ -84,9 +84,9 @@
     <label for="name">
       name
       <input
+        class="theme-name-input"
         disabled={loading}
         id="name"
-        type="search"
         bind:value={$theme.name}
       />
     </label>
@@ -118,5 +118,10 @@
     display: flex;
     justify-content: space-evenly;
     gap: 0.5rem;
+  }
+
+  .theme-name-input {
+    border: var(--border);
+    border-radius: var(--border-radius);
   }
 </style>

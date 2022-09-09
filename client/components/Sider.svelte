@@ -24,7 +24,7 @@
 
   <aside transition:fly={{ x: window.innerWidth }}>
     <header>
-      <Button on:click={toggle}>✖️</Button>
+      <Button class="sider-close-button" on:click={toggle}>✖️</Button>
     </header>
 
     <section>
@@ -62,7 +62,6 @@
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
-    pointer-events: none;
   }
 
   aside {
@@ -73,19 +72,20 @@
     padding: 0.25rem 0.5rem;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     border-left: var(--border-width) solid #666;
-
     color: var(--background-font-color);
   }
 
-  header {
-    margin-left: auto;
+  :global(.sider-close-button) {
+    margin: 0 0 1rem auto;
+    font-size: 0.75rem;
   }
 
   section {
     display: flex;
     flex-wrap: wrap;
+    justify-self: space-between;
+    align-items: center;
     margin-bottom: 1rem;
   }
 
