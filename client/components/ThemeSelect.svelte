@@ -22,6 +22,7 @@
 </script>
 
 <label for={id}>
+  <span>theme</span>
   <select {id} on:change={handleChange}>
     {#each $themes as { id, name }}
       <option value={id}>{name}</option>
@@ -34,10 +35,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
   }
 
   select {
-    grid-column-start: 2;
+    border: var(--border);
+    border-radius: var(--border-radius);
   }
 </style>

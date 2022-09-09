@@ -77,6 +77,8 @@
 
 <form disabled={loading} on:submit|preventDefault={handleSave}>
   <div class="inputs">
+    <ThemeSelect id="theme" on:select={handleSelect} />
+
     <ColorPicker element="background" on:change={handleElementChange} />
     <ColorPicker element="border" on:change={handleElementChange} />
     <ColorPicker element="button" on:change={handleElementChange} />
@@ -90,8 +92,6 @@
         bind:value={$theme.name}
       />
     </label>
-
-    <ThemeSelect id="theme" on:select={handleSelect} />
   </div>
 
   <div class="controls">

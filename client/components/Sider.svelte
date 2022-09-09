@@ -27,27 +27,29 @@
       <Button class="sider-close-button" on:click={toggle}>✖️</Button>
     </header>
 
-    <section>
-      <p>
+    <main>
+      <section>
+        <p>
+          {#if $user}
+            Hi {$user.displayName}
+          {:else}
+            Hello, please sign in below
+          {/if}
+        </p>
+
         {#if $user}
-          Hi {$user.displayName}
+          <SignOutButton />
         {:else}
-          Hello, please sign in below
+          <SignInButton />
         {/if}
-      </p>
+      </section>
 
       {#if $user}
-        <SignOutButton />
-      {:else}
-        <SignInButton />
+        <section transition:fly>
+          <ThemeControls user={$user} />
+        </section>
       {/if}
-    </section>
-
-    {#if $user}
-      <section transition:fly>
-        <ThemeControls user={$user} />
-      </section>
-    {/if}
+    </main>
   </aside>
 {/if}
 
@@ -70,8 +72,6 @@
     left: 1rem;
     background-color: var(--background-color);
     padding: 0.25rem 0.5rem;
-    display: flex;
-    flex-direction: column;
     border-left: var(--border-width) solid #666;
     color: var(--background-font-color);
   }
@@ -81,15 +81,20 @@
     font-size: 0.75rem;
   }
 
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   section {
     display: flex;
     flex-wrap: wrap;
-    justify-self: space-between;
     align-items: center;
     margin-bottom: 1rem;
   }
 
   p {
-    margin: 0 0.5rem;
+    margin: 0 0.5rem 0 0;
   }
 </style>
