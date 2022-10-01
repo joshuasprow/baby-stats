@@ -1,9 +1,18 @@
 <script lang="ts">
   import { setTheme, theme } from "$stores/theme";
   import { themes } from "$stores/themes";
-  import { addTheme, updateTheme } from "baby-stats-firebase/themes";
+  import {
+    addTheme,
+    removeTheme,
+    updateTheme,
+  } from "baby-stats-firebase/themes";
   import { updateUserDoc } from "baby-stats-firebase/users";
-  import { isTheme, ThemeElement, type Theme } from "baby-stats-models/theme";
+  import {
+    DEFAULT_THEME,
+    isTheme,
+    ThemeElement,
+    type Theme,
+  } from "baby-stats-models/theme";
   import type { User } from "baby-stats-models/users";
   import { db } from "../firebase";
   import Button from "./Button.svelte";
@@ -26,6 +35,7 @@
 
       await updateTheme(db, user.uid, { ...$theme, id });
     } catch (error) {
+      console.log(theme);
       console.error(error);
     }
 
@@ -42,6 +52,7 @@
         await addTheme(db, user.uid, { ...$theme });
       }
     } catch (error) {
+      console.log(theme);
       console.error(error);
     }
 
@@ -57,6 +68,27 @@
   };
 
   const handleSelect = (e: CustomEvent<Theme>) => setTheme(e.detail);
+
+  const handleRemove = async () => {
+    loading = true;
+
+    try {
+      if (!id) {
+        console.error("No theme id available to remove");
+        return;
+      }
+
+      const next = $themes.find((t) => t.id !== id) || DEFAULT_THEME;
+
+      setTheme(next || DEFAULT_THEME);
+
+      await removeTheme(db, user.uid, id);
+    } catch (e) {
+      console.error(e);
+    }
+
+    loading = false;
+  };
 
   const handleSetDefault = async () => {
     loading = true;
@@ -77,7 +109,7 @@
 
 <form disabled={loading} on:submit|preventDefault={handleSave}>
   <div class="inputs">
-    <ThemeSelect id="theme" on:select={handleSelect} />
+    <ThemeSelect id="theme" on:remove={handleRemove} on:select={handleSelect} />
 
     <ColorPicker element="background" on:change={handleElementChange} />
     <ColorPicker element="border" on:change={handleElementChange} />

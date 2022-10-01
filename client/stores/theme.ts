@@ -58,5 +58,3 @@ export const setTheme = (value: ThemeAdd) => {
 
   setCssTheme(value);
 };
-
-theme.subscribe(setCssTheme);
