@@ -24,7 +24,7 @@ export const subscribeToPees = (
 ) =>
   onSnapshot(
     query(getPeesCollection(db, uid), orderBy("timestamp", "desc")),
-    (spee) => set(spee.docs.map((doc) => Pee.parse(doc.data()))),
+    (pees) => set(pees.docs.map((doc) => Pee.parse(doc.data()))),
   );
 
 export const addPee = async (db: Firestore, uid: string, value: PeeAdd) => {
