@@ -1,11 +1,13 @@
 <script lang="ts">
   import { themes } from "$stores/themes";
   import type { Theme } from "baby-stats-models/theme";
+  import type { User } from "baby-stats-models/users";
   import { createEventDispatcher } from "svelte";
   import Button from "./Button.svelte";
   import CloseIcon from "./CloseIcon.svelte";
 
   export let id = "theme";
+  export let user: User;
 
   const dispatch = createEventDispatcher<{ remove: void; select: Theme }>();
 
@@ -29,7 +31,9 @@
   <span>theme</span>
   <select {id} on:change={handleChange}>
     {#each $themes as { id, name }}
-      <option value={id}>{name}</option>
+      <option value={id}>
+        {id === user.themeId ? `${name} (default)` : name}
+      </option>
     {/each}
   </select>
   <Button on:click={handleRemove}><CloseIcon /></Button>

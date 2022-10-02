@@ -21,42 +21,24 @@
 
   export let user: User;
 
-  let id = isTheme($theme) ? $theme.id : null;
-  let loading = false;
+  let disabled = false;
 
-  const handleUpdate = async () => {
-    loading = true;
+  const handleSave = async () => {
+    disabled = true;
 
     try {
-      if (!id) {
+      if (!isTheme($theme)) {
         console.error("No theme id available to update");
         return;
       }
 
-      await updateTheme(db, user.uid, { ...$theme, id });
+      await updateTheme(db, user.uid, { ...$theme });
     } catch (error) {
       console.log(theme);
       console.error(error);
     }
 
-    loading = false;
-  };
-
-  const handleSave = async () => {
-    loading = true;
-
-    try {
-      if ($themes.some((t) => t.name === $theme.name)) {
-        await handleUpdate();
-      } else {
-        await addTheme(db, user.uid, { ...$theme });
-      }
-    } catch (error) {
-      console.log(theme);
-      console.error(error);
-    }
-
-    loading = false;
+    disabled = false;
   };
 
   const handleElementChange = <E extends ThemeElement>(
@@ -69,47 +51,83 @@
 
   const handleSelect = (e: CustomEvent<Theme>) => setTheme(e.detail);
 
-  const handleRemove = async () => {
-    loading = true;
+  const handleAdd = async () => {
+    disabled = true;
 
     try {
-      if (!id) {
-        console.error("No theme id available to remove");
-        return;
-      }
+      const next = await addTheme(db, user.uid, {
+        ...DEFAULT_THEME,
+        name: "New Theme",
+      });
 
-      const next = $themes.find((t) => t.id !== id) || DEFAULT_THEME;
-
-      setTheme(next || DEFAULT_THEME);
-
-      await removeTheme(db, user.uid, id);
-    } catch (e) {
-      console.error(e);
-    }
-
-    loading = false;
-  };
-
-  const handleSetDefault = async () => {
-    loading = true;
-
-    try {
-      if (!id) {
-        throw new Error("No theme id available to set as default");
-      }
-
-      await updateUserDoc(db, { uid: user.uid, themeId: id });
+      setTheme(next);
     } catch (error) {
       console.error(error);
     }
 
-    loading = false;
+    disabled = false;
+  };
+
+  const handleRemove = async () => {
+    disabled = true;
+
+    try {
+      const current = { ...$theme };
+
+      if (!isTheme(current)) {
+        console.error("No theme id available to remove");
+        return;
+      }
+
+      // if the user has more themes available, find the next one to select
+      let next = $themes.find((t) => t.id !== current.id);
+
+      if (!next) {
+        // if not, add the default theme to their collection
+        next = await addTheme(db, user.uid, DEFAULT_THEME);
+      }
+
+      setTheme(next);
+
+      // remove the theme and set the next one as the user's default
+      await Promise.all([
+        removeTheme(db, user.uid, current.id),
+        updateUserDoc(db, { uid: user.uid, themeId: next.id }),
+      ]);
+    } catch (e) {
+      console.error(e);
+    }
+
+    disabled = false;
+  };
+
+  const handleSetDefault = async () => {
+    disabled = true;
+
+    try {
+      if (!isTheme($theme)) {
+        throw new Error("No theme id available to set as default");
+      }
+
+      console.log("setting default theme", $theme);
+
+      await updateUserDoc(db, { uid: user.uid, themeId: $theme.id });
+    } catch (error) {
+      console.error(error);
+    }
+
+    disabled = false;
   };
 </script>
 
-<form disabled={loading} on:submit|preventDefault={handleSave}>
+<form {disabled} on:submit|preventDefault={handleSave}>
   <div class="inputs">
-    <ThemeSelect id="theme" on:remove={handleRemove} on:select={handleSelect} />
+    <ThemeSelect
+      id="theme"
+      on:remove={handleRemove}
+      on:select={handleSelect}
+      {user}
+    />
 
     <ColorPicker element="background" on:change={handleElementChange} />
     <ColorPicker element="border" on:change={handleElementChange} />
@@ -119,7 +137,7 @@
       name
       <input
         class="theme-name-input"
-        disabled={loading}
+        {disabled}
         id="name"
         bind:value={$theme.name}
       />
@@ -127,10 +145,9 @@
   </div>
 
   <div class="controls">
-    <Button disabled={loading} type="submit">save</Button>
-    <Button disabled={loading} on:click={handleSetDefault}>
-      set as default
-    </Button>
+    <Button {disabled} on:click={handleAdd}>➕</Button>
+    <Button {disabled} type="submit">save</Button>
+    <Button {disabled} on:click={handleSetDefault}>set as default</Button>
   </div>
 </form>
 
