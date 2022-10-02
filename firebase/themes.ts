@@ -6,6 +6,8 @@ import {
   getDoc,
   getDocs,
   onSnapshot,
+  orderBy,
+  query,
   setDoc,
   updateDoc,
   type Firestore,
@@ -24,19 +26,22 @@ export const subscribeToThemes = (
 ) => {
   set([]);
 
-  return onSnapshot(getThemesCollection(db, uid), (snap) => {
-    const themes: Theme[] = [];
+  return onSnapshot(
+    query(getThemesCollection(db, uid), orderBy("name")),
+    (snap) => {
+      const themes: Theme[] = [];
 
-    for (const doc of snap.docs) {
-      try {
-        themes.push(Theme.parse(doc.data()));
-      } catch (error) {
-        console.error(error);
+      for (const doc of snap.docs) {
+        try {
+          themes.push(Theme.parse(doc.data()));
+        } catch (error) {
+          console.error(error);
+        }
       }
-    }
 
-    set(themes);
-  });
+      set(themes);
+    },
+  );
 };
 
 export const getTheme = async (db: Firestore, uid: string, id: string) => {
