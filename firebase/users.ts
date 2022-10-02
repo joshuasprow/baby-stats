@@ -1,10 +1,16 @@
-import type { User as FirebaseUser, UserInfo } from "@firebase/auth";
-import { doc, getDoc, Timestamp, type Firestore } from "@firebase/firestore";
-import { DEFAULT_THEME } from "baby-stats-models/theme";
+import { DEFAULT_THEME, ThemeAdd } from "baby-stats-models/theme";
 import { ProviderData, User } from "baby-stats-models/users";
-import { updateDoc } from "firebase/firestore";
+import type { User as FirebaseUser, UserInfo } from "firebase/auth";
+import {
+  doc,
+  getDoc,
+  onSnapshot,
+  Timestamp,
+  updateDoc,
+  type Firestore,
+} from "firebase/firestore";
 import { z } from "zod";
-import { addTheme, getThemes } from "./themes";
+import { addTheme, getTheme, getThemes } from "./themes";
 
 const parseProviderData = (providerData: UserInfo): ProviderData => ({
   providerId: providerData.providerId,
@@ -106,10 +112,12 @@ export const fixAuthUser = async (
 
 const getUserRef = (db: Firestore, uid: string) => doc(db, `users/${uid}`);
 
-export const getUserDoc = async (db: Firestore, uid: string): Promise<User> => {
+export const getUserDoc = async (db: Firestore, uid: string) => {
   const doc = await getDoc(getUserRef(db, uid));
 
-  return doc.data() as User;
+  if (!doc.exists()) return null;
+
+  return User.parse(doc.data());
 };
 
 export const updateUserDoc = async (
@@ -120,3 +128,26 @@ export const updateUserDoc = async (
 
   await updateDoc(ref, update);
 };
+
+export const subscribeToUser = (
+  db: Firestore,
+  uid: string,
+  setUser: (user: null | User) => void,
+  setTheme: (theme: ThemeAdd) => void,
+) =>
+  onSnapshot(getUserRef(db, uid), async (doc) => {
+    if (!doc.exists()) {
+      setUser(null);
+      return;
+    }
+
+    const user = User.parse(doc.data());
+
+    setUser(user);
+
+    if (!user.themeId) return;
+
+    const theme = await getTheme(db, uid, user.themeId);
+
+    setTheme(theme);
+  });
