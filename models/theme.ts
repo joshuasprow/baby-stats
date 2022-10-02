@@ -31,8 +31,8 @@ export type Theme = z.infer<typeof Theme>;
 
 export const DEFAULT_THEME: Theme = {
   id: null,
-  name: "Default",
+  name: "Basic",
   background: { hue: 0, saturation: 0, lightness: 100 },
-  border: { hue: 0, saturation: 0, lightness: 53 },
+  border: { hue: 0, saturation: 0, lightness: 50 },
   button: { hue: 0, saturation: 0, lightness: 100 },
 };
