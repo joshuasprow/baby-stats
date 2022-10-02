@@ -124,6 +124,7 @@
       id="theme"
       on:remove={handleRemove}
       on:select={handleSelect}
+      themes={$themes}
       {user}
     />
 
