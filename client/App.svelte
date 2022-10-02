@@ -1,14 +1,24 @@
 <script lang="ts">
-  import Entries from "$components/Entries.svelte";
-  import Footer from "$components/Footer.svelte";
-  import Sider from "$components/Sider.svelte";
   import SignInButton from "$components/SignInButton.svelte";
-  import { entriesLoaded } from "$stores/entries";
   import { user } from "$stores/user";
-  // TODO: add baby name to title
-  // import { user } from "$stores/user";
+  import { getBabyDoc } from "baby-stats-firebase/babies";
+  import type { Baby } from "baby-stats-models/babies";
+  import { onMount } from "svelte";
+  import { db } from "./firebase";
   import "./main.css";
   import "./variables.css";
+
+  let baby: null | Baby = null;
+
+  onMount(() => {
+    getBabyDoc(db, "U4gSGbrbKprij8G6tHB0")
+      .then((_baby) => {
+        baby = _baby;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  });
 </script>
 
 <svelte:head>
@@ -24,17 +34,20 @@
     <span class="sign-in-label">Please sign in below</span>
     <SignInButton />
   </main>
-{:else if !entriesLoaded}
+  <!-- {:else if !$entriesLoaded}
   <main class="centered">
     <span>Use the buttons below to add new entries</span>
-  </main>
+  </main> -->
 {:else}
-  <main>
+  <main class="centered">
+    <pre>{JSON.stringify(baby, null, 2)}</pre>
+  </main>
+  <!-- <main>
     <Entries user={$user} />
   </main>
 
   <Sider />
-  <Footer user={$user} />
+  <Footer user={$user} /> -->
 {/if}
 
 <style>
