@@ -87,10 +87,8 @@
       setTheme(next);
 
       // remove the theme and set the next one as the user's default
-      await Promise.all([
-        removeTheme(db, user.uid, $theme.id),
-        updateUserDoc(db, { uid: user.uid, themeId: next.id }),
-      ]);
+      await updateUserDoc(db, { uid: user.uid, themeId: next.id });
+      await removeTheme(db, user.uid, $theme.id);
     } catch (e) {
       console.error(e);
     }
