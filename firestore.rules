@@ -13,6 +13,18 @@ service cloud.firestore {
   }
   
   match /databases/{database}/documents {
+    match /babies/{babyId} {
+      function isParent(uid) {
+        return uid in resource.data.parents
+      }
+
+      function isAuthorized(request) {
+        return isLoggedIn(request) && isSprow(request) && isParent(request.auth.uid);
+      }
+
+      allow create, read, update: if isAuthorized(request);
+    }
+
     match /users/{userId} {
       function isAuthorized(request) {
         return isLoggedIn(request) && isSprow(request) && isOwner(request, userId);
