@@ -1,4 +1,4 @@
-import { DEFAULT_THEME, Theme } from "baby-stats-models/theme";
+import type { Theme } from "baby-stats-models/theme";
 import { ProviderData, User } from "baby-stats-models/users";
 import type { User as FirebaseUser, UserInfo } from "firebase/auth";
 import {
@@ -10,7 +10,7 @@ import {
   type Firestore,
 } from "firebase/firestore";
 import { z } from "zod";
-import { addTheme, getTheme, getThemes } from "./themes";
+import { getTheme } from "./themes";
 
 const parseProviderData = (providerData: UserInfo): ProviderData => ({
   providerId: providerData.providerId,
@@ -43,22 +43,6 @@ const parseTimeStringField = (
   return Timestamp.fromMillis(millis);
 };
 
-const getUserDefaults = async (
-  db: Firestore,
-  uid: string,
-  themeId: undefined | null | string,
-) => {
-  if (themeId) return { themeId };
-
-  const themes = await getThemes(db, uid);
-
-  if (themes.length) {
-    return { themeId: themes[0].id };
-  }
-
-  return { themeId: null };
-};
-
 /** Validates an incoming user object, setting defaults for fields that are
  * undefined or invalid */
 export const fixAuthUser = async (
@@ -82,18 +66,7 @@ export const fixAuthUser = async (
     .nullable()
     .parse((json as any).email);
 
-  // TODO: make this less messy
-  const [defaults, user] = await Promise.all([
-    getUserDefaults(db, authUser.uid, (authUser as unknown as User).themeId),
-    getUserDoc(db, authUser.uid),
-  ]);
-
-  let themeId = defaults.themeId;
-
-  if (!defaults.themeId) {
-    const theme = await addTheme(db, authUser.uid, DEFAULT_THEME);
-    themeId = theme.id;
-  }
+  const user = await getUserDoc(db, authUser.uid);
 
   return User.parse({
     ...user,
@@ -106,7 +79,6 @@ export const fixAuthUser = async (
     providerData: authUser.providerData.map(parseProviderData),
     createdAt,
     lastLoginAt,
-    themeId,
   });
 };
 
