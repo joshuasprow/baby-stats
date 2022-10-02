@@ -10,7 +10,9 @@ import {
   query,
   setDoc,
   updateDoc,
+  type DocumentData,
   type Firestore,
+  type QueryDocumentSnapshot,
 } from "firebase/firestore";
 
 export const getThemesCollection = (db: Firestore, uid: string) =>
@@ -18,6 +20,34 @@ export const getThemesCollection = (db: Firestore, uid: string) =>
 
 export const getThemeRef = (db: Firestore, uid: string, id: string) =>
   doc(db, `users/${uid}/themes/${id}`);
+
+export const getTheme = async (db: Firestore, uid: string, id: string) => {
+  const doc = await getDoc(getThemeRef(db, uid, id));
+
+  return Theme.parse(doc.data());
+};
+
+const parseThemes = (docs: QueryDocumentSnapshot<DocumentData>[]) => {
+  const themes: Theme[] = [];
+
+  for (const doc of docs) {
+    try {
+      themes.push(Theme.parse(doc.data()));
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  return themes;
+};
+
+export const getThemes = async (db: Firestore, uid: string) => {
+  const snap = await getDocs(getThemesCollection(db, uid));
+
+  if (snap.empty) return [];
+
+  return parseThemes(snap.docs);
+};
 
 export const subscribeToThemes = (
   db: Firestore,
@@ -28,44 +58,8 @@ export const subscribeToThemes = (
 
   return onSnapshot(
     query(getThemesCollection(db, uid), orderBy("name")),
-    (snap) => {
-      const themes: Theme[] = [];
-
-      for (const doc of snap.docs) {
-        try {
-          themes.push(Theme.parse(doc.data()));
-        } catch (error) {
-          console.error(error);
-        }
-      }
-
-      set(themes);
-    },
+    (snap) => set(parseThemes(snap.docs)),
   );
-};
-
-export const getTheme = async (db: Firestore, uid: string, id: string) => {
-  const doc = await getDoc(getThemeRef(db, uid, id));
-
-  return Theme.parse(doc.data());
-};
-
-export const getThemes = async (db: Firestore, uid: string) => {
-  const snap = await getDocs(getThemesCollection(db, uid));
-
-  if (snap.empty) return [];
-
-  const themes: Theme[] = [];
-
-  for (const doc of snap.docs) {
-    try {
-      themes.push(Theme.parse(doc.data()));
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  return themes;
 };
 
 export const addTheme = async (db: Firestore, uid: string, value: Theme) => {
