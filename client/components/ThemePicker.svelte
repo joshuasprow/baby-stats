@@ -118,7 +118,7 @@
   };
 </script>
 
-<form {disabled} on:submit|preventDefault={handleSave}>
+<form {disabled} on:submit|preventDefault>
   <div class="inputs">
     <ThemeSelect
       id="theme"
@@ -145,7 +145,7 @@
 
   <div class="controls">
     <Button {disabled} on:click={handleAdd}>➕</Button>
-    <Button {disabled} type="submit">save</Button>
+    <Button {disabled} on:click={handleSave}>save</Button>
     <Button {disabled} on:click={handleSetDefault}>set as default</Button>
   </div>
 </form>
