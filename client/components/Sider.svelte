@@ -2,12 +2,11 @@
   import Button from "$components/Button.svelte";
   import SignInButton from "$components/SignInButton.svelte";
   import SignOutButton from "$components/SignOutButton.svelte";
-  import ThemeControls from "$components/ThemePicker.svelte";
   import { user } from "$stores/user";
   import { fade, fly } from "svelte/transition";
   import CloseIcon from "./CloseIcon.svelte";
 
-  export let open = true;
+  export let open = false;
 
   const close = () => {
     open = false;
@@ -47,11 +46,11 @@
         {/if}
       </section>
 
-      {#if $user}
+      <!-- {#if $user}
         <section transition:fly>
           <ThemeControls user={$user} />
         </section>
-      {/if}
+      {/if} -->
     </main>
   </aside>
 {/if}

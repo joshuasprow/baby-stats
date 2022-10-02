@@ -117,9 +117,9 @@ export const subscribeToUser = (
 
     setUser(user);
 
-    if (!user.themeId) return;
+    // if (!user.themeId) return;
 
-    const theme = await getTheme(db, uid, user.themeId);
+    // const theme = await getTheme(db, uid, user.themeId);
 
-    setTheme(theme);
+    // setTheme(theme);
   });
