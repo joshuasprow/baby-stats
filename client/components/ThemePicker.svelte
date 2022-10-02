@@ -9,7 +9,6 @@
   import { updateUserDoc } from "baby-stats-firebase/users";
   import {
     DEFAULT_THEME,
-    isTheme,
     ThemeElement,
     type Theme,
   } from "baby-stats-models/theme";
@@ -27,7 +26,7 @@
     disabled = true;
 
     try {
-      if (!isTheme($theme)) {
+      if (!$theme.id) {
         console.error("No theme id available to update");
         return;
       }
@@ -72,15 +71,13 @@
     disabled = true;
 
     try {
-      const current = { ...$theme };
-
-      if (!isTheme(current)) {
+      if (!$theme.id) {
         console.error("No theme id available to remove");
         return;
       }
 
       // if the user has more themes available, find the next one to select
-      let next = $themes.find((t) => t.id !== current.id);
+      let next = $themes.find((t) => t.id !== $theme.id);
 
       if (!next) {
         // if not, add the default theme to their collection
@@ -91,7 +88,7 @@
 
       // remove the theme and set the next one as the user's default
       await Promise.all([
-        removeTheme(db, user.uid, current.id),
+        removeTheme(db, user.uid, $theme.id),
         updateUserDoc(db, { uid: user.uid, themeId: next.id }),
       ]);
     } catch (e) {
@@ -105,8 +102,9 @@
     disabled = true;
 
     try {
-      if (!isTheme($theme)) {
-        throw new Error("No theme id available to set as default");
+      if (!$theme.id) {
+        console.error("No theme id available to set as default");
+        return;
       }
 
       console.log("setting default theme", $theme);

@@ -21,25 +21,16 @@ export const ThemeElement = z.enum(["background", "border", "button"]);
 export type ThemeElement = z.infer<typeof ThemeElement>;
 
 export const Theme = z.object({
-  id: z.string().min(1),
+  id: z.string().min(1).nullable(),
   name: z.string().min(1),
   background: HslColor,
   border: HslColor,
   button: HslColor,
 });
 export type Theme = z.infer<typeof Theme>;
-export const isTheme = (value: unknown): value is Theme => {
-  try {
-    Theme.parse(value);
-    return true;
-  } catch {}
-  return false;
-};
 
-export const ThemeAdd = Theme.omit({ id: true });
-export type ThemeAdd = z.infer<typeof ThemeAdd>;
-
-export const DEFAULT_THEME: ThemeAdd = {
+export const DEFAULT_THEME: Theme = {
+  id: null,
   name: "Default",
   background: { hue: 0, saturation: 0, lightness: 100 },
   border: { hue: 0, saturation: 0, lightness: 53 },

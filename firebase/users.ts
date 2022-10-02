@@ -1,4 +1,4 @@
-import { DEFAULT_THEME, ThemeAdd } from "baby-stats-models/theme";
+import { DEFAULT_THEME, Theme } from "baby-stats-models/theme";
 import { ProviderData, User } from "baby-stats-models/users";
 import type { User as FirebaseUser, UserInfo } from "firebase/auth";
 import {
@@ -133,7 +133,7 @@ export const subscribeToUser = (
   db: Firestore,
   uid: string,
   setUser: (user: null | User) => void,
-  setTheme: (theme: ThemeAdd) => void,
+  setTheme: (theme: Theme) => void,
 ) =>
   onSnapshot(getUserRef(db, uid), async (doc) => {
     if (!doc.exists()) {

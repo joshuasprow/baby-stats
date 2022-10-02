@@ -1,4 +1,4 @@
-import { Theme, ThemeAdd } from "baby-stats-models/theme";
+import { Theme } from "baby-stats-models/theme";
 import {
   collection,
   deleteDoc,
@@ -63,8 +63,8 @@ export const getThemes = async (db: Firestore, uid: string) => {
   return themes;
 };
 
-export const addTheme = async (db: Firestore, uid: string, value: ThemeAdd) => {
-  const add = ThemeAdd.parse({ ...value });
+export const addTheme = async (db: Firestore, uid: string, value: Theme) => {
+  const add = Theme.parse({ ...value });
 
   const ref = doc(getThemesCollection(db, uid));
   const theme = Theme.parse({ ...add, id: ref.id });
@@ -76,6 +76,9 @@ export const addTheme = async (db: Firestore, uid: string, value: ThemeAdd) => {
 
 export const updateTheme = async (db: Firestore, uid: string, value: Theme) => {
   const theme = Theme.parse({ ...value });
+
+  if (!theme.id) throw new Error("Theme id is required");
+
   const ref = getThemeRef(db, uid, theme.id);
 
   await updateDoc(ref, theme);

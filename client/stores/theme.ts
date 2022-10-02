@@ -3,7 +3,6 @@ import {
   DEFAULT_THEME,
   HslColor,
   Theme,
-  ThemeAdd,
   ThemeElement,
 } from "baby-stats-models/theme";
 import { writable } from "svelte/store";
@@ -43,9 +42,9 @@ const setHslColor = (element: ThemeElement, hsl: HslColor | null) => {
   setCssVariable(`--${element}-font-color`, font);
 };
 
-export const theme = writable<Theme | ThemeAdd>(DEFAULT_THEME);
+export const theme = writable<Theme>(DEFAULT_THEME);
 
-const setCssTheme = (value: ThemeAdd) => {
+const setCssTheme = (value: Theme) => {
   for (const element of Object.keys(ThemeElement.Values) as ThemeElement[]) {
     const hsl = value[element];
 
@@ -53,7 +52,7 @@ const setCssTheme = (value: ThemeAdd) => {
   }
 };
 
-export const setTheme = (value: ThemeAdd) => {
+export const setTheme = (value: Theme) => {
   theme.set({ ...value });
 
   setCssTheme(value);
