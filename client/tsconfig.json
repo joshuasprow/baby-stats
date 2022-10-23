@@ -10,8 +10,11 @@
       "$components/*": ["components/*"],
       "$firebase": ["firebase"],
       "$firebase/*": ["firebase/*"],
+      "$lib": ["lib"],
       "$lib/*": ["lib/*"],
+      "$models": ["models"],
       "$models/*": ["models/*"],
+      "$stores": ["stores"],
       "$stores/*": ["stores/*"]
     },
     "strict": true,

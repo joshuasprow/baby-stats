@@ -1,5 +1,5 @@
-import { Timestamp } from "@firebase/firestore";
-import type { TimeRangeAmount } from "models/time";
+import type { TimeRangeAmount } from "$models/time";
+import { Timestamp } from "firebase/firestore";
 
 export type Time = { hours: number; minutes: number };
 
