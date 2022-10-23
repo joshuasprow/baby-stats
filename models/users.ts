@@ -26,6 +26,7 @@ export type AuthUser = z.infer<typeof AuthUser>;
 
 export const User = AuthUser.merge(
   z.object({
+    babies: z.array(z.string().min(1)),
     themeId: z.string().nullable().default(null),
   }),
 );
