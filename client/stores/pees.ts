@@ -1,7 +1,7 @@
-import { subscribeToPees } from "baby-stats-firebase/pees";
-import type { Pee } from "models/pees";
+import { db } from "$firebase";
+import { subscribeToPees } from "$firebase/pees";
+import type { Pee } from "$models/pees";
 import { derived, writable } from "svelte/store";
-import { db } from "../firebase";
 import { baby } from "./baby";
 
 export const peesLoaded = writable(false);

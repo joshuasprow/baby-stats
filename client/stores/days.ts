@@ -1,9 +1,9 @@
+import type { Entry, EntryKind } from "$models/entries";
+import type { Feed } from "$models/feeds";
+import type { Nap } from "$models/naps";
+import type { Pee } from "$models/pees";
+import type { Poop } from "$models/poops";
 import type { Timestamp } from "@firebase/firestore";
-import type { Entry, EntryKind } from "models/entries";
-import type { Feed } from "models/feeds";
-import type { Nap } from "models/naps";
-import type { Pee } from "models/pees";
-import type { Poop } from "models/poops";
 import { derived } from "svelte/store";
 import { feeds } from "./feeds";
 import { naps } from "./naps";

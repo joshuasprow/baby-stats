@@ -1,9 +1,6 @@
-import {
-  fixAuthUser,
-  subscribeToUser,
-  updateUserDoc,
-} from "baby-stats-firebase/users";
-import type { User } from "models/users";
+import { auth, db } from "$firebase";
+import { fixAuthUser, subscribeToUser, updateUserDoc } from "$firebase/users";
+import type { User } from "$models/users";
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
@@ -11,7 +8,6 @@ import {
   signOut as authSignOut,
 } from "firebase/auth";
 import { writable } from "svelte/store";
-import { auth, db } from "../firebase";
 import { setTheme } from "./theme";
 
 let unsubscribeUser = () => {};

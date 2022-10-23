@@ -1,5 +1,5 @@
-import { BLACK, getContrastRatio, WHITE } from "baby-stats-lib/theme";
-import { DEFAULT_THEME, HslColor, Theme, ThemeElement } from "models/theme";
+import { BLACK, getContrastRatio, WHITE } from "$lib/theme";
+import { DEFAULT_THEME, HslColor, Theme, ThemeElement } from "$models/theme";
 import { writable } from "svelte/store";
 
 const getCssVariable = (variable: string) => {

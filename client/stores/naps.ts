@@ -1,7 +1,7 @@
-import { subscribeToNaps } from "baby-stats-firebase/naps";
-import type { Nap } from "models/naps";
+import { db } from "$firebase";
+import { subscribeToNaps } from "$firebase/naps";
+import type { Nap } from "$models/naps";
 import { derived, writable } from "svelte/store";
-import { db } from "../firebase";
 import { baby } from "./baby";
 
 export const napsLoaded = writable(false);

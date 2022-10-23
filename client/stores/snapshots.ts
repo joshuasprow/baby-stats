@@ -1,3 +1,6 @@
+import { db } from "$firebase";
+import { addDays } from "$lib/dates";
+import { ENTRY_KINDS, type EntryKind } from "$models/entries";
 import {
   collection,
   doc,
@@ -9,10 +12,7 @@ import {
   Timestamp as FirestoreTimestamp,
   Transaction,
 } from "@firebase/firestore";
-import { addDays } from "baby-stats-lib/dates";
-import { ENTRY_KINDS, type EntryKind } from "models/entries";
 import { z } from "zod";
-import { db } from "../firebase";
 
 const Timestamp = z.instanceof(FirestoreTimestamp);
 

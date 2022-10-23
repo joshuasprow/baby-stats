@@ -1,7 +1,7 @@
-import type { Feed, FeedAdd } from "models/feeds";
-import type { Nap, NapAdd } from "models/naps";
-import type { Pee, PeeAdd } from "models/pees";
-import type { Poop, PoopAdd } from "models/poops";
+import type { Feed, FeedAdd } from "$models/feeds";
+import type { Nap, NapAdd } from "$models/naps";
+import type { Pee, PeeAdd } from "$models/pees";
+import type { Poop, PoopAdd } from "$models/poops";
 import type { ZodError, ZodType } from "zod";
 
 type EntryType = Feed | FeedAdd | Nap | NapAdd | Pee | PeeAdd | Poop | PoopAdd;
