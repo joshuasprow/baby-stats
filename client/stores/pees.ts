@@ -6,12 +6,11 @@ import { baby } from "./baby";
 
 export const peesLoaded = writable(false);
 
-export const pees = derived<typeof baby, Pee[]>(baby, ($baby, set) => {
+export const pees = derived<typeof baby, Pee[] | null>(baby, ($baby, set) => {
   let unsubscribe = () => {};
 
   if (!$baby) {
-    set([]);
-
+    set(null);
     return unsubscribe;
   }
 

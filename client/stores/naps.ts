@@ -6,12 +6,11 @@ import { baby } from "./baby";
 
 export const napsLoaded = writable(false);
 
-export const naps = derived<typeof baby, Nap[]>(baby, ($baby, set) => {
+export const naps = derived<typeof baby, Nap[] | null>(baby, ($baby, set) => {
   let unsubscribe = () => {};
 
   if (!$baby) {
-    set([]);
-
+    set(null);
     return unsubscribe;
   }
 

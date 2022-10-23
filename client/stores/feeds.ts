@@ -11,12 +11,11 @@ import { baby } from "./baby";
 
 export const feedsLoaded = writable(false);
 
-export const feeds = derived<typeof baby, Feed[]>(baby, ($baby, set) => {
+export const feeds = derived<typeof baby, null | Feed[]>(baby, ($baby, set) => {
   let unsubscribe = () => {};
 
   if (!$baby) {
-    set([]);
-
+    set(null);
     return unsubscribe;
   }
 

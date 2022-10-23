@@ -55,14 +55,14 @@ const combineEntries = (
   return sorted;
 };
 
-const buildDays = ([_feeds = [], _naps = [], _pees = [], _poops = []]: [
+const buildDays = ([$feeds, $naps, $pees, $poops]: [
   Feed[],
   Nap[],
   Pee[],
   Poop[],
 ]) => {
   const days: Days = [];
-  const entries = combineEntries(_feeds, _naps, _pees, _poops);
+  const entries = combineEntries($feeds, $naps, $pees, $poops);
 
   for (const entry of entries) {
     const daystamp = encodeDayTimestamp(entry.timestamp);
@@ -84,12 +84,21 @@ const buildDays = ([_feeds = [], _naps = [], _pees = [], _poops = []]: [
 
 export const days = derived(
   [user, feeds, naps, pees, poops],
-  ([_user, ...stores]) => {
-    if (!_user) return [];
+  ([$user, $feeds, $naps, $pees, $poops]) => {
+    if (!$user) return [];
+
+    if (
+      $feeds === null ||
+      $naps === null ||
+      $pees === null ||
+      $poops === null
+    ) {
+      return [];
+    }
 
     // calling synchronously so that state isn't blocked from setting
-    takeSnapshot(_user.uid);
+    takeSnapshot($user.uid);
 
-    return buildDays(stores);
+    return buildDays([$feeds, $naps, $pees, $poops]);
   },
 );
