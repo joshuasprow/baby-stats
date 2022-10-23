@@ -19,11 +19,11 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      $components: dir("components"),
-      $firebase: dir("firebase"),
-      $lib: dir("lib"),
-      $models: dir("models"),
-      $stores: dir("stores"),
+      $components: dir("client", "components"),
+      $firebase: dir("client", "firebase"),
+      $lib: dir("client", "lib"),
+      $models: dir("client", "models"),
+      $stores: dir("client", "stores"),
     },
   },
 });

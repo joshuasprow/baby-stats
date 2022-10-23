@@ -7,11 +7,11 @@
     "resolveJsonModule": true,
     "baseUrl": ".",
     "paths": {
-      "$components/*": ["components/*"],
-      "$firebase/*": ["firebase/*"],
-      "$lib/*": ["lib/*"],
-      "$models/*": ["models/*"],
-      "$stores/*": ["stores/*"]
+      "$components/*": ["client/components/*"],
+      "$firebase/*": ["client/firebase/*"],
+      "$lib/*": ["client/lib/*"],
+      "$models/*": ["client/models/*"],
+      "$stores/*": ["client/stores/*"]
     },
     "strict": true,
     /**
@@ -24,7 +24,11 @@
     "checkJs": true,
     "isolatedModules": true
   },
-  "include": ["**/*.d.ts", "**/*.ts", "**/*.svelte"],
-  "exclude": ["node_modules/*", "public/*", "scripts/*"],
+  "include": [
+    "client/**/*.d.ts",
+    "client/**/*.ts",
+    "client/**/*.js",
+    "client/**/*.svelte"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
