@@ -1,31 +1,19 @@
 <script lang="ts">
   import SignInButton from "$components/SignInButton.svelte";
   import { user } from "$stores/user";
-  import { getBabyDoc, updateBaby } from "baby-stats-firebase/babies";
-  import type { Baby } from "baby-stats-models/babies";
-  import { onMount } from "svelte";
+  import { updateBaby } from "baby-stats-firebase/babies";
   import { db } from "./firebase";
   import "./main.css";
+  import { baby } from "./stores/baby";
   import "./variables.css";
 
-  let baby: null | Baby = null;
   let name = "";
 
   const handleUpdate = async () => {
-    if (!baby) return;
+    if (!$baby) return;
 
-    await updateBaby(db, { ...baby, name });
+    await updateBaby(db, { ...$baby, name });
   };
-
-  onMount(() => {
-    getBabyDoc(db, "U4gSGbrbKprij8G6tHB0")
-      .then((_baby) => {
-        baby = _baby;
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  });
 </script>
 
 <svelte:head>
@@ -51,7 +39,7 @@
       <input type="text" bind:value={name} />
       <button type="submit">Update</button>
     </form>
-    <pre>{JSON.stringify(baby, null, 2)}</pre>
+    <pre>{JSON.stringify($baby, null, 2)}</pre>
   </main>
   <!-- <main>
     <Entries user={$user} />
