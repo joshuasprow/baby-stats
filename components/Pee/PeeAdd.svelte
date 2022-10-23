@@ -1,7 +1,7 @@
 <script lang="ts">
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import PeeAmountInput from "$components/Pee/PeeAmountInput.svelte";
-  import { db } from "$firebase";
+  import { db } from "$firebase/app";
   import { addPee } from "$firebase/pees";
   import { parseError } from "$lib/error";
   import { PeeAdd, type PeeAmount } from "$models/pees";

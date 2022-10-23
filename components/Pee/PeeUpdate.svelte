@@ -2,7 +2,7 @@
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import PeeAmountInput from "$components/Pee/PeeAmountInput.svelte";
   import PeeIcon from "$components/Pee/PeeIcon.svelte";
-  import { db } from "$firebase";
+  import { db } from "$firebase/app";
   import { removePee, updatePee } from "$firebase/pees";
   import { parseError } from "$lib/error";
   import { Pee, type PeeAmount } from "$models/pees";

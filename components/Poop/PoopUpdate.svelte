@@ -2,7 +2,7 @@
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import PoopAmountInput from "$components/Poop/PoopAmountInput.svelte";
   import PoopIcon from "$components/Poop/PoopIcon.svelte";
-  import { db } from "$firebase";
+  import { db } from "$firebase/app";
   import { removePoop, updatePoop } from "$firebase/poops";
   import { parseError } from "$lib/error";
   import { Poop, type PoopAmount } from "$models/poops";

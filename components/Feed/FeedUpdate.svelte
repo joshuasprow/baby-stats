@@ -4,7 +4,7 @@
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
-  import { db } from "$firebase";
+  import { db } from "$firebase/app";
   import { removeFeed, updateFeed } from "$firebase/feeds";
   import { parseError } from "$lib/error";
   import { Feed, type FeedSide, type FeedSource } from "$models/feeds";
