@@ -7,14 +7,10 @@
   import { addEntryFields } from "$stores/entries";
   import { convertAmountToBottle, convertAmountToBreast } from "$stores/feeds";
   import type { Timestamp } from "@firebase/firestore";
-  import { removeFeed, updateFeed } from "baby-stats-firebase/feeds";
+  import { removeFeed, updateFeed } from "firebase/feeds";
   import { parseError } from "baby-stats-lib/error";
-  import {
-    Feed,
-    type FeedSide,
-    type FeedSource,
-  } from "baby-stats-models/feeds";
-  import type { TimeRangeAmount } from "baby-stats-models/time";
+  import { Feed, type FeedSide, type FeedSource } from "models/feeds";
+  import type { TimeRangeAmount } from "models/time";
   import type { ZodError } from "zod";
   import { db } from "../../firebase";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";

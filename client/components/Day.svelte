@@ -4,7 +4,7 @@
     formatDaystamp,
     getTimeRangeDiffInMinutes,
   } from "baby-stats-lib/dates";
-  import { ENTRY_ICONS, type EntryKind } from "baby-stats-models/entries";
+  import { ENTRY_ICONS, type EntryKind } from "models/entries";
   import Button from "./Button.svelte";
   import Entry from "./Entry/Entry.svelte";
   import EntryModal from "./Entry/EntryModal.svelte";

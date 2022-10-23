@@ -1,4 +1,4 @@
-import { Baby } from "baby-stats-models/babies";
+import { Baby } from "models/babies";
 import {
   doc,
   getDoc,

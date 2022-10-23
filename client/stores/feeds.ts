@@ -4,7 +4,7 @@ import {
   getTimeRangeDiffInMinutes,
   getTimeRangeFromMinutes,
 } from "baby-stats-lib/dates";
-import type { Feed } from "baby-stats-models/feeds";
+import type { Feed } from "models/feeds";
 import { derived, writable } from "svelte/store";
 import { db } from "../firebase";
 import { baby } from "./baby";

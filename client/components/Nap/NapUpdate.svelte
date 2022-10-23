@@ -3,10 +3,10 @@
   import NapIcon from "$components/Nap/NapIcon.svelte";
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { addEntryFields } from "$stores/entries";
-  import { removeNap, updateNap } from "baby-stats-firebase/naps";
+  import { removeNap, updateNap } from "firebase/naps";
   import { parseError } from "baby-stats-lib/error";
-  import { Nap } from "baby-stats-models/naps";
-  import type { TimeRangeAmount } from "baby-stats-models/time";
+  import { Nap } from "models/naps";
+  import type { TimeRangeAmount } from "models/time";
   import { db } from "../../firebase";
 
   export let babyId: string;

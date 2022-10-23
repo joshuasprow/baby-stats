@@ -2,8 +2,8 @@
   import EntryIcon from "$components/Entry/EntryIcon.svelte";
   import ErrorMessage from "$components/ErrorMessage.svelte";
   import { getTimeRangeDiffInMinutes } from "baby-stats-lib/dates";
-  import type { FeedSide, FeedSource } from "baby-stats-models/feeds";
-  import type { TimeRangeAmount } from "baby-stats-models/time";
+  import type { FeedSide, FeedSource } from "models/feeds";
+  import type { TimeRangeAmount } from "models/time";
 
   export let amount: number | TimeRangeAmount;
   export let source: FeedSource;

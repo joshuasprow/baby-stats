@@ -3,9 +3,9 @@
   import PoopAmountInput from "$components/Poop/PoopAmountInput.svelte";
   import { addEntryFields } from "$stores/entries";
   import { Timestamp } from "@firebase/firestore";
-  import { addPoop } from "baby-stats-firebase/poops";
+  import { addPoop } from "firebase/poops";
   import { parseError } from "baby-stats-lib/error";
-  import { PoopAdd, type PoopAmount } from "baby-stats-models/poops";
+  import { PoopAdd, type PoopAmount } from "models/poops";
   import { db } from "../../firebase";
 
   export let babyId: string;

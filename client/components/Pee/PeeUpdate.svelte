@@ -4,9 +4,9 @@
   import PeeIcon from "$components/Pee/PeeIcon.svelte";
   import { addEntryFields } from "$stores/entries";
   import type { Timestamp } from "@firebase/firestore";
-  import { removePee, updatePee } from "baby-stats-firebase/pees";
+  import { removePee, updatePee } from "firebase/pees";
   import { parseError } from "baby-stats-lib/error";
-  import { Pee, type PeeAmount } from "baby-stats-models/pees";
+  import { Pee, type PeeAmount } from "models/pees";
   import { db } from "../../firebase";
 
   export let entry: Pee;

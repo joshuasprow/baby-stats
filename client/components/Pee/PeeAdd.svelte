@@ -3,9 +3,9 @@
   import PeeAmountInput from "$components/Pee/PeeAmountInput.svelte";
   import { addEntryFields } from "$stores/entries";
   import { Timestamp } from "@firebase/firestore";
-  import { addPee } from "baby-stats-firebase/pees";
+  import { addPee } from "firebase/pees";
   import { parseError } from "baby-stats-lib/error";
-  import { PeeAdd, type PeeAmount } from "baby-stats-models/pees";
+  import { PeeAdd, type PeeAmount } from "models/pees";
   import { db } from "../../firebase";
 
   export let babyId: string;

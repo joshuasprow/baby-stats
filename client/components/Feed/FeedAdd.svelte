@@ -6,14 +6,10 @@
   import { addEntryFields } from "$stores/entries";
   import { convertAmountToBottle, convertAmountToBreast } from "$stores/feeds";
   import { Timestamp } from "@firebase/firestore";
-  import { addFeed } from "baby-stats-firebase/feeds";
+  import { addFeed } from "firebase/feeds";
   import { parseError } from "baby-stats-lib/error";
-  import {
-    FeedAdd,
-    type FeedSide,
-    type FeedSource,
-  } from "baby-stats-models/feeds";
-  import type { TimeRangeAmount } from "baby-stats-models/time";
+  import { FeedAdd, type FeedSide, type FeedSource } from "models/feeds";
+  import type { TimeRangeAmount } from "models/time";
   import { db } from "../../firebase";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
 

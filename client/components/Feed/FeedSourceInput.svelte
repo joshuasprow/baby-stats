@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { FeedSource } from "baby-stats-models/feeds";
+  import type { FeedSource } from "models/feeds";
   import { createEventDispatcher } from "svelte";
 
   export let loading: boolean;

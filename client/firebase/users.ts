@@ -1,5 +1,5 @@
-import type { Theme } from "baby-stats-models/theme";
-import { ProviderData, User } from "baby-stats-models/users";
+import type { Theme } from "models/theme";
+import { ProviderData, User } from "models/users";
 import type { User as FirebaseUser, UserInfo } from "firebase/auth";
 import {
   doc,

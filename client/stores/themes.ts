@@ -1,5 +1,5 @@
 import { subscribeToThemes } from "baby-stats-firebase/themes";
-import type { Theme } from "baby-stats-models/theme";
+import type { Theme } from "models/theme";
 import { derived, writable } from "svelte/store";
 import { db } from "../firebase";
 import { user } from "./user";

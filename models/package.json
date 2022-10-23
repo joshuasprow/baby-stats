@@ -1,9 +1,0 @@
-{
-  "name": "baby-stats-models",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "dependencies": {
-    "zod": "^3.17.10"
-  }
-}

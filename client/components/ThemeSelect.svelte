@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { DEFAULT_THEME, type Theme } from "baby-stats-models/theme";
-  import type { User } from "baby-stats-models/users";
+  import { DEFAULT_THEME, type Theme } from "models/theme";
+  import type { User } from "models/users";
   import { createEventDispatcher } from "svelte";
   import Button from "./Button.svelte";
   import CloseIcon from "./CloseIcon.svelte";

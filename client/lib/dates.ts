@@ -1,5 +1,5 @@
 import { Timestamp } from "@firebase/firestore";
-import type { TimeRangeAmount } from "baby-stats-models/time";
+import type { TimeRangeAmount } from "models/time";
 
 export type Time = { hours: number; minutes: number };
 

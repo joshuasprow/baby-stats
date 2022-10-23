@@ -11,7 +11,7 @@
   import { theme } from "$stores/theme";
   import type { ChangeEvent } from "baby-stats-lib/dom";
   import { hexToHsl, hslToHex } from "baby-stats-lib/theme";
-  import type { Theme, ThemeElement } from "baby-stats-models/theme";
+  import type { Theme, ThemeElement } from "models/theme";
   import { createEventDispatcher } from "svelte";
 
   type E = $$Generic<ThemeElement>;

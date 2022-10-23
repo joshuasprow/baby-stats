@@ -1,4 +1,4 @@
-import { Theme } from "baby-stats-models/theme";
+import { Theme } from "models/theme";
 import {
   collection,
   deleteDoc,
