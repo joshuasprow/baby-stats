@@ -24,6 +24,7 @@ export const subscribeToNaps = (
 ) =>
   onSnapshot(
     query(getNapsCollection(db, babyId), orderBy("timestamp", "desc")),
+    { includeMetadataChanges: true },
     (snap) => set(snap.docs.map((doc) => Nap.parse(doc.data()))),
   );
 

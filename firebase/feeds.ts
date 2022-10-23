@@ -24,6 +24,7 @@ export const subscribeToFeeds = (
 ) =>
   onSnapshot(
     query(getFeedsCollection(db, babyId), orderBy("timestamp", "desc")),
+    { includeMetadataChanges: true },
     (snap) => set(snap.docs.map((doc) => Feed.parse(doc.data()))),
   );
 

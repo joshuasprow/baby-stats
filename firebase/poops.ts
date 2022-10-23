@@ -24,7 +24,8 @@ export const subscribeToPoops = (
 ) =>
   onSnapshot(
     query(getPoopsCollection(db, babyId), orderBy("timestamp", "desc")),
-    (spoop) => set(spoop.docs.map((doc) => Poop.parse(doc.data()))),
+    { includeMetadataChanges: true },
+    (snap) => set(snap.docs.map((doc) => Poop.parse(doc.data()))),
   );
 
 export const addPoop = async (
