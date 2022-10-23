@@ -15,7 +15,7 @@ service cloud.firestore {
   match /databases/{database}/documents {
     match /babies/{babyId} {
       function isParent(uid) {
-        return uid in resource.data.parents
+        return uid in get(/databases/$(database)/documents/babies/$(babyId)).data.parents
       }
 
       function isAuthorized(request) {
@@ -23,6 +23,19 @@ service cloud.firestore {
       }
 
       allow create, read, update: if isAuthorized(request);
+
+      match /feeds/{feedId} {
+        allow create, read, update, delete: if isAuthorized(request);
+      }
+      match /naps/{napId} {
+        allow create, read, update, delete: if isAuthorized(request);
+      }
+      match /pees/{peeId} {
+        allow create, read, update, delete: if isAuthorized(request);
+      }
+      match /poops/{poopId} {
+        allow create, read, update, delete: if isAuthorized(request);
+      }
     }
 
     match /users/{userId} {
