@@ -65,16 +65,16 @@ async function getCollectionDocs(db, path) {
  * @param {string} path
  * @param {import("firebase-admin/firestore").DocumentData[]} docs
  */
-async function setCollectionDocs() {
-  const collection = db.collection(PATHS.feeds.baby);
+async function setCollectionDocs(db, path, docs) {
+  const collectionRef = db.collection(path);
 
   let batch = db.batch();
   let count = 0;
 
-  for (const feed of feeds) {
-    const ref = collection.doc(feed.id);
+  for (const doc of docs) {
+    const ref = collectionRef.doc(doc.id);
 
-    batch.set(ref, feed);
+    batch.set(ref, doc);
 
     count += 1;
 
@@ -89,12 +89,19 @@ async function setCollectionDocs() {
 }
 
 /**
- * @param {import("firebase-admin/firestore").Firestore} db
- * @param {string} collectionName
- * @param {string} userId
- * @param {string} babyId
+ * @param {{
+ *   db: import("firebase-admin/firestore").Firestore;
+ *   collectionName: string;
+ *   userId: string;
+ *   babyId: string;
+ * }} options
  */
-export async function migrateCollection(db, collectionName, userId, babyId) {
+export async function migrateCollection({
+  db,
+  collectionName,
+  userId,
+  babyId,
+}) {
   validateCollectionName(collectionName);
 
   const userPath = `users/${userId}/${collectionName}`;
