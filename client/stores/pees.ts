@@ -2,20 +2,20 @@ import { subscribeToPees } from "baby-stats-firebase/pees";
 import type { Pee } from "baby-stats-models/pees";
 import { derived, writable } from "svelte/store";
 import { db } from "../firebase";
-import { user } from "./user";
+import { baby } from "./baby";
 
 export const peesLoaded = writable(false);
 
-export const pees = derived<typeof user, Pee[]>(user, ($user, set) => {
+export const pees = derived<typeof baby, Pee[]>(baby, ($baby, set) => {
   let unsubscribe = () => {};
 
-  if (!$user) {
+  if (!$baby) {
     set([]);
 
     return unsubscribe;
   }
 
-  unsubscribe = subscribeToPees(db, $user.uid, set);
+  unsubscribe = subscribeToPees(db, $baby.id, set);
 
   peesLoaded.set(true);
 

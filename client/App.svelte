@@ -1,11 +1,14 @@
 <script lang="ts">
   import SignInButton from "$components/SignInButton.svelte";
+  import { baby } from "$stores/baby";
   import { feeds } from "$stores/feeds";
+  import { naps } from "$stores/naps";
+  import { pees } from "$stores/pees";
+  import { poops } from "$stores/poops";
   import { user } from "$stores/user";
   import { updateBaby } from "baby-stats-firebase/babies";
   import { db } from "./firebase";
   import "./main.css";
-  import { baby } from "./stores/baby";
   import "./variables.css";
 
   let name = "";
@@ -41,7 +44,16 @@
       <button type="submit">Update</button>
     </form>
     <pre>{JSON.stringify($baby, null, 2)}</pre>
-    <pre>{JSON.stringify({ feeds: $feeds?.length }, null, 2)}</pre>
+    <pre>{JSON.stringify(
+        {
+          feeds: $feeds?.length,
+          naps: $naps?.length,
+          pees: $pees?.length,
+          poops: $poops?.length,
+        },
+        null,
+        2,
+      )}</pre>
   </main>
   <!-- <main>
     <Entries user={$user} />
