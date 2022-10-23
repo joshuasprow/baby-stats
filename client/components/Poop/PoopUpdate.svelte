@@ -7,11 +7,10 @@
   import { removePoop, updatePoop } from "baby-stats-firebase/poops";
   import { parseError } from "baby-stats-lib/error";
   import { Poop, type PoopAmount } from "baby-stats-models/poops";
-  import type { User } from "baby-stats-models/users";
   import { db } from "../../firebase";
 
   export let entry: Poop;
-  export let user: User;
+  export let babyId: string;
 
   let update: Poop = {
     id: entry.id,
@@ -37,7 +36,7 @@
     loading = true;
 
     try {
-      await updatePoop(db, user.uid, update);
+      await updatePoop(db, babyId, update);
     } catch (e) {
       error = parseError(e).message;
     }
@@ -61,7 +60,7 @@
     loading = true;
 
     try {
-      await removePoop(db, user.uid, entry.id);
+      await removePoop(db, babyId, entry.id);
     } catch (e) {
       error = parseError(e).message;
     }

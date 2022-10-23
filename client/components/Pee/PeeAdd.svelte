@@ -6,10 +6,9 @@
   import { addPee } from "baby-stats-firebase/pees";
   import { parseError } from "baby-stats-lib/error";
   import { PeeAdd, type PeeAmount } from "baby-stats-models/pees";
-  import type { User } from "baby-stats-models/users";
   import { db } from "../../firebase";
 
-  export let user: User;
+  export let babyId: string;
 
   let add: PeeAdd = {
     amount: 2,
@@ -42,7 +41,7 @@
     loading = true;
 
     try {
-      await addPee(db, user.uid, add);
+      await addPee(db, babyId, add);
     } catch (e) {
       error = parseError(e).message;
     }

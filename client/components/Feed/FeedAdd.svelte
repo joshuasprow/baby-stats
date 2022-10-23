@@ -14,11 +14,10 @@
     type FeedSource,
   } from "baby-stats-models/feeds";
   import type { TimeRangeAmount } from "baby-stats-models/time";
-  import type { User } from "baby-stats-models/users";
   import { db } from "../../firebase";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
 
-  export let user: User;
+  export let babyId: string;
 
   let add: FeedAdd = {
     amount: 2,
@@ -85,7 +84,7 @@
     loading = true;
 
     try {
-      await addFeed(db, user.uid, add);
+      await addFeed(db, babyId, add);
     } catch (e) {
       error = parseError(e).message;
     }

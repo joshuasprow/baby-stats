@@ -7,10 +7,9 @@
   import { parseError } from "baby-stats-lib/error";
   import { Nap } from "baby-stats-models/naps";
   import type { TimeRangeAmount } from "baby-stats-models/time";
-  import type { User } from "baby-stats-models/users";
   import { db } from "../../firebase";
 
-  export let user: User;
+  export let babyId: string;
   export let entry: Nap;
 
   let update: Nap = {
@@ -27,7 +26,7 @@
     loading = true;
 
     try {
-      await updateNap(db, user.uid, update);
+      await updateNap(db, babyId, update);
     } catch (e) {
       error = parseError(e).message;
     }
@@ -55,7 +54,7 @@
     loading = true;
 
     try {
-      await removeNap(db, user.uid, entry.id);
+      await removeNap(db, babyId, entry.id);
     } catch (e) {
       error = parseError(e).message;
     }

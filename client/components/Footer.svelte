@@ -3,16 +3,15 @@
   import NapAdd from "$components/Nap/NapAdd.svelte";
   import PeeAdd from "$components/Pee/PeeAdd.svelte";
   import PoopAdd from "$components/Poop/PoopAdd.svelte";
-  import type { User } from "baby-stats-models/users";
 
-  export let user: User;
+  export let babyId: string;
 </script>
 
 <footer>
-  <FeedAdd {user} />
-  <NapAdd {user} />
-  <PeeAdd {user} />
-  <PoopAdd {user} />
+  <FeedAdd {babyId} />
+  <NapAdd {babyId} />
+  <PeeAdd {babyId} />
+  <PoopAdd {babyId} />
 </footer>
 
 <style>

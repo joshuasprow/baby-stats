@@ -15,12 +15,11 @@
     type FeedSource,
   } from "baby-stats-models/feeds";
   import type { TimeRangeAmount } from "baby-stats-models/time";
-  import type { User } from "baby-stats-models/users";
   import type { ZodError } from "zod";
   import { db } from "../../firebase";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
 
-  export let user: User;
+  export let babyId: string;
   export let entry: Feed;
 
   let error: null | string = null;
@@ -54,7 +53,7 @@
     loading = true;
 
     try {
-      await updateFeed(db, user.uid, update);
+      await updateFeed(db, babyId, update);
     } catch (e) {
       error = parseError(e).message;
     }
@@ -112,7 +111,7 @@
     loading = true;
 
     try {
-      await removeFeed(db, user.uid, entry.id);
+      await removeFeed(db, babyId, entry.id);
     } catch (e) {
       error = parseError(e).message;
     }

@@ -7,7 +7,6 @@
   import { parseError } from "baby-stats-lib/error";
   import { NapAdd } from "baby-stats-models/naps";
   import type { TimeRangeAmount } from "baby-stats-models/time";
-  import type { User } from "baby-stats-models/users";
   import { db } from "../../firebase";
 
   const getDefaultAdd = (): NapAdd => {
@@ -27,7 +26,7 @@
 </script>
 
 <script lang="ts">
-  export let user: User;
+  export let babyId: string;
 
   let add: NapAdd = getDefaultAdd();
 
@@ -57,7 +56,7 @@
     loading = true;
 
     try {
-      await addNap(db, user.uid, add);
+      await addNap(db, babyId, add);
     } catch (e) {
       error = parseError(e).message;
     }
