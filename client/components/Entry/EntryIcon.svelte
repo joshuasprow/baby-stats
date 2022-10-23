@@ -1,9 +1,3 @@
-<script lang="ts">
-  interface $$Slots {
-    default: Node[];
-  }
-</script>
-
 <figure>
   {#if $$slots.left}
     <slot name="left" />

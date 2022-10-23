@@ -1,6 +1,6 @@
 <script lang="ts">
+  import type { Time } from "$lib/dates";
   import { Timestamp } from "@firebase/firestore";
-  import type { Time } from "baby-stats-lib/dates";
   import { createEventDispatcher } from "svelte";
   import DatePicker from "./DatePicker.svelte";
   import TimePicker from "./TimePicker.svelte";

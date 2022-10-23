@@ -1,10 +1,10 @@
 <script lang="ts">
+  import { DEFAULT_THEME, ThemeElement, type Theme } from "$models/theme";
+  import type { User } from "$models/users";
   import { setTheme, theme } from "$stores/theme";
   import { themes } from "$stores/themes";
   import { addTheme, removeTheme, updateTheme } from "firebase/themes";
   import { updateUserDoc } from "firebase/users";
-  import { DEFAULT_THEME, ThemeElement, type Theme } from "models/theme";
-  import type { User } from "models/users";
   import { db } from "../firebase";
   import Button from "./Button.svelte";
   import ColorPicker from "./ColorPicker.svelte";

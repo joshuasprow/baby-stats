@@ -1,7 +1,7 @@
 <script lang="ts">
-  import type { FeedSide } from "models/feeds";
-  import { createEventDispatcher } from "svelte";
   import FeedSideInput from "$components/Feed/FeedSideInput.svelte";
+  import type { FeedSide } from "$models/feeds";
+  import { createEventDispatcher } from "svelte";
 
   export let loading: boolean;
   export let side: FeedSide | null;

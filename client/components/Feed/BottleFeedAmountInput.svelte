@@ -1,7 +1,7 @@
 <script lang="ts">
   import DateTimePicker from "$components/DateTimePicker.svelte";
+  import type { SelectEvent } from "$lib/dom";
   import type { Timestamp } from "@firebase/firestore";
-  import type { SelectEvent } from "baby-stats-lib/dom";
   import { createEventDispatcher } from "svelte";
 
   export let amount: number;

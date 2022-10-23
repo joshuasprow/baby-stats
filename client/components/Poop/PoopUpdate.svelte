@@ -2,12 +2,12 @@
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import PoopAmountInput from "$components/Poop/PoopAmountInput.svelte";
   import PoopIcon from "$components/Poop/PoopIcon.svelte";
+  import { db } from "$firebase";
+  import { parseError } from "$lib/error";
+  import { Poop, type PoopAmount } from "$models/poops";
   import { addEntryFields } from "$stores/entries";
   import type { Timestamp } from "@firebase/firestore";
   import { removePoop, updatePoop } from "firebase/poops";
-  import { parseError } from "baby-stats-lib/error";
-  import { Poop, type PoopAmount } from "models/poops";
-  import { db } from "../../firebase";
 
   export let entry: Poop;
   export let babyId: string;
