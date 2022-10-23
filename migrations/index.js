@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import admin from "firebase-admin";
-import { migrateCollection } from "./collections.js";
+import { migrateCollections } from "./collections.js";
 
 const config = {
   projectId: process.env.FIRESTORE_PROJECT_ID,
@@ -16,9 +16,8 @@ const db = app.firestore();
 
 const main = async () => {
   try {
-    await migrateCollection({
+    await migrateCollections({
       db,
-      collectionName: "feeds",
       userId: config.userId,
       babyId: config.babyId,
     });

@@ -1,12 +1,3 @@
-const COLLECTION_NAMES = ["feeds", "naps", "pees", "poops"];
-
-/** @param {string} name */
-function validateCollectionName(name) {
-  if (COLLECTION_NAMES.includes(name)) return;
-
-  throw new Error(`Collection name ${name} is not valid`);
-}
-
 /**
  * @param {import("firebase-admin/firestore").Firestore} db
  * @param {import("firebase-admin/firestore").Query} query
@@ -91,25 +82,19 @@ async function setCollectionDocs(db, path, docs) {
 /**
  * @param {{
  *   db: import("firebase-admin/firestore").Firestore;
- *   collectionName: string;
  *   userId: string;
  *   babyId: string;
  * }} options
  */
-export async function migrateCollection({
-  db,
-  collectionName,
-  userId,
-  babyId,
-}) {
-  validateCollectionName(collectionName);
+export async function migrateCollections({ db, userId, babyId }) {
+  for (const collection of ["feeds", "naps", "pees", "poops"]) {
+    const userPath = `users/${userId}/${collection}`;
+    const babyPath = `babies/${babyId}/${collection}`;
 
-  const userPath = `users/${userId}/${collectionName}`;
-  const babyPath = `babies/${babyId}/${collectionName}`;
+    await deleteCollection(db, babyPath);
 
-  await deleteCollection(db, babyPath);
+    const docs = await getCollectionDocs(db, userPath);
 
-  const docs = await getCollectionDocs(db, userPath);
-
-  await setCollectionDocs(db, babyPath, docs);
+    await setCollectionDocs(db, babyPath, docs);
+  }
 }
