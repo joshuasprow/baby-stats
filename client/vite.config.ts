@@ -21,6 +21,9 @@ export default defineConfig({
   resolve: {
     alias: {
       $components: dir("components"),
+      $firebase: dir("firebase"),
+      $lib: dir("lib"),
+      $models: dir("models"),
       $stores: dir("stores"),
     },
   },
