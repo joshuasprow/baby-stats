@@ -24,7 +24,7 @@
     "checkJs": true,
     "isolatedModules": true
   },
-  "include": ["**/*.d.ts", "**/*.ts", "**/*.js", "**/*.svelte"],
+  "include": ["**/*.d.ts", "**/*.ts", "**/*.svelte"],
   "exclude": ["node_modules/*", "public/*", "scripts/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
