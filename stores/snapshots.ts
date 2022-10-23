@@ -1,4 +1,4 @@
-import { db } from "$firebase";
+import { db } from "$firebase/app";
 import { addDays } from "$lib/dates";
 import { ENTRY_KINDS, type EntryKind } from "$models/entries";
 import {

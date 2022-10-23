@@ -1,4 +1,4 @@
-import { db } from "$firebase";
+import { db } from "$firebase/app";
 import { subscribeToNaps } from "$firebase/naps";
 import type { Nap } from "$models/naps";
 import { derived, writable } from "svelte/store";

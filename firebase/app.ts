@@ -1,6 +1,6 @@
+import { initializeApp, type FirebaseOptions } from "@firebase/app";
 import { getAuth } from "@firebase/auth";
 import { getFirestore } from "@firebase/firestore";
-import { initializeApp, type FirebaseOptions } from "firebase/app";
 import { z } from "zod";
 
 const Options = z.object({

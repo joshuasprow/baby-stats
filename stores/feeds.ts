@@ -1,4 +1,4 @@
-import { db } from "$firebase";
+import { db } from "$firebase/app";
 import { subscribeToFeeds } from "$firebase/feeds";
 import { getTimeRangeDiffInMinutes, getTimeRangeFromMinutes } from "$lib/dates";
 import type { Feed } from "$models/feeds";
