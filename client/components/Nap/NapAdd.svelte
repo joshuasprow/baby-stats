@@ -2,12 +2,12 @@
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { db } from "$firebase";
+  import { addNap } from "$firebase/naps";
   import { parseError } from "$lib/error";
   import { NapAdd } from "$models/naps";
   import type { TimeRangeAmount } from "$models/time";
   import { addEntryFields } from "$stores/entries";
   import { Timestamp } from "@firebase/firestore";
-  import { addNap } from "firebase/naps";
 
   const getDefaultAdd = (): NapAdd => {
     const t = new Date();

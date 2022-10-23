@@ -3,14 +3,14 @@
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
+  import { db } from "$firebase";
+  import { addFeed } from "$firebase/feeds";
+  import { parseError } from "$lib/error";
+  import { FeedAdd, type FeedSide, type FeedSource } from "$models/feeds";
+  import type { TimeRangeAmount } from "$models/time";
   import { addEntryFields } from "$stores/entries";
   import { convertAmountToBottle, convertAmountToBreast } from "$stores/feeds";
   import { Timestamp } from "@firebase/firestore";
-  import { addFeed } from "firebase/feeds";
-  import { parseError } from "$lib/error";
-  import { FeedAdd, type FeedSide, type FeedSource } from "models/feeds";
-  import type { TimeRangeAmount } from "models/time";
-  import { db } from "../../firebase";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
 
   export let babyId: string;

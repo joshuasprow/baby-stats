@@ -5,13 +5,13 @@
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { db } from "$firebase";
+  import { removeFeed, updateFeed } from "$firebase/feeds";
   import { parseError } from "$lib/error";
   import { Feed, type FeedSide, type FeedSource } from "$models/feeds";
   import type { TimeRangeAmount } from "$models/time";
   import { addEntryFields } from "$stores/entries";
   import { convertAmountToBottle, convertAmountToBreast } from "$stores/feeds";
   import type { Timestamp } from "@firebase/firestore";
-  import { removeFeed, updateFeed } from "firebase/feeds";
   import type { ZodError } from "zod";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
 
