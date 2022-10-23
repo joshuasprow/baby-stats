@@ -1,4 +1,4 @@
-import { Pee, PeeAdd } from "models/pees";
+import { Pee, PeeAdd } from "$models/pees";
 import {
   collection,
   deleteDoc,

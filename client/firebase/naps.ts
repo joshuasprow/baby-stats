@@ -1,4 +1,4 @@
-import { Nap, NapAdd } from "models/naps";
+import { Nap, NapAdd } from "$models/naps";
 import {
   collection,
   deleteDoc,

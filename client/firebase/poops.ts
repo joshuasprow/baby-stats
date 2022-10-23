@@ -1,4 +1,4 @@
-import { Poop, PoopAdd } from "models/poops";
+import { Poop, PoopAdd } from "$models/poops";
 import {
   collection,
   deleteDoc,

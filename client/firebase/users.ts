@@ -1,5 +1,5 @@
-import type { Theme } from "models/theme";
-import { ProviderData, User } from "models/users";
+import type { Theme } from "$models/theme";
+import { ProviderData, User } from "$models/users";
 import type { User as FirebaseUser, UserInfo } from "firebase/auth";
 import {
   doc,
@@ -10,7 +10,6 @@ import {
   type Firestore,
 } from "firebase/firestore";
 import { z } from "zod";
-import { getTheme } from "./themes";
 
 const parseProviderData = (providerData: UserInfo): ProviderData => ({
   providerId: providerData.providerId,

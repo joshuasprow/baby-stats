@@ -1,4 +1,4 @@
-import { Feed, FeedAdd } from "models/feeds";
+import { Feed, FeedAdd } from "$models/feeds";
 import {
   collection,
   deleteDoc,
