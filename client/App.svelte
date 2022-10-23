@@ -1,23 +1,12 @@
 <script lang="ts">
+  import Entries from "$components/Entries.svelte";
+  import Footer from "$components/Footer.svelte";
+  import Sider from "$components/Sider.svelte";
   import SignInButton from "$components/SignInButton.svelte";
-  import { baby } from "$stores/baby";
-  import { feeds } from "$stores/feeds";
-  import { naps } from "$stores/naps";
-  import { pees } from "$stores/pees";
-  import { poops } from "$stores/poops";
+  import { entriesLoaded } from "$stores/entries";
   import { user } from "$stores/user";
-  import { updateBaby } from "baby-stats-firebase/babies";
-  import { db } from "./firebase";
   import "./main.css";
   import "./variables.css";
-
-  let name = "";
-
-  const handleUpdate = async () => {
-    if (!$baby) return;
-
-    await updateBaby(db, { ...$baby, name });
-  };
 </script>
 
 <svelte:head>
@@ -33,34 +22,17 @@
     <span class="sign-in-label">Please sign in below</span>
     <SignInButton />
   </main>
-  <!-- {:else if !$entriesLoaded}
+{:else if !entriesLoaded}
   <main class="centered">
     <span>Use the buttons below to add new entries</span>
-  </main> -->
-{:else}
-  <main class="centered">
-    <form on:submit|preventDefault={handleUpdate}>
-      <input type="text" bind:value={name} />
-      <button type="submit">Update</button>
-    </form>
-    <pre>{JSON.stringify($baby, null, 2)}</pre>
-    <pre>{JSON.stringify(
-        {
-          feeds: $feeds?.length,
-          naps: $naps?.length,
-          pees: $pees?.length,
-          poops: $poops?.length,
-        },
-        null,
-        2,
-      )}</pre>
   </main>
-  <!-- <main>
+{:else}
+  <main>
     <Entries user={$user} />
   </main>
 
   <Sider />
-  <Footer user={$user} /> -->
+  <Footer user={$user} />
 {/if}
 
 <style>
