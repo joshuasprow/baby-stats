@@ -1,5 +1,6 @@
 <script lang="ts">
   import SignInButton from "$components/SignInButton.svelte";
+  import { feeds } from "$stores/feeds";
   import { user } from "$stores/user";
   import { updateBaby } from "baby-stats-firebase/babies";
   import { db } from "./firebase";
@@ -40,6 +41,7 @@
       <button type="submit">Update</button>
     </form>
     <pre>{JSON.stringify($baby, null, 2)}</pre>
+    <pre>{JSON.stringify({ feeds: $feeds?.length }, null, 2)}</pre>
   </main>
   <!-- <main>
     <Entries user={$user} />

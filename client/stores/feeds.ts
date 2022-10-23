@@ -7,22 +7,22 @@ import {
 import type { Feed } from "baby-stats-models/feeds";
 import { derived, writable } from "svelte/store";
 import { db } from "../firebase";
-import { user } from "./user";
+import { baby } from "./baby";
 
 export const feedsLoaded = writable(false);
 
-export const feeds = derived<typeof user, Feed[]>(user, ($user, set) => {
+export const feeds = derived<typeof baby, Feed[]>(baby, ($baby, set) => {
   let unsubscribe = () => {};
 
-  if (!$user) {
+  if (!$baby) {
     set([]);
 
     return unsubscribe;
   }
 
-  const { uid } = $user;
+  const { id } = $baby;
 
-  unsubscribe = subscribeToFeeds(db, uid, set);
+  unsubscribe = subscribeToFeeds(db, id, set);
 
   feedsLoaded.set(true);
 

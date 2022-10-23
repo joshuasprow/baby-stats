@@ -11,25 +11,29 @@ import {
   type Firestore,
 } from "firebase/firestore";
 
-const getFeedsCollection = (db: Firestore, uid: string) =>
-  collection(db, `users/${uid}/feeds`);
+const getFeedsCollection = (db: Firestore, babyId: string) =>
+  collection(db, `babies/${babyId}/feeds`);
 
-const getFeedDoc = (db: Firestore, uid: string, id: string) =>
-  doc(db, `users/${uid}/feeds/${id}`);
+const getFeedDoc = (db: Firestore, babyId: string, id: string) =>
+  doc(db, `babies/${babyId}/feeds/${id}`);
 
 export const subscribeToFeeds = (
   db: Firestore,
-  uid: string,
+  babyId: string,
   set: (feeds: Feed[]) => void,
 ) =>
   onSnapshot(
-    query(getFeedsCollection(db, uid), orderBy("timestamp", "desc")),
+    query(getFeedsCollection(db, babyId), orderBy("timestamp", "desc")),
     (snap) => set(snap.docs.map((doc) => Feed.parse(doc.data()))),
   );
 
-export const addFeed = async (db: Firestore, uid: string, value: FeedAdd) => {
+export const addFeed = async (
+  db: Firestore,
+  babyId: string,
+  value: FeedAdd,
+) => {
   const add = FeedAdd.parse({ ...value });
-  const ref = doc(getFeedsCollection(db, uid));
+  const ref = doc(getFeedsCollection(db, babyId));
   const feed = Feed.parse({ ...add, id: ref.id });
 
   await setDoc(ref, feed);
@@ -37,13 +41,17 @@ export const addFeed = async (db: Firestore, uid: string, value: FeedAdd) => {
   return feed;
 };
 
-export const updateFeed = async (db: Firestore, uid: string, value: Feed) => {
+export const updateFeed = async (
+  db: Firestore,
+  babyId: string,
+  value: Feed,
+) => {
   const feed = Feed.parse({ ...value });
-  const ref = getFeedDoc(db, uid, feed.id);
+  const ref = getFeedDoc(db, babyId, feed.id);
 
   await updateDoc(ref, feed);
 };
 
-export const removeFeed = async (db: Firestore, uid: string, id: string) => {
-  await deleteDoc(getFeedDoc(db, uid, id));
+export const removeFeed = async (db: Firestore, babyId: string, id: string) => {
+  await deleteDoc(getFeedDoc(db, babyId, id));
 };
