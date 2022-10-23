@@ -8,7 +8,7 @@ const dir = (...parts: string[]) => resolve(__dirname, ...parts);
 export default defineConfig({
   plugins: [svelte()],
   build: {
-    outDir: dir("../dist"),
+    outDir: dir("dist"),
   },
   define: {
     VITE_API_KEY: process.env.VITE_API_KEY,
@@ -17,7 +17,6 @@ export default defineConfig({
     VITE_APP_ID: process.env.VITE_APP_ID,
     VITE_MEASUREMENT_ID: process.env.VITE_MEASUREMENT_ID,
   },
-  envDir: dir("../"),
   resolve: {
     alias: {
       $components: dir("components"),
