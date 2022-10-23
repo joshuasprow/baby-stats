@@ -1,23 +1,16 @@
-/**
- * @param {import("firebase-admin/firestore").Firestore} db
- * @param {string} collectionPath
- * @param {number | undefined} batchSize
- * @returns {Promise<void>}
- */
-export async function deleteCollection(db, collectionPath, batchSize = 500) {
-  const collectionRef = db.collection(collectionPath);
-  const query = collectionRef.orderBy("__name__").limit(batchSize);
+const COLLECTION_NAMES = ["feeds", "naps", "pees", "poops"];
 
-  return new Promise((resolve, reject) => {
-    deleteQueryBatch(db, query, resolve).catch(reject);
-  });
+/** @param {string} name */
+function validateCollectionName(name) {
+  if (COLLECTION_NAMES.includes(name)) return;
+
+  throw new Error(`Collection name ${name} is not valid`);
 }
 
 /**
  * @param {import("firebase-admin/firestore").Firestore} db
  * @param {import("firebase-admin/firestore").Query} query
  * @param {(value: void | PromiseLike<void>) => void} resolve
- * @returns {Promise<void>}
  */
 async function deleteQueryBatch(db, query, resolve) {
   const snapshot = await query.get();
@@ -41,4 +34,75 @@ async function deleteQueryBatch(db, query, resolve) {
   process.nextTick(() => {
     deleteQueryBatch(db, query, resolve);
   });
+}
+
+/**
+ * @param {import("firebase-admin/firestore").Firestore} db
+ * @param {string} path
+ * @param {number | undefined} batchSize
+ */
+async function deleteCollection(db, path, batchSize = 500) {
+  const ref = db.collection(path);
+  const query = ref.orderBy("__name__").limit(batchSize);
+
+  return new Promise((resolve, reject) => {
+    deleteQueryBatch(db, query, resolve).catch(reject);
+  });
+}
+
+/**
+ * @param {import("firebase-admin/firestore").Firestore} db
+ * @param {string} path
+ */
+async function getCollectionDocs(db, path) {
+  const ref = db.collection(path);
+  const docs = await ref.get();
+
+  return docs.docs.map((doc) => doc.data());
+}
+/**
+ * @param {import("firebase-admin/firestore").Firestore} db
+ * @param {string} path
+ * @param {import("firebase-admin/firestore").DocumentData[]} docs
+ */
+async function setCollectionDocs() {
+  const collection = db.collection(PATHS.feeds.baby);
+
+  let batch = db.batch();
+  let count = 0;
+
+  for (const feed of feeds) {
+    const ref = collection.doc(feed.id);
+
+    batch.set(ref, feed);
+
+    count += 1;
+
+    if (count === 500) {
+      await batch.commit();
+      batch = db.batch();
+      count = 0;
+    }
+  }
+
+  await batch.commit();
+}
+
+/**
+ * @param {import("firebase-admin/firestore").Firestore} db
+ * @param {string} collectionName
+ * @param {string} userId
+ * @param {string} babyId
+ */
+export async function migrateCollection(db, collectionName, userId, babyId) {
+  validateCollectionName(collectionName);
+
+  const userPath = `users/${userId}/${collectionName}`;
+  const babyPath = `babies/${babyId}/${collectionName}`;
+
+  await deleteCollection(db, babyPath);
+
+  const docs = await getCollectionDocs(db, userPath);
+
+  await setCollectionDocs(db, babyPath, docs);
 }
