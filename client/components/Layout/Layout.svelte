@@ -1,6 +1,6 @@
 <script lang="ts">
-  import Footer from "$components/Footer.svelte";
-  import Sider from "$components/Sider.svelte";
+  import Footer from "$components/Layout/Footer.svelte";
+  import Sider from "$components/Layout/Sider.svelte";
   import type { Baby } from "$models/babies";
   import type { User } from "$models/users";
   import type { Day } from "$stores/days";

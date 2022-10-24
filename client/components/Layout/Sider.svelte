@@ -1,10 +1,10 @@
 <script lang="ts">
   import Button from "$components/Button.svelte";
+  import CloseIcon from "$components/CloseIcon.svelte";
   import SignInButton from "$components/SignInButton.svelte";
   import SignOutButton from "$components/SignOutButton.svelte";
   import { user } from "$stores/user";
   import { fade, fly } from "svelte/transition";
-  import CloseIcon from "./CloseIcon.svelte";
 
   export let open = false;
 
