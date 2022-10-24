@@ -5,6 +5,7 @@ import type { Pee } from "$models/pees";
 import type { Poop } from "$models/poops";
 import type { Timestamp } from "@firebase/firestore";
 import { derived } from "svelte/store";
+import { baby } from "./baby";
 import { feeds } from "./feeds";
 import { naps } from "./naps";
 import { pees } from "./pees";
@@ -83,9 +84,9 @@ const buildDays = ([$feeds, $naps, $pees, $poops]: [
 };
 
 export const days = derived(
-  [user, feeds, naps, pees, poops],
-  ([$user, $feeds, $naps, $pees, $poops]) => {
-    if (!$user) return null;
+  [user, baby, feeds, naps, pees, poops],
+  ([$user, $baby, $feeds, $naps, $pees, $poops]) => {
+    if (!$user || !$baby) return null;
 
     if (
       $feeds === null ||
