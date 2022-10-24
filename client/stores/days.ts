@@ -86,7 +86,7 @@ const buildDays = ([$feeds, $naps, $pees, $poops]: [
 export const days = derived(
   [user, baby, feeds, naps, pees, poops],
   ([$user, $baby, $feeds, $naps, $pees, $poops]) => {
-    if (!$user || !$baby) return null;
+    if (!$user || !$baby) return undefined;
 
     if (
       $feeds === null ||
@@ -94,7 +94,7 @@ export const days = derived(
       $pees === null ||
       $poops === null
     ) {
-      return null;
+      return undefined;
     }
 
     // calling synchronously so that state isn't blocked from setting

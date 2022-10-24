@@ -6,6 +6,10 @@
   export let days: DayType[];
 </script>
 
-{#each days as [daystamp, day] (daystamp)}
-  <Day {daystamp} {day} {babyId} />
-{/each}
+{#if days.length === 0}
+  <span>Use the buttons below to add new entries</span>
+{:else}
+  {#each days as [daystamp, day] (daystamp)}
+    <Day {babyId} {day} {daystamp} />
+  {/each}
+{/if}
