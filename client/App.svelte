@@ -12,26 +12,3 @@
 </svelte:head>
 
 <Layout baby={$baby} days={$days} user={$user} />
-
-<!-- 
-{#if $user === undefined || $baby === null || $days === null}
-  <main class="centered">
-    <span>⏳</span>
-  </main>
-{:else if $user === null}
-  <main class="centered">
-    <span class="sign-in-label">Please sign in below</span>
-    <SignInButton />
-  </main>
-{:else if $days.length === 0}
-  <main class="centered">
-    <span>Use the buttons below to add new entries</span>
-  </main>
-{:else}
-  <main>
-    <Entries babyId={$baby.id} days={$days} />
-  </main>
-
-  <Sider />
-  <Footer babyId={$baby.id} />
-{/if} -->
