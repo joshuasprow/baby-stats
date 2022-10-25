@@ -1,6 +1,6 @@
 <script lang="ts">
   import FeedSideInput from "$components/Feed/FeedSideInput.svelte";
-  import type { FeedSide } from "$models/feeds";
+  import type { FeedSide } from "@baby-stats/models/feeds";
   import { createEventDispatcher } from "svelte";
 
   export let loading: boolean;

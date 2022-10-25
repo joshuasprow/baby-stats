@@ -1,4 +1,4 @@
-import { Nap, NapAdd } from "$models/naps";
+import { Nap, NapAdd } from "@baby-stats/models/naps";
 import {
   collection,
   deleteDoc,
@@ -20,12 +20,12 @@ const getNapDoc = (db: Firestore, babyId: string, id: string) =>
 export const subscribeToNaps = (
   db: Firestore,
   babyId: string,
-  set: (naps: Nap[]) => void,
+  set: (naps: Nap[]) => void
 ) =>
   onSnapshot(
     query(getNapsCollection(db, babyId), orderBy("timestamp", "desc")),
     { includeMetadataChanges: true },
-    (snap) => set(snap.docs.map((doc) => Nap.parse(doc.data()))),
+    (snap) => set(snap.docs.map((doc) => Nap.parse(doc.data())))
   );
 
 export const addNap = async (db: Firestore, babyId: string, value: NapAdd) => {

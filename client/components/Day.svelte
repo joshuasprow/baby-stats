@@ -1,6 +1,6 @@
 <script lang="ts" context="module">
   import { formatDaystamp, getTimeRangeDiffInMinutes } from "$lib/dates";
-  import { ENTRY_ICONS, type EntryKind } from "$models/entries";
+  import { ENTRY_ICONS, type EntryKind } from "@baby-stats/models/entries";
   import type { DayEntry } from "$stores/days";
   import Button from "./Button.svelte";
   import Entry from "./Entry/Entry.svelte";

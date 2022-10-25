@@ -10,7 +10,7 @@
 <script lang="ts">
   import type { ChangeEvent } from "$lib/dom";
   import { hexToHsl, hslToHex } from "$lib/theme";
-  import type { Theme, ThemeElement } from "$models/theme";
+  import type { Theme, ThemeElement } from "@baby-stats/models/theme";
   import { theme } from "$stores/theme";
   import { createEventDispatcher } from "svelte";
 

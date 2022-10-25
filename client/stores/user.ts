@@ -4,7 +4,7 @@ import {
   subscribeToUser,
   updateUserDoc,
 } from "@baby-stats/firebase/users";
-import type { User } from "$models/users";
+import type { User } from "@baby-stats/models/users";
 import {
   GoogleAuthProvider,
   onAuthStateChanged,

@@ -5,7 +5,7 @@
   import { db } from "$firebase";
   import { removePee, updatePee } from "@baby-stats/firebase/pees";
   import { parseError } from "$lib/error";
-  import { Pee, type PeeAmount } from "$models/pees";
+  import { Pee, type PeeAmount } from "@baby-stats/models/pees";
   import { addEntryFields } from "$stores/entries";
   import type { Timestamp } from "@firebase/firestore";
 

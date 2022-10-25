@@ -1,4 +1,4 @@
-import { Pee, PeeAdd } from "$models/pees";
+import { Pee, PeeAdd } from "@baby-stats/models/pees";
 import {
   collection,
   deleteDoc,
@@ -20,12 +20,12 @@ const getPeeDoc = (db: Firestore, babyId: string, id: string) =>
 export const subscribeToPees = (
   db: Firestore,
   babyId: string,
-  set: (pees: Pee[]) => void,
+  set: (pees: Pee[]) => void
 ) =>
   onSnapshot(
     query(getPeesCollection(db, babyId), orderBy("timestamp", "desc")),
     { includeMetadataChanges: true },
-    (snap) => set(snap.docs.map((doc) => Pee.parse(doc.data()))),
+    (snap) => set(snap.docs.map((doc) => Pee.parse(doc.data())))
   );
 
 export const addPee = async (db: Firestore, babyId: string, value: PeeAdd) => {

@@ -7,8 +7,8 @@
   import { db } from "$firebase";
   import { removeFeed, updateFeed } from "@baby-stats/firebase/feeds";
   import { parseError } from "$lib/error";
-  import { Feed, type FeedSide, type FeedSource } from "$models/feeds";
-  import type { TimeRangeAmount } from "$models/time";
+  import { Feed, type FeedSide, type FeedSource } from "@baby-stats/models/feeds";
+  import type { TimeRangeAmount } from "@baby-stats/models/time";
   import { addEntryFields } from "$stores/entries";
   import { convertAmountToBottle, convertAmountToBreast } from "$stores/feeds";
   import type { Timestamp } from "@firebase/firestore";

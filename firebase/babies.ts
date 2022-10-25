@@ -1,4 +1,4 @@
-import { Baby } from "$models/babies";
+import { Baby } from "@baby-stats/models/babies";
 import {
   doc,
   getDoc,
@@ -18,7 +18,7 @@ export const getBabyDoc = async (db: Firestore, id: string) => {
 export const subscribeToBaby = (
   db: Firestore,
   id: string,
-  set: (baby: Baby) => void,
+  set: (baby: Baby) => void
 ) => onSnapshot(getBabyRef(db, id), (snap) => set(Baby.parse(snap.data())));
 
 export const updateBaby = async (db: Firestore, value: Baby) => {

@@ -4,8 +4,8 @@
   import { db } from "$firebase";
   import { addNap } from "@baby-stats/firebase/naps";
   import { parseError } from "$lib/error";
-  import { NapAdd } from "$models/naps";
-  import type { TimeRangeAmount } from "$models/time";
+  import { NapAdd } from "@baby-stats/models/naps";
+  import type { TimeRangeAmount } from "@baby-stats/models/time";
   import { addEntryFields } from "$stores/entries";
   import { Timestamp } from "@firebase/firestore";
 

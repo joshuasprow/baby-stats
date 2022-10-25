@@ -1,8 +1,8 @@
 <script lang="ts">
   import Entries from "$components/Entries.svelte";
   import SignInButton from "$components/SignInButton.svelte";
-  import type { Baby } from "$models/babies";
-  import type { User } from "$models/users";
+  import type { Baby } from "@baby-stats/models/babies";
+  import type { User } from "@baby-stats/models/users";
   import type { Day } from "$stores/days";
 
   export let baby: Baby | undefined | null;

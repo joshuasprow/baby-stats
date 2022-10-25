@@ -4,7 +4,7 @@
   import { db } from "$firebase";
   import { addPoop } from "@baby-stats/firebase/poops";
   import { parseError } from "$lib/error";
-  import { PoopAdd, type PoopAmount } from "$models/poops";
+  import { PoopAdd, type PoopAmount } from "@baby-stats/models/poops";
   import { addEntryFields } from "$stores/entries";
   import { Timestamp } from "@firebase/firestore";
 

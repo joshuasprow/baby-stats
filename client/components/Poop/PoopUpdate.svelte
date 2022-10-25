@@ -5,7 +5,7 @@
   import { db } from "$firebase";
   import { removePoop, updatePoop } from "@baby-stats/firebase/poops";
   import { parseError } from "$lib/error";
-  import { Poop, type PoopAmount } from "$models/poops";
+  import { Poop, type PoopAmount } from "@baby-stats/models/poops";
   import { addEntryFields } from "$stores/entries";
   import type { Timestamp } from "@firebase/firestore";
 

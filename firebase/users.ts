@@ -1,5 +1,5 @@
-import type { Theme } from "$models/theme";
-import { ProviderData, User } from "$models/users";
+import type { Theme } from "@baby-stats/models/theme";
+import { ProviderData, User } from "@baby-stats/models/users";
 import type { User as FirebaseUser, UserInfo } from "firebase/auth";
 import {
   doc,
@@ -25,7 +25,7 @@ const hasProperty = (obj: unknown, key: string) =>
 
 const parseTimeStringField = (
   json: object,
-  field: "createdAt" | "lastLoginAt",
+  field: "createdAt" | "lastLoginAt"
 ) => {
   if (!hasProperty(json, "createdAt")) {
     throw new Error(`User has no ${field}`);
@@ -46,7 +46,7 @@ const parseTimeStringField = (
  * undefined or invalid */
 export const fixAuthUser = async (
   db: Firestore,
-  authUser: FirebaseUser,
+  authUser: FirebaseUser
 ): Promise<User> => {
   const json = authUser.toJSON();
 
@@ -93,7 +93,7 @@ export const getUserDoc = async (db: Firestore, uid: string) => {
 
 export const updateUserDoc = async (
   db: Firestore,
-  update: Pick<User, "uid"> & Partial<User>,
+  update: Pick<User, "uid"> & Partial<User>
 ) => {
   const ref = getUserRef(db, update.uid);
 
@@ -104,7 +104,7 @@ export const subscribeToUser = (
   db: Firestore,
   uid: string,
   setUser: (user: null | User) => void,
-  setTheme: (theme: Theme) => void,
+  setTheme: (theme: Theme) => void
 ) =>
   onSnapshot(getUserRef(db, uid), async (doc) => {
     if (!doc.exists()) {

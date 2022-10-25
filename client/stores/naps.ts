@@ -1,6 +1,6 @@
 import { db } from "$firebase";
 import { subscribeToNaps } from "@baby-stats/firebase/naps";
-import type { Nap } from "$models/naps";
+import type { Nap } from "@baby-stats/models/naps";
 import { derived, writable } from "svelte/store";
 import { baby } from "./baby";
 

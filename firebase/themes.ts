@@ -1,4 +1,4 @@
-import { Theme } from "$models/theme";
+import { Theme } from "@baby-stats/models/theme";
 import {
   collection,
   deleteDoc,
@@ -52,13 +52,13 @@ export const getThemes = async (db: Firestore, uid: string) => {
 export const subscribeToThemes = (
   db: Firestore,
   uid: string,
-  set: (themes: Theme[]) => void,
+  set: (themes: Theme[]) => void
 ) => {
   set([]);
 
   return onSnapshot(
     query(getThemesCollection(db, uid), orderBy("name")),
-    (snap) => set(parseThemes(snap.docs)),
+    (snap) => set(parseThemes(snap.docs))
   );
 };
 

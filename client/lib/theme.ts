@@ -1,4 +1,9 @@
-import { HexColor, HslColor, RgbColor, ThemeElement } from "$models/theme";
+import {
+  HexColor,
+  HslColor,
+  RgbColor,
+  ThemeElement,
+} from "@baby-stats/models/theme";
 import { getCssVariable, setCssVariable } from "./css";
 
 export const BLACK: HslColor = {

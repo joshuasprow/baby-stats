@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { DEFAULT_THEME, ThemeElement, type Theme } from "$models/theme";
-  import type { User } from "$models/users";
+  import { DEFAULT_THEME, ThemeElement, type Theme } from "@baby-stats/models/theme";
+  import type { User } from "@baby-stats/models/users";
   import { setTheme, theme } from "$stores/theme";
   import { themes } from "$stores/themes";
   import {
