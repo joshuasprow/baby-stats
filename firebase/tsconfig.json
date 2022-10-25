@@ -1,1 +1,5 @@
-{ "include": ["."], "exclude": ["dist", "node_modules"] }
+{
+  "extends": "@baby-stats/tsconfig/base.json",
+  "include": ["."],
+  "exclude": ["dist", "node_modules"]
+}
