@@ -12,7 +12,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "scripts": "turbo run --prefix scripts start",
+    "scripts": "turbo run scripts",
     "lint": "turbo run lint"
   },
   "devDependencies": {

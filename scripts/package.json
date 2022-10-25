@@ -5,7 +5,8 @@
   "type": "module",
   "main": "main.ts",
   "scripts": {
-    "start": "tsup main.ts && node dist/main.cjs"
+    "build": "tsup main.ts",
+    "scripts": "node dist/main.cjs"
   },
   "engines": {
     "node": "16"
