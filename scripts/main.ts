@@ -15,15 +15,11 @@ const app = admin.initializeApp({ projectId: config.projectId });
 const db = app.firestore();
 
 const main = async () => {
-  try {
-    await migrateCollections({
-      db,
-      userId: config.userId,
-      babyId: config.babyId,
-    });
-  } catch (error) {
-    console.error(error);
-  }
+  console.log("go");
 };
 
-main();
+try {
+  main();
+} catch (error) {
+  console.error(error);
+}

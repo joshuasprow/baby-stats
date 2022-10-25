@@ -3,17 +3,19 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "main": "main.js",
+  "main": "main.ts",
   "scripts": {
-    "start": "node main.js"
+    "start": "tsup main.ts && node dist/main.cjs"
   },
   "engines": {
     "node": "16"
   },
   "dependencies": {
+    "@baby-stats/firebase": "*",
     "firebase-admin": "^11.2.0"
   },
   "devDependencies": {
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "tsup": "^6.3.0"
   }
 }
