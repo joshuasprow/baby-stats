@@ -1,0 +1,11 @@
+{
+  "name": "@baby-stats/tsconfig",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "svelte.json"
+  ],
+  "devDependencies": {
+    "@tsconfig/svelte": "^3.0.0"
+  }
+}

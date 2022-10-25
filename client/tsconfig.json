@@ -1,0 +1,28 @@
+{
+  "extends": "@baby-stats/tsconfig/svelte.json",
+  "compilerOptions": {
+    "composite": true,
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "baseUrl": ".",
+    "paths": {
+      "$components/*": ["components/*"],
+      "$firebase/*": ["firebase/*"],
+      "$lib/*": ["lib/*"],
+      "$models/*": ["models/*"],
+      "$stores/*": ["stores/*"]
+    },
+    "strict": true,
+    "allowJs": true,
+    "checkJs": true,
+    "isolatedModules": true
+  },
+  "include": [
+    "tsconfig.json",
+    "vite.config.ts",
+    "**/*.d.ts",
+    "**/*.ts",
+    "**/*.svelte"
+  ]
+}

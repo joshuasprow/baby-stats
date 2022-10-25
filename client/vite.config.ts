@@ -14,7 +14,7 @@ const alias = Object.entries(tsconfig.compilerOptions.paths).reduce(
 
     return a;
   },
-  {},
+  {} as { [key: string]: string },
 );
 
 // https://vitejs.dev/config/
