@@ -10,6 +10,7 @@
     "lint": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
+    "@baby-stats/tsconfig": "*",
     "@sveltejs/vite-plugin-svelte": "^1.0.1",
     "svelte": "^3.49.0",
     "svelte-check": "^2.8.0",
@@ -19,8 +20,8 @@
     "vite": "^3.0.0"
   },
   "dependencies": {
+    "@baby-stats/models": "*",
     "@baby-stats/firebase": "*",
-    "@baby-stats/tsconfig": "*",
     "svelte-router-spa": "^6.0.3",
     "zod": "^3.17.10"
   }
