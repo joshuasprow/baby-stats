@@ -1,5 +1,5 @@
-import { db } from "$firebase/app";
-import { subscribeToFeeds } from "$firebase/feeds";
+import { db } from "$firebase";
+import { subscribeToFeeds } from "@baby-stats/firebase/feeds";
 import { getTimeRangeDiffInMinutes, getTimeRangeFromMinutes } from "$lib/dates";
 import type { Feed } from "$models/feeds";
 import type { Timestamp } from "@firebase/firestore";

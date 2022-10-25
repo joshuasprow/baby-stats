@@ -3,8 +3,8 @@
   import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
   import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
-  import { db } from "$firebase/app";
-  import { addFeed } from "$firebase/feeds";
+  import { db } from "$firebase";
+  import { addFeed } from "@baby-stats/firebase/feeds";
   import { parseError } from "$lib/error";
   import { FeedAdd, type FeedSide, type FeedSource } from "$models/feeds";
   import type { TimeRangeAmount } from "$models/time";

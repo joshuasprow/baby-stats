@@ -1,5 +1,9 @@
-import { auth, db } from "$firebase/app";
-import { fixAuthUser, subscribeToUser, updateUserDoc } from "$firebase/users";
+import { auth, db } from "$firebase";
+import {
+  fixAuthUser,
+  subscribeToUser,
+  updateUserDoc,
+} from "@baby-stats/firebase/users";
 import type { User } from "$models/users";
 import {
   GoogleAuthProvider,

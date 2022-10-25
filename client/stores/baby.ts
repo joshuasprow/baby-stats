@@ -1,5 +1,5 @@
-import { db } from "$firebase/app";
-import { subscribeToBaby } from "$firebase/babies";
+import { db } from "$firebase";
+import { subscribeToBaby } from "@baby-stats/firebase/babies";
 import type { Baby } from "$models/babies";
 import { derived } from "svelte/store";
 import { user } from "./user";

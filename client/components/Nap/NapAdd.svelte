@@ -1,8 +1,8 @@
 <script lang="ts" context="module">
   import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
-  import { db } from "$firebase/app";
-  import { addNap } from "$firebase/naps";
+  import { db } from "$firebase";
+  import { addNap } from "@baby-stats/firebase/naps";
   import { parseError } from "$lib/error";
   import { NapAdd } from "$models/naps";
   import type { TimeRangeAmount } from "$models/time";

@@ -2,8 +2,8 @@
   import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
   import NapIcon from "$components/Nap/NapIcon.svelte";
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
-  import { db } from "$firebase/app";
-  import { removeNap, updateNap } from "$firebase/naps";
+  import { db } from "$firebase";
+  import { removeNap, updateNap } from "@baby-stats/firebase/naps";
   import { parseError } from "$lib/error";
   import { Nap } from "$models/naps";
   import type { TimeRangeAmount } from "$models/time";

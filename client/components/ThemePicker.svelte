@@ -3,9 +3,13 @@
   import type { User } from "$models/users";
   import { setTheme, theme } from "$stores/theme";
   import { themes } from "$stores/themes";
-  import { addTheme, removeTheme, updateTheme } from "firebase/themes";
-  import { updateUserDoc } from "firebase/users";
-  import { db } from "../firebase";
+  import {
+    addTheme,
+    removeTheme,
+    updateTheme,
+  } from "@baby-stats/firebase/themes";
+  import { updateUserDoc } from "@baby-stats/firebase/users";
+  import { db } from "$firebase";
   import Button from "./Button.svelte";
   import ColorPicker from "./ColorPicker.svelte";
   import ThemeSelect from "./ThemeSelect.svelte";

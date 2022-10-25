@@ -1,5 +1,5 @@
-import { db } from "$firebase/app";
-import { subscribeToThemes } from "$firebase/themes";
+import { db } from "$firebase";
+import { subscribeToThemes } from "@baby-stats/firebase/themes";
 import type { Theme } from "$models/theme";
 import { derived, writable } from "svelte/store";
 import { user } from "./user";
