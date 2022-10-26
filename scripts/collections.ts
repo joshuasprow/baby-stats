@@ -1,4 +1,5 @@
 import { DocumentData, Firestore, Query } from "firebase-admin/firestore";
+import { Paths } from "./path";
 
 const deleteQueryBatch = async (
   db: Firestore,
@@ -75,23 +76,8 @@ const setCollectionDocs = async (
   await batch.commit();
 };
 
-export const migrateCollections = async ({
-  db,
-  userId,
-  babyId,
-}: {
-  db: Firestore;
-  userId: string;
-  babyId: string;
-}) => {
-  for (const collection of ["feeds", "naps", "pees", "poops"]) {
-    const userPath = `users/${userId}/${collection}`;
-    const babyPath = `babies/${babyId}/${collection}`;
+export const migrateCollection = async (db: Firestore, path: Paths) => {
+  const docs = await getCollectionDocs(db, path.source);
 
-    await deleteCollection(db, babyPath);
-
-    const docs = await getCollectionDocs(db, userPath);
-
-    await setCollectionDocs(db, babyPath, docs);
-  }
+  await setCollectionDocs(db, path.target, docs);
 };
