@@ -1,10 +1,10 @@
 import { DocumentData, Firestore, Query } from "firebase-admin/firestore";
 
-async function deleteQueryBatch(
+const deleteQueryBatch = async (
   db: Firestore,
   query: Query,
   resolve: (value: void | PromiseLike<void>) => void
-) {
+) => {
   const snapshot = await query.get();
 
   const batchSize = snapshot.size;
@@ -26,41 +26,33 @@ async function deleteQueryBatch(
   process.nextTick(() => {
     deleteQueryBatch(db, query, resolve);
   });
-}
+};
 
-async function deleteCollection(
+const deleteCollection = async (
   db: Firestore,
   path: string,
   batchSize: number = 500
-) {
+) => {
   const ref = db.collection(path);
   const query = ref.orderBy("__name__").limit(batchSize);
 
   return new Promise((resolve, reject) => {
     deleteQueryBatch(db, query, resolve).catch(reject);
   });
-}
+};
 
-/**
- * @param {Firestore} db
- * @param {string} path
- */
-async function getCollectionDocs(db: Firestore, path: string) {
+const getCollectionDocs = async (db: Firestore, path: string) => {
   const ref = db.collection(path);
   const docs = await ref.get();
 
   return docs.docs.map((doc) => doc.data());
-}
-/**
- * @param {Firestore} db
- * @param {string} path
- * @param {DocumentData[]} docs
- */
-async function setCollectionDocs(
+};
+
+const setCollectionDocs = async (
   db: Firestore,
   path: string,
   docs: DocumentData[]
-) {
+) => {
   const collectionRef = db.collection(path);
 
   let batch = db.batch();
@@ -81,9 +73,9 @@ async function setCollectionDocs(
   }
 
   await batch.commit();
-}
+};
 
-export async function migrateCollections({
+export const migrateCollections = async ({
   db,
   userId,
   babyId,
@@ -91,7 +83,7 @@ export async function migrateCollections({
   db: Firestore;
   userId: string;
   babyId: string;
-}) {
+}) => {
   for (const collection of ["feeds", "naps", "pees", "poops"]) {
     const userPath = `users/${userId}/${collection}`;
     const babyPath = `babies/${babyId}/${collection}`;
@@ -102,4 +94,4 @@ export async function migrateCollections({
 
     await setCollectionDocs(db, babyPath, docs);
   }
-}
+};
