@@ -13,7 +13,9 @@
   },
   "dependencies": {
     "@baby-stats/firebase": "*",
-    "firebase-admin": "^11.2.0"
+    "@baby-stats/models": "*",
+    "firebase-admin": "^11.2.0",
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "dotenv": "^16.0.3",

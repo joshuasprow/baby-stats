@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "zod": "^3.17.10"
+    "zod": "^3.19.1"
   },
   "devDependencies": {
     "@baby-stats/tsconfig": "*",
