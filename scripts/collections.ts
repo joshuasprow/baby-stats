@@ -1,9 +1,10 @@
-/**
- * @param {import("firebase-admin/firestore").Firestore} db
- * @param {import("firebase-admin/firestore").Query} query
- * @param {(value: void | PromiseLike<void>) => void} resolve
- */
-async function deleteQueryBatch(db, query, resolve) {
+import { DocumentData, Firestore, Query } from "firebase-admin/firestore";
+
+async function deleteQueryBatch(
+  db: Firestore,
+  query: Query,
+  resolve: (value: void | PromiseLike<void>) => void
+) {
   const snapshot = await query.get();
 
   const batchSize = snapshot.size;
@@ -27,12 +28,11 @@ async function deleteQueryBatch(db, query, resolve) {
   });
 }
 
-/**
- * @param {import("firebase-admin/firestore").Firestore} db
- * @param {string} path
- * @param {number | undefined} batchSize
- */
-async function deleteCollection(db, path, batchSize = 500) {
+async function deleteCollection(
+  db: Firestore,
+  path: string,
+  batchSize: number = 500
+) {
   const ref = db.collection(path);
   const query = ref.orderBy("__name__").limit(batchSize);
 
@@ -42,21 +42,25 @@ async function deleteCollection(db, path, batchSize = 500) {
 }
 
 /**
- * @param {import("firebase-admin/firestore").Firestore} db
+ * @param {Firestore} db
  * @param {string} path
  */
-async function getCollectionDocs(db, path) {
+async function getCollectionDocs(db: Firestore, path: string) {
   const ref = db.collection(path);
   const docs = await ref.get();
 
   return docs.docs.map((doc) => doc.data());
 }
 /**
- * @param {import("firebase-admin/firestore").Firestore} db
+ * @param {Firestore} db
  * @param {string} path
- * @param {import("firebase-admin/firestore").DocumentData[]} docs
+ * @param {DocumentData[]} docs
  */
-async function setCollectionDocs(db, path, docs) {
+async function setCollectionDocs(
+  db: Firestore,
+  path: string,
+  docs: DocumentData[]
+) {
   const collectionRef = db.collection(path);
 
   let batch = db.batch();
@@ -79,14 +83,15 @@ async function setCollectionDocs(db, path, docs) {
   await batch.commit();
 }
 
-/**
- * @param {{
- *   db: import("firebase-admin/firestore").Firestore;
- *   userId: string;
- *   babyId: string;
- * }} options
- */
-export async function migrateCollections({ db, userId, babyId }) {
+export async function migrateCollections({
+  db,
+  userId,
+  babyId,
+}: {
+  db: Firestore;
+  userId: string;
+  babyId: string;
+}) {
   for (const collection of ["feeds", "naps", "pees", "poops"]) {
     const userPath = `users/${userId}/${collection}`;
     const babyPath = `babies/${babyId}/${collection}`;

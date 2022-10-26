@@ -12,7 +12,7 @@
       "cache": false
     },
     "scripts": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["@baby-stats/scripts#build"]
     }
   }
 }
