@@ -8,6 +8,8 @@
     "lint": {
       "outputs": []
     },
+    "deploy": {},
+    "deploy:rules": {},
     "dev": {
       "cache": false
     },

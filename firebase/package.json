@@ -5,6 +5,10 @@
   "type": "module",
   "main": "index.ts",
   "types": "index.ts",
+  "scripts": {
+    "deploy": "firebase deploy --only hosting",
+    "deploy:rules": "firebase deploy --only firestore:rules"
+  },
   "dependencies": {
     "@baby-stats/models": "*",
     "firebase-admin": "^11.2.0",

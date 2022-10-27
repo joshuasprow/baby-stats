@@ -13,6 +13,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
+    "deploy:rules": "turbo run --filter=@baby-stats/firebase deploy:rules",
     "scripts": "turbo run scripts",
     "lint": "turbo run lint"
   },
