@@ -20,6 +20,8 @@
   },
   "devDependencies": {
     "@baby-stats/tsconfig": "*",
+    "dotenv": "^16.0.3",
+    "tsup": "^6.3.0",
     "typescript": "^4.5.2"
   }
 }
