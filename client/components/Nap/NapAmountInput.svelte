@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { SelectEvent } from "$lib/dom";
+  import type { SelectEvent } from "@baby-stats/lib/dom";
   import { createEventDispatcher } from "svelte";
 
   export let amount: number;

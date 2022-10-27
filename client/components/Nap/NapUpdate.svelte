@@ -4,7 +4,7 @@
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { db } from "$firebase";
   import { removeNap, updateNap } from "@baby-stats/firebase/naps";
-  import { parseError } from "$lib/error";
+  import { parseError } from "@baby-stats/lib/error";
   import { Nap } from "@baby-stats/models/naps";
   import type { TimeRangeAmount } from "@baby-stats/models/time";
   import { addEntryFields } from "$stores/entries";

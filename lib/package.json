@@ -1,0 +1,23 @@
+{
+  "name": "@baby-stats/lib",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "main.ts",
+  "scripts": {
+    "build": "tsup main.ts",
+    "scripts": "node dist/main.cjs"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "dependencies": {
+    "@baby-stats/models": "*",
+    "firebase": "^9.9.1",
+    "zod": "^3.19.1"
+  },
+  "devDependencies": {
+    "@baby-stats/tsconfig": "*",
+    "typescript": "^4.5.2"
+  }
+}

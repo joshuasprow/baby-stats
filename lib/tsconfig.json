@@ -1,0 +1,7 @@
+{
+  "extends": "@baby-stats/tsconfig/base.json",
+  "compilerOptions": {
+    "composite": true
+  },
+  "include": ["."]
+}

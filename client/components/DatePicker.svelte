@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getDateFromString, getDateString } from "$lib/dates";
-  import type { ChangeEvent, InputEvent } from "$lib/dom";
+  import { getDateFromString, getDateString } from "@baby-stats/lib/dates";
+  import type { ChangeEvent, InputEvent } from "@baby-stats/lib/dom";
   import { createEventDispatcher } from "svelte";
 
   export let date = new Date();

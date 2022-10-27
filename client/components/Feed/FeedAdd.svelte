@@ -5,7 +5,7 @@
   import TimeRangePicker from "$components/TimeRangePicker.svelte";
   import { db } from "$firebase";
   import { addFeed } from "@baby-stats/firebase/feeds";
-  import { parseError } from "$lib/error";
+  import { parseError } from "@baby-stats/lib/error";
   import { FeedAdd, type FeedSide, type FeedSource } from "@baby-stats/models/feeds";
   import type { TimeRangeAmount } from "@baby-stats/models/time";
   import { addEntryFields } from "$stores/entries";

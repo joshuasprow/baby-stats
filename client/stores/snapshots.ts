@@ -1,5 +1,5 @@
 import { db } from "$firebase";
-import { addDays } from "$lib/dates";
+import { addDays } from "@baby-stats/lib/dates";
 import { ENTRY_KINDS, type EntryKind } from "@baby-stats/models/entries";
 import {
   collection,
