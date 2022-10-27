@@ -1,6 +1,7 @@
 import { parseError } from "@baby-stats/lib/error";
 import { DocumentData, Firestore, Query } from "firebase-admin/firestore";
-import { Paths } from "./models";
+import { ZodObject, ZodRawShape } from "zod";
+import { Paths, Result } from "./models";
 
 const deleteCollectionBatch = async (
   db: Firestore,
@@ -49,11 +50,24 @@ export const deleteCollection = async (
   }
 };
 
-const getCollectionDocs = async (db: Firestore, path: string) => {
+const getCollectionDocs = async <
+  Z extends ZodObject<ZodRawShape> | DocumentData = DocumentData
+>(
+  db: Firestore,
+  path: string,
+  model?: Z
+): Promise<Result<Z[]>> => {
   const ref = db.collection(path);
-  const docs = await ref.get();
+  const { docs } = await ref.get();
 
-  return docs.docs.map((doc) => doc.data());
+  try {
+    return [
+      docs.map((doc) => (model ? model.parse(doc.data()) : doc.data())),
+      null,
+    ];
+  } catch (error) {
+    return [null, parseError(error)];
+  }
 };
 
 const setCollectionDocs = async (
@@ -83,8 +97,16 @@ const setCollectionDocs = async (
   await batch.commit();
 };
 
-export const migrateCollection = async (db: Firestore, path: Paths) => {
-  const docs = await getCollectionDocs(db, path.source);
+export const migrateCollection = async (db: Firestore, paths: Paths) => {
+  const [docs, error] = await getCollectionDocs(db, paths.source);
 
-  await setCollectionDocs(db, path.target, docs);
+  if (error) return error;
+
+  try {
+    await setCollectionDocs(db, paths.target, docs);
+
+    return null;
+  } catch (error) {
+    return parseError(error);
+  }
 };
