@@ -12,13 +12,14 @@
     "node": "16"
   },
   "dependencies": {
+    "@baby-stats/lib": "*",
     "@baby-stats/firebase": "*",
     "@baby-stats/models": "*",
     "firebase-admin": "^11.2.0",
     "zod": "^3.19.1"
   },
   "devDependencies": {
-    "dotenv": "^16.0.3",
-    "tsup": "^6.3.0"
+    "@baby-stats/tsconfig": "*",
+    "typescript": "^4.5.2"
   }
 }

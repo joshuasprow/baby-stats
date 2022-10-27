@@ -4,7 +4,7 @@ dotenv.config();
 
 import { ENTRY_KINDS } from "@baby-stats/models/entries";
 import admin from "firebase-admin";
-import { Paths } from "./path";
+import { Paths } from "./models";
 
 const config = {
   projectId: process.env.FIRESTORE_PROJECT_ID,

@@ -1,7 +1,8 @@
+import { parseError } from "@baby-stats/lib/error";
 import { DocumentData, Firestore, Query } from "firebase-admin/firestore";
-import { Paths } from "./path";
+import { Paths } from "./models";
 
-const deleteQueryBatch = async (
+const deleteCollectionBatch = async (
   db: Firestore,
   query: Query,
   resolve: (value: void | PromiseLike<void>) => void
@@ -25,11 +26,11 @@ const deleteQueryBatch = async (
   // Recurse on the next process tick, to avoid
   // exploding the stack.
   process.nextTick(() => {
-    deleteQueryBatch(db, query, resolve);
+    deleteCollectionBatch(db, query, resolve);
   });
 };
 
-const deleteCollection = async (
+export const deleteCollection = async (
   db: Firestore,
   path: string,
   batchSize: number = 500
@@ -37,9 +38,15 @@ const deleteCollection = async (
   const ref = db.collection(path);
   const query = ref.orderBy("__name__").limit(batchSize);
 
-  return new Promise((resolve, reject) => {
-    deleteQueryBatch(db, query, resolve).catch(reject);
-  });
+  try {
+    await new Promise((resolve, reject) =>
+      deleteCollectionBatch(db, query, resolve).catch(reject)
+    );
+
+    return null;
+  } catch (error) {
+    return parseError(error);
+  }
 };
 
 const getCollectionDocs = async (db: Firestore, path: string) => {
