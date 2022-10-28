@@ -57,6 +57,8 @@ const getCollectionDocs = async <
   path: string,
   model?: Z
 ): Promise<Result<Z[]>> => {
+  console.log(`Getting docs from ${path}`);
+
   const ref = db.collection(path);
   const { docs } = await ref.get();
 
@@ -75,6 +77,7 @@ const setCollectionDocs = async (
   path: string,
   docs: DocumentData[]
 ) => {
+  console.log(`Setting ${docs.length} docs to ${path}`);
   const collectionRef = db.collection(path);
 
   let batch = db.batch();

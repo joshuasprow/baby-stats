@@ -17,7 +17,7 @@ const app = admin.initializeApp({ projectId: config.projectId });
 const db = app.firestore();
 
 const main = async () => {
-  const target = `entries/${config.babyId}`;
+  const target = `entries`;
 
   const paths: Paths[] = ENTRY_KINDS.map((kind) => ({
     source: `babies/${config.babyId}/${kind}`,
