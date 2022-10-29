@@ -4,8 +4,6 @@
   "private": true,
   "workspaces": [
     "client",
-    "firebase",
-    "lib",
     "models",
     "scripts",
     "tsconfig"
