@@ -13,7 +13,7 @@ import {
   type DocumentData,
   type Firestore,
   type QueryDocumentSnapshot,
-} from "firebase/firestore";
+} from "@firebase/firestore";
 
 export const getThemesCollection = (db: Firestore, uid: string) =>
   collection(db, `users/${uid}/themes`);
@@ -52,13 +52,13 @@ export const getThemes = async (db: Firestore, uid: string) => {
 export const subscribeToThemes = (
   db: Firestore,
   uid: string,
-  set: (themes: Theme[]) => void
+  set: (themes: Theme[]) => void,
 ) => {
   set([]);
 
   return onSnapshot(
     query(getThemesCollection(db, uid), orderBy("name")),
-    (snap) => set(parseThemes(snap.docs))
+    (snap) => set(parseThemes(snap.docs)),
   );
 };
 

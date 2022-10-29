@@ -9,7 +9,7 @@ import {
   setDoc,
   updateDoc,
   type Firestore,
-} from "firebase/firestore";
+} from "@firebase/firestore";
 
 const getPoopsCollection = (db: Firestore, babyId: string) =>
   collection(db, `babies/${babyId}/poops`);
@@ -20,18 +20,18 @@ const getPoopDoc = (db: Firestore, babyId: string, id: string) =>
 export const subscribeToPoops = (
   db: Firestore,
   babyId: string,
-  set: (poops: Poop[]) => void
+  set: (poops: Poop[]) => void,
 ) =>
   onSnapshot(
     query(getPoopsCollection(db, babyId), orderBy("timestamp", "desc")),
     { includeMetadataChanges: true },
-    (snap) => set(snap.docs.map((doc) => Poop.parse(doc.data())))
+    (snap) => set(snap.docs.map((doc) => Poop.parse(doc.data()))),
   );
 
 export const addPoop = async (
   db: Firestore,
   babyId: string,
-  value: PoopAdd
+  value: PoopAdd,
 ) => {
   const add = PoopAdd.parse({ ...value });
   const ref = doc(getPoopsCollection(db, babyId));
@@ -45,7 +45,7 @@ export const addPoop = async (
 export const updatePoop = async (
   db: Firestore,
   babyId: string,
-  value: Poop
+  value: Poop,
 ) => {
   const poop = Poop.parse({ ...value });
   const ref = getPoopDoc(db, babyId, poop.id);

@@ -9,7 +9,7 @@ import {
   setDoc,
   updateDoc,
   type Firestore,
-} from "firebase/firestore";
+} from "@firebase/firestore";
 
 const getNapsCollection = (db: Firestore, babyId: string) =>
   collection(db, `babies/${babyId}/naps`);
@@ -20,12 +20,12 @@ const getNapDoc = (db: Firestore, babyId: string, id: string) =>
 export const subscribeToNaps = (
   db: Firestore,
   babyId: string,
-  set: (naps: Nap[]) => void
+  set: (naps: Nap[]) => void,
 ) =>
   onSnapshot(
     query(getNapsCollection(db, babyId), orderBy("timestamp", "desc")),
     { includeMetadataChanges: true },
-    (snap) => set(snap.docs.map((doc) => Nap.parse(doc.data())))
+    (snap) => set(snap.docs.map((doc) => Nap.parse(doc.data()))),
   );
 
 export const addNap = async (db: Firestore, babyId: string, value: NapAdd) => {

@@ -4,7 +4,7 @@ import {
   onAuthStateChanged,
   signInWithPopup,
   signOut as authSignOut,
-} from "firebase/auth";
+} from "@firebase/auth";
 import { writable } from "svelte/store";
 import { auth, db } from "../firebase";
 import { fixAuthUser, subscribeToUser, updateUserDoc } from "../firebase/users";

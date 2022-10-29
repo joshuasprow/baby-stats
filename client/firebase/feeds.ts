@@ -9,7 +9,7 @@ import {
   setDoc,
   updateDoc,
   type Firestore,
-} from "firebase/firestore";
+} from "@firebase/firestore";
 
 const getFeedsCollection = (db: Firestore, babyId: string) =>
   collection(db, `babies/${babyId}/feeds`);
@@ -20,18 +20,18 @@ const getFeedDoc = (db: Firestore, babyId: string, id: string) =>
 export const subscribeToFeeds = (
   db: Firestore,
   babyId: string,
-  set: (feeds: Feed[]) => void
+  set: (feeds: Feed[]) => void,
 ) =>
   onSnapshot(
     query(getFeedsCollection(db, babyId), orderBy("timestamp", "desc")),
     { includeMetadataChanges: true },
-    (snap) => set(snap.docs.map((doc) => Feed.parse(doc.data())))
+    (snap) => set(snap.docs.map((doc) => Feed.parse(doc.data()))),
   );
 
 export const addFeed = async (
   db: Firestore,
   babyId: string,
-  value: FeedAdd
+  value: FeedAdd,
 ) => {
   const add = FeedAdd.parse({ ...value });
   const ref = doc(getFeedsCollection(db, babyId));
@@ -45,7 +45,7 @@ export const addFeed = async (
 export const updateFeed = async (
   db: Firestore,
   babyId: string,
-  value: Feed
+  value: Feed,
 ) => {
   const feed = Feed.parse({ ...value });
   const ref = getFeedDoc(db, babyId, feed.id);
