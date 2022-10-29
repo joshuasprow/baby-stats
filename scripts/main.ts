@@ -17,6 +17,10 @@ const app = admin.initializeApp({ projectId: config.projectId });
 const db = app.firestore();
 
 const main = async () => {
+  if (!config.projectId || !config.userId || !config.babyId) {
+    throw new Error("Missing config");
+  }
+
   const target = `entries`;
 
   const paths: Paths[] = ENTRY_KINDS.map((kind) => ({
@@ -25,8 +29,11 @@ const main = async () => {
   }));
 
   for (const p of paths) {
-    const error = await migrateCollection(db, p);
-
+    const error = await migrateCollection(db, {
+      paths: p,
+      userId: config.userId,
+      babyId: config.babyId,
+    });
     if (error) console.error(error);
   }
 };

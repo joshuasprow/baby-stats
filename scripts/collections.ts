@@ -74,7 +74,7 @@ const getCollectionDocs = async <
 
 const setCollectionDocs = async (
   db: Firestore,
-  path: string,
+  { babyId, userId, path }: { babyId: string; userId: string; path: string },
   docs: DocumentData[]
 ) => {
   console.log(`Setting ${docs.length} docs to ${path}`);
@@ -86,7 +86,7 @@ const setCollectionDocs = async (
   for (const doc of docs) {
     const ref = collectionRef.doc(doc.id);
 
-    batch.set(ref, doc);
+    batch.set(ref, { ...doc, babyId, userId });
 
     count += 1;
 
@@ -100,13 +100,16 @@ const setCollectionDocs = async (
   await batch.commit();
 };
 
-export const migrateCollection = async (db: Firestore, paths: Paths) => {
+export const migrateCollection = async (
+  db: Firestore,
+  { babyId, userId, paths }: { babyId: string; userId: string; paths: Paths }
+) => {
   const [docs, error] = await getCollectionDocs(db, paths.source);
 
   if (error) return error;
 
   try {
-    await setCollectionDocs(db, paths.target, docs);
+    await setCollectionDocs(db, { babyId, userId, path: paths.target }, docs);
 
     return null;
   } catch (error) {
