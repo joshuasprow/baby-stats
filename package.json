@@ -11,11 +11,13 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "deploy:rules": "turbo run --filter=@baby-stats/firebase deploy:rules",
+    "deploy": "firebase deploy --only hosting",
+    "deploy:rules": "firebase deploy --only firestore:rules",
     "scripts": "turbo run scripts",
     "lint": "turbo run lint"
   },
   "devDependencies": {
+    "firebase": "9.13.0",
     "turbo": "^1.6.1"
   },
   "engines": {
