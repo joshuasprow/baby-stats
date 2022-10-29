@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@baby-stats/models": "*",
+    "firebase": "9.13.0",
     "svelte-router-spa": "^6.0.3",
     "zod": "^3.19.1"
   },
