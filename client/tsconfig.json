@@ -11,5 +11,5 @@
     "checkJs": true,
     "isolatedModules": true
   },
-  "include": ["vite.config.ts", "**/*.d.ts", "**/*.ts", "**/*.svelte"]
+  "include": ["**/*.d.ts", "**/*.ts", "**/*.svelte"]
 }
