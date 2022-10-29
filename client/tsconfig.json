@@ -19,8 +19,8 @@
     "**/*.svelte"
   ],
   "references": [
-    { "path": "@baby-stats/firebase" },
-    { "path": "@baby-stats/lib" },
-    { "path": "@baby-stats/models" }
+    { "path": "../firebase" },
+    { "path": "../lib" },
+    { "path": "../models" }
   ]
 }
