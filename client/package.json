@@ -16,8 +16,8 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
-    "@baby-stats/tsconfig": "*",
     "@sveltejs/vite-plugin-svelte": "^1.1.0",
+    "@tsconfig/svelte": "^3.0.0",
     "svelte": "^3.52.0",
     "svelte-check": "^2.9.2",
     "svelte-preprocess": "^4.10.7",

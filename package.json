@@ -5,8 +5,7 @@
   "workspaces": [
     "client",
     "models",
-    "scripts",
-    "tsconfig"
+    "scripts"
   ],
   "scripts": {
     "build": "turbo run build",

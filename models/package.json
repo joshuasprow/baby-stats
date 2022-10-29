@@ -7,7 +7,6 @@
     "zod": "^3.19.1"
   },
   "devDependencies": {
-    "@baby-stats/tsconfig": "*",
     "typescript": "^4.8.4"
   }
 }
