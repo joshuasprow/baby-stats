@@ -1,4 +1,3 @@
-import { BLACK, getContrastRatio, WHITE } from "lib/theme";
 import {
   DEFAULT_THEME,
   HslColor,
@@ -6,6 +5,7 @@ import {
   ThemeElement,
 } from "@baby-stats/models/theme";
 import { writable } from "svelte/store";
+import { BLACK, getContrastRatio, WHITE } from "../lib/theme";
 
 const getCssVariable = (variable: string) => {
   const value = getComputedStyle(document.documentElement).getPropertyValue(
