@@ -8,10 +8,10 @@
 </script>
 
 <script lang="ts">
-  import type { ChangeEvent } from "@baby-stats/lib/dom";
-  import { hexToHsl, hslToHex } from "@baby-stats/lib/theme";
   import type { Theme, ThemeElement } from "@baby-stats/models/theme";
   import { createEventDispatcher } from "svelte";
+  import type { ChangeEvent } from "../lib/dom";
+  import { hexToHsl, hslToHex } from "../lib/theme";
   import { theme } from "../stores/theme";
 
   type E = $$Generic<ThemeElement>;

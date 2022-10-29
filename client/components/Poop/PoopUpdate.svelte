@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { removePoop, updatePoop } from "@baby-stats/firebase/poops";
-  import { parseError } from "@baby-stats/lib/error";
   import { Poop, type PoopAmount } from "@baby-stats/models/poops";
   import type { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
+  import { removePoop, updatePoop } from "../../firebase/poops";
+  import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
   import PoopAmountInput from "./PoopAmountInput.svelte";

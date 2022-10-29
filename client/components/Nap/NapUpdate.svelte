@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { removeNap, updateNap } from "@baby-stats/firebase/naps";
-  import { parseError } from "@baby-stats/lib/error";
   import { Nap } from "@baby-stats/models/naps";
   import type { TimeRangeAmount } from "@baby-stats/models/time";
   import { db } from "../../firebase";
+  import { removeNap, updateNap } from "../../firebase/naps";
+  import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
   import NapIcon from "../Nap/NapIcon.svelte";

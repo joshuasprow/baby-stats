@@ -1,6 +1,6 @@
-import { parseError } from "@baby-stats/lib/error";
 import { DocumentData, Firestore, Query } from "firebase-admin/firestore";
 import { ZodObject, ZodRawShape } from "zod";
+import { parseError } from "./error";
 import { Paths, Result } from "./models";
 
 const deleteCollectionBatch = async (

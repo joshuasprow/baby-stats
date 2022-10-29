@@ -19,10 +19,10 @@
 </script>
 
 <script lang="ts">
-  import { addNap } from "@baby-stats/firebase/naps";
-  import { parseError } from "@baby-stats/lib/error";
   import type { TimeRangeAmount } from "@baby-stats/models/time";
   import { db } from "../../firebase";
+  import { addNap } from "../../firebase/naps";
+  import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import EntryAddModal from "../Entry/EntryAddModal.svelte";
   import TimeRangePicker from "../TimeRangePicker.svelte";

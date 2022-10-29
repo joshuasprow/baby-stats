@@ -1,8 +1,3 @@
-import {
-  fixAuthUser,
-  subscribeToUser,
-  updateUserDoc,
-} from "@baby-stats/firebase/users";
 import type { User } from "@baby-stats/models/users";
 import {
   GoogleAuthProvider,
@@ -12,6 +7,7 @@ import {
 } from "firebase/auth";
 import { writable } from "svelte/store";
 import { auth, db } from "../firebase";
+import { fixAuthUser, subscribeToUser, updateUserDoc } from "../firebase/users";
 import { setTheme } from "./theme";
 
 let unsubscribeUser = () => {};

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import { getTimeRangeDiffInMinutes } from "@baby-stats/lib/dates";
   import type { TimeRangeAmount } from "@baby-stats/models/time";
+  import { getTimeRangeDiffInMinutes } from "../../lib/dates";
   import EntryIcon from "../Entry/EntryIcon.svelte";
 
   export let amount: TimeRangeAmount;

@@ -1,11 +1,7 @@
 <script lang="ts" context="module">
-  import {
-    getTimeFromString,
-    getTimeString,
-    type Time,
-  } from "@baby-stats/lib/dates";
-  import type { ChangeEvent, InputEvent } from "@baby-stats/lib/dom";
   import { createEventDispatcher } from "svelte";
+  import { getTimeFromString, getTimeString, type Time } from "../lib/dates";
+  import type { ChangeEvent, InputEvent } from "../lib/dom";
 
   const newTime = () => {
     const now = new Date();

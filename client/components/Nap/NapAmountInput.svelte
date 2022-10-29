@@ -1,6 +1,6 @@
 <script lang="ts">
-  import type { SelectEvent } from "@baby-stats/lib/dom";
   import { createEventDispatcher } from "svelte";
+  import type { SelectEvent } from "../../lib/dom";
 
   export let amount: number;
   export let loading: boolean;

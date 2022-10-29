@@ -1,9 +1,9 @@
 <script lang="ts">
-  import EntryIcon from "../Entry/EntryIcon.svelte";
-  import ErrorMessage from "../components/ErrorMessage.svelte";
-  import { getTimeRangeDiffInMinutes } from "@baby-stats/lib/dates";
   import type { FeedSide, FeedSource } from "@baby-stats/models/feeds";
   import type { TimeRangeAmount } from "@baby-stats/models/time";
+  import { getTimeRangeDiffInMinutes } from "../../lib/dates";
+  import EntryIcon from "../Entry/EntryIcon.svelte";
+  import ErrorMessage from "../ErrorMessage.svelte";
 
   export let amount: number | TimeRangeAmount;
   export let source: FeedSource;

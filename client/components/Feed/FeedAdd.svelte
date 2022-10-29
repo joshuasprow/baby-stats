@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { addFeed } from "@baby-stats/firebase/feeds";
-  import { parseError } from "@baby-stats/lib/error";
   import {
     FeedAdd,
     type FeedSide,
@@ -9,6 +7,8 @@
   import type { TimeRangeAmount } from "@baby-stats/models/time";
   import { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
+  import { addFeed } from "../../firebase/feeds";
+  import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import {
     convertAmountToBottle,

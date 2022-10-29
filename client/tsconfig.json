@@ -17,10 +17,5 @@
     "**/*.d.ts",
     "**/*.ts",
     "**/*.svelte"
-  ],
-  "references": [
-    { "path": "../firebase" },
-    { "path": "../lib" },
-    { "path": "../models" }
   ]
 }

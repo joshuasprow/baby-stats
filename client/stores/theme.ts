@@ -1,4 +1,4 @@
-import { BLACK, getContrastRatio, WHITE } from "@baby-stats/lib/theme";
+import { BLACK, getContrastRatio, WHITE } from "lib/theme";
 import {
   DEFAULT_THEME,
   HslColor,

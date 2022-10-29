@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { removePee, updatePee } from "@baby-stats/firebase/pees";
-  import { parseError } from "@baby-stats/lib/error";
   import { Pee, type PeeAmount } from "@baby-stats/models/pees";
   import type { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
+  import { removePee, updatePee } from "../../firebase/pees";
+  import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
   import PeeAmountInput from "./PeeAmountInput.svelte";

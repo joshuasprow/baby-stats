@@ -1,4 +1,4 @@
-import { subscribeToBaby } from "@baby-stats/firebase/babies";
+import { subscribeToBaby } from "../firebase/babies";
 import type { Baby } from "@baby-stats/models/babies";
 import { derived } from "svelte/store";
 import { db } from "../firebase";

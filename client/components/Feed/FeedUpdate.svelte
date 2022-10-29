@@ -1,6 +1,4 @@
 <script lang="ts">
-  import { removeFeed, updateFeed } from "@baby-stats/firebase/feeds";
-  import { parseError } from "@baby-stats/lib/error";
   import {
     Feed,
     type FeedSide,
@@ -10,6 +8,8 @@
   import type { Timestamp } from "@firebase/firestore";
   import type { ZodError } from "zod";
   import { db } from "../../firebase";
+  import { removeFeed, updateFeed } from "../../firebase/feeds";
+  import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import {
     convertAmountToBottle,
