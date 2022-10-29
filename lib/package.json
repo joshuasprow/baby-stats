@@ -4,10 +4,6 @@
   "private": true,
   "type": "module",
   "main": "main.ts",
-  "scripts": {
-    "build": "tsup main.ts",
-    "scripts": "node dist/main.cjs"
-  },
   "engines": {
     "node": "16"
   },

@@ -5,9 +5,7 @@
   "main": "main.ts",
   "type": "module",
   "scripts": {
-    "build": "tsc main.ts",
-    "dev": "node --experimental-specifier-resolution=node --loader ts-node/esm main.ts",
-    "scripts": "node dist/main.cjs"
+    "scripts": "node --experimental-specifier-resolution=node --loader ts-node/esm main.ts"
   },
   "engines": {
     "node": "16"
