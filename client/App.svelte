@@ -1,8 +1,8 @@
 <script lang="ts">
-  import Layout from "$components/Layout/Layout.svelte";
-  import { baby } from "$stores/baby";
-  import { days } from "$stores/days";
-  import { user } from "$stores/user";
+  import Layout from "../components/Layout/Layout.svelte";
+  import { baby } from "../../stores/baby";
+  import { days } from "../../stores/days";
+  import { user } from "../../stores/user";
   import "./main.css";
   import "./variables.css";
 </script>

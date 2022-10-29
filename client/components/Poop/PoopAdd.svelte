@@ -1,16 +1,19 @@
 <script lang="ts">
-  import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
-  import PoopAmountInput from "$components/Poop/PoopAmountInput.svelte";
-  import { db } from "$firebase";
   import { addPoop } from "@baby-stats/firebase/poops";
   import { parseError } from "@baby-stats/lib/error";
   import { PoopAdd, type PoopAmount } from "@baby-stats/models/poops";
-  import { addEntryFields } from "$stores/entries";
   import { Timestamp } from "@firebase/firestore";
+  import { db } from "../../firebase";
+  import { addEntryFields } from "../../stores/entries";
+  import EntryAddModal from "../Entry/EntryAddModal.svelte";
+  import PoopAmountInput from "./PoopAmountInput.svelte";
 
   export let babyId: string;
+  export let userId: string;
 
   let add: PoopAdd = {
+    babyId,
+    userId,
     amount: 2,
     kind: "poops",
     timestamp: Timestamp.now(),

@@ -1,17 +1,18 @@
 <script lang="ts">
-  import FeedAdd from "$components/Feed/FeedAdd.svelte";
-  import NapAdd from "$components/Nap/NapAdd.svelte";
-  import PeeAdd from "$components/Pee/PeeAdd.svelte";
-  import PoopAdd from "$components/Poop/PoopAdd.svelte";
+  import FeedAdd from "../Feed/FeedAdd.svelte";
+  import NapAdd from "../Nap/NapAdd.svelte";
+  import PeeAdd from "../Pee/PeeAdd.svelte";
+  import PoopAdd from "../Poop/PoopAdd.svelte";
 
   export let babyId: string;
+  export let userId: string;
 </script>
 
 <footer>
-  <FeedAdd {babyId} />
-  <NapAdd {babyId} />
-  <PeeAdd {babyId} />
-  <PoopAdd {babyId} />
+  <FeedAdd {babyId} {userId} />
+  <NapAdd {babyId} {userId} />
+  <PeeAdd {babyId} {userId} />
+  <PoopAdd {babyId} {userId} />
 </footer>
 
 <style>

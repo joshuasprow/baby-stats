@@ -1,5 +1,5 @@
 <script lang="ts">
-  import EntryIcon from "$components/Entry/EntryIcon.svelte";
+  import EntryIcon from "../Entry/EntryIcon.svelte";
 
   export let amount: number;
 

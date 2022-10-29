@@ -24,6 +24,8 @@ export type EntryIcon<K extends EntryKind> = K extends keyof typeof ENTRY_ICONS
 
 export const EntryBase = z.object({
   id: z.string().min(1),
+  babyId: z.string().min(1),
+  userId: z.string().min(1),
   timestamp: z.instanceof(Timestamp),
   amount: z.number(),
   kind: EntryKindEnum,

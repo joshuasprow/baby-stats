@@ -1,11 +1,11 @@
 <script lang="ts" context="module">
-  import FeedUpdate from "$components/Feed/FeedUpdate.svelte";
-  import NapUpdate from "$components/Nap/NapUpdate.svelte";
-  import PeeUpdate from "$components/Pee/PeeUpdate.svelte";
-  import PoopUpdate from "$components/Poop/PoopUpdate.svelte";
   import type { Entry, EntryKind } from "@baby-stats/models/entries";
   import type { ComponentType } from "svelte";
   import { fly } from "svelte/transition";
+  import FeedUpdate from "../Feed/FeedUpdate.svelte";
+  import NapUpdate from "../Nap/NapUpdate.svelte";
+  import PeeUpdate from "../Pee/PeeUpdate.svelte";
+  import PoopUpdate from "../Poop/PoopUpdate.svelte";
 
   // used to dynamically render the correct component
   const components: {
@@ -26,7 +26,6 @@
 
 <script lang="ts">
   export let entry: Entry<EntryKind>;
-  export let babyId: string;
 
   $: time = formatter.format(entry.timestamp.toDate());
   $: component = components[entry.kind];
@@ -36,7 +35,7 @@
   <span class="time">{time}</span>
 
   {#if component}
-    <svelte:component this={component} {entry} {babyId} />
+    <svelte:component this={component} {entry} />
   {:else}
     <span>🚫</span>
   {/if}

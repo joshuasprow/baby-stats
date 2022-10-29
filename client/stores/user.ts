@@ -1,4 +1,3 @@
-import { auth, db } from "$firebase";
 import {
   fixAuthUser,
   subscribeToUser,
@@ -12,6 +11,7 @@ import {
   signOut as authSignOut,
 } from "firebase/auth";
 import { writable } from "svelte/store";
+import { auth, db } from "../firebase";
 import { setTheme } from "./theme";
 
 let unsubscribeUser = () => {};

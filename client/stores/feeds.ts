@@ -1,4 +1,3 @@
-import { db } from "$firebase";
 import { subscribeToFeeds } from "@baby-stats/firebase/feeds";
 import {
   getTimeRangeDiffInMinutes,
@@ -7,6 +6,7 @@ import {
 import type { Feed } from "@baby-stats/models/feeds";
 import type { Timestamp } from "@firebase/firestore";
 import { derived, writable } from "svelte/store";
+import { db } from "../firebase";
 import { baby } from "./baby";
 
 export const feedsLoaded = writable(false);

@@ -1,7 +1,10 @@
 <script lang="ts" context="module">
-  import { formatDaystamp, getTimeRangeDiffInMinutes } from "@baby-stats/lib/dates";
+  import {
+    formatDaystamp,
+    getTimeRangeDiffInMinutes,
+  } from "@baby-stats/lib/dates";
   import { ENTRY_ICONS, type EntryKind } from "@baby-stats/models/entries";
-  import type { DayEntry } from "$stores/days";
+  import type { DayEntry } from "../stores/days";
   import Button from "./Button.svelte";
   import Entry from "./Entry/Entry.svelte";
   import EntryModal from "./Entry/EntryModal.svelte";
@@ -46,7 +49,6 @@
 <script lang="ts">
   export let day: DayEntry<EntryKind>[];
   export let daystamp: number;
-  export let babyId: string;
 
   let label = formatDaystamp(daystamp);
   let open = false;
@@ -73,7 +75,7 @@
 
 <article>
   {#each day as [_, entry] (entry.id)}
-    <Entry {entry} {babyId} />
+    <Entry {entry} />
   {/each}
 </article>
 

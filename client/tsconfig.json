@@ -6,13 +6,6 @@
     "useDefineForClassFields": true,
     "module": "ESNext",
     "baseUrl": ".",
-    "paths": {
-      "$components/*": ["components/*"],
-      "$firebase": ["firebase"],
-      "$lib/*": ["lib/*"],
-      "$models/*": ["models/*"],
-      "$stores/*": ["stores/*"]
-    },
     "strict": true,
     "allowJs": true,
     "checkJs": true,
@@ -24,5 +17,10 @@
     "**/*.d.ts",
     "**/*.ts",
     "**/*.svelte"
+  ],
+  "references": [
+    { "path": "@baby-stats/firebase" },
+    { "path": "@baby-stats/lib" },
+    { "path": "@baby-stats/models" }
   ]
 }

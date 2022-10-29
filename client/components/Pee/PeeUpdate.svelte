@@ -1,18 +1,19 @@
 <script lang="ts">
-  import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
-  import PeeAmountInput from "$components/Pee/PeeAmountInput.svelte";
-  import PeeIcon from "$components/Pee/PeeIcon.svelte";
-  import { db } from "$firebase";
   import { removePee, updatePee } from "@baby-stats/firebase/pees";
   import { parseError } from "@baby-stats/lib/error";
   import { Pee, type PeeAmount } from "@baby-stats/models/pees";
-  import { addEntryFields } from "$stores/entries";
   import type { Timestamp } from "@firebase/firestore";
+  import { db } from "../../firebase";
+  import { addEntryFields } from "../../stores/entries";
+  import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
+  import PeeAmountInput from "./PeeAmountInput.svelte";
+  import PeeIcon from "./PeeIcon.svelte";
 
   export let entry: Pee;
-  export let babyId: string;
 
   let update: Pee = {
+    babyId: entry.babyId,
+    userId: entry.userId,
     id: entry.id,
     amount: entry.amount,
     kind: "pees",
@@ -26,7 +27,7 @@
     loading = true;
 
     try {
-      await updatePee(db, babyId, update);
+      await updatePee(db, entry.babyId, update);
     } catch (e) {
       error = parseError(e).message;
     }
@@ -60,7 +61,7 @@
     loading = true;
 
     try {
-      await removePee(db, babyId, entry.id);
+      await removePee(db, entry.babyId, entry.id);
     } catch (e) {
       error = parseError(e).message;
     }

@@ -1,8 +1,7 @@
 <script lang="ts">
-  import Day from "$components/Day.svelte";
-  import type { Day as DayType } from "$stores/days";
+  import type { Day as DayType } from "../stores/days";
+  import Day from "./Day.svelte";
 
-  export let babyId: string;
   export let days: DayType[];
 </script>
 
@@ -10,6 +9,6 @@
   <span>Use the buttons below to add new entries</span>
 {:else}
   {#each days as [daystamp, day] (daystamp)}
-    <Day {babyId} {day} {daystamp} />
+    <Day {day} {daystamp} />
   {/each}
 {/if}

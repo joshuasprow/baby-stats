@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-  import Button from "$components/Button.svelte";
+  import Button from "../Button.svelte";
 
   import { createEventDispatcher } from "svelte";
   import { fade, fly } from "svelte/transition";
@@ -34,10 +34,11 @@
 
 {#if open}
   <div class="backdrop" transition:fade />
-  <div class="wrapper" on:click={handleClose}>
+  <div class="wrapper" on:click={handleClose} on:keypress={() => {}}>
     <section
       class="modal"
-      on:click|stopPropagation
+      on:click|stopPropagation={() => {}}
+      on:keypress={() => {}}
       transition:fly={{ duration, y: window.innerHeight }}
     >
       <slot />

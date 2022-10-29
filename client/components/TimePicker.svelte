@@ -1,5 +1,9 @@
 <script lang="ts" context="module">
-  import { getTimeFromString, getTimeString, type Time } from "@baby-stats/lib/dates";
+  import {
+    getTimeFromString,
+    getTimeString,
+    type Time,
+  } from "@baby-stats/lib/dates";
   import type { ChangeEvent, InputEvent } from "@baby-stats/lib/dom";
   import { createEventDispatcher } from "svelte";
 

@@ -1,19 +1,20 @@
 <script lang="ts">
-  import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
-  import PoopAmountInput from "$components/Poop/PoopAmountInput.svelte";
-  import PoopIcon from "$components/Poop/PoopIcon.svelte";
-  import { db } from "$firebase";
   import { removePoop, updatePoop } from "@baby-stats/firebase/poops";
   import { parseError } from "@baby-stats/lib/error";
   import { Poop, type PoopAmount } from "@baby-stats/models/poops";
-  import { addEntryFields } from "$stores/entries";
   import type { Timestamp } from "@firebase/firestore";
+  import { db } from "../../firebase";
+  import { addEntryFields } from "../../stores/entries";
+  import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
+  import PoopAmountInput from "./PoopAmountInput.svelte";
+  import PoopIcon from "./PoopIcon.svelte";
 
   export let entry: Poop;
-  export let babyId: string;
 
   let update: Poop = {
     id: entry.id,
+    babyId: entry.babyId,
+    userId: entry.userId,
     amount: entry.amount,
     kind: "poops",
     timestamp: entry.timestamp,
@@ -36,7 +37,7 @@
     loading = true;
 
     try {
-      await updatePoop(db, babyId, update);
+      await updatePoop(db, entry.babyId, update);
     } catch (e) {
       error = parseError(e).message;
     }
@@ -60,7 +61,7 @@
     loading = true;
 
     try {
-      await removePoop(db, babyId, entry.id);
+      await removePoop(db, entry.babyId, entry.id);
     } catch (e) {
       error = parseError(e).message;
     }

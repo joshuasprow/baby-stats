@@ -1,21 +1,31 @@
 <script lang="ts">
-  import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
-  import FeedSideInputGroup from "$components/Feed/FeedSideInputGroup.svelte";
-  import FeedSourceInput from "$components/Feed/FeedSourceInput.svelte";
-  import TimeRangePicker from "$components/TimeRangePicker.svelte";
-  import { db } from "$firebase";
   import { addFeed } from "@baby-stats/firebase/feeds";
   import { parseError } from "@baby-stats/lib/error";
-  import { FeedAdd, type FeedSide, type FeedSource } from "@baby-stats/models/feeds";
+  import {
+    FeedAdd,
+    type FeedSide,
+    type FeedSource,
+  } from "@baby-stats/models/feeds";
   import type { TimeRangeAmount } from "@baby-stats/models/time";
-  import { addEntryFields } from "$stores/entries";
-  import { convertAmountToBottle, convertAmountToBreast } from "$stores/feeds";
   import { Timestamp } from "@firebase/firestore";
+  import { db } from "../../firebase";
+  import { addEntryFields } from "../../stores/entries";
+  import {
+    convertAmountToBottle,
+    convertAmountToBreast,
+  } from "../../stores/feeds";
+  import EntryAddModal from "../Entry/EntryAddModal.svelte";
+  import TimeRangePicker from "../TimeRangePicker.svelte";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
+  import FeedSideInputGroup from "./FeedSideInputGroup.svelte";
+  import FeedSourceInput from "./FeedSourceInput.svelte";
 
   export let babyId: string;
+  export let userId: string;
 
   let add: FeedAdd = {
+    babyId,
+    userId,
     amount: 2,
     kind: "feeds",
     side: null,

@@ -1,15 +1,19 @@
 <script lang="ts">
-  import { DEFAULT_THEME, ThemeElement, type Theme } from "@baby-stats/models/theme";
-  import type { User } from "@baby-stats/models/users";
-  import { setTheme, theme } from "$stores/theme";
-  import { themes } from "$stores/themes";
   import {
     addTheme,
     removeTheme,
     updateTheme,
   } from "@baby-stats/firebase/themes";
   import { updateUserDoc } from "@baby-stats/firebase/users";
-  import { db } from "$firebase";
+  import {
+    DEFAULT_THEME,
+    ThemeElement,
+    type Theme,
+  } from "@baby-stats/models/theme";
+  import type { User } from "@baby-stats/models/users";
+  import { db } from "../firebase";
+  import { setTheme, theme } from "../stores/theme";
+  import { themes } from "../stores/themes";
   import Button from "./Button.svelte";
   import ColorPicker from "./ColorPicker.svelte";
   import ThemeSelect from "./ThemeSelect.svelte";

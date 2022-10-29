@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Button from "$components/Button.svelte";
-  import DateTimePicker from "$components/DateTimePicker.svelte";
-  import EntryModal from "$components/Entry/EntryModal.svelte";
   import type { Timestamp } from "@firebase/firestore";
   import { createEventDispatcher } from "svelte";
+  import Button from "../Button.svelte";
+  import DateTimePicker from "../DateTimePicker.svelte";
+  import EntryModal from "./EntryModal.svelte";
 
   type T = $$Generic<Timestamp | undefined>;
 

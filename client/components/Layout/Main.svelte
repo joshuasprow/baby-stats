@@ -1,9 +1,9 @@
 <script lang="ts">
-  import Entries from "$components/Entries.svelte";
-  import SignInButton from "$components/SignInButton.svelte";
   import type { Baby } from "@baby-stats/models/babies";
   import type { User } from "@baby-stats/models/users";
-  import type { Day } from "$stores/days";
+  import type { Day } from "../../stores/days";
+  import Entries from "../Entries.svelte";
+  import SignInButton from "../SignInButton.svelte";
 
   export let baby: Baby | undefined | null;
   export let days: Day[] | undefined;
@@ -23,7 +23,7 @@
   {/if}
 
   {#if baby && days}
-    <Entries babyId={baby.id} {days} />
+    <Entries {days} />
   {/if}
 </main>
 

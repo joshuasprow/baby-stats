@@ -1,19 +1,20 @@
 <script lang="ts">
-  import EntryUpdateModal from "$components/Entry/EntryUpdateModal.svelte";
-  import NapIcon from "$components/Nap/NapIcon.svelte";
-  import TimeRangePicker from "$components/TimeRangePicker.svelte";
-  import { db } from "$firebase";
   import { removeNap, updateNap } from "@baby-stats/firebase/naps";
   import { parseError } from "@baby-stats/lib/error";
   import { Nap } from "@baby-stats/models/naps";
   import type { TimeRangeAmount } from "@baby-stats/models/time";
-  import { addEntryFields } from "$stores/entries";
+  import { db } from "../../firebase";
+  import { addEntryFields } from "../../stores/entries";
+  import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
+  import NapIcon from "../Nap/NapIcon.svelte";
+  import TimeRangePicker from "../TimeRangePicker.svelte";
 
-  export let babyId: string;
   export let entry: Nap;
 
   let update: Nap = {
     id: entry.id,
+    babyId: entry.babyId,
+    userId: entry.userId,
     amount: entry.amount,
     kind: "naps",
     timestamp: entry.timestamp,
@@ -26,7 +27,7 @@
     loading = true;
 
     try {
-      await updateNap(db, babyId, update);
+      await updateNap(db, entry.babyId, update);
     } catch (e) {
       error = parseError(e).message;
     }
@@ -54,7 +55,7 @@
     loading = true;
 
     try {
-      await removeNap(db, babyId, entry.id);
+      await removeNap(db, entry.babyId, entry.id);
     } catch (e) {
       error = parseError(e).message;
     }

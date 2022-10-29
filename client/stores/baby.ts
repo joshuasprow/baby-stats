@@ -1,7 +1,7 @@
-import { db } from "$firebase";
 import { subscribeToBaby } from "@baby-stats/firebase/babies";
 import type { Baby } from "@baby-stats/models/babies";
 import { derived } from "svelte/store";
+import { db } from "../firebase";
 import { user } from "./user";
 
 export const baby = derived<typeof user, Baby | undefined | null>(

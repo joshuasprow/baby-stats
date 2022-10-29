@@ -1,15 +1,8 @@
 <script lang="ts" context="module">
-  import EntryAddModal from "$components/Entry/EntryAddModal.svelte";
-  import TimeRangePicker from "$components/TimeRangePicker.svelte";
-  import { db } from "$firebase";
-  import { addNap } from "@baby-stats/firebase/naps";
-  import { parseError } from "@baby-stats/lib/error";
   import { NapAdd } from "@baby-stats/models/naps";
-  import type { TimeRangeAmount } from "@baby-stats/models/time";
-  import { addEntryFields } from "$stores/entries";
   import { Timestamp } from "@firebase/firestore";
 
-  const getDefaultAdd = (): NapAdd => {
+  const getDefaultAdd = (): Omit<NapAdd, "babyId" | "userId"> => {
     const t = new Date();
 
     const s = new Date(t);
@@ -26,15 +19,24 @@
 </script>
 
 <script lang="ts">
-  export let babyId: string;
+  import { addNap } from "@baby-stats/firebase/naps";
+  import { parseError } from "@baby-stats/lib/error";
+  import type { TimeRangeAmount } from "@baby-stats/models/time";
+  import { db } from "../../firebase";
+  import { addEntryFields } from "../../stores/entries";
+  import EntryAddModal from "../Entry/EntryAddModal.svelte";
+  import TimeRangePicker from "../TimeRangePicker.svelte";
 
-  let add: NapAdd = getDefaultAdd();
+  export let babyId: string;
+  export let userId: string;
+
+  let add: Omit<NapAdd, "babyId" | "userId"> = getDefaultAdd();
 
   let error: null | string = null;
   let loading = false;
 
   const setAdd = (fields: Partial<NapAdd>) => {
-    const [a, e] = addEntryFields(NapAdd, add, fields);
+    const [a, e] = addEntryFields(NapAdd, { ...add, babyId, userId }, fields);
     if (e) {
       error = e.message;
     } else {
@@ -56,7 +58,7 @@
     loading = true;
 
     try {
-      await addNap(db, babyId, add);
+      await addNap(db, babyId, { ...add, babyId, userId });
     } catch (e) {
       error = parseError(e).message;
     }
