@@ -6,9 +6,9 @@
   } from "@baby-stats/models/feeds";
   import type { TimeRangeAmount } from "@baby-stats/models/time";
   import type { Timestamp } from "@firebase/firestore";
-  import type { ZodError } from "zod";
   import { db } from "../../firebase";
-  import { removeFeed, updateFeed } from "../../firebase/feeds";
+  import { updateEntry } from "../../firebase/entries";
+  import { removeFeed } from "../../firebase/feeds";
   import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import {
@@ -43,7 +43,7 @@
     loading = true;
 
     try {
-      await updateFeed(db, entry.babyId, update);
+      await updateEntry(db, update);
     } catch (e) {
       error = parseError(e).message;
     }

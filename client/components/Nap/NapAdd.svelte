@@ -2,7 +2,13 @@
   import { NapAdd } from "@baby-stats/models/naps";
   import { Timestamp } from "@firebase/firestore";
 
-  const getDefaultAdd = (): Omit<NapAdd, "babyId" | "userId"> => {
+  const getDefaultAdd = ({
+    babyId,
+    userId,
+  }: {
+    babyId: string;
+    userId: string;
+  }): NapAdd => {
     const t = new Date();
 
     const s = new Date(t);
@@ -11,6 +17,8 @@
     e.setMinutes(e.getMinutes() + 30);
 
     return {
+      babyId,
+      userId,
       amount: { start: Timestamp.fromDate(s), end: Timestamp.fromDate(e) },
       kind: "naps",
       timestamp: Timestamp.fromDate(t),
@@ -21,7 +29,7 @@
 <script lang="ts">
   import type { TimeRangeAmount } from "@baby-stats/models/time";
   import { db } from "../../firebase";
-  import { addNap } from "../../firebase/naps";
+  import { addEntry } from "../../firebase/entries";
   import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import EntryAddModal from "../Entry/EntryAddModal.svelte";
@@ -30,7 +38,7 @@
   export let babyId: string;
   export let userId: string;
 
-  let add: Omit<NapAdd, "babyId" | "userId"> = getDefaultAdd();
+  let add = getDefaultAdd({ babyId, userId });
 
   let error: null | string = null;
   let loading = false;
@@ -46,7 +54,7 @@
   };
 
   const handleOpen = () => {
-    const { amount, timestamp } = getDefaultAdd();
+    const { amount, timestamp } = getDefaultAdd({ babyId, userId });
 
     setAdd({ amount, timestamp });
   };
@@ -58,7 +66,7 @@
     loading = true;
 
     try {
-      await addNap(db, babyId, { ...add, babyId, userId });
+      await addEntry(db, { ...add, babyId, userId });
     } catch (e) {
       error = parseError(e).message;
     }

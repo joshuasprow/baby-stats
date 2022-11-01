@@ -2,7 +2,7 @@
   import { PoopAdd, type PoopAmount } from "@baby-stats/models/poops";
   import { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
-  import { addPoop } from "../../firebase/poops";
+  import { addEntry } from "../../firebase/entries";
   import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import EntryAddModal from "../Entry/EntryAddModal.svelte";
@@ -44,7 +44,7 @@
     loading = true;
 
     try {
-      await addPoop(db, babyId, add);
+      await addEntry(db, add);
     } catch (e) {
       error = parseError(e).message;
     }

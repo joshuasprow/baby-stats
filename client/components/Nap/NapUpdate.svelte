@@ -2,7 +2,8 @@
   import { Nap } from "@baby-stats/models/naps";
   import type { TimeRangeAmount } from "@baby-stats/models/time";
   import { db } from "../../firebase";
-  import { removeNap, updateNap } from "../../firebase/naps";
+  import { updateEntry } from "../../firebase/entries";
+  import { removeNap } from "../../firebase/naps";
   import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
@@ -27,7 +28,7 @@
     loading = true;
 
     try {
-      await updateNap(db, entry.babyId, update);
+      await updateEntry(db, update);
     } catch (e) {
       error = parseError(e).message;
     }
