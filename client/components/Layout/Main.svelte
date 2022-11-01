@@ -9,7 +9,7 @@
   export let days: Day[] | undefined;
   export let user: User | undefined | null;
 
-  $: centered = user === undefined || baby === undefined || days === undefined;
+  $: centered = !user || baby === undefined || days === undefined;
 </script>
 
 <main class:centered>

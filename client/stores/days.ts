@@ -54,18 +54,21 @@ const groupEntriesByDay = (entries: Entry<EntryKind>[]) => {
   return _days;
 };
 
-export const days = derived<typeof baby, Day[]>(baby, ($baby, set) => {
-  let unsubscribe = () => {};
+export const days = derived<typeof baby, Day[] | undefined>(
+  baby,
+  ($baby, set) => {
+    let unsubscribe = () => {};
 
-  if (!$baby) {
-    set([]);
+    if (!$baby) {
+      set(undefined);
+      return unsubscribe;
+    }
+
+    const setByDay = (_entries: Entry<EntryKind>[]) =>
+      set(groupEntriesByDay(_entries));
+
+    unsubscribe = subscribeToEntries(db, $baby.id, setByDay);
+
     return unsubscribe;
-  }
-
-  const setByDay = (_entries: Entry<EntryKind>[]) =>
-    set(groupEntriesByDay(_entries));
-
-  unsubscribe = subscribeToEntries(db, $baby.id, setByDay);
-
-  return unsubscribe;
-});
+  },
+);
