@@ -9,11 +9,11 @@
   import { db } from "../../firebase";
   import { addEntry } from "../../firebase/entries";
   import { parseError } from "../../lib/error";
-  import { addEntryFields } from "../../stores/entries";
   import {
     convertAmountToBottle,
     convertAmountToBreast,
-  } from "../../stores/feeds";
+  } from "../../lib/feeds";
+  import { addEntryFields } from "../../stores/entries";
   import EntryAddModal from "../Entry/EntryAddModal.svelte";
   import TimeRangePicker from "../TimeRangePicker.svelte";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
