@@ -21,7 +21,7 @@ export type DayEntry<K extends EntryKind> = [
 export type Day = [daystamp: number, entries: DayEntry<EntryKind>[]];
 export type Days = Day[];
 
-const encodeDayTimestamp = (timestamp: Timestamp): number => {
+export const encodeDayTimestamp = (timestamp: Timestamp): number => {
   const ts = timestamp.toDate();
 
   const date = new Date(
@@ -37,10 +37,9 @@ const encodeDayTimestamp = (timestamp: Timestamp): number => {
   return date.getTime();
 };
 
-const newDayEntry = <K extends EntryKind>(entry: Entry<K>): DayEntry<K> => [
-  entry.timestamp.toMillis(),
-  entry,
-];
+export const newDayEntry = <K extends EntryKind>(
+  entry: Entry<K>,
+): DayEntry<K> => [entry.timestamp.toMillis(), entry];
 
 const combineEntries = (
   $feeds: Feed[],

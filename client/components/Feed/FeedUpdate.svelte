@@ -27,19 +27,7 @@
   let error: null | string = null;
   let loading = false;
 
-  let update: Feed;
-  try {
-    update = Feed.parse({
-      id: entry.id,
-      amount: entry.amount,
-      kind: "feeds",
-      source: entry.source,
-      side: entry.side,
-      timestamp: entry.timestamp,
-    });
-  } catch (e) {
-    error = (e as ZodError<Feed>).message;
-  }
+  let update = { ...entry };
 
   const setUpdate = (fields: Partial<Feed>) => {
     const [u, e] = addEntryFields(Feed, update, fields);
