@@ -1,17 +1,9 @@
 import type { Entry, EntryKind } from "@baby-stats/models/entries";
-import type { Feed } from "@baby-stats/models/feeds";
-import type { Nap } from "@baby-stats/models/naps";
-import type { Pee } from "@baby-stats/models/pees";
-import type { Poop } from "@baby-stats/models/poops";
 import type { Timestamp } from "@firebase/firestore";
 import { derived } from "svelte/store";
+import { db } from "../firebase";
+import { subscribeToEntries } from "../firebase/entries";
 import { baby } from "./baby";
-import { feeds } from "./feeds";
-import { naps } from "./naps";
-import { pees } from "./pees";
-import { poops } from "./poops";
-import { takeSnapshot } from "./snapshots";
-import { user } from "./user";
 
 export type DayEntry<K extends EntryKind> = [
   timestamp: number,
@@ -41,64 +33,39 @@ export const newDayEntry = <K extends EntryKind>(
   entry: Entry<K>,
 ): DayEntry<K> => [entry.timestamp.toMillis(), entry];
 
-const combineEntries = (
-  $feeds: Feed[],
-  $naps: Nap[],
-  $pees: Pee[],
-  $poops: Poop[],
-) => {
-  const combined = [...$feeds, ...$naps, ...$pees, ...$poops];
-  const sorted = combined.sort(
-    (a, b) => b.timestamp.seconds - a.timestamp.seconds,
-  );
-
-  return sorted;
-};
-
-const buildDays = ([$feeds, $naps, $pees, $poops]: [
-  Feed[],
-  Nap[],
-  Pee[],
-  Poop[],
-]) => {
-  const days: Days = [];
-  const entries = combineEntries($feeds, $naps, $pees, $poops);
+const groupEntriesByDay = (entries: Entry<EntryKind>[]) => {
+  const _days: Day[] = [];
 
   for (const entry of entries) {
     const daystamp = encodeDayTimestamp(entry.timestamp);
     const dayEntry = newDayEntry(entry);
 
-    const day = days.find(([ds]) => ds === daystamp);
+    const day = _days.find(([ds]) => ds === daystamp);
 
     if (day) {
       day[1].push(dayEntry);
-      days[daystamp] = day;
+      _days[daystamp] = day;
       continue;
     }
 
-    days.push([daystamp, [dayEntry]]);
+    _days.push([daystamp, [dayEntry]]);
   }
 
-  return days;
+  return _days;
 };
 
-export const days = derived(
-  [user, baby, feeds, naps, pees, poops],
-  ([$user, $baby, $feeds, $naps, $pees, $poops]) => {
-    if (!$user || !$baby) return undefined;
+export const days = derived<typeof baby, Day[]>(baby, ($baby, set) => {
+  let unsubscribe = () => {};
 
-    if (
-      $feeds === null ||
-      $naps === null ||
-      $pees === null ||
-      $poops === null
-    ) {
-      return undefined;
-    }
+  if (!$baby) {
+    set([]);
+    return unsubscribe;
+  }
 
-    // calling synchronously so that state isn't blocked from setting
-    takeSnapshot($user.uid);
+  const setByDay = (_entries: Entry<EntryKind>[]) =>
+    set(groupEntriesByDay(_entries));
 
-    return buildDays([$feeds, $naps, $pees, $poops]);
-  },
-);
+  unsubscribe = subscribeToEntries(db, $baby.id, setByDay);
+
+  return unsubscribe;
+});
