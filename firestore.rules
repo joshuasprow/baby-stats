@@ -44,6 +44,9 @@ service cloud.firestore {
       }
 
       allow get, list, delete: if isAuthorized(request, resource.data.babyId);
+      
+      // resource doesn't exist before create, so we can't use it to check permissions
+      // update should keep the same babyId
       allow create, update: if isAuthorized(request, request.resource.data.babyId);
     }
 
