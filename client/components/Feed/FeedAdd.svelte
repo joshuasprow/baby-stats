@@ -7,7 +7,7 @@
   import type { TimeRangeAmount } from "@baby-stats/models/time";
   import { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
-  import { addFeed } from "../../firebase/feeds";
+  import { addEntry } from "../../firebase/entries";
   import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import {
@@ -90,7 +90,7 @@
     loading = true;
 
     try {
-      await addFeed(db, babyId, add);
+      await addEntry(db, add);
     } catch (e) {
       error = parseError(e).message;
     }

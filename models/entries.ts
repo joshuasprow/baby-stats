@@ -1,9 +1,9 @@
 import { Timestamp } from "@firebase/firestore";
 import { z } from "zod";
-import type { Feed } from "./feeds";
-import type { Nap } from "./naps";
-import type { Pee } from "./pees";
-import type { Poop } from "./poops";
+import type { Feed, FeedAdd } from "./feeds";
+import type { Nap, NapAdd } from "./naps";
+import type { Pee, PeeAdd } from "./pees";
+import type { Poop, PoopAdd } from "./poops";
 
 export const ENTRY_KINDS = ["feeds", "naps", "pees", "poops"] as const;
 export const EntryKindEnum = z.enum(ENTRY_KINDS);
@@ -39,4 +39,14 @@ export type Entry<K extends EntryKind> = K extends "feeds"
   ? Pee
   : K extends "poops"
   ? Poop
+  : never;
+
+export type EntryAdd<K extends EntryKind> = K extends "feeds"
+  ? FeedAdd
+  : K extends "naps"
+  ? NapAdd
+  : K extends "pees"
+  ? PeeAdd
+  : K extends "poops"
+  ? PoopAdd
   : never;
