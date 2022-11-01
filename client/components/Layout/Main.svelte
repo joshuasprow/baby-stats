@@ -2,7 +2,7 @@
   import type { Baby } from "@baby-stats/models/babies";
   import type { User } from "@baby-stats/models/users";
   import type { Day } from "../../stores/days";
-  import Entries from "../Entries.svelte";
+  import Days from "../Days.svelte";
   import SignInButton from "../SignInButton.svelte";
 
   export let baby: Baby | undefined | null;
@@ -23,7 +23,7 @@
   {/if}
 
   {#if baby && days}
-    <Entries {days} />
+    <Days {days} />
   {/if}
 </main>
 
