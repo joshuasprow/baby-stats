@@ -6,9 +6,7 @@ export type PeeAmount = z.infer<typeof PeeAmount>;
 
 const PeeBase = EntryBase.extend({ kind: z.literal("pees") });
 
-export const Pee = PeeBase.omit({ amount: true }).extend({
-  amount: PeeAmount,
-});
+export const Pee = PeeBase.extend({ amount: PeeAmount });
 export type Pee = z.infer<typeof Pee>;
 
 export const PeeAdd = Pee.omit({ id: true });

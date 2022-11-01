@@ -8,15 +8,10 @@ export type FeedSide = z.infer<typeof FeedSide>;
 const FeedSource = ["bottle", "breast"] as const;
 export type FeedSource = typeof FeedSource[number];
 
-export const FeedValue = z.object({
-  side: FeedSide,
-  source: z.enum(FeedSource),
-});
-export type FeedValue = z.infer<typeof FeedValue>;
-
 const FeedBase = EntryBase.extend({ kind: z.literal("feeds") });
 
 export const BottleFeed = FeedBase.extend({
+  amount: z.number(),
   source: z.literal(FeedSource[0]),
   side: z.null(),
 });

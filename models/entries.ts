@@ -27,7 +27,6 @@ export const EntryBase = z.object({
   babyId: z.string().min(1),
   userId: z.string().min(1),
   timestamp: z.instanceof(Timestamp),
-  amount: z.number(),
   kind: EntryKindEnum,
 });
 export type EntryBase = z.infer<typeof EntryBase>;

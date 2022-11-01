@@ -9,7 +9,6 @@ import {
   orderBy,
   query,
   where,
-  type DocumentData,
   type Firestore,
 } from "@firebase/firestore";
 import { addDays } from "../lib/dates";
@@ -17,18 +16,18 @@ import { addDays } from "../lib/dates";
 const getEntriesCollection = (db: Firestore, babyId: string) =>
   query(collection(db, "entries"), where("babyId", "==", babyId));
 
-const parseEntryData = (data: DocumentData): Entry<EntryKind> => {
-  switch (data.kind as EntryKind) {
+const parseEntry = (value: unknown): Entry<EntryKind> => {
+  switch ((value as Entry<any>).kind) {
     case "feeds":
-      return Feed.parse(data);
+      return Feed.parse(value);
     case "naps":
-      return Nap.parse(data);
+      return Nap.parse(value);
     case "pees":
-      return Pee.parse(data);
+      return Pee.parse(value);
     case "poops":
-      return Poop.parse(data);
+      return Poop.parse(value);
     default:
-      throw new Error(`Unknown entry kind: ${data.kind}`);
+      throw new Error(`Invalid entry: ${JSON.stringify(value)}`);
   }
 };
 
@@ -44,6 +43,12 @@ export const subscribeToEntries = (
       orderBy("timestamp", "desc"),
     ),
     { includeMetadataChanges: true },
-    (snap) => set(snap.docs.map((doc) => parseEntryData(doc.data()))),
+    (snap) => set(snap.docs.map((doc) => parseEntry(doc.data()))),
     (error) => console.error(error),
   );
+
+export const addEntry = async (
+  db: Firestore,
+  babyId: string,
+  value: Entry<EntryKind>,
+) => {};

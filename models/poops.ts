@@ -6,9 +6,7 @@ export type PoopAmount = z.infer<typeof PoopAmount>;
 
 const PoopBase = EntryBase.extend({ kind: z.literal("poops") });
 
-export const Poop = PoopBase.omit({ amount: true }).extend({
-  amount: PoopAmount,
-});
+export const Poop = PoopBase.extend({ amount: PoopAmount });
 export type Poop = z.infer<typeof Poop>;
 
 export const PoopAdd = Poop.omit({ id: true });
