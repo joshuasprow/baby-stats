@@ -3,8 +3,8 @@
   import type { TimeRangeAmount } from "@baby-stats/models/time";
   import { db } from "../../firebase";
   import { removeEntry, updateEntry } from "../../firebase/entries";
+  import { mergeEntryFields } from "../../lib/entries";
   import { parseError } from "../../lib/error";
-  import { addEntryFields } from "../../stores/entries";
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
   import NapIcon from "../Nap/NapIcon.svelte";
   import TimeRangePicker from "../TimeRangePicker.svelte";
@@ -36,7 +36,7 @@
   };
 
   const setUpdate = (fields: Partial<Nap>) => {
-    const [u, e] = addEntryFields(Nap, update, fields);
+    const [u, e] = mergeEntryFields(Nap, update, fields);
     if (e) {
       error = e.message;
     } else {

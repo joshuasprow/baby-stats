@@ -8,12 +8,12 @@
   import { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
   import { addEntry } from "../../firebase/entries";
+  import { mergeEntryFields } from "../../lib/entries";
   import { parseError } from "../../lib/error";
   import {
     convertAmountToBottle,
     convertAmountToBreast,
   } from "../../lib/feeds";
-  import { addEntryFields } from "../../stores/entries";
   import EntryAddModal from "../Entry/EntryAddModal.svelte";
   import TimeRangePicker from "../TimeRangePicker.svelte";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
@@ -37,7 +37,7 @@
   let loading = false;
 
   const setAdd = (fields: Partial<FeedAdd>) => {
-    const [a, e] = addEntryFields(FeedAdd, add, fields);
+    const [a, e] = mergeEntryFields(FeedAdd, add, fields);
     if (e) {
       error = e.message;
     } else {

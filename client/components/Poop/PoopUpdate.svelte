@@ -3,8 +3,8 @@
   import type { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
   import { removeEntry, updateEntry } from "../../firebase/entries";
+  import { mergeEntryFields } from "../../lib/entries";
   import { parseError } from "../../lib/error";
-  import { addEntryFields } from "../../stores/entries";
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
   import PoopAmountInput from "./PoopAmountInput.svelte";
   import PoopIcon from "./PoopIcon.svelte";
@@ -24,7 +24,7 @@
   let loading = false;
 
   const setUpdate = (fields: Partial<Poop>) => {
-    const [u, e] = addEntryFields(Poop, update, fields);
+    const [u, e] = mergeEntryFields(Poop, update, fields);
     if (e) {
       error = e.message;
     } else {

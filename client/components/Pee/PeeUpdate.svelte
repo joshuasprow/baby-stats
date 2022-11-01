@@ -3,8 +3,8 @@
   import type { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
   import { removeEntry, updateEntry } from "../../firebase/entries";
+  import { mergeEntryFields } from "../../lib/entries";
   import { parseError } from "../../lib/error";
-  import { addEntryFields } from "../../stores/entries";
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
   import PeeAmountInput from "./PeeAmountInput.svelte";
   import PeeIcon from "./PeeIcon.svelte";
@@ -36,7 +36,7 @@
   };
 
   const setUpdate = (fields: Partial<Pee>) => {
-    const [u, e] = addEntryFields(Pee, update, fields);
+    const [u, e] = mergeEntryFields(Pee, update, fields);
     if (e) {
       error = e.message;
     } else {
