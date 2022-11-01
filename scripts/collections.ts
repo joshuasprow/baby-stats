@@ -50,7 +50,7 @@ export const deleteCollection = async (
   }
 };
 
-const getCollectionDocs = async <
+export const getCollectionDocs = async <
   Z extends ZodObject<ZodRawShape> | DocumentData = DocumentData
 >(
   db: Firestore,
@@ -72,7 +72,7 @@ const getCollectionDocs = async <
   }
 };
 
-const setCollectionDocs = async (
+export const setCollectionDocs = async (
   db: Firestore,
   { babyId, userId, path }: { babyId: string; userId: string; path: string },
   docs: DocumentData[]
@@ -98,21 +98,4 @@ const setCollectionDocs = async (
   }
 
   await batch.commit();
-};
-
-export const migrateCollection = async (
-  db: Firestore,
-  { babyId, userId, paths }: { babyId: string; userId: string; paths: Paths }
-) => {
-  const [docs, error] = await getCollectionDocs(db, paths.source);
-
-  if (error) return error;
-
-  try {
-    await setCollectionDocs(db, { babyId, userId, path: paths.target }, docs);
-
-    return null;
-  } catch (error) {
-    return parseError(error);
-  }
 };

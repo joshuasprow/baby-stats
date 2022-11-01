@@ -2,40 +2,22 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-import { ENTRY_KINDS } from "@baby-stats/models/entries";
 import admin from "firebase-admin";
-import { Paths } from "./models";
-import { migrateCollection } from "./collections";
-
-const config = {
-  projectId: process.env.FIRESTORE_PROJECT_ID,
-  userId: process.env.FIRESTORE_UID,
-  babyId: process.env.FIRESTORE_BABY_ID,
-};
-
-const app = admin.initializeApp({ projectId: config.projectId });
-const db = app.firestore();
+import { _1667346173_mergeEntriesCollections } from "./migrations/1667346173_merge-entries-collections";
 
 const main = async () => {
-  if (!config.projectId || !config.userId || !config.babyId) {
+  const projectId = process.env.FIRESTORE_PROJECT_ID;
+  const userId = process.env.FIRESTORE_UID;
+  const babyId = process.env.FIRESTORE_BABY_ID;
+
+  const app = admin.initializeApp({ projectId });
+  const db = app.firestore();
+
+  if (!projectId || !userId || !babyId) {
     throw new Error("Missing config");
   }
 
-  const target = `entries`;
-
-  const paths: Paths[] = ENTRY_KINDS.map((kind) => ({
-    source: `babies/${config.babyId}/${kind}`,
-    target: target,
-  }));
-
-  for (const p of paths) {
-    const error = await migrateCollection(db, {
-      paths: p,
-      userId: config.userId,
-      babyId: config.babyId,
-    });
-    if (error) console.error(error);
-  }
+  await _1667346173_mergeEntriesCollections(db, { babyId, userId });
 };
 
 try {
