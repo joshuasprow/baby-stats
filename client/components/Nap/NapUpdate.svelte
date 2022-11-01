@@ -2,8 +2,7 @@
   import { Nap } from "@baby-stats/models/naps";
   import type { TimeRangeAmount } from "@baby-stats/models/time";
   import { db } from "../../firebase";
-  import { updateEntry } from "../../firebase/entries";
-  import { removeNap } from "../../firebase/naps";
+  import { removeEntry, updateEntry } from "../../firebase/entries";
   import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
@@ -56,7 +55,7 @@
     loading = true;
 
     try {
-      await removeNap(db, entry.babyId, entry.id);
+      await removeEntry(db, entry.id);
     } catch (e) {
       error = parseError(e).message;
     }

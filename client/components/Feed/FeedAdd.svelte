@@ -93,6 +93,7 @@
       await addEntry(db, add);
     } catch (e) {
       error = parseError(e).message;
+      console.error(error);
     }
 
     loading = false;

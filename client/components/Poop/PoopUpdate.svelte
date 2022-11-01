@@ -2,8 +2,7 @@
   import { Poop, type PoopAmount } from "@baby-stats/models/poops";
   import type { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
-  import { updateEntry } from "../../firebase/entries";
-  import { removePoop } from "../../firebase/poops";
+  import { removeEntry, updateEntry } from "../../firebase/entries";
   import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
@@ -62,7 +61,7 @@
     loading = true;
 
     try {
-      await removePoop(db, entry.babyId, entry.id);
+      await removeEntry(db, entry.id);
     } catch (e) {
       error = parseError(e).message;
     }

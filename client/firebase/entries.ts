@@ -9,6 +9,7 @@ import { Pee, PeeAdd } from "@baby-stats/models/pees";
 import { Poop, PoopAdd } from "@baby-stats/models/poops";
 import {
   collection,
+  deleteDoc,
   doc,
   onSnapshot,
   orderBy,
@@ -88,4 +89,8 @@ export const updateEntry = async (db: Firestore, value: Entry<EntryKind>) => {
   await updateDoc(ref, entry);
 
   return entry;
+};
+
+export const removeEntry = async (db: Firestore, entryId: string) => {
+  await deleteDoc(getEntryDoc(db, entryId));
 };

@@ -7,8 +7,7 @@
   import type { TimeRangeAmount } from "@baby-stats/models/time";
   import type { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
-  import { updateEntry } from "../../firebase/entries";
-  import { removeFeed } from "../../firebase/feeds";
+  import { removeEntry, updateEntry } from "../../firebase/entries";
   import { parseError } from "../../lib/error";
   import { addEntryFields } from "../../stores/entries";
   import {
@@ -101,7 +100,7 @@
     loading = true;
 
     try {
-      await removeFeed(db, entry.babyId, entry.id);
+      await removeEntry(db, entry.id);
     } catch (e) {
       error = parseError(e).message;
     }
