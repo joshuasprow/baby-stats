@@ -35,18 +35,16 @@ service cloud.firestore {
     }
 
     match /entries/{entryId} {
-      function isParent(request, resource) {
-        let babyId = resource.data.babyId;
-        let doc = get(/databases/$(database)/documents/babies/$(babyId));
-
-        return request.auth.uid in doc.data.parents;
+      function isParent(uid, babyId) {
+        return uid in get(/databases/$(database)/documents/babies/$(babyId)).data.parents;
       }
 
-      function isAuthorized(request, resource) {
-        return isLoggedIn(request) && isSprow(request) && isParent(request, resource);
+      function isAuthorized(request, babyId) {
+        return isLoggedIn(request) && isSprow(request) && isParent(request.auth.uid, babyId);
       }
 
-      allow create, read, update, delete: if isAuthorized(request, resource);
+      allow get, list, delete: if isAuthorized(request, resource.data.babyId);
+      allow create, update: if isAuthorized(request, request.resource.data.babyId);
     }
 
     match /users/{userId} {
