@@ -1,11 +1,12 @@
 import { Timestamp } from "@firebase/firestore";
 import { z } from "zod";
 import { Feed, FeedAdd } from "./feeds";
+import { Med, MedAdd } from "./meds";
 import { Nap, NapAdd } from "./naps";
 import { Pee, PeeAdd } from "./pees";
 import { Poop, PoopAdd } from "./poops";
 
-export const ENTRY_KINDS = ["feeds", "naps", "pees", "poops"] as const;
+export const ENTRY_KINDS = ["feeds", "meds", "naps", "pees", "poops"] as const;
 export const EntryKindEnum = z.enum(ENTRY_KINDS);
 export type EntryKind = typeof ENTRY_KINDS[number];
 
@@ -14,6 +15,7 @@ export const ENTRY_ICONS = {
     bottle: "🍼",
     breast: "🤱",
   },
+  meds: "💊",
   naps: "💤",
   pees: "💧",
   poops: "💩",
@@ -31,8 +33,8 @@ export const EntryBase = z.object({
 });
 export type EntryBase = z.infer<typeof EntryBase>;
 
-export const Entry = Feed.or(Nap).or(Pee).or(Poop);
+export const Entry = Feed.or(Med).or(Nap).or(Pee).or(Poop);
 export type Entry = z.infer<typeof Entry>;
 
-export const EntryAdd = FeedAdd.or(NapAdd).or(PeeAdd).or(PoopAdd);
+export const EntryAdd = FeedAdd.or(MedAdd).or(NapAdd).or(PeeAdd).or(PoopAdd);
 export type EntryAdd = z.infer<typeof EntryAdd>;
