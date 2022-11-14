@@ -11,6 +11,7 @@ import {
   collection,
   deleteDoc,
   doc,
+  limit,
   onSnapshot,
   orderBy,
   query,
@@ -19,7 +20,6 @@ import {
   where,
   type Firestore,
 } from "@firebase/firestore";
-import { addDays } from "../lib/dates";
 
 const getEntriesCollection = (db: Firestore) => collection(db, "entries");
 
@@ -65,8 +65,8 @@ export const subscribeToEntries = (
     query(
       getEntriesCollection(db),
       where("babyId", "==", babyId),
-      where("timestamp", ">=", addDays(new Date(), -10)),
       orderBy("timestamp", "desc"),
+      limit(100),
     ),
     { includeMetadataChanges: true },
     (snap) => set(snap.docs.map((doc) => parseEntry(doc.data()))),
