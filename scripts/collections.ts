@@ -78,6 +78,7 @@ export const setCollectionDocs = async (
   docs: DocumentData[]
 ) => {
   console.log(`Setting ${docs.length} docs to ${path}`);
+
   const collectionRef = db.collection(path);
 
   let batch = db.batch();

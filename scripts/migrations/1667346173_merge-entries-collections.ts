@@ -23,19 +23,26 @@ export const mergeEntriesCollection = async (
 
 export const _1667346173_mergeEntriesCollections = async (
   db: Firestore,
-  { babyId, userId }: { babyId: string; userId: string }
+  babyId: string
 ) => {
+  const users = await db.collection("users").get();
   const paths: Paths[] = ENTRY_KINDS.map((kind) => ({
     source: `babies/${babyId}/${kind}`,
     target: "entries",
   }));
 
-  for (const p of paths) {
-    const error = await mergeEntriesCollection(db, {
-      paths: p,
-      userId,
-      babyId,
-    });
-    if (error) console.error(error);
+  for (const doc of users.docs) {
+    const user = doc.data();
+
+    console.log(`Migrating user ${user.displayName} [${doc.id}]`);
+
+    for (const p of paths) {
+      const error = await mergeEntriesCollection(db, {
+        paths: p,
+        userId: doc.id,
+        babyId,
+      });
+      if (error) console.error(error);
+    }
   }
 };
