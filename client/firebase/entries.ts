@@ -1,8 +1,4 @@
-import {
-  type Entry,
-  type EntryAdd,
-  type EntryKind,
-} from "@baby-stats/models/entries";
+import { type Entry, type EntryAdd } from "@baby-stats/models/entries";
 import { Feed, FeedAdd } from "@baby-stats/models/feeds";
 import { Nap, NapAdd } from "@baby-stats/models/naps";
 import { Pee, PeeAdd } from "@baby-stats/models/pees";
@@ -26,8 +22,8 @@ const getEntriesCollection = (db: Firestore) => collection(db, "entries");
 const getEntryDoc = (db: Firestore, entryId: string) =>
   doc(db, `entries/${entryId}`);
 
-const parseEntry = (value: unknown): Entry<EntryKind> => {
-  switch ((value as Entry<any>).kind) {
+const parseEntry = (value: unknown): Entry => {
+  switch ((value as Entry).kind) {
     case "feeds":
       return Feed.parse(value);
     case "naps":
@@ -41,8 +37,8 @@ const parseEntry = (value: unknown): Entry<EntryKind> => {
   }
 };
 
-const parseEntryAdd = (value: unknown): EntryAdd<EntryKind> => {
-  switch ((value as Entry<any>).kind) {
+const parseEntryAdd = (value: unknown): EntryAdd => {
+  switch ((value as Entry).kind) {
     case "feeds":
       return FeedAdd.parse(value);
     case "naps":
@@ -59,7 +55,7 @@ const parseEntryAdd = (value: unknown): EntryAdd<EntryKind> => {
 export const subscribeToEntries = (
   db: Firestore,
   babyId: string,
-  set: (entries: Entry<EntryKind>[]) => void,
+  set: (entries: Entry[]) => void,
 ) =>
   onSnapshot(
     query(
@@ -72,7 +68,7 @@ export const subscribeToEntries = (
     (snap) => set(snap.docs.map((doc) => parseEntry(doc.data()))),
   );
 
-export const addEntry = async (db: Firestore, value: EntryAdd<EntryKind>) => {
+export const addEntry = async (db: Firestore, value: EntryAdd) => {
   const add = parseEntryAdd(value);
   const ref = doc(getEntriesCollection(db));
   const entry = parseEntry({ ...add, id: ref.id });
@@ -82,7 +78,7 @@ export const addEntry = async (db: Firestore, value: EntryAdd<EntryKind>) => {
   return entry;
 };
 
-export const updateEntry = async (db: Firestore, value: Entry<EntryKind>) => {
+export const updateEntry = async (db: Firestore, value: Entry) => {
   const entry = parseEntry(value);
   const ref = getEntryDoc(db, entry.id);
 

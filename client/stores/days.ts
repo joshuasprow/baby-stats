@@ -1,16 +1,13 @@
-import type { Entry, EntryKind } from "@baby-stats/models/entries";
+import type { Entry } from "@baby-stats/models/entries";
 import type { Timestamp } from "@firebase/firestore";
 import { derived } from "svelte/store";
 import { db } from "../firebase";
 import { subscribeToEntries } from "../firebase/entries";
 import { baby } from "./baby";
 
-export type DayEntry<K extends EntryKind> = [
-  timestamp: number,
-  entry: Entry<K>,
-];
+export type DayEntry = [timestamp: number, entry: Entry];
 
-export type Day = [daystamp: number, entries: DayEntry<EntryKind>[]];
+export type Day = [daystamp: number, entries: DayEntry[]];
 export type Days = Day[];
 
 export const encodeDayTimestamp = (timestamp: Timestamp): number => {
@@ -29,11 +26,12 @@ export const encodeDayTimestamp = (timestamp: Timestamp): number => {
   return date.getTime();
 };
 
-export const newDayEntry = <K extends EntryKind>(
-  entry: Entry<K>,
-): DayEntry<K> => [entry.timestamp.toMillis(), entry];
+export const newDayEntry = (entry: Entry): DayEntry => [
+  entry.timestamp.toMillis(),
+  entry,
+];
 
-const groupEntriesByDay = (entries: Entry<EntryKind>[]) => {
+const groupEntriesByDay = (entries: Entry[]) => {
   const _days: Day[] = [];
 
   for (const entry of entries) {
@@ -64,8 +62,7 @@ export const days = derived<typeof baby, Day[] | undefined>(
       return unsubscribe;
     }
 
-    const setByDay = (_entries: Entry<EntryKind>[]) =>
-      set(groupEntriesByDay(_entries));
+    const setByDay = (_entries: Entry[]) => set(groupEntriesByDay(_entries));
 
     unsubscribe = subscribeToEntries(db, $baby.id, setByDay);
 

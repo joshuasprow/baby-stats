@@ -16,7 +16,7 @@ const main = async () => {
     throw new Error("Missing config");
   }
 
-  await _1667346173_mergeEntriesCollections(db, babyId);
+  // await _1667346173_mergeEntriesCollections(db, babyId);
 };
 
 try {

@@ -25,7 +25,7 @@
 </script>
 
 <script lang="ts">
-  export let entry: Entry<EntryKind>;
+  export let entry: Entry;
 
   $: time = formatter.format(entry.timestamp.toDate());
   $: component = components[entry.kind];

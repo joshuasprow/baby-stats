@@ -7,14 +7,14 @@
 </script>
 
 <script lang="ts">
-  import type { Entry, EntryKind } from "@baby-stats/models/entries";
+  import type { Entry } from "@baby-stats/models/entries";
   import { fly } from "svelte/transition";
   import FeedUpdate from "../Feed/FeedUpdate.svelte";
   import NapUpdate from "../Nap/NapUpdate.svelte";
   import PeeUpdate from "../Pee/PeeUpdate.svelte";
   import PoopUpdate from "../Poop/PoopUpdate.svelte";
 
-  export let entry: Entry<EntryKind>;
+  export let entry: Entry;
 
   $: time = formatter.format(entry.timestamp.toDate());
 </script>

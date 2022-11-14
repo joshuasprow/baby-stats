@@ -1,12 +1,12 @@
 <script lang="ts" context="module">
-  import { ENTRY_ICONS, type EntryKind } from "@baby-stats/models/entries";
+  import { ENTRY_ICONS } from "@baby-stats/models/entries";
   import { formatDaystamp, getTimeRangeDiffInMinutes } from "../lib/dates";
   import type { DayEntry } from "../stores/days";
   import Button from "./Button.svelte";
   import EntryModal from "./Entry/EntryModal.svelte";
   import EntryNext from "./Entry/EntryNext.svelte";
 
-  const getEntryCounts = (day: DayEntry<EntryKind>[]) =>
+  const getEntryCounts = (day: DayEntry[]) =>
     day.reduce(
       (counts, [_, entry]) => {
         const { kind } = entry;
@@ -44,7 +44,7 @@
 </script>
 
 <script lang="ts">
-  export let day: DayEntry<EntryKind>[];
+  export let day: DayEntry[];
   export let daystamp: number;
 
   let label = formatDaystamp(daystamp);
