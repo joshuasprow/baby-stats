@@ -12,16 +12,7 @@
 
   export let entry: Med;
 
-  let update: Med = {
-    babyId: entry.babyId,
-    userId: entry.userId,
-    id: entry.id,
-    kind: "meds",
-    name: entry.name,
-    amount: entry.amount,
-    unit: entry.unit,
-    timestamp: entry.timestamp,
-  };
+  let update = { ...entry };
 
   let error: null | string = null;
   let loading = false;
@@ -81,7 +72,12 @@
   on:timestamp={handleTimestamp}
   timestamp={update.timestamp}
 >
-  <MedIcon amount={update.amount} unit={update.unit} slot="icon" />
+  <MedIcon
+    amount={update.amount}
+    name={update.name}
+    unit={update.unit}
+    slot="icon"
+  />
 
   <article>
     <MedNameInput name={update.name} {loading} on:change={handleName} />

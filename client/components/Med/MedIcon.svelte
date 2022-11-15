@@ -4,10 +4,12 @@
   import EntryIcon from "../Entry/EntryIcon.svelte";
 
   export let amount: number;
+  export let name: string;
   export let unit: MedUnit;
 </script>
 
 <EntryIcon>
   <span class="shadowed" slot="left">{ENTRY_ICONS.meds}</span>
-  <span class="shadowed" slot="middle">{`${amount}${unit}`}</span>
+  <span slot="middle">{name}</span>
+  <span slot="right">{`${amount}${unit}`}</span>
 </EntryIcon>
