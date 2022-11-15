@@ -3,6 +3,7 @@
   import type { ComponentType } from "svelte";
   import { fly } from "svelte/transition";
   import FeedUpdate from "../Feed/FeedUpdate.svelte";
+  import MedUpdate from "../Med/MedUpdate.svelte";
   import NapUpdate from "../Nap/NapUpdate.svelte";
   import PeeUpdate from "../Pee/PeeUpdate.svelte";
   import PoopUpdate from "../Poop/PoopUpdate.svelte";
@@ -12,6 +13,7 @@
     [K in EntryKind]: ComponentType;
   } = {
     feeds: FeedUpdate,
+    meds: MedUpdate,
     naps: NapUpdate,
     pees: PeeUpdate,
     poops: PoopUpdate,

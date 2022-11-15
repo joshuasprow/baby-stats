@@ -19,6 +19,9 @@
               counts.feeds.breast += getTimeRangeDiffInMinutes(entry.amount);
             }
             break;
+          case "meds":
+            counts.meds += entry.amount;
+            break;
           case "naps":
             counts.naps += getTimeRangeDiffInMinutes(entry.amount);
             break;
@@ -36,6 +39,7 @@
       },
       {
         feeds: { bottle: 0, breast: 0 },
+        meds: 0,
         naps: 0,
         pees: 0,
         poops: 0,
