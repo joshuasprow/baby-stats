@@ -5,6 +5,8 @@
   export let name: string;
   export let loading: boolean;
 
+  let input: HTMLInputElement;
+
   const dispatch = createEventDispatcher<{ change: string }>();
 
   const handleNameChange = (e: InputEvent) =>
@@ -17,6 +19,7 @@
     class:loading
     id="name"
     on:change={handleNameChange}
+    on:focus={(e) => e.currentTarget.select()}
     bind:value={name}
   />
 </label>

@@ -39,13 +39,14 @@
     class:loading
     id="amount"
     on:change={handleAmountChange}
+    on:focus={(e) => e.currentTarget.select()}
     type="number"
     pattern="[0–9]*"
     inputmode="decimal"
     value={amount}
   />
 
-  <select class:loading value={unit}>
+  <select class:loading on:change={handleUnitChange} value={unit}>
     {#each Object.keys(MedUnit.Values) as unit}
       <option value={unit}>{unit}</option>
     {/each}
