@@ -1,5 +1,6 @@
 import { type Entry, type EntryAdd } from "@baby-stats/models/entries";
 import { Feed, FeedAdd } from "@baby-stats/models/feeds";
+import { Med, MedAdd } from "@baby-stats/models/meds";
 import { Nap, NapAdd } from "@baby-stats/models/naps";
 import { Pee, PeeAdd } from "@baby-stats/models/pees";
 import { Poop, PoopAdd } from "@baby-stats/models/poops";
@@ -26,6 +27,8 @@ const parseEntry = (value: unknown): Entry => {
   switch ((value as Entry).kind) {
     case "feeds":
       return Feed.parse(value);
+    case "meds":
+      return Med.parse(value);
     case "naps":
       return Nap.parse(value);
     case "pees":
@@ -41,6 +44,8 @@ const parseEntryAdd = (value: unknown): EntryAdd => {
   switch ((value as Entry).kind) {
     case "feeds":
       return FeedAdd.parse(value);
+    case "meds":
+      return MedAdd.parse(value);
     case "naps":
       return NapAdd.parse(value);
     case "pees":
@@ -72,6 +77,8 @@ export const addEntry = async (db: Firestore, value: EntryAdd) => {
   const add = parseEntryAdd(value);
   const ref = doc(getEntriesCollection(db));
   const entry = parseEntry({ ...add, id: ref.id });
+
+  console.log(entry);
 
   await setDoc(ref, entry);
 

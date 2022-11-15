@@ -5,6 +5,7 @@ export const MedUnit = z.enum(["mg", "g", "ml", "tsp", "tbsp", "units"]);
 export type MedUnit = z.infer<typeof MedUnit>;
 
 export const Med = EntryBase.extend({
+  kind: z.literal("meds"),
   name: z.string(),
   unit: MedUnit,
   amount: z.number().gt(0),

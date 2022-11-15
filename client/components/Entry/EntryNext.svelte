@@ -8,8 +8,10 @@
 
 <script lang="ts">
   import type { Entry } from "@baby-stats/models/entries";
+  import { Feed } from "@baby-stats/models/feeds";
   import { fly } from "svelte/transition";
   import FeedUpdate from "../Feed/FeedUpdate.svelte";
+  import MedUpdate from "../Med/MedUpdate.svelte";
   import NapUpdate from "../Nap/NapUpdate.svelte";
   import PeeUpdate from "../Pee/PeeUpdate.svelte";
   import PoopUpdate from "../Poop/PoopUpdate.svelte";
@@ -24,6 +26,8 @@
 
   {#if entry.kind === "feeds"}
     <FeedUpdate {entry} />
+  {:else if entry.kind === "meds"}
+    <MedUpdate {entry} />
   {:else if entry.kind === "naps"}
     <NapUpdate {entry} />
   {:else if entry.kind === "pees"}

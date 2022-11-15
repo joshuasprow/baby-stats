@@ -53,7 +53,9 @@
     try {
       await addEntry(db, add);
     } catch (e) {
-      error = parseError(e).message;
+      const parsed = parseError(e);
+      error = parsed.message;
+      console.dir(parsed);
     }
 
     loading = false;
@@ -76,19 +78,10 @@
   <article>
     <MedAmountInput amount={add.amount} {loading} on:change={handleAmount} />
   </article>
-
-  {#if error}
-    <span class="error">{error}</span>
-  {/if}
 </EntryAddModal>
 
 <style>
   article {
     margin: 0.25rem 0;
-  }
-
-  .error {
-    color: red;
-    font-weight: bold;
   }
 </style>
