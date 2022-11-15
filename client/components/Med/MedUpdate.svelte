@@ -8,6 +8,7 @@
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
   import MedAmountInput from "./MedAmountInput.svelte";
   import MedIcon from "./MedIcon.svelte";
+  import MedNameInput from "./MedNameInput.svelte";
 
   export let entry: Med;
 
@@ -47,6 +48,8 @@
     }
   };
 
+  const handleName = (e: CustomEvent<string>) => setUpdate({ name: e.detail });
+
   const handleAmount = async (e: CustomEvent<number>) => {
     setUpdate({ amount: e.detail });
 
@@ -79,6 +82,10 @@
   timestamp={update.timestamp}
 >
   <MedIcon amount={update.amount} unit={update.unit} slot="icon" />
+
+  <article>
+    <MedNameInput name={update.name} {loading} on:change={handleName} />
+  </article>
 
   <article>
     <MedAmountInput amount={update.amount} {loading} on:change={handleAmount} />

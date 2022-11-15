@@ -9,6 +9,7 @@
   import { generateMedName } from "../../lib/meds";
   import EntryAddModal from "../Entry/EntryAddModal.svelte";
   import MedAmountInput from "./MedAmountInput.svelte";
+  import MedNameInput from "./MedNameInput.svelte";
 
   export let babyId: string;
   export let userId: string;
@@ -66,6 +67,10 @@
   timestamp={add.timestamp}
 >
   <span class="shadowed" slot="icon">{ENTRY_ICONS.meds}</span>
+
+  <article>
+    <MedNameInput name={add.name} {loading} on:change={handleName} />
+  </article>
 
   <article>
     <MedAmountInput amount={add.amount} {loading} on:change={handleAmount} />

@@ -23,7 +23,13 @@
 
 <label for="amount">
   amount:
-  <input class:loading on:change={handleAmountChange} type="number" />
+  <input
+    class:loading
+    id="amount"
+    on:change={handleAmountChange}
+    type="number"
+    value={amount}
+  />
 </label>
 
 <style>
