@@ -41,7 +41,8 @@
 
   const handleName = (e: CustomEvent<string>) => setAdd({ name: e.detail });
 
-  const handleAmount = (e: CustomEvent<number>) => setAdd({ amount: e.detail });
+  const handleAmount = (e: CustomEvent<Pick<MedAdd, "amount" | "unit">>) =>
+    setAdd({ ...e.detail });
 
   const handleTimestamp = (e: CustomEvent<Timestamp>) =>
     setAdd({ timestamp: e.detail });

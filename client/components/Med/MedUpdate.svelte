@@ -50,8 +50,8 @@
 
   const handleName = (e: CustomEvent<string>) => setUpdate({ name: e.detail });
 
-  const handleAmount = async (e: CustomEvent<number>) => {
-    setUpdate({ amount: e.detail });
+  const handleAmount = async (e: CustomEvent<Pick<Med, "amount" | "unit">>) => {
+    setUpdate({ ...e.detail });
 
     await handleUpdate();
   };
@@ -88,7 +88,12 @@
   </article>
 
   <article>
-    <MedAmountInput amount={update.amount} {loading} on:change={handleAmount} />
+    <MedAmountInput
+      amount={update.amount}
+      unit={update.unit}
+      {loading}
+      on:change={handleAmount}
+    />
   </article>
 
   {#if error}
