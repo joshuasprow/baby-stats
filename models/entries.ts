@@ -33,8 +33,5 @@ export const EntryBase = z.object({
 });
 export type EntryBase = z.infer<typeof EntryBase>;
 
-export const Entry = Feed.or(Med).or(Nap).or(Pee).or(Poop);
-export type Entry = z.infer<typeof Entry>;
-
-export const EntryAdd = FeedAdd.or(MedAdd).or(NapAdd).or(PeeAdd).or(PoopAdd);
-export type EntryAdd = z.infer<typeof EntryAdd>;
+export type Entry = Feed | Med | Nap | Pee | Poop;
+export type EntryAdd = FeedAdd | MedAdd | NapAdd | PeeAdd | PoopAdd;

@@ -1,24 +1,19 @@
-import type { Feed, FeedAdd } from "@baby-stats/models/feeds";
-import type { Nap, NapAdd } from "@baby-stats/models/naps";
-import type { Pee, PeeAdd } from "@baby-stats/models/pees";
-import type { Poop, PoopAdd } from "@baby-stats/models/poops";
+import type { Entry, EntryAdd } from "@baby-stats/models/entries";
 import type { ZodError, ZodType } from "zod";
 
-type EntryType = Feed | FeedAdd | Nap | NapAdd | Pee | PeeAdd | Poop | PoopAdd;
-
-const parseEntry = <E extends EntryType>(
+const parseEntry = <E extends Entry | EntryAdd>(
   type: ZodType<E>,
-  feed: E,
+  entry: E,
 ): [E, null] | [null, ZodError<E>] => {
   try {
-    return [type.parse(feed), null];
+    return [type.parse(entry), null];
   } catch (error) {
     return [null, error as ZodError<E>];
   }
 };
 
-export const mergeEntryFields = <E extends EntryType>(
+export const mergeEntryFields = <E extends Entry | EntryAdd>(
   type: ZodType<E>,
   entry: E,
   fields: Partial<E>,
-) => parseEntry(type, { ...entry, ...fields });
+): [E, null] | [null, ZodError<E>] => parseEntry(type, { ...entry, ...fields });
