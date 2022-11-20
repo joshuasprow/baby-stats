@@ -7,9 +7,11 @@
 
   export let babyId: string;
   export let userId: string;
+
+  let standalone = window.matchMedia("(display-mode: standalone)").matches;
 </script>
 
-<footer>
+<footer class:standalone>
   <FeedAdd {babyId} {userId} />
   <NapAdd {babyId} {userId} />
   <PeeAdd {babyId} {userId} />
@@ -35,5 +37,9 @@
 
     border-top: var(--border);
     border-bottom: var(--border);
+  }
+
+  footer.standalone {
+    height: calc(var(--action-bar-height) + 0.5rem);
   }
 </style>
