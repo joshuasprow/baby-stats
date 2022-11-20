@@ -10,7 +10,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
-    "deploy": "firebase deploy --only hosting",
+    "deploy": "turbo run deploy",
     "deploy:rules": "firebase deploy --only firestore:rules",
     "scripts": "turbo run scripts",
     "lint": "turbo run lint"
