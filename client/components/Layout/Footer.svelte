@@ -8,7 +8,8 @@
   export let babyId: string;
   export let userId: string;
 
-  let standalone = window.matchMedia("(display-mode: standalone)").matches;
+  // if pwa is running in standalone mode, make the footer taller to clear ios/android menu bars
+  const standalone = window.matchMedia("(display-mode: standalone)").matches;
 </script>
 
 <footer class:standalone>
@@ -40,6 +41,8 @@
   }
 
   footer.standalone {
-    height: calc(var(--action-bar-height) + 0.5rem);
+    height: calc(var(--action-bar-height) + 1rem);
+    padding: 0.25rem 0 0 0;
+    align-items: flex-start;
   }
 </style>
