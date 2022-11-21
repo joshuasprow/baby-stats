@@ -1,11 +1,12 @@
 <script lang="ts">
+  import { onDestroy, onMount } from "svelte";
   import { fade } from "svelte/transition";
   import { useRegisterSW } from "virtual:pwa-register/svelte";
   import Button from "./Button.svelte";
 
   const { needRefresh, updateServiceWorker } = useRegisterSW({
     onRegistered() {
-      console.log(`SW registered`);
+      console.log("SW registered");
     },
     onRegisterError(error) {
       console.log("SW registration error:", error);
@@ -13,12 +14,26 @@
   });
 
   const close = () => needRefresh.set(false);
+
+  const handleKeydown = ({ key }: KeyboardEvent) => {
+    if (key === "Enter") updateServiceWorker(true);
+    if (key === "Escape") close();
+  };
+
+  onMount(() => {
+    document.addEventListener("keydown", handleKeydown);
+  });
+
+  onDestroy(() => {
+    document.removeEventListener("keydown", handleKeydown);
+  });
 </script>
 
 {#if $needRefresh}
   <div class="backdrop" transition:fade />
+  <!-- svelte-ignore a11y-click-events-have-key-events *see escape/enter handlers above -->
   <div class="wrapper" role="alert" on:click={close}>
-    <aside class="modal" on:focus={() => console.log("focus")} transition:fade>
+    <aside class="modal" on:click|stopPropagation transition:fade>
       <header>✨ New Stuff ✨</header>
 
       <p>Click below to reload and update</p>
