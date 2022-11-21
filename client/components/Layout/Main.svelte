@@ -3,6 +3,7 @@
   import type { User } from "@baby-stats/models/users";
   import type { Day } from "../../stores/days";
   import Days from "../Days.svelte";
+  import ReloadPrompt from "../ReloadPrompt.svelte";
   import SignInButton from "../SignInButton.svelte";
 
   export let baby: Baby | undefined | null;
@@ -26,6 +27,8 @@
   {#if baby && days}
     <Days {days} />
   {/if}
+
+  <ReloadPrompt />
 </main>
 
 <style>

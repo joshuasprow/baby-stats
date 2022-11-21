@@ -10,9 +10,16 @@ export default defineConfig({
   plugins: [
     svelte(),
     VitePWA({
-      registerType: "autoUpdate",
-      devOptions: { enabled: true },
+      registerType: "prompt",
+      devOptions: {
+        enabled: true,
+        navigateFallback: "index.html",
+        type: "module",
+      },
+      srcDir: ".",
+      filename: "prompt-sw.ts",
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
+      strategies: "injectManifest",
       manifest: {
         name: "Baby Stats",
         short_name: "BabyStats",
@@ -28,6 +35,12 @@ export default defineConfig({
             src: "pwa-512x512.png",
             sizes: "512x512",
             type: "image/png",
+          },
+          {
+            src: "pwa-512x512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any maskable",
           },
         ],
       },
