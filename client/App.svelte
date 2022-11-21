@@ -1,5 +1,6 @@
 <script lang="ts">
   import Layout from "./components/Layout/Layout.svelte";
+  import ReloadPrompt from "./components/ReloadPrompt.svelte";
   import "./main.css";
   import { baby } from "./stores/baby";
   import { days } from "./stores/days";
@@ -12,3 +13,5 @@
 </svelte:head>
 
 <Layout baby={$baby} days={$days} user={$user} />
+
+<ReloadPrompt />

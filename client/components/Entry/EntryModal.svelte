@@ -35,14 +35,14 @@
 {#if open}
   <div class="backdrop" transition:fade />
   <div class="wrapper" on:click={handleClose} on:keypress={() => {}}>
-    <section
+    <aside
       class="modal"
       on:click|stopPropagation={() => {}}
       on:keypress={() => {}}
       transition:fly={{ duration, y: window.innerHeight }}
     >
       <slot />
-    </section>
+    </aside>
   </div>
 {/if}
 

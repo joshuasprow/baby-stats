@@ -27,8 +27,6 @@
   {#if baby && days}
     <Days {days} />
   {/if}
-
-  <ReloadPrompt />
 </main>
 
 <style>
