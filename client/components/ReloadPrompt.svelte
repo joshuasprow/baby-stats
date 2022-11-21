@@ -1,19 +1,10 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
   import { fade } from "svelte/transition";
-  import { useRegisterSW } from "virtual:pwa-register/svelte";
+  import { swNeedRefresh, updateServiceWorker } from "../stores/sw";
   import Button from "./Button.svelte";
 
-  const { needRefresh, updateServiceWorker } = useRegisterSW({
-    onRegistered() {
-      console.log("SW registered");
-    },
-    onRegisterError(error) {
-      console.log("SW registration error:", error);
-    },
-  });
-
-  const close = () => needRefresh.set(false);
+  const close = () => swNeedRefresh.set(false);
 
   const handleKeydown = ({ key }: KeyboardEvent) => {
     if (key === "Enter") updateServiceWorker(true);
@@ -29,7 +20,7 @@
   });
 </script>
 
-{#if $needRefresh}
+{#if $swNeedRefresh}
   <div class="backdrop" transition:fade />
   <!-- svelte-ignore a11y-click-events-have-key-events *see escape/enter handlers above -->
   <div class="wrapper" role="alert" on:click={close}>
