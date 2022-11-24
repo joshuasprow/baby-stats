@@ -5,7 +5,7 @@ const logger = {
   error: (error: Error) => {
     console.error(error);
 
-    logEvent(analytics, "client_error", {
+    logEvent(analytics, "exception", {
       message: error.message,
       name: error.name,
       stack: error.stack,
