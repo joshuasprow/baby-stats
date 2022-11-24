@@ -1,5 +1,6 @@
 <script lang="ts">
   import { fade, fly } from "svelte/transition";
+  import logger from "../../firebase/logger";
   import { user } from "../../stores/user";
   import Button from "../Button.svelte";
   import CloseIcon from "../CloseIcon.svelte";
@@ -15,6 +16,8 @@
   const toggle = () => {
     open = !open;
   };
+
+  const log = () => logger.error(new Error("test error"));
 </script>
 
 <Button class="sider-toggle-button" on:click={toggle}>☰</Button>
@@ -44,6 +47,8 @@
         {:else}
           <SignInButton />
         {/if}
+
+        <button on:click={log}>log test error</button>
       </section>
 
       <!-- {#if $user}
