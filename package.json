@@ -12,6 +12,7 @@
     "dev": "turbo run dev --parallel",
     "deploy": "turbo run deploy",
     "deploy:rules": "firebase deploy --only firestore:rules",
+    "stage": "turbo run stage",
     "scripts": "turbo run scripts",
     "lint": "turbo run lint"
   },

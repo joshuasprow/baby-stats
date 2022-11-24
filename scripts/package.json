@@ -8,7 +8,7 @@
     "scripts": "node --experimental-specifier-resolution=node --loader ts-node/esm main.ts"
   },
   "engines": {
-    "node": "16"
+    "node": "18"
   },
   "dependencies": {
     "@baby-stats/models": "*",

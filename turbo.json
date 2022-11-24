@@ -18,6 +18,10 @@
     },
     "scripts": {
       "dependsOn": ["@baby-stats/scripts#build"]
+    },
+    "stage": {
+      "dependsOn": ["build"],
+      "outputs": ["dist/**"]
     }
   }
 }
