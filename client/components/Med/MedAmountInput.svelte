@@ -1,6 +1,7 @@
 <script lang="ts">
   import { MedUnit, type Med } from "@baby-stats/models/meds";
   import { createEventDispatcher } from "svelte";
+  import logger from "../../firebase/logger";
   import type { InputEvent, SelectEvent } from "../../lib/dom";
 
   export let amount = 2;
@@ -15,7 +16,7 @@
     const value = parseInt(e.currentTarget.value);
 
     if (typeof value !== "number") {
-      console.error("invalid amount", value, typeof value);
+      logger.error(new Error(`invalid amount: ${value} (${typeof value})`));
       return;
     }
 

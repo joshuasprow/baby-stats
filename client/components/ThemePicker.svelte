@@ -6,8 +6,10 @@
   } from "@baby-stats/models/theme";
   import type { User } from "@baby-stats/models/users";
   import { db } from "../firebase";
+  import logger from "../firebase/logger";
   import { addTheme, removeTheme, updateTheme } from "../firebase/themes";
   import { updateUserDoc } from "../firebase/users";
+  import { parseError } from "../lib/error";
   import { setTheme, theme } from "../stores/theme";
   import { themes } from "../stores/themes";
   import Button from "./Button.svelte";
@@ -23,14 +25,13 @@
 
     try {
       if (!$theme.id) {
-        console.error("No theme id available to update");
+        logger.error(new Error("No theme id available to update"));
         return;
       }
 
       await updateTheme(db, user.uid, { ...$theme });
-    } catch (error) {
-      console.log(theme);
-      console.error(error);
+    } catch (e) {
+      logger.error(parseError(e));
     }
 
     disabled = false;
@@ -56,8 +57,8 @@
       });
 
       setTheme(next);
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      logger.error(parseError(e));
     }
 
     disabled = false;
@@ -68,7 +69,7 @@
 
     try {
       if (!$theme.id) {
-        console.error("No theme id available to remove");
+        logger.error(new Error("No theme id available to remove"));
         return;
       }
 
@@ -86,7 +87,7 @@
       await updateUserDoc(db, { uid: user.uid, themeId: next.id });
       await removeTheme(db, user.uid, $theme.id);
     } catch (e) {
-      console.error(e);
+      logger.error(parseError(e));
     }
 
     disabled = false;
@@ -97,15 +98,13 @@
 
     try {
       if (!$theme.id) {
-        console.error("No theme id available to set as default");
+        logger.error(new Error("No theme id available to set as default"));
         return;
       }
 
-      console.log("setting default theme", $theme);
-
       await updateUserDoc(db, { uid: user.uid, themeId: $theme.id });
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      logger.error(parseError(e));
     }
 
     disabled = false;

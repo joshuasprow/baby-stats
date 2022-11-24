@@ -14,6 +14,8 @@ import {
   type Firestore,
   type QueryDocumentSnapshot,
 } from "@firebase/firestore";
+import { parseError } from "../lib/error";
+import logger from "./logger";
 
 export const getThemesCollection = (db: Firestore, uid: string) =>
   collection(db, `users/${uid}/themes`);
@@ -33,8 +35,8 @@ const parseThemes = (docs: QueryDocumentSnapshot<DocumentData>[]) => {
   for (const doc of docs) {
     try {
       themes.push(Theme.parse(doc.data()));
-    } catch (error) {
-      console.error(error);
+    } catch (e) {
+      logger.error(parseError(e));
     }
   }
 

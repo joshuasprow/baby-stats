@@ -3,6 +3,7 @@
   import type { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
   import { removeEntry, updateEntry } from "../../firebase/entries";
+  import logger from "../../firebase/logger";
   import { mergeEntryFields } from "../../lib/entries";
   import { parseError } from "../../lib/error";
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
@@ -39,7 +40,9 @@
     try {
       await updateEntry(db, update);
     } catch (e) {
-      error = parseError(e).message;
+      const parsed = parseError(e);
+      error = parsed.message;
+      logger.error(parsed);
     }
 
     loading = false;
@@ -63,7 +66,9 @@
     try {
       await removeEntry(db, entry.id);
     } catch (e) {
-      error = parseError(e).message;
+      const parsed = parseError(e);
+      error = parsed.message;
+      logger.error(parsed);
     }
 
     loading = false;

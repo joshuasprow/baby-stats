@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Timestamp } from "@firebase/firestore";
   import { createEventDispatcher } from "svelte";
+  import logger from "../../firebase/logger";
   import type { SelectEvent } from "../../lib/dom";
   import DateTimePicker from "../DateTimePicker.svelte";
 
@@ -22,7 +23,7 @@
     const value = parseInt(e.currentTarget.value);
 
     if (typeof value !== "number") {
-      console.error("invalid amount", value, typeof value);
+      logger.error(new Error(`invalid amount: ${value} (${typeof value})`));
       return;
     }
 

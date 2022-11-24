@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
+  import logger from "../../firebase/logger";
   import type { SelectEvent } from "../../lib/dom";
 
   export let amount: number;
@@ -16,7 +17,7 @@
     const _amount = parseInt(e.currentTarget.value);
 
     if (typeof _amount !== "number") {
-      console.error("invalid amount", _amount, typeof _amount);
+      logger.error(new Error(`invalid amount: ${_amount} (${typeof _amount})`));
       return;
     }
 

@@ -2,6 +2,7 @@
   import { DEFAULT_THEME, type Theme } from "@baby-stats/models/theme";
   import type { User } from "@baby-stats/models/users";
   import { createEventDispatcher } from "svelte";
+  import logger from "../firebase/logger";
   import Button from "./Button.svelte";
   import CloseIcon from "./CloseIcon.svelte";
 
@@ -21,7 +22,7 @@
     const theme = themes.find((t) => t.id === value);
 
     if (!theme) {
-      console.error(`No theme found with selected id: ${value}`);
+      logger.error(new Error(`No theme found with selected id: ${value}`));
       return;
     }
 

@@ -13,4 +13,4 @@ const options = FirebaseOptions.parse({
   measurementId: import.meta.env.VITE_MEASUREMENT_ID,
 });
 
-export const { auth, db } = initializeApp(options);
+export const { analytics, auth, db } = initializeApp(options);
