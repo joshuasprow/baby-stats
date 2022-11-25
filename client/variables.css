@@ -1,6 +1,44 @@
 :root {
   --action-bar-height: 54px;
 
+  --error-color: #ff0000;
+  --error-background-color: #ffdddd;
+  --error-border-color: #ffaaaa;
+
+  --warning-color: #ffaa00;
+  --warning-background-color: #ffffcc;
+  --warning-border-color: #ffcc00;
+
+  --success-color: #00aa00;
+  --success-background-color: #ccffcc;
+  --success-border-color: #00cc00;
+
+  --info-color: #0000ff;
+  --info-background-color: #ccccff;
+  --info-border-color: #0000cc;
+
+  --log-color: #000000;
+  --log-background-color: #ffffff;
+  --log-border-color: #aaaaaa;
+
+  --log-font-family: "Roboto Mono", monospace;
+  --log-font-size: 14px;
+  --log-line-height: 1.5;
+  --log-font-weight: normal;
+  --log-font-style: normal;
+  --log-font-smoothing: antialiased;
+
+  --log-padding: 10px;
+  --log-border-radius: 5px;
+
+  --log-margin: 5px 0;
+  --log-border-width: 1px;
+  --log-border-style: solid;
+  --log-border-color: var(--log-border-color);
+
+  --log-color: var(--log-color);
+  --log-background-color: var(--log-background-color);
+
   --background-color-hue: 0;
   --background-color-saturation: 0%;
   --background-color-lightness: 100%;
