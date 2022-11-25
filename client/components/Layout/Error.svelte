@@ -2,7 +2,7 @@
   import { onMount } from "svelte";
   import { parseError } from "../../lib/error";
 
-  let error: Error | null = new Error("test error");
+  let error: Error | null = null;
 
   onMount(() => {
     window.onunhandledrejection = (e) => {

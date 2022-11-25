@@ -3,7 +3,7 @@ import { FirebaseOptions } from "./options";
 
 const projectId = import.meta.env.VITE_PROJECT_ID;
 
-const options = FirebaseOptions.parse({
+export const options = FirebaseOptions.parse({
   apiKey: import.meta.env.VITE_API_KEY,
   authDomain: `${projectId}.firebaseapp.com`,
   projectId: `${projectId}`,
