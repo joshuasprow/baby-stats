@@ -1,6 +1,7 @@
 <script lang="ts">
   import { fade, fly } from "svelte/transition";
   import logger from "../../firebase/logger";
+  import { parseError } from "../../lib/error";
   import { user } from "../../stores/user";
   import Button from "../Button.svelte";
   import CloseIcon from "../CloseIcon.svelte";
@@ -8,6 +9,8 @@
   import SignOutButton from "../SignOutButton.svelte";
 
   export let open = false;
+
+  let clearCacheDisabled = false;
 
   const close = () => {
     open = false;
@@ -18,6 +21,22 @@
   };
 
   const log = () => logger.error(new Error("test error"));
+
+  const clearCache = async () => {
+    try {
+      clearCacheDisabled = true;
+
+      const keys = await caches.keys();
+
+      for (const key of keys) {
+        await caches.delete(key);
+      }
+    } catch (e) {
+      logger.error(parseError(e));
+    } finally {
+      clearCacheDisabled = false;
+    }
+  };
 </script>
 
 <Button class="sider-toggle-button" on:click={toggle}>☰</Button>
@@ -47,10 +66,17 @@
         {:else}
           <SignInButton />
         {/if}
-
-        <button on:click={log}>log test error</button>
       </section>
 
+      <section>
+        <Button on:click={log}>log test error</Button>
+      </section>
+
+      <section>
+        <Button disabled={clearCacheDisabled} on:click={clearCache}>
+          clear cache
+        </Button>
+      </section>
       <!-- {#if $user}
         <section transition:fly>
           <ThemeControls user={$user} />

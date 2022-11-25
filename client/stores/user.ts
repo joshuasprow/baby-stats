@@ -7,7 +7,9 @@ import {
 } from "@firebase/auth";
 import { writable } from "svelte/store";
 import { auth, db } from "../firebase";
+import logger from "../firebase/logger";
 import { fixAuthUser, subscribeToUser, updateUserDoc } from "../firebase/users";
+import { parseError } from "../lib/error";
 import { setTheme } from "./theme";
 
 let unsubscribeUser = () => {};
@@ -23,11 +25,17 @@ onAuthStateChanged(auth, async (_authUser) => {
     return;
   }
 
-  const _user = await fixAuthUser(db, _authUser);
+  try {
+    const _user = await fixAuthUser(db, _authUser);
 
-  await updateUserDoc(db, _user);
+    await updateUserDoc(db, _user);
 
-  unsubscribeUser = subscribeToUser(db, _user.uid, user.set, setTheme);
+    unsubscribeUser = subscribeToUser(db, _user.uid, user.set, setTheme);
+  } catch (e) {
+    logger.error(parseError(e));
+
+    user.set(null);
+  }
 });
 
 export const signIn = async () => {
