@@ -11,12 +11,10 @@
   export let user: User | undefined | null;
 </script>
 
-{#if user}
-  <Sider />
-{/if}
-
 <Main {baby} {days} {user} />
 
 {#if baby && user}
   <Footer babyId={baby.id} userId={user.uid} />
 {/if}
+
+<Sider />
