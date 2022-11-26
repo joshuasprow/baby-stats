@@ -1,13 +1,14 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import logger from "../../firebase/logger";
   import { parseError } from "../../lib/error";
 
   let error: Error | null = null;
 
   onMount(() => {
     window.onunhandledrejection = (e) => {
-      console.error(e.reason);
       error = parseError(e.reason);
+      logger.error(error);
     };
   });
 </script>
