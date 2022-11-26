@@ -16,9 +16,9 @@
 <section class="log-viewer">
   {#each $logs as { id, level, message, timestamp } (id)}
     <p>
-      <span>{formatter.format(timestamp)}</span>
-      <span class={level}>[{level}]</span>
-      <span>{message}</span>
+      <span class="timestamp">{formatter.format(timestamp)}</span>
+      <span class={`level ${level}`}>[{level}]</span>
+      <span class="message">{message}</span>
     </p>
   {/each}
 </section>
@@ -26,16 +26,20 @@
 <style>
   .log-viewer {
     max-height: 100%;
+    width: 100%;
     overflow: auto;
     padding: 0 1rem;
   }
 
   .log-viewer p {
     display: flex;
-    justify-items: start;
     gap: 0.5rem;
     font-size: 0.75rem;
     line-height: 1rem;
+  }
+
+  .log-viewer span {
+    white-space: nowrap;
   }
 
   .log-viewer .error {

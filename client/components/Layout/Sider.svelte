@@ -9,7 +9,7 @@
   import SignInButton from "../SignInButton.svelte";
   import SignOutButton from "../SignOutButton.svelte";
 
-  export let open = true;
+  export let open = false;
 
   let clearCacheDisabled = false;
 
