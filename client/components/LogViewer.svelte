@@ -29,7 +29,8 @@
     max-height: 100%;
     width: 100%;
     overflow: auto;
-    padding: 0 1rem;
+    border: var(--border-width) solid var(--border-color);
+    border-radius: var(--border-radius);
   }
 
   .log-viewer p {
@@ -37,6 +38,12 @@
     gap: 0.5rem;
     font-size: 0.75rem;
     line-height: 1rem;
+    margin: 0;
+    padding: 0.5rem;
+  }
+
+  .log-viewer p:nth-of-type(even) {
+    background-color: var(--button-color-hover);
   }
 
   .log-viewer span {
