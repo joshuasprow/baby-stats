@@ -20,6 +20,7 @@
       "dependsOn": ["@baby-stats/scripts#build"]
     },
     "stage": {
+      "cache": false,
       "dependsOn": ["build"],
       "outputs": ["dist/**"]
     }
