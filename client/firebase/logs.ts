@@ -1,4 +1,4 @@
-import { Log, LogAdd } from "@baby-stats/models/logs";
+import { Log } from "@baby-stats/models/logs";
 import {
   collection,
   doc,
@@ -8,11 +8,8 @@ import {
   orderBy,
   query,
   updateDoc,
-  type DocumentData,
   type Firestore,
-  type QuerySnapshot,
 } from "@firebase/firestore";
-import Queue from "../lib/queue";
 
 const getLogsCollection = (db: Firestore) => collection(db, "logs");
 

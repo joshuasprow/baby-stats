@@ -1,9 +1,46 @@
+<script lang="ts" context="module">
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  });
+</script>
+
 <script lang="ts">
   import { logs } from "../stores/logs";
 </script>
 
-<section>
-  {#each $logs as log (log.id)}
-    <p>{log.message}</p>
+<section class="log-viewer">
+  {#each $logs as { id, level, message, timestamp } (id)}
+    <p>
+      <span>{formatter.format(timestamp)}</span>
+      <span class={level}>[{level}]</span>
+      <span>{message}</span>
+    </p>
   {/each}
 </section>
+
+<style>
+  .log-viewer p {
+    display: flex;
+    justify-items: start;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+
+  .log-viewer .error {
+    color: var(--error-color);
+  }
+
+  .log-viewer .info {
+    color: var(--info-color);
+  }
+
+  .log-viewer .warn {
+    color: var(--warning-color);
+  }
+</style>
