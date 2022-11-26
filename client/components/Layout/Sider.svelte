@@ -9,7 +9,7 @@
   import SignInButton from "../SignInButton.svelte";
   import SignOutButton from "../SignOutButton.svelte";
 
-  export let open = false;
+  export let open = true;
 
   let clearCacheDisabled = false;
 
@@ -69,11 +69,9 @@
         {/if}
       </section>
 
-      <section>
+      <section class="dev-controls">
         <Button on:click={log}>log test error</Button>
-      </section>
 
-      <section>
         <Button disabled={clearCacheDisabled} on:click={clearCache}>
           clear cache
         </Button>
@@ -123,7 +121,7 @@
 
   main {
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr auto;
+    grid-template-rows: 1fr 1fr auto;
     justify-items: center;
     max-height: calc(100vh - 2rem);
   }
@@ -132,7 +130,8 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    gap: 0.5rem;
   }
 
   p {

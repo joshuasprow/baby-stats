@@ -14,11 +14,12 @@
 </script>
 
 <section class="log-viewer">
-  {#each $logs as { id, level, message, timestamp } (id)}
+  {#each $logs as { id, error, level, message, timestamp } (id)}
     <p>
       <span class="timestamp">{formatter.format(timestamp)}</span>
       <span class={`level ${level}`}>[{level}]</span>
       <span class="message">{message}</span>
+      <span class="stack">{error && error.stack ? error.stack : ""}</span>
     </p>
   {/each}
 </section>
@@ -42,6 +43,11 @@
     white-space: nowrap;
   }
 
+  .log-viewer .level {
+    /* [error] is the largest at 7 characters */
+    min-width: 7ch;
+  }
+
   .log-viewer .error {
     color: var(--error-color);
   }
@@ -52,5 +58,9 @@
 
   .log-viewer .warn {
     color: var(--warning-color);
+  }
+
+  .log-viewer .stack {
+    white-space: normal;
   }
 </style>
