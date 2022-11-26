@@ -110,42 +110,23 @@ const sendLogEntry = async (payload: ReturnType<typeof buildPayload>) => {
   }
 };
 
-const newInfoLog = () => (message: string) => {
-  console.log(message);
+const newLogFunc =
+  <L extends LogLevel>(level: L) =>
+  (message: L extends "error" ? Error : string) => {
+    console[level](message);
 
-  const entry = buildEntry("info", message);
-  const payload = buildPayload(entry);
+    const entry = buildEntry(level, message);
+    const payload = buildPayload(entry);
 
-  sendLogEntry(payload);
-};
+    sendLogEntry(payload);
+  };
 
 const logger = {
-  debug: (message: string) => {
-    console.debug(message);
-
-    const entry = buildEntry("debug", message);
-    const payload = buildPayload(entry);
-
-    sendLogEntry(payload);
-  },
-  info: newInfoLog(),
-  log: newInfoLog(),
-  warn: (message: string) => {
-    console.warn(message);
-
-    const entry = buildEntry("warn", message);
-    const payload = buildPayload(entry);
-
-    sendLogEntry(payload);
-  },
-  error: (error: Error) => {
-    console.error(error);
-
-    const entry = buildEntry("error", error);
-    const payload = buildPayload(entry);
-
-    sendLogEntry(payload);
-  },
+  debug: newLogFunc("debug"),
+  info: newLogFunc("info"),
+  log: newLogFunc("info"),
+  warn: newLogFunc("warn"),
+  error: newLogFunc("error"),
 };
 
 export default logger;
