@@ -5,7 +5,7 @@ import Queue from "../lib/queue";
 import { baby } from "../stores/baby";
 import { accessToken, user } from "../stores/user";
 
-const QUEUE = new Queue<LogAdd>();
+const PENDING_LOGS = new Queue<void>();
 
 const buildEntry = <L extends LogLevel>(
   level: L,
@@ -118,7 +118,7 @@ const newLogFunc =
     const entry = buildEntry(level, message);
     const payload = buildPayload(entry);
 
-    sendLogEntry(payload);
+    PENDING_LOGS.enqueue(() => sendLogEntry(payload));
   };
 
 const logger = {
