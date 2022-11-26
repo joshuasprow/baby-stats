@@ -5,6 +5,7 @@
   import { user } from "../../stores/user";
   import Button from "../Button.svelte";
   import CloseIcon from "../CloseIcon.svelte";
+  import LogViewer from "../LogViewer.svelte";
   import SignInButton from "../SignInButton.svelte";
   import SignOutButton from "../SignOutButton.svelte";
 
@@ -77,6 +78,8 @@
           clear cache
         </Button>
       </section>
+
+      <LogViewer />
       <!-- {#if $user}
         <section transition:fly>
           <ThemeControls user={$user} />

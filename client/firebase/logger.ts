@@ -1,22 +1,22 @@
-import { LogError, LogLevel, type Log } from "@baby-stats/models/logs";
+import { LogError, LogLevel, type LogAdd } from "@baby-stats/models/logs";
 import { get } from "svelte/store";
 import { options } from ".";
 import Queue from "../lib/queue";
 import { baby } from "../stores/baby";
 import { accessToken, user } from "../stores/user";
 
-const QUEUE = new Queue<Log>();
+const QUEUE = new Queue<LogAdd>();
 
 const buildEntry = <L extends LogLevel>(
   level: L,
   message: L extends "error" ? Error : string,
-): Log => {
+): LogAdd => {
   const $baby = get(baby);
   const $user = get(user);
 
   const timestamp = Date.now();
 
-  const error: Log["error"] =
+  const error: LogAdd["error"] =
     message instanceof Error
       ? {
           name: message.name,
@@ -49,6 +49,7 @@ const getFieldValue = (value: unknown) => {
 
   if (LogError.safeParse(value).success) {
     const v = value as unknown as LogError;
+
     return {
       mapValue: {
         fields: {
@@ -63,7 +64,7 @@ const getFieldValue = (value: unknown) => {
   throw new Error(`Invalid value: (${typeof value}) ${JSON.stringify(value)}`);
 };
 
-const buildPayload = (entry: Log) => {
+const buildPayload = (entry: LogAdd) => {
   const fields: Record<string, ReturnType<typeof getFieldValue>> = {};
 
   for (const [key, value] of Object.entries(entry)) {
@@ -80,8 +81,6 @@ const sendLogEntry = async (payload: ReturnType<typeof buildPayload>) => {
     console.error("No access token; cannot send log entry");
     return;
   }
-
-  console.log({ accessToken: $accessToken });
 
   const name = `projects/${options.projectId}/databases/(default)/documents/logs`;
   const url = `https://firestore.googleapis.com/v1/${name}`;
@@ -144,6 +143,8 @@ const logger = {
 
     const entry = buildEntry("error", error);
     const payload = buildPayload(entry);
+
+    sendLogEntry(payload);
   },
 };
 

@@ -1,4 +1,4 @@
-import { type Entry, type EntryAdd } from "@baby-stats/models/entries";
+import type { Entry, EntryAdd } from "@baby-stats/models/entries";
 import { Feed, FeedAdd } from "@baby-stats/models/feeds";
 import { Med, MedAdd } from "@baby-stats/models/meds";
 import { Nap, NapAdd } from "@baby-stats/models/naps";
