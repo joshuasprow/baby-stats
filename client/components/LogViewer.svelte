@@ -24,6 +24,12 @@
 </section>
 
 <style>
+  .log-viewer {
+    max-height: 100%;
+    overflow: auto;
+    padding: 0 1rem;
+  }
+
   .log-viewer p {
     display: flex;
     justify-items: start;

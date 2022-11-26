@@ -9,7 +9,7 @@
   import SignInButton from "../SignInButton.svelte";
   import SignOutButton from "../SignOutButton.svelte";
 
-  export let open = false;
+  export let open = true;
 
   let clearCacheDisabled = false;
 
@@ -43,7 +43,7 @@
 <Button class="sider-toggle-button" on:click={toggle}>☰</Button>
 
 {#if open}
-  <div class="backdrop" on:click={close} transition:fade />
+  <div class="sider-backdrop" on:click={close} transition:fade />
 
   <aside transition:fly={{ x: window.innerWidth }}>
     <header>
@@ -96,7 +96,7 @@
     right: 0.5rem;
   }
 
-  .backdrop {
+  .sider-backdrop {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.5);
@@ -117,10 +117,15 @@
     font-size: 0.75rem;
   }
 
+  header {
+    height: 1.5rem;
+  }
+
   main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr auto;
+    justify-items: center;
+    max-height: calc(100vh - 2rem);
   }
 
   section {
