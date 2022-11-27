@@ -1,9 +1,8 @@
-import { LogError, LogLevel, type LogAdd } from "@baby-stats/models/logs";
+import { Log, LogLevel, type LogAdd } from "@baby-stats/models/logs";
 import { get } from "svelte/store";
-import { options } from ".";
 import Queue from "../lib/queue";
 import { baby } from "../stores/baby";
-import { accessToken, user } from "../stores/user";
+import { user } from "../stores/user";
 
 const PENDING_LOGS = new Queue<void>();
 
@@ -35,74 +34,31 @@ const buildEntry = <L extends LogLevel>(
   };
 };
 
-const getFieldValue = (value: unknown) => {
-  const vundefined = () => ({});
-
-  const vstring = (v: string | undefined) =>
-    v === null ? vundefined() : { stringValue: v };
-
-  if (value === null) return vundefined();
-
-  if (typeof value === "string") return vstring(value);
-
-  if (typeof value === "number") return { integerValue: value };
-
-  if (LogError.safeParse(value).success) {
-    const v = value as unknown as LogError;
-
-    return {
-      mapValue: {
-        fields: {
-          message: vstring(v.message),
-          name: vstring(v.name),
-          stack: vstring(v.stack),
-        },
-      },
-    };
-  }
-
-  throw new Error(`Invalid value: (${typeof value}) ${JSON.stringify(value)}`);
-};
-
-const buildPayload = (entry: LogAdd) => {
-  const fields: Record<string, ReturnType<typeof getFieldValue>> = {};
-
-  for (const [key, value] of Object.entries(entry)) {
-    fields[key] = getFieldValue(value);
-  }
-
-  return { fields };
-};
-
-const sendLogEntry = async (payload: ReturnType<typeof buildPayload>) => {
-  const $accessToken = get(accessToken);
-
-  if (!$accessToken) {
-    console.error("No access token; cannot send log entry");
-    return;
-  }
-
-  const name = `projects/${options.projectId}/databases/(default)/documents/logs`;
-  const url = `https://firestore.googleapis.com/v1/${name}`;
-  const headers = {
-    Authorization: `Bearer ${$accessToken}`,
-    "Content-Type": "application/json",
-  };
-
+const sendLogEntry = async (entry: LogAdd) => {
   try {
-    const res = await fetch(url, {
-      body: JSON.stringify(payload),
+    const res = await fetch("https://logs-ppyf5q4eoa-uc.a.run.app", {
       method: "POST",
-      headers,
+      body: JSON.stringify(entry),
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
+
     const json = await res.json();
 
-    if (res.status >= 400) {
+    if (res.status >= 300) {
       console.error(
         `Error sending log entry [${res.status} ${
           res.statusText
         }]: ${JSON.stringify(json)}`,
       );
+      return;
+    }
+
+    const { success } = Log.safeParse(json);
+
+    if (!success) {
+      console.error(`Expected response to be Log; got ${JSON.stringify(json)}`);
       return;
     }
   } catch (error) {
@@ -115,10 +71,13 @@ const newLogFunc =
   (message: L extends "error" ? Error : string) => {
     console[level](message);
 
-    const entry = buildEntry(level, message);
-    const payload = buildPayload(entry);
+    try {
+      const entry = buildEntry(level, message);
 
-    PENDING_LOGS.enqueue(() => sendLogEntry(payload));
+      PENDING_LOGS.enqueue(() => sendLogEntry(entry));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
 const logger = {
