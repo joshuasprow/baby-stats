@@ -16,6 +16,8 @@
   },
   "main": "dist/index.js",
   "dependencies": {
+    "@baby-stats/lib": "*",
+    "@baby-stats/models": "*",
     "firebase-admin": "^11.3.0",
     "firebase-functions": "^4.1.0"
   },

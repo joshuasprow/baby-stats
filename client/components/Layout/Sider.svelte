@@ -1,7 +1,7 @@
 <script lang="ts">
   import { fade, fly } from "svelte/transition";
   import logger from "../../firebase/logger";
-  import { parseError } from "../../lib/error";
+  import { parseError } from "@baby-stats/lib";
   import { user } from "../../stores/user";
   import Button from "../Button.svelte";
   import CloseIcon from "../CloseIcon.svelte";

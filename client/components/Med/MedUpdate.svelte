@@ -5,7 +5,7 @@
   import { removeEntry, updateEntry } from "../../firebase/entries";
   import logger from "../../firebase/logger";
   import { mergeEntryFields } from "../../lib/entries";
-  import { parseError } from "../../lib/error";
+  import { parseError } from "@baby-stats/lib";
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
   import MedAmountInput from "./MedAmountInput.svelte";
   import MedIcon from "./MedIcon.svelte";

@@ -6,7 +6,7 @@
   import { addEntry } from "../../firebase/entries";
   import logger from "../../firebase/logger";
   import { mergeEntryFields } from "../../lib/entries";
-  import { parseError } from "../../lib/error";
+  import { parseError } from "@baby-stats/lib";
   import { generateMedName } from "../../lib/meds";
   import EntryAddModal from "../Entry/EntryAddModal.svelte";
   import MedAmountInput from "./MedAmountInput.svelte";

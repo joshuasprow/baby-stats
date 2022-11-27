@@ -12,6 +12,7 @@
     "lint": "svelte-check --tsconfig ./tsconfig.json"
   },
   "dependencies": {
+    "@baby-stats/lib": "*",
     "@baby-stats/models": "*",
     "firebase": "9.13.0",
     "svelte-router-spa": "^6.0.3",

@@ -5,6 +5,7 @@
   "workspaces": [
     "client",
     "functions",
+    "lib",
     "models",
     "scripts"
   ],

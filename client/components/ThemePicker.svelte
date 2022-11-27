@@ -9,7 +9,7 @@
   import logger from "../firebase/logger";
   import { addTheme, removeTheme, updateTheme } from "../firebase/themes";
   import { updateUserDoc } from "../firebase/users";
-  import { parseError } from "../lib/error";
+  import { parseError } from "@baby-stats/lib";
   import { setTheme, theme } from "../stores/theme";
   import { themes } from "../stores/themes";
   import Button from "./Button.svelte";
