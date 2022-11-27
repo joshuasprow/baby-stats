@@ -9,7 +9,7 @@ import {
 import { writable } from "svelte/store";
 import { z } from "zod";
 import { auth, db } from "../firebase";
-import logger from "../firebase/logger";
+import logger from "../lib/logger";
 import { fixAuthUser, subscribeToUser, updateUserDoc } from "../firebase/users";
 import { parseError } from "@baby-stats/lib/error";
 import { setTheme } from "./theme";

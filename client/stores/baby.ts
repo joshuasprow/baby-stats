@@ -2,7 +2,7 @@ import type { Baby } from "@baby-stats/models/babies";
 import { derived } from "svelte/store";
 import { db } from "../firebase";
 import { subscribeToBaby } from "../firebase/babies";
-import logger from "../firebase/logger";
+import logger from "../lib/logger";
 import { parseError } from "@baby-stats/lib/error";
 import { user } from "./user";
 

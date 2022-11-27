@@ -6,7 +6,7 @@
   } from "@baby-stats/models/theme";
   import type { User } from "@baby-stats/models/users";
   import { db } from "../firebase";
-  import logger from "../firebase/logger";
+  import logger from "../lib/logger";
   import { addTheme, removeTheme, updateTheme } from "../firebase/themes";
   import { updateUserDoc } from "../firebase/users";
   import { parseError } from "@baby-stats/lib/error";

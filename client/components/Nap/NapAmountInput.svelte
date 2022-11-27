@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import logger from "../../firebase/logger";
+  import logger from "../../lib/logger";
   import type { SelectEvent } from "../../lib/dom";
 
   export let amount: number;

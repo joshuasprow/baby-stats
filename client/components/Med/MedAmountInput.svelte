@@ -1,7 +1,7 @@
 <script lang="ts">
   import { MedUnit, type Med } from "@baby-stats/models/meds";
   import { createEventDispatcher } from "svelte";
-  import logger from "../../firebase/logger";
+  import logger from "../../lib/logger";
   import type { InputEvent, SelectEvent } from "../../lib/dom";
 
   export let amount = 2;

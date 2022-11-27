@@ -4,7 +4,7 @@
   import { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
   import { addEntry } from "../../firebase/entries";
-  import logger from "../../firebase/logger";
+  import logger from "../../lib/logger";
   import { mergeEntryFields } from "../../lib/entries";
   import { parseError } from "@baby-stats/lib/error";
   import { generateMedName } from "../../lib/meds";

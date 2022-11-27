@@ -1,6 +1,6 @@
 import { Log, LogLevel, type LogAdd } from "@baby-stats/models/logs";
 import { get } from "svelte/store";
-import Queue from "../lib/queue";
+import Queue from "./queue";
 import { baby } from "../stores/baby";
 import { user } from "../stores/user";
 
