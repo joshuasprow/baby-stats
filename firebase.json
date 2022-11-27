@@ -26,5 +26,8 @@
     "ui": {
       "enabled": true
     }
+  },
+  "functions": {
+    "codebase": "functions"
   }
 }

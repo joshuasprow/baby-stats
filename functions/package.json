@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
-    "build": "tsc",
+    "build": "esbuild src/index.ts --outfile=dist/index.js --bundle --platform=node --target=node16",
     "build:watch": "tsc --watch",
     "serve": "npm run build && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
@@ -22,6 +22,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
+    "esbuild": "^0.15.16",
     "eslint": "^8.28.0",
     "eslint-config-google": "^0.14.0",
     "eslint-plugin-import": "^2.26.0",
