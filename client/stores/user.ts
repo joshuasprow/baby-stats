@@ -16,35 +16,19 @@ import { setTheme } from "./theme";
 
 let unsubscribeUser = () => {};
 
-const parseAccessToken = (authUser: FirebaseUser) => {
-  try {
-    const result = z
-      .object({ accessToken: z.string().nullable() })
-      .parse(authUser);
-
-    return result.accessToken;
-  } catch {
-    return null;
-  }
-};
-
 export const user = writable<User | null | undefined>(
   undefined,
   unsubscribeUser,
 );
 
-export const accessToken = writable<string | null>(null);
-
 onAuthStateChanged(auth, async (authUser) => {
   if (!authUser) {
     user.set(null);
-    accessToken.set(null);
+
     return;
   }
 
   try {
-    accessToken.set(parseAccessToken(authUser));
-
     const _user = await fixAuthUser(db, authUser);
 
     await updateUserDoc(db, _user);
