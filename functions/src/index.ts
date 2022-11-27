@@ -1,4 +1,5 @@
 import { LogAdd } from "@baby-stats/models/logs";
+import { Response } from "firebase-functions/v1";
 import { logger } from "firebase-functions/v2";
 import { onRequest } from "firebase-functions/v2/https";
 import { ZodError } from "zod";
@@ -27,6 +28,35 @@ const formatZodError = (error: ZodError): string => {
   return `Invalid Log Entry Fields: ${formatted}`;
 };
 
+const validateLogEntry = (res: Response, body: unknown): LogAdd | null => {
+  try {
+    const entry = LogAdd.parse(body);
+
+    return entry;
+  } catch (e) {
+    const error = parseError(e, "ParseError");
+
+    if (error instanceof ZodError) {
+      const formatted = formatZodError(error);
+
+      logger.error(formatted, { body });
+
+      res.status(400).send(formatted);
+
+      return null;
+    }
+
+    logger.error(error.message, {
+      body,
+      error: { name: error.name, stack: error.stack },
+    });
+
+    res.status(500).send("Internal Server Error");
+
+    return null;
+  }
+};
+
 export const logs = onRequest(
   {
     cors: [
@@ -44,33 +74,9 @@ export const logs = onRequest(
       return;
     }
 
-    const { body } = request;
-    let entry: LogAdd;
+    const entry = validateLogEntry(response, request.body);
 
-    try {
-      entry = LogAdd.parse(body);
-    } catch (e) {
-      const error = parseError(e, "ParseError");
-
-      if (error instanceof ZodError) {
-        const formatted = formatZodError(error);
-
-        logger.error(formatted, { body });
-
-        response.status(400).send(formatted);
-
-        return;
-      }
-
-      logger.error(error.message, {
-        body,
-        error: { name: error.name, stack: error.stack },
-      });
-
-      response.status(500).send("Internal Server Error");
-
-      return;
-    }
+    if (!entry) return;
 
     const { message, ...rest } = entry;
 
