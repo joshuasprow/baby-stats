@@ -8,18 +8,18 @@ export type LogLevel = z.infer<typeof LogLevel>;
 export const LogError = z.object({
   message: z.string(),
   name: z.string(),
-  stack: z.string().nullable(),
+  stack: z.string().optional(),
 });
 export type LogError = z.infer<typeof LogError>;
 
 export const Log = z.object({
   id: z.string(),
-  babyId: Baby.shape.id.nullable(),
-  error: LogError.nullable(),
+  babyId: Baby.shape.id.optional(),
+  error: LogError.optional(),
   level: LogLevel,
   message: z.string(),
   timestamp: z.number(),
-  userId: User.shape.uid.nullable(),
+  userId: User.shape.uid.optional(),
 });
 export type Log = z.infer<typeof Log>;
 

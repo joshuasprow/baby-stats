@@ -21,27 +21,27 @@ const buildEntry = <L extends LogLevel>(
       ? {
           name: message.name,
           message: message.message,
-          stack: message.stack || null,
+          stack: message.stack,
         }
-      : null;
+      : undefined;
 
   return {
-    babyId: $baby?.id ?? null,
+    babyId: $baby?.id,
     error,
     level,
     message: message instanceof Error ? message.message : message,
     timestamp,
-    userId: $user?.uid ?? null,
+    userId: $user?.uid,
   };
 };
 
 const getFieldValue = (value: unknown) => {
-  const vnull = () => ({ nullValue: null });
+  const vundefined = () => ({});
 
-  const vstring = (v: string | null) =>
-    v === null ? vnull() : { stringValue: v };
+  const vstring = (v: string | undefined) =>
+    v === null ? vundefined() : { stringValue: v };
 
-  if (value === null) return vnull();
+  if (value === null) return vundefined();
 
   if (typeof value === "string") return vstring(value);
 
