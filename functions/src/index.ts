@@ -24,11 +24,11 @@ const formatZodError = (error: ZodError): string => {
 const validateLogEntry = (
   res: Response,
   body: unknown
-): [entry: LogAdd, success: true] | [entry: null, success: false] => {
+): [logAdd: LogAdd, success: true] | [logAdd: null, success: false] => {
   try {
-    const entry = LogAdd.parse(body);
+    const logAdd = LogAdd.parse(body);
 
-    return [entry, true];
+    return [logAdd, true];
   } catch (e) {
     const error = parseError(e, "ParseError");
 
@@ -53,10 +53,13 @@ const validateLogEntry = (
   }
 };
 
-const createDbEntry = async (entry: LogAdd) => {
+const createDbEntry = async (logAdd: LogAdd): Promise<Log> => {
   const ref = db.collection("logs").doc();
+  const log = Log.parse({ ...logAdd, id: ref.id });
 
-  return ref.set(Log.parse({ ...entry, id: ref.id }));
+  await ref.set(log);
+
+  return log;
 };
 
 export const logs = onRequest(
@@ -76,14 +79,14 @@ export const logs = onRequest(
       return;
     }
 
-    const [entry, success] = validateLogEntry(res, req.body);
+    const [logAdd, success] = validateLogEntry(res, req.body);
 
     if (!success) return;
 
-    await createDbEntry(entry);
+    const log = await createDbEntry(logAdd);
 
-    logger.info("Log entry created", { entry });
+    logger.info("Log entry created", { entry: log });
 
-    res.send(entry);
+    res.send(log);
   }
 );
