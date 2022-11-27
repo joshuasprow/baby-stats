@@ -1,4 +1,4 @@
-import { Feed } from "@baby-stats/models/feeds";
+import type { Feed } from "@baby-stats/models/feeds";
 import type { Timestamp } from "@firebase/firestore";
 import { getTimeRangeDiffInMinutes, getTimeRangeFromMinutes } from "./dates";
 

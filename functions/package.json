@@ -15,9 +15,16 @@
     "node": "16"
   },
   "main": "dist/index.js",
-  "dependencies": {
+  "localDependencies": {
+    "#comment": [
+      "This is a list of local dependencies that are not published to npm.",
+      "Part of the function deploy process tries to install dependencies from npm, ",
+      "but turborepo and esbuild seem to handle the build just fine."
+    ],
     "@baby-stats/lib": "*",
-    "@baby-stats/models": "*",
+    "@baby-stats/models": "*"
+  },
+  "dependencies": {
     "firebase-admin": "^11.3.0",
     "firebase-functions": "^4.1.0"
   },

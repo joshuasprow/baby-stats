@@ -11,7 +11,7 @@ import { z } from "zod";
 import { auth, db } from "../firebase";
 import logger from "../firebase/logger";
 import { fixAuthUser, subscribeToUser, updateUserDoc } from "../firebase/users";
-import { parseError } from "@baby-stats/lib";
+import { parseError } from "@baby-stats/lib/error";
 import { setTheme } from "./theme";
 
 let unsubscribeUser = () => {};

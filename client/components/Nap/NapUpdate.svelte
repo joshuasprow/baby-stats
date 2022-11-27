@@ -5,7 +5,7 @@
   import { removeEntry, updateEntry } from "../../firebase/entries";
   import logger from "../../firebase/logger";
   import { mergeEntryFields } from "../../lib/entries";
-  import { parseError } from "@baby-stats/lib";
+  import { parseError } from "@baby-stats/lib/error";
   import EntryUpdateModal from "../Entry/EntryUpdateModal.svelte";
   import NapIcon from "../Nap/NapIcon.svelte";
   import TimeRangePicker from "../TimeRangePicker.svelte";

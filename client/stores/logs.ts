@@ -3,7 +3,7 @@ import { derived } from "svelte/store";
 import { db } from "../firebase";
 import logger from "../firebase/logger";
 import { subscribeToLogs } from "../firebase/logs";
-import { parseError } from "@baby-stats/lib";
+import { parseError } from "@baby-stats/lib/error";
 import { user } from "./user";
 
 export const logs = derived<typeof user, Log[]>(

@@ -10,7 +10,7 @@
   import { addEntry } from "../../firebase/entries";
   import logger from "../../firebase/logger";
   import { mergeEntryFields } from "../../lib/entries";
-  import { parseError } from "@baby-stats/lib";
+  import { parseError } from "@baby-stats/lib/error";
   import {
     convertAmountToBottle,
     convertAmountToBreast,

@@ -1,26 +1,19 @@
-import { LogAdd } from "@baby-stats/models/logs";
+import { parseError } from "@baby-stats/lib/error";
+import { Log, LogAdd } from "@baby-stats/models/logs";
+import { initializeApp } from "firebase-admin/app";
+import { getFirestore } from "firebase-admin/firestore";
 import { Response } from "firebase-functions/v1";
 import { logger } from "firebase-functions/v2";
 import { onRequest } from "firebase-functions/v2/https";
 import { ZodError } from "zod";
 
-const parseError = (error: unknown, nameIfUnknown = "Unknown"): Error => {
-  if (!error) return new Error("Empty error");
-
-  if (error instanceof Error) return error;
-
-  if (typeof error === "string") return new Error(error);
-
-  const unknown = new Error(`${nameIfUnknown}: ${JSON.stringify(error)}`);
-  unknown.name = nameIfUnknown;
-
-  return unknown;
-};
+const app = initializeApp();
+const db = getFirestore(app);
 
 const formatZodError = (error: ZodError): string => {
   const errors = Object.entries(error.flatten().fieldErrors);
   const formatted = errors.reduce((acc, [key, value]) => {
-    const message = `${key}=${value?.join(", ")}`;
+    const message = `${key} - ${value?.join(", ")}`;
 
     return acc ? [acc, message].join("; ") : message;
   }, "");
@@ -28,11 +21,14 @@ const formatZodError = (error: ZodError): string => {
   return `Invalid Log Entry Fields: ${formatted}`;
 };
 
-const validateLogEntry = (res: Response, body: unknown): LogAdd | null => {
+const validateLogEntry = (
+  res: Response,
+  body: unknown
+): [entry: LogAdd, success: true] | [entry: null, success: false] => {
   try {
     const entry = LogAdd.parse(body);
 
-    return entry;
+    return [entry, true];
   } catch (e) {
     const error = parseError(e, "ParseError");
 
@@ -43,7 +39,7 @@ const validateLogEntry = (res: Response, body: unknown): LogAdd | null => {
 
       res.status(400).send(formatted);
 
-      return null;
+      return [null, false];
     }
 
     logger.error(error.message, {
@@ -53,8 +49,14 @@ const validateLogEntry = (res: Response, body: unknown): LogAdd | null => {
 
     res.status(500).send("Internal Server Error");
 
-    return null;
+    return [null, false];
   }
+};
+
+const createDbEntry = async (entry: LogAdd) => {
+  const ref = db.collection("logs").doc();
+
+  return ref.set(Log.parse({ ...entry, id: ref.id }));
 };
 
 export const logs = onRequest(
@@ -68,20 +70,20 @@ export const logs = onRequest(
     ],
     timeoutSeconds: 5,
   },
-  (request, response) => {
-    if (request.method !== "POST") {
-      response.status(405).send("Method Not Allowed");
+  async (req, res) => {
+    if (req.method !== "POST") {
+      res.status(405).send("Method Not Allowed");
       return;
     }
 
-    const entry = validateLogEntry(response, request.body);
+    const [entry, success] = validateLogEntry(res, req.body);
 
-    if (!entry) return;
+    if (!success) return;
 
-    const { message, ...rest } = entry;
+    await createDbEntry(entry);
 
-    logger.info(message, rest);
+    logger.info("Log entry created", { entry });
 
-    response.send("Hello from Firebase!");
+    res.send(entry);
   }
 );
