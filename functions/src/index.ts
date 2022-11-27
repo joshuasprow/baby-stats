@@ -62,7 +62,7 @@ const createDbEntry = async (entry: LogAdd) => {
 export const logs = onRequest(
   {
     cors: [
-      "http://localhost",
+      "http://localhost:5173",
       "https://genevieve.sprow.info",
       "https://baby-stats-10331--staging-k5ozmhec.web.app",
       "https://baby-stats-10331.firebaseapp.com",
