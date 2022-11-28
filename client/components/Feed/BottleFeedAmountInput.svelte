@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Timestamp } from "@firebase/firestore";
   import { createEventDispatcher } from "svelte";
-  import logger from "../../firebase/logger";
+  import logger from "../../lib/logger";
   import type { SelectEvent } from "../../lib/dom";
   import DateTimePicker from "../DateTimePicker.svelte";
 

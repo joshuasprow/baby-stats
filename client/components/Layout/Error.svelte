@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import logger from "../../firebase/logger";
-  import { parseError } from "../../lib/error";
+  import logger from "../../lib/logger";
+  import { parseError } from "@baby-stats/lib/error";
 
   let error: Error | null = null;
 

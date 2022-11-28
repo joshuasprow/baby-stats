@@ -1,4 +1,4 @@
-import { parseError } from "./error";
+import { parseError } from "@baby-stats/lib/error";
 
 interface QueueItem<T> {
   promise: () => Promise<T>;

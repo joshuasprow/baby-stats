@@ -4,24 +4,33 @@
   "private": true,
   "workspaces": [
     "client",
+    "functions",
+    "lib",
     "models",
     "scripts"
   ],
   "scripts": {
-    "build": "turbo run build",
+    "build:client": "turbo run @baby-stats/client#build",
+    "build:functions": "turbo run @baby-stats/functions#build",
+    "build:all": "turbo run build:all",
     "dev": "turbo run dev --parallel",
-    "deploy": "turbo run deploy",
+    "deploy:client": "turbo run @baby-stats/client#deploy",
+    "deploy:functions": "turbo run @baby-stats/functions#deploy",
     "deploy:rules": "firebase deploy --only firestore:rules",
-    "stage": "turbo run stage",
+    "deploy:all": "firebase deploy --only firestore:rules,functions,hosting",
+    "lint": "turbo run lint",
     "scripts": "turbo run scripts",
-    "lint": "turbo run lint"
+    "stage": "turbo run stage"
   },
   "devDependencies": {
     "firebase": "9.13.0",
     "turbo": "^1.6.2"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   },
-  "packageManager": "npm@8.19.2"
+  "packageManager": "npm@8.19.2",
+  "volta": {
+    "node": "16.18.1"
+  }
 }

@@ -1,0 +1,9 @@
+{
+  "name": "@baby-stats/lib",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "typescript": "^4.8.4"
+  }
+}

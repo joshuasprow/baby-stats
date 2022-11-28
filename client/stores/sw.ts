@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 import { useRegisterSW } from "virtual:pwa-register/svelte";
-import { parseError } from "../lib/error";
+import { parseError } from "@baby-stats/lib/error";
 
 export const swError = writable<null | Error>(null);
 export const swRegistered = writable(false);

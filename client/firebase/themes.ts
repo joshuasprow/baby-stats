@@ -14,8 +14,8 @@ import {
   type Firestore,
   type QueryDocumentSnapshot,
 } from "@firebase/firestore";
-import { parseError } from "../lib/error";
-import logger from "./logger";
+import { parseError } from "@baby-stats/lib/error";
+import logger from "../lib/logger";
 
 export const getThemesCollection = (db: Firestore, uid: string) =>
   collection(db, `users/${uid}/themes`);

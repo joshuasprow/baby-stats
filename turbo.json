@@ -1,20 +1,28 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "pipeline": {
-    "build": {
-      "dependsOn": ["^build"],
+    "@baby-stats/client#build": {
       "outputs": ["dist/**"]
     },
-    "lint": {
-      "outputs": []
-    },
-    "deploy": {
-      "dependsOn": ["build"],
+    "@baby-stats/functions#build": {
       "outputs": ["dist/**"]
     },
+    "build:all": {
+      "dependsOn": ["@baby-stats/client#build", "@baby-stats/functions#build"]
+    },
+    "@baby-stats/client#deploy": {
+      "dependsOn": ["@baby-stats/client#build"]
+    },
+    "@baby-stats/functions#deploy": {
+      "dependsOn": ["@baby-stats/functions#build"]
+    },
+    "deploy:all": {},
     "deploy:rules": {},
     "dev": {
       "cache": false
+    },
+    "lint": {
+      "outputs": []
     },
     "scripts": {
       "dependsOn": ["@baby-stats/scripts#build"]
