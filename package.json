@@ -10,13 +10,17 @@
     "scripts"
   ],
   "scripts": {
-    "build": "turbo run build",
+    "build:client": "turbo run @baby-stats/client#build",
+    "build:functions": "turbo run @baby-stats/functions#build",
+    "build:all": "turbo run build:all",
     "dev": "turbo run dev --parallel",
-    "deploy": "turbo run deploy -- --only functions",
+    "deploy:client": "turbo run @baby-stats/client#deploy",
+    "deploy:functions": "turbo run @baby-stats/functions#deploy",
     "deploy:rules": "firebase deploy --only firestore:rules",
-    "stage": "turbo run stage",
+    "deploy:all": "firebase deploy --only firestore:rules,functions,hosting",
+    "lint": "turbo run lint",
     "scripts": "turbo run scripts",
-    "lint": "turbo run lint"
+    "stage": "turbo run stage"
   },
   "devDependencies": {
     "firebase": "9.13.0",
