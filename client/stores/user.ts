@@ -1,17 +1,15 @@
+import { parseError } from "@baby-stats/lib/error";
 import type { User } from "@baby-stats/models/users";
 import {
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
-  type User as FirebaseUser,
   signOut as authSignOut,
 } from "@firebase/auth";
 import { writable } from "svelte/store";
-import { z } from "zod";
 import { auth, db } from "../firebase";
-import logger from "../lib/logger";
 import { fixAuthUser, subscribeToUser, updateUserDoc } from "../firebase/users";
-import { parseError } from "@baby-stats/lib/error";
+import logger from "../lib/logger";
 import { setTheme } from "./theme";
 
 let unsubscribeUser = () => {};
