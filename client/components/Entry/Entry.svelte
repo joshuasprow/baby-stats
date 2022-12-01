@@ -1,24 +1,4 @@
 <script lang="ts" context="module">
-  import type { Entry, EntryKind } from "@baby-stats/models/entries";
-  import type { ComponentType } from "svelte";
-  import { fly } from "svelte/transition";
-  import FeedUpdate from "../Feed/FeedUpdate.svelte";
-  import MedUpdate from "../Med/MedUpdate.svelte";
-  import NapUpdate from "../Nap/NapUpdate.svelte";
-  import PeeUpdate from "../Pee/PeeUpdate.svelte";
-  import PoopUpdate from "../Poop/PoopUpdate.svelte";
-
-  // used to dynamically render the correct component
-  const components: {
-    [K in EntryKind]: ComponentType;
-  } = {
-    feeds: FeedUpdate,
-    meds: MedUpdate,
-    naps: NapUpdate,
-    pees: PeeUpdate,
-    poops: PoopUpdate,
-  } as const;
-
   const formatter = new Intl.DateTimeFormat("en-US", {
     hour: "numeric",
     minute: "numeric",
@@ -27,17 +7,32 @@
 </script>
 
 <script lang="ts">
+  import type { Entry } from "@baby-stats/models/entries";
+  import { fly } from "svelte/transition";
+  import FeedUpdate from "../Feed/FeedUpdate.svelte";
+  import MedUpdate from "../Med/MedUpdate.svelte";
+  import NapUpdate from "../Nap/NapUpdate.svelte";
+  import PeeUpdate from "../Pee/PeeUpdate.svelte";
+  import PoopUpdate from "../Poop/PoopUpdate.svelte";
+
   export let entry: Entry;
 
   $: time = formatter.format(entry.timestamp.toDate());
-  $: component = components[entry.kind];
 </script>
 
 <div transition:fly={{ x: window.innerWidth }}>
   <span class="time">{time}</span>
 
-  {#if component}
-    <svelte:component this={component} {entry} />
+  {#if entry.kind === "feeds"}
+    <FeedUpdate {entry} />
+  {:else if entry.kind === "meds"}
+    <MedUpdate {entry} />
+  {:else if entry.kind === "naps"}
+    <NapUpdate {entry} />
+  {:else if entry.kind === "pees"}
+    <PeeUpdate {entry} />
+  {:else if entry.kind === "poops"}
+    <PoopUpdate {entry} />
   {:else}
     <span>🚫</span>
   {/if}
