@@ -11,22 +11,6 @@
   const formatTimestamp = (timestamp: number) => {
     return formatter.format(new Date(timestamp));
   };
-
-  const formatStack = (error: Log["error"]) => {
-    if (!error) return "";
-
-    const { message, stack } = error;
-
-    const _stack = stack
-      ? stack
-          .split("\n")
-          .map((line) => line.trim())
-          .filter((line) => line.length > 0)
-          .join("\n")
-      : "";
-
-    return `${message}\n${_stack}`;
-  };
 </script>
 
 <script lang="ts">
@@ -36,11 +20,6 @@
   export let log: Log;
 
   $: timestamp = formatTimestamp(log.timestamp);
-  $: stack = formatStack(log.error);
-
-  $: if (stack) {
-    console.dir(stack);
-  }
 </script>
 
 <p>
