@@ -14,12 +14,12 @@ export type LogError = z.infer<typeof LogError>;
 
 export const Log = z.object({
   id: z.string(),
-  babyId: Baby.shape.id.optional(),
-  error: LogError.optional(),
+  babyId: Baby.shape.id.optional().nullish(),
+  error: LogError.optional().nullish(),
   level: LogLevel,
   message: z.string(),
   timestamp: z.number(),
-  userId: User.shape.uid.optional(),
+  userId: User.shape.uid.optional().nullish(),
 });
 export type Log = z.infer<typeof Log>;
 
