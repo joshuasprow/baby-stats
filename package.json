@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "firebase": "9.13.0",
-    "turbo": "^1.6.2"
+    "turbo": "^1.6.3"
   },
   "engines": {
     "node": ">=16.0.0"
