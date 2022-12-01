@@ -3,8 +3,8 @@
   import { formatDaystamp, getTimeRangeDiffInMinutes } from "../lib/dates";
   import type { DayEntry } from "../stores/days";
   import Button from "./Button.svelte";
+  import Entry from "./Entry/Entry.svelte";
   import EntryModal from "./Entry/EntryModal.svelte";
-  import EntryNext from "./Entry/EntryNext.svelte";
 
   const getEntryCounts = (day: DayEntry[]) =>
     day.reduce(
@@ -76,7 +76,7 @@
 
 <article>
   {#each day as [_, entry] (entry.id)}
-    <EntryNext {entry} />
+    <Entry {entry} />
   {/each}
 </article>
 

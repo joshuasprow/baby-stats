@@ -1,28 +1,15 @@
 <script lang="ts">
-  import { onDestroy, onMount } from "svelte";
   import { fade } from "svelte/transition";
+  import { pressEscape } from "../lib/actions";
   import { swNeedRefresh, updateServiceWorker } from "../stores/sw";
   import Button from "./Button.svelte";
 
   const close = () => swNeedRefresh.set(false);
-
-  const handleKeydown = ({ key }: KeyboardEvent) => {
-    if (key === "Enter") updateServiceWorker(true);
-    if (key === "Escape") close();
-  };
-
-  onMount(() => {
-    document.addEventListener("keydown", handleKeydown);
-  });
-
-  onDestroy(() => {
-    document.removeEventListener("keydown", handleKeydown);
-  });
 </script>
 
 {#if $swNeedRefresh}
-  <div class="backdrop" transition:fade />
-  <!-- svelte-ignore a11y-click-events-have-key-events *see escape/enter handlers above -->
+  <div class="backdrop" transition:fade use:pressEscape={close} />
+  <!-- svelte-ignore a11y-click-events-have-key-events *pressEscape action -->
   <div class="wrapper" role="alert" on:click={close}>
     <aside class="modal" on:click|stopPropagation transition:fade>
       <header>✨ New Stuff ✨</header>
