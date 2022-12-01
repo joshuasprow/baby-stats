@@ -22,6 +22,7 @@ const initializeFirestore = async (db: Firestore) => {
   }
 
   if (enabled) return;
+
   // that fails, i'll try single tab persistence
   try {
     await enableIndexedDbPersistence(db);

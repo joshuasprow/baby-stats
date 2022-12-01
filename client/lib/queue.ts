@@ -17,7 +17,6 @@ export default class Queue<T> {
         resolve,
         reject,
       });
-      console.log(`enqueueing promise; queue length: ${this.queue.length}`);
       this.dequeue();
     });
   }
@@ -37,23 +36,16 @@ export default class Queue<T> {
         .then((value) => {
           this.pending = false;
           item.resolve(value);
-          console.log(`dequeued promise; queue length: ${this.queue.length}`);
           this.dequeue();
         })
         .catch((err) => {
           this.pending = false;
           item.reject(err);
-          console.log(
-            `dequeued promise (rejected); queue length: ${this.queue.length}`,
-          );
           this.dequeue();
         });
     } catch (err) {
       this.pending = false;
       item.reject(parseError(err));
-      console.log(
-        `dequeued promise (rejected); queue length: ${this.queue.length}`,
-      );
       this.dequeue();
     }
     return true;
