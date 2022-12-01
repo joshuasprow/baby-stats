@@ -8,6 +8,7 @@
   import LogViewer from "../LogViewer.svelte";
   import SignInButton from "../SignInButton.svelte";
   import SignOutButton from "../SignOutButton.svelte";
+  import { pressEscape } from "../../lib/actions";
 
   export let open = false;
 
@@ -43,7 +44,13 @@
 <Button class="sider-toggle-button" on:click={toggle}>☰</Button>
 
 {#if open}
-  <div class="sider-backdrop" on:click={close} transition:fade />
+  <!-- svelte-ignore a11y-click-events-have-key-events *pressEscape action -->
+  <div
+    class="sider-backdrop"
+    on:click={close}
+    use:pressEscape={close}
+    transition:fade
+  />
 
   <aside transition:fly={{ x: window.innerWidth }}>
     <header>
