@@ -71,7 +71,9 @@ const newLogFunc =
     try {
       const entry = buildEntry(level, message, options);
 
-      PENDING_LOGS.enqueue(() => sendLogEntry(entry));
+      if (process.env.NODE_ENV === "production") {
+        PENDING_LOGS.enqueue(() => sendLogEntry(entry));
+      }
     } catch (error) {
       console.error(error);
     }
