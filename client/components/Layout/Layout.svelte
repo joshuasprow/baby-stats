@@ -2,7 +2,6 @@
   import type { Baby } from "@baby-stats/models/babies";
   import type { User } from "@baby-stats/models/users";
   import type { Day } from "../../stores/days";
-  import Error from "./Error.svelte";
   import Footer from "./Footer.svelte";
   import Main from "./Main.svelte";
   import Sider from "./Sider.svelte";
@@ -17,7 +16,5 @@
 {#if baby && user}
   <Footer babyId={baby.id} userId={user.uid} />
 {/if}
-
-<Error />
 
 <Sider />

@@ -5,6 +5,7 @@ import logger from "../lib/logger";
 import { subscribeToLogs } from "../firebase/logs";
 import { parseError } from "@baby-stats/lib/error";
 import { user } from "./user";
+import { setGlobalError } from "../components/GlobalError.svelte";
 
 export const logs = derived<typeof user, Log[]>(
   user,
@@ -19,7 +20,9 @@ export const logs = derived<typeof user, Log[]>(
     try {
       unsubscribe = subscribeToLogs(db, set);
     } catch (e) {
-      logger.error(parseError(e));
+      const error = parseError(e, "SubscribeToLogsError");
+      logger.error(error);
+      setGlobalError(error);
 
       unsubscribe = () => {};
     }

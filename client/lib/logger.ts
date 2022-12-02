@@ -1,21 +1,18 @@
 import { Log, LogLevel, type LogAdd } from "@baby-stats/models/logs";
-import { get } from "svelte/store";
 import Queue from "./queue";
-import { baby } from "../stores/baby";
-import { user } from "../stores/user";
+
+export type LogOptions = Pick<LogAdd, "babyId" | "userId">;
 
 const PENDING_LOGS = new Queue<void>();
 
 const buildEntry = <L extends LogLevel>(
   level: L,
   message: L extends "error" ? Error : string,
+  { babyId, userId } = {} as LogOptions,
 ): LogAdd => {
-  const $baby = get(baby);
-  const $user = get(user);
-
   const timestamp = Date.now();
 
-  const error: LogAdd["error"] =
+  const error =
     message instanceof Error
       ? {
           name: message.name,
@@ -25,12 +22,12 @@ const buildEntry = <L extends LogLevel>(
       : undefined;
 
   return {
-    babyId: $baby?.id,
+    babyId,
     error,
     level,
     message: message instanceof Error ? message.message : message,
     timestamp,
-    userId: $user?.uid,
+    userId,
   };
 };
 
@@ -68,13 +65,15 @@ const sendLogEntry = async (entry: LogAdd) => {
 
 const newLogFunc =
   <L extends LogLevel>(level: L) =>
-  (message: L extends "error" ? Error : string) => {
+  (message: L extends "error" ? Error : string, options = {} as LogOptions) => {
     console[level](message);
 
     try {
-      const entry = buildEntry(level, message);
+      const entry = buildEntry(level, message, options);
 
-      PENDING_LOGS.enqueue(() => sendLogEntry(entry));
+      if (process.env.NODE_ENV === "production") {
+        PENDING_LOGS.enqueue(() => sendLogEntry(entry));
+      }
     } catch (error) {
       console.error(error);
     }

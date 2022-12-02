@@ -7,6 +7,7 @@
 
   import { createEventDispatcher } from "svelte";
   import { fade, fly } from "svelte/transition";
+  import { pressEscape } from "../../lib/actions";
 
   export let loading = false;
   export let open = false;
@@ -34,11 +35,11 @@
 
 {#if open}
   <div class="backdrop" transition:fade />
-  <div class="wrapper" on:click={handleClose} on:keypress={() => {}}>
+  <!-- svelte-ignore a11y-click-events-have-key-events *pressEscape action -->
+  <div class="wrapper" on:click={handleClose} use:pressEscape={close}>
     <aside
       class="modal"
       on:click|stopPropagation={() => {}}
-      on:keypress={() => {}}
       transition:fly={{ duration, y: window.innerHeight }}
     >
       <slot />
