@@ -17,6 +17,7 @@
     const error = parseError(e.reason);
 
     setGlobalError(error);
+
     logger.error(error);
   };
 </script>
