@@ -1,10 +1,20 @@
 <script lang="ts">
+  import { parseError } from "@baby-stats/lib/error";
   import { fade } from "svelte/transition";
   import { pressEscape } from "../lib/actions";
+  import logger from "../lib/logger";
   import { swNeedRefresh, updateServiceWorker } from "../stores/sw";
   import Button from "./Button.svelte";
 
   const close = () => swNeedRefresh.set(false);
+
+  const handleUpdate = async () => {
+    try {
+      await updateServiceWorker(true);
+    } catch (error) {
+      logger.error(parseError(error));
+    }
+  };
 </script>
 
 {#if $swNeedRefresh}
@@ -17,7 +27,7 @@
       <p>Click below to reload and update</p>
 
       <footer>
-        <Button on:click={() => updateServiceWorker(true)}>Update</Button>
+        <Button on:click={handleUpdate}>Update</Button>
         <Button on:click={close}>Close</Button>
       </footer>
     </aside>
