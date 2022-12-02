@@ -1,4 +1,5 @@
 <script lang="ts">
+  import GlobalError from "./components/GlobalError.svelte";
   import Layout from "./components/Layout/Layout.svelte";
   import ReloadPrompt from "./components/ReloadPrompt.svelte";
   import "./main.css";
@@ -15,3 +16,5 @@
 <Layout baby={$baby} days={$days} user={$user} />
 
 <ReloadPrompt />
+
+<GlobalError />

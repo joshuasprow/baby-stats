@@ -1,11 +1,15 @@
-<script lang="ts">
-  import { parseError } from "@baby-stats/lib/error";
-  import { onMount } from "svelte";
-  import { pressEscape } from "../../lib/actions";
-  import logger from "../../lib/logger";
-  import Button from "../Button.svelte";
+<script lang="ts" context="module">
+  import { writable } from "svelte/store";
 
-  let error: Error | null = null;
+  const error = writable<Error | null>(null);
+
+  export const setGlobalError = (e: Error | null) => error.set(e);
+</script>
+
+<script lang="ts">
+  import { pressEscape } from "../lib/actions";
+  import Button from "./Button.svelte";
+
   let open = true;
 
   const reload = () => {
@@ -14,23 +18,16 @@
 
   const close = () => {
     open = false;
+    setGlobalError(null);
   };
-
-  onMount(() => {
-    window.onunhandledrejection = (e) => {
-      console.log(e);
-      error = parseError(e.reason);
-      logger.error(error);
-    };
-  });
 </script>
 
-{#if error && open}
+{#if $error && open}
   <!-- svelte-ignore a11y-click-events-have-key-events *pressEscape action -->
   <div class="error-backdrop" on:click={close} use:pressEscape={close}>
     <aside class="error-block">
       <p>
-        {error.message}
+        {$error.message}
       </p>
       <p>You'll need to reload the page... maybe try again later?</p>
 
