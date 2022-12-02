@@ -7,6 +7,7 @@ import {
   signOut as authSignOut,
 } from "@firebase/auth";
 import { writable } from "svelte/store";
+import { setGlobalError } from "../components/GlobalError.svelte";
 import { auth, db } from "../firebase";
 import { fixAuthUser, subscribeToUser, updateUserDoc } from "../firebase/users";
 import logger from "../lib/logger";
@@ -33,9 +34,14 @@ onAuthStateChanged(auth, async (authUser) => {
 
     unsubscribeUser = subscribeToUser(db, _user.uid, user.set, setTheme);
   } catch (e) {
-    logger.error(parseError(e));
-
     user.set(null);
+
+    const error = parseError(e, "SubscribeToBabyError");
+
+    logger.error(error);
+    setGlobalError(error);
+
+    unsubscribeUser = () => {};
   }
 });
 

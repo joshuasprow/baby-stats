@@ -1,8 +1,11 @@
+import { parseError } from "@baby-stats/lib/error";
 import type { Entry } from "@baby-stats/models/entries";
 import type { Timestamp } from "@firebase/firestore";
 import { derived } from "svelte/store";
+import { setGlobalError } from "../components/GlobalError.svelte";
 import { db } from "../firebase";
 import { subscribeToEntries } from "../firebase/entries";
+import logger from "../lib/logger";
 import { baby } from "./baby";
 
 export type DayEntry = [timestamp: number, entry: Entry];
@@ -64,7 +67,15 @@ export const days = derived<typeof baby, Day[] | undefined>(
 
     const setByDay = (_entries: Entry[]) => set(groupEntriesByDay(_entries));
 
-    unsubscribe = subscribeToEntries(db, $baby.id, setByDay);
+    try {
+      unsubscribe = subscribeToEntries(db, $baby.id, setByDay);
+    } catch (e) {
+      const error = parseError(e, "SubscribeToEntriesError");
+      logger.error(error);
+      setGlobalError(error);
+
+      unsubscribe = () => {};
+    }
 
     return unsubscribe;
   },
