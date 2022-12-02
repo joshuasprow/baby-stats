@@ -1,15 +1,6 @@
-<script lang="ts">
+<script lang="ts" context="module">
   import { parseError } from "@baby-stats/lib/error";
-  import GlobalError, { setGlobalError } from "./components/GlobalError.svelte";
-  import Layout from "./components/Layout/Layout.svelte";
-  import ReloadPrompt from "./components/ReloadPrompt.svelte";
-  import logger from "./lib/logger";
-  import { baby } from "./stores/baby";
-  import { days } from "./stores/days";
-  import { user } from "./stores/user";
-
-  import "./main.css";
-  import "./variables.css";
+  import { setGlobalError } from "./components/GlobalError.svelte";
 
   window.onunhandledrejection = (e) => {
     console.dir(e);
@@ -20,6 +11,19 @@
 
     logger.error(error);
   };
+</script>
+
+<script lang="ts">
+  import GlobalError from "./components/GlobalError.svelte";
+  import Layout from "./components/Layout/Layout.svelte";
+  import ReloadPrompt from "./components/ReloadPrompt.svelte";
+  import logger from "./lib/logger";
+  import { baby } from "./stores/baby";
+  import { days } from "./stores/days";
+  import { user } from "./stores/user";
+
+  import "./main.css";
+  import "./variables.css";
 </script>
 
 <svelte:head>
