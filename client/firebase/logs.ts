@@ -1,3 +1,4 @@
+import { parseError } from "@baby-stats/lib/error";
 import { Log } from "@baby-stats/models/logs";
 import {
   collection,
@@ -10,30 +11,69 @@ import {
   updateDoc,
   type Firestore,
 } from "@firebase/firestore";
+import { setGlobalError } from "../components/GlobalError.svelte";
 
 const getLogsCollection = (db: Firestore) => collection(db, "logs");
 
 const getLogRef = (db: Firestore, id: string) => doc(db, `logs/${id}`);
 
 export const getLogDoc = async (db: Firestore, id: string) => {
-  const doc = await getDoc(getLogRef(db, id));
+  try {
+    const doc = await getDoc(getLogRef(db, id));
+    const log = Log.parse(doc.data());
 
-  return Log.parse(doc.data());
+    return log;
+  } catch (e) {
+    const error = parseError(e);
+
+    console.error(error);
+    setGlobalError(error);
+  }
+
+  return null;
 };
 
 export const subscribeToLogs = (db: Firestore, set: (logs: Log[]) => void) =>
   onSnapshot(
     query(getLogsCollection(db), orderBy("timestamp", "desc"), limit(100)),
     { includeMetadataChanges: true },
-    (snap) =>
-      set(snap.docs.map((doc) => Log.parse({ ...doc.data(), id: doc.id }))),
+    (snap) => {
+      const logs: Log[] = [];
+
+      for (const doc of snap.docs) {
+        try {
+          const log = Log.parse({ ...doc.data(), id: doc.id });
+
+          logs.push(log);
+        } catch (e) {
+          const error = parseError(e);
+
+          console.error(error);
+          setGlobalError(error);
+
+          set(logs);
+          return;
+        }
+      }
+
+      set(logs);
+    },
   );
 
 export const updateLog = async (db: Firestore, value: Log) => {
-  const log = Log.parse({ ...value });
-  const ref = getLogRef(db, log.id);
+  try {
+    const log = Log.parse({ ...value });
+    const ref = getLogRef(db, log.id);
 
-  await updateDoc(ref, log);
+    await updateDoc(ref, log);
 
-  return log;
+    return log;
+  } catch (e) {
+    const error = parseError(e);
+
+    console.error(error);
+    setGlobalError(error);
+
+    return null;
+  }
 };
