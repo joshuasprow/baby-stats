@@ -14,10 +14,13 @@
     timestamp: Timestamp;
   }>();
 
-  $: options = [1, 2, 3, 4, 5].map((v) => ({
-    label: `${v}`,
-    value: v,
-  }));
+  $: options = [...Array(8).keys()].map((v) => {
+    const a = v + 1;
+    return {
+      label: `${a}`,
+      value: a,
+    };
+  });
 
   const handleAmountChange = (e: SelectEvent) => {
     const value = parseInt(e.currentTarget.value);

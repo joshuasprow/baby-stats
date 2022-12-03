@@ -27,7 +27,7 @@
   let add: FeedAdd = {
     babyId,
     userId,
-    amount: 2,
+    amount: 4,
     kind: "feeds",
     side: null,
     source: "bottle",
