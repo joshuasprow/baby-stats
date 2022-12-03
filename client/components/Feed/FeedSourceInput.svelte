@@ -12,29 +12,25 @@
   }
 </script>
 
-<label class:loading for="bottle">
-  <input
-    bind:group={source}
-    disabled={loading}
-    type="radio"
-    id="bottle"
-    name="source"
-    value="bottle"
-  />
-  bottle
-</label>
+<input
+  bind:group={source}
+  disabled={loading}
+  type="radio"
+  id="bottle"
+  name="source"
+  value="bottle"
+/>
+<label class:loading for="bottle">bottle</label>
 
-<label class:loading for="breast">
-  <input
-    bind:group={source}
-    disabled={loading}
-    type="radio"
-    id="breast"
-    name="source"
-    value="breast"
-  />
-  breast
-</label>
+<input
+  bind:group={source}
+  disabled={loading}
+  type="radio"
+  id="breast"
+  name="source"
+  value="breast"
+/>
+<label class:loading for="breast">breast</label>
 
 <style>
   .loading {

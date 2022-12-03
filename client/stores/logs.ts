@@ -1,11 +1,11 @@
+import { parseError } from "@baby-stats/lib/error";
 import type { Log } from "@baby-stats/models/logs";
 import { derived } from "svelte/store";
 import { db } from "../firebase";
-import logger from "../lib/logger";
 import { subscribeToLogs } from "../firebase/logs";
-import { parseError } from "@baby-stats/lib/error";
+import logger from "../lib/logger";
+import globalError, { handleGlobalError } from "./error";
 import { user } from "./user";
-import { setGlobalError } from "../components/GlobalError.svelte";
 
 export const logs = derived<typeof user, Log[]>(
   user,
@@ -20,10 +20,7 @@ export const logs = derived<typeof user, Log[]>(
     try {
       unsubscribe = subscribeToLogs(db, set);
     } catch (e) {
-      const error = parseError(e, "SubscribeToLogsError");
-      logger.error(error);
-      setGlobalError(error);
-
+      handleGlobalError(e, "SubscribeToLogsError");
       unsubscribe = () => {};
     }
 

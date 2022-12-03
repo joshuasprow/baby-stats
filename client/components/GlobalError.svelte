@@ -1,16 +1,13 @@
-<script lang="ts" context="module">
-  import { writable } from "svelte/store";
-
-  const error = writable<Error | null>(null);
-
-  export const setGlobalError = (e: Error | null) => error.set(e);
-</script>
-
 <script lang="ts">
   import { pressEscape } from "../lib/actions";
+  import error from "../stores/error";
   import Button from "./Button.svelte";
 
   let open = true;
+
+  $: if ($error) {
+    open = true;
+  }
 
   const reload = () => {
     window.location.reload();
@@ -18,7 +15,7 @@
 
   const close = () => {
     open = false;
-    setGlobalError(null);
+    error.set(null);
   };
 </script>
 

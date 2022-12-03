@@ -17,7 +17,7 @@
   $: options = [...Array(8).keys()].map((v) => {
     const a = v + 1;
     return {
-      label: `${a}`,
+      label: `${a}oz`,
       value: a,
     };
   });
@@ -44,22 +44,14 @@
 
 <DateTimePicker on:change={handleTimestampChange} {timestamp} />
 
-<label for="amount">
-  amount:
-  <select disabled={loading} on:change={handleAmountChange} value={amount}>
-    {#each options as option}
-      <option value={option.value}>{option.label}</option>
-    {/each}
-  </select>
-  oz
-</label>
+<label for="amount">amount:</label>
+<select disabled={loading} on:change={handleAmountChange} value={amount}>
+  {#each options as option}
+    <option value={option.value}>{option.label}</option>
+  {/each}
+</select>
 
 <style>
-  label {
-    display: block;
-    margin: 0.25rem 0 0.25rem auto;
-  }
-
   select {
     border: var(--border);
     border-radius: var(--border-radius);
