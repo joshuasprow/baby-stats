@@ -11,8 +11,7 @@ import {
   updateDoc,
   type Firestore,
 } from "@firebase/firestore";
-import { setGlobalError } from "../components/GlobalError.svelte";
-
+import globalError from "../stores/error";
 const getLogsCollection = (db: Firestore) => collection(db, "logs");
 
 const getLogRef = (db: Firestore, id: string) => doc(db, `logs/${id}`);
@@ -27,7 +26,7 @@ export const getLogDoc = async (db: Firestore, id: string) => {
     const error = parseError(e);
 
     console.error(error);
-    setGlobalError(error);
+    globalError.set(error);
   }
 
   return null;
@@ -49,7 +48,7 @@ export const subscribeToLogs = (db: Firestore, set: (logs: Log[]) => void) =>
           const error = parseError(e);
 
           console.error(error);
-          setGlobalError(error);
+          globalError.set(error);
 
           set(logs);
           return;
@@ -72,7 +71,7 @@ export const updateLog = async (db: Firestore, value: Log) => {
     const error = parseError(e);
 
     console.error(error);
-    setGlobalError(error);
+    globalError.set(error);
 
     return null;
   }

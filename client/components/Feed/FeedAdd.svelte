@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { parseError } from "@baby-stats/lib/error";
   import {
     FeedAdd,
     type FeedSide,
@@ -8,13 +9,12 @@
   import { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";
   import { addEntry } from "../../firebase/entries";
-  import logger from "../../lib/logger";
   import { mergeEntryFields } from "../../lib/entries";
-  import { parseError } from "@baby-stats/lib/error";
   import {
     convertAmountToBottle,
     convertAmountToBreast,
   } from "../../lib/feeds";
+  import logger from "../../lib/logger";
   import EntryAddModal from "../Entry/EntryAddModal.svelte";
   import TimeRangePicker from "../TimeRangePicker.svelte";
   import BottleFeedAmountInput from "./BottleFeedAmountInput.svelte";
@@ -27,7 +27,7 @@
   let add: FeedAdd = {
     babyId,
     userId,
-    amount: 2,
+    amount: 4,
     kind: "feeds",
     side: null,
     source: "bottle",
