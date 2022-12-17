@@ -36,7 +36,7 @@
 {#if open}
   <div class="backdrop" transition:fade />
   <!-- svelte-ignore a11y-click-events-have-key-events *pressEscape action -->
-  <div class="wrapper" on:click={handleClose} use:pressEscape={close}>
+  <div class="wrapper" on:click={handleClose} use:pressEscape={handleClose}>
     <aside
       class="modal"
       on:click|stopPropagation={() => {}}
