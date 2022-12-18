@@ -14,8 +14,9 @@
     timestamp: Timestamp;
   }>();
 
-  $: options = [...Array(8).keys()].map((v) => {
-    const a = v + 1;
+  /** 0.5 to 8 oz */
+  $: options = [...Array(16).keys()].map((v) => {
+    const a = v * 0.5 + 0.5;
     return {
       label: `${a}oz`,
       value: a,
