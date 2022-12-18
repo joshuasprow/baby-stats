@@ -12,8 +12,8 @@
   import FeedUpdateNext from "../Feed/FeedUpdateNext.svelte";
   import MedUpdateNext from "../Med/MedUpdateNext.svelte";
   import NapUpdateNext from "../Nap/NapUpdateNext.svelte";
-  import PeeUpdate from "../Pee/PeeUpdate.svelte";
-  import PoopUpdate from "../Poop/PoopUpdate.svelte";
+  import PeeUpdateNext from "../Pee/PeeUpdateNext.svelte";
+  import PoopUpdateNext from "../Poop/PoopUpdateNext.svelte";
 
   export let entry: Entry;
 
@@ -30,9 +30,9 @@
   {:else if entry.kind === "naps"}
     <NapUpdateNext {entry} />
   {:else if entry.kind === "pees"}
-    <PeeUpdate {entry} />
+    <PeeUpdateNext {entry} />
   {:else if entry.kind === "poops"}
-    <PoopUpdate {entry} />
+    <PoopUpdateNext {entry} />
   {:else}
     <span>🚫</span>
   {/if}

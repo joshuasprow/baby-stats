@@ -2,8 +2,8 @@
   import FeedAddNext from "../Feed/FeedAddNext.svelte";
   import MedAddNext from "../Med/MedAddNext.svelte";
   import NapAddNext from "../Nap/NapAddNext.svelte";
-  import PeeAdd from "../Pee/PeeAdd.svelte";
-  import PoopAdd from "../Poop/PoopAdd.svelte";
+  import PeeAddNext from "../Pee/PeeAddNext.svelte";
+  import PoopAddNext from "../Poop/PoopAddNext.svelte";
 
   export let babyId: string;
   export let userId: string;
@@ -15,8 +15,8 @@
 <footer class:standalone>
   <FeedAddNext {babyId} {userId} />
   <NapAddNext {babyId} {userId} />
-  <PeeAdd {babyId} {userId} />
-  <PoopAdd {babyId} {userId} />
+  <PeeAddNext {babyId} {userId} />
+  <PoopAddNext {babyId} {userId} />
   <MedAddNext {babyId} {userId} />
 </footer>
 
