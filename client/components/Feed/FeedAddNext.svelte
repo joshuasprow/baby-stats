@@ -1,5 +1,6 @@
 <script context="module" lang="ts">
   import { parseError } from "@baby-stats/lib/error";
+  import { ENTRY_ICONS } from "@baby-stats/models/entries";
   import {
     FeedAdd,
     type FeedSide,
@@ -53,15 +54,6 @@
     open = false;
   };
 
-  const handleOpen = () => {
-    open = true;
-    setAdd({ timestamp: Timestamp.now() });
-  };
-
-  const handleClose = () => {
-    reset();
-  };
-
   const setAdd = (fields: Partial<FeedAdd>) => {
     const [a, e] = mergeEntryFields(FeedAdd, add, fields);
     if (e) {
@@ -70,6 +62,15 @@
       add = a;
       error = null;
     }
+  };
+
+  const handleOpen = () => {
+    open = true;
+    setAdd({ timestamp: Timestamp.now() });
+  };
+
+  const handleClose = () => {
+    reset();
   };
 
   const handleBottleAmount = (e: CustomEvent<number>) => {
@@ -129,7 +130,7 @@
 </script>
 
 <Button disabled={loading} on:click={handleOpen}>
-  <span class="shadowed">🍼</span>
+  <span class="shadowed">{ENTRY_ICONS.feeds.bottle}</span>
 </Button>
 
 <Modal {loading} {open} on:close={handleClose}>
