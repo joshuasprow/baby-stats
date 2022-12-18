@@ -8,6 +8,7 @@
   import logger from "../../lib/logger";
   import Button from "../Button.svelte";
   import Modal from "../Modal.svelte";
+  import RemoveButton from "../RemoveButton.svelte";
   import TimeRangePicker from "../TimeRangePicker.svelte";
   import NapIcon from "./NapIcon.svelte";
 
@@ -100,7 +101,7 @@
     <span class="error">{error}</span>
   {/if}
 
-  <Button {loading} on:click={handleRemove} --width="100%">remove</Button>
+  <RemoveButton {loading} on:remove={handleRemove} />
 </Modal>
 
 <style>

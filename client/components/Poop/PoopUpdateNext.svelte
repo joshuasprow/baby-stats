@@ -9,6 +9,7 @@
   import Button from "../Button.svelte";
   import DateTimePicker from "../DateTimePicker.svelte";
   import Modal from "../Modal.svelte";
+  import RemoveButton from "../RemoveButton.svelte";
   import PoopAmountInput from "./PoopAmountInput.svelte";
   import PoopIcon from "./PoopIcon.svelte";
 
@@ -111,7 +112,7 @@
     <span class="error">{error}</span>
   {/if}
 
-  <Button {loading} on:click={handleRemove} --width="100%">remove</Button>
+  <RemoveButton {loading} on:remove={handleRemove} />
 </Modal>
 
 <style>
