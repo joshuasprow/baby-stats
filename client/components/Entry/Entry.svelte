@@ -10,9 +10,8 @@
   import type { Entry } from "@baby-stats/models/entries";
   import { fly } from "svelte/transition";
   import FeedUpdateNext from "../Feed/FeedUpdateNext.svelte";
-  import MedUpdate from "../Med/MedUpdate.svelte";
   import MedUpdateNext from "../Med/MedUpdateNext.svelte";
-  import NapUpdate from "../Nap/NapUpdate.svelte";
+  import NapUpdateNext from "../Nap/NapUpdateNext.svelte";
   import PeeUpdate from "../Pee/PeeUpdate.svelte";
   import PoopUpdate from "../Poop/PoopUpdate.svelte";
 
@@ -29,7 +28,7 @@
   {:else if entry.kind === "meds"}
     <MedUpdateNext {entry} />
   {:else if entry.kind === "naps"}
-    <NapUpdate {entry} />
+    <NapUpdateNext {entry} />
   {:else if entry.kind === "pees"}
     <PeeUpdate {entry} />
   {:else if entry.kind === "poops"}
