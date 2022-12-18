@@ -1,19 +1,4 @@
 <script context="module" lang="ts">
-  const defaultAdd = ({
-    babyId,
-    userId,
-  }: Pick<FeedAdd, "babyId" | "userId">): FeedAdd => ({
-    babyId,
-    userId,
-    amount: 4,
-    kind: "feeds",
-    side: null,
-    source: "bottle",
-    timestamp: Timestamp.now(),
-  });
-</script>
-
-<script lang="ts">
   import { parseError } from "@baby-stats/lib/error";
   import {
     FeedAdd,
@@ -37,6 +22,21 @@
   import FeedSideInputGroup from "./FeedSideInputGroup.svelte";
   import FeedSourceInput from "./FeedSourceInput.svelte";
 
+  const defaultAdd = ({
+    babyId,
+    userId,
+  }: Pick<FeedAdd, "babyId" | "userId">): FeedAdd => ({
+    babyId,
+    userId,
+    amount: 4,
+    kind: "feeds",
+    side: null,
+    source: "bottle",
+    timestamp: Timestamp.now(),
+  });
+</script>
+
+<script lang="ts">
   export let babyId: string;
   export let userId: string;
 
