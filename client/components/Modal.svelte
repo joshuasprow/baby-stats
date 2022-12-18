@@ -1,37 +1,20 @@
-<script lang="ts" context="module">
-  const duration = 300;
-</script>
-
 <script lang="ts">
-  import Button from "../Button.svelte";
-
   import { createEventDispatcher } from "svelte";
   import { fade, fly } from "svelte/transition";
-  import { pressEscape } from "../../lib/actions";
+  import { pressEscape } from "../lib/actions";
 
-  export let loading = false;
-  export let open = false;
+  const duration = 300;
 
-  const dispatch = createEventDispatcher<{ close: void; open: void }>();
+  export let loading: boolean;
+  export let open: boolean;
 
-  const handleOpen = () => {
-    open = true;
-    if (loading) return;
-    dispatch("open");
-  };
+  const dispatch = createEventDispatcher<{ close: void }>();
 
   const handleClose = () => {
-    open = false;
     if (loading) return;
     dispatch("close");
   };
 </script>
-
-{#if $$slots.button}
-  <slot name="button" />
-{:else}
-  <Button disabled={loading} on:click={handleOpen}>🚫</Button>
-{/if}
 
 {#if open}
   <div class="backdrop" transition:fade />

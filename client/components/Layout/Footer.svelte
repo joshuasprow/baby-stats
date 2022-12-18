@@ -1,9 +1,9 @@
 <script lang="ts">
-  import FeedAdd from "../Feed/FeedAdd.svelte";
-  import MedAdd from "../Med/MedAdd.svelte";
-  import NapAdd from "../Nap/NapAdd.svelte";
-  import PeeAdd from "../Pee/PeeAdd.svelte";
-  import PoopAdd from "../Poop/PoopAdd.svelte";
+  import FeedAddNext from "../Feed/FeedAddNext.svelte";
+  import MedAddNext from "../Med/MedAddNext.svelte";
+  import NapAddNext from "../Nap/NapAddNext.svelte";
+  import PeeAddNext from "../Pee/PeeAddNext.svelte";
+  import PoopAddNext from "../Poop/PoopAddNext.svelte";
 
   export let babyId: string;
   export let userId: string;
@@ -13,11 +13,11 @@
 </script>
 
 <footer class:standalone>
-  <FeedAdd {babyId} {userId} />
-  <NapAdd {babyId} {userId} />
-  <PeeAdd {babyId} {userId} />
-  <PoopAdd {babyId} {userId} />
-  <MedAdd {babyId} {userId} />
+  <FeedAddNext {babyId} {userId} />
+  <NapAddNext {babyId} {userId} />
+  <PeeAddNext {babyId} {userId} />
+  <PoopAddNext {babyId} {userId} />
+  <MedAddNext {babyId} {userId} />
 </footer>
 
 <style>

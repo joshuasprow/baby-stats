@@ -9,11 +9,11 @@
 <script lang="ts">
   import type { Entry } from "@baby-stats/models/entries";
   import { fly } from "svelte/transition";
-  import FeedUpdate from "../Feed/FeedUpdate.svelte";
-  import MedUpdate from "../Med/MedUpdate.svelte";
-  import NapUpdate from "../Nap/NapUpdate.svelte";
-  import PeeUpdate from "../Pee/PeeUpdate.svelte";
-  import PoopUpdate from "../Poop/PoopUpdate.svelte";
+  import FeedUpdateNext from "../Feed/FeedUpdateNext.svelte";
+  import MedUpdateNext from "../Med/MedUpdateNext.svelte";
+  import NapUpdateNext from "../Nap/NapUpdateNext.svelte";
+  import PeeUpdateNext from "../Pee/PeeUpdateNext.svelte";
+  import PoopUpdateNext from "../Poop/PoopUpdateNext.svelte";
 
   export let entry: Entry;
 
@@ -24,15 +24,15 @@
   <span class="time">{time}</span>
 
   {#if entry.kind === "feeds"}
-    <FeedUpdate {entry} />
+    <FeedUpdateNext {entry} />
   {:else if entry.kind === "meds"}
-    <MedUpdate {entry} />
+    <MedUpdateNext {entry} />
   {:else if entry.kind === "naps"}
-    <NapUpdate {entry} />
+    <NapUpdateNext {entry} />
   {:else if entry.kind === "pees"}
-    <PeeUpdate {entry} />
+    <PeeUpdateNext {entry} />
   {:else if entry.kind === "poops"}
-    <PoopUpdate {entry} />
+    <PoopUpdateNext {entry} />
   {:else}
     <span>🚫</span>
   {/if}
