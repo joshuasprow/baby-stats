@@ -9,7 +9,7 @@
   import logger from "../../lib/logger";
   import { generateMedName } from "../../lib/meds";
   import Button from "../Button.svelte";
-  import EntryAddModal from "../Entry/EntryAddModal.svelte";
+  import DateTimePicker from "../DateTimePicker.svelte";
   import Modal from "../Modal.svelte";
   import MedAmountInput from "./MedAmountInput.svelte";
   import MedNameInput from "./MedNameInput.svelte";
@@ -96,11 +96,19 @@
 
 <Modal {loading} {open} on:close={handleClose}>
   <article>
+    <DateTimePicker on:change={handleTimestamp} timestamp={add.timestamp} />
+  </article>
+
+  <article>
     <MedNameInput name={add.name} {loading} on:change={handleName} />
   </article>
 
   <article>
     <MedAmountInput amount={add.amount} {loading} on:change={handleAmount} />
+  </article>
+
+  <article>
+    <Button {loading} on:click={handleAdd} --width="100%">add</Button>
   </article>
 </Modal>
 

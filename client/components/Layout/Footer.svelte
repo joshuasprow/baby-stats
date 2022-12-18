@@ -1,6 +1,6 @@
 <script lang="ts">
   import FeedAddNext from "../Feed/FeedAddNext.svelte";
-  import MedAdd from "../Med/MedAdd.svelte";
+  import MedAddNext from "../Med/MedAddNext.svelte";
   import NapAdd from "../Nap/NapAdd.svelte";
   import PeeAdd from "../Pee/PeeAdd.svelte";
   import PoopAdd from "../Poop/PoopAdd.svelte";
@@ -17,7 +17,7 @@
   <NapAdd {babyId} {userId} />
   <PeeAdd {babyId} {userId} />
   <PoopAdd {babyId} {userId} />
-  <MedAdd {babyId} {userId} />
+  <MedAddNext {babyId} {userId} />
 </footer>
 
 <style>
