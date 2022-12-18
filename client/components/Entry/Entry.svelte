@@ -9,7 +9,7 @@
 <script lang="ts">
   import type { Entry } from "@baby-stats/models/entries";
   import { fly } from "svelte/transition";
-  import FeedUpdate from "../Feed/FeedUpdate.svelte";
+  import FeedUpdateNext from "../Feed/FeedUpdateNext.svelte";
   import MedUpdate from "../Med/MedUpdate.svelte";
   import NapUpdate from "../Nap/NapUpdate.svelte";
   import PeeUpdate from "../Pee/PeeUpdate.svelte";
@@ -24,7 +24,7 @@
   <span class="time">{time}</span>
 
   {#if entry.kind === "feeds"}
-    <FeedUpdate {entry} />
+    <FeedUpdateNext {entry} />
   {:else if entry.kind === "meds"}
     <MedUpdate {entry} />
   {:else if entry.kind === "naps"}
