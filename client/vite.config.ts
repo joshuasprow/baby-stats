@@ -55,5 +55,6 @@ export default defineConfig({
     VITE_APP_ID: process.env.VITE_APP_ID,
     VITE_MEASUREMENT_ID: process.env.VITE_MEASUREMENT_ID,
   },
+  optimizeDeps: { include: ["@carbon/charts"] },
   plugins: [svelte(), VitePWA(pwaOptions)],
 });

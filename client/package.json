@@ -14,6 +14,8 @@
   "dependencies": {
     "@baby-stats/lib": "*",
     "@baby-stats/models": "*",
+    "@carbon/charts-svelte": "^1.6.3",
+    "d3": "^7.8.0",
     "firebase": "9.13.0",
     "svelte-router-spa": "^6.0.3",
     "zod": "^3.19.1"
