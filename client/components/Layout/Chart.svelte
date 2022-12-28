@@ -54,6 +54,10 @@
 
     kind = target.value as K;
 
+    if (kind === "feeds" && !source) {
+      source = "bottle" as typeof source;
+    }
+
     await updateChartData();
   };
 

@@ -148,7 +148,8 @@ export const getChartOptions = <K extends Entry["kind"]>(
   kind: K,
   source: Source<K>,
 ): ChartOptions => {
-  const titleText = `${toTitleCase(kind)} Chart`;
+  const title = kind === "feeds" ? `${source} ${kind}` : kind;
+  const titleText = `${toTitleCase(title)} Chart`;
   const unit = getUnitForKind(kind, source);
   const titleUnit = toTitleCase(unit);
 
