@@ -63,7 +63,7 @@ const timeRangeToMinutes = ({ start, end }: TimeRangeAmount) => {
   return endMinutes - startMinutes;
 };
 
-const getChartDataDocs = async <K extends Entry["kind"]>(
+export const getChartDataDocs = async <K extends Entry["kind"]>(
   babyId: string,
   kind: K,
   source: Source<K>,

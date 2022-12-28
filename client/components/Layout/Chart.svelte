@@ -1,7 +1,7 @@
 <script lang="ts">
-  import BarChart from "./BarChart.svelte";
+  import BubbleChart from "./BubbleChart.svelte";
 
   export let babyId: string;
 </script>
 
-<BarChart {babyId} />
+<BubbleChart {babyId} />
