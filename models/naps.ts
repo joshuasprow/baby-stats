@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EntryBase } from "./entries";
+import { EntryBase } from "./entries-base";
 import { TimeRangeAmount } from "./time";
 
 const NapBase = EntryBase.extend({ kind: z.literal("naps") });

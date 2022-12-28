@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
   import { parseError } from "@baby-stats/lib/error";
-  import { ENTRY_ICONS } from "@baby-stats/models/entries";
+  import { ENTRY_ICONS } from "@baby-stats/models/entries-base";
   import { MedAdd } from "@baby-stats/models/meds";
   import { Timestamp } from "@firebase/firestore";
   import { db } from "../../firebase";

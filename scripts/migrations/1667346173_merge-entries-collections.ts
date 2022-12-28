@@ -1,4 +1,4 @@
-import { ENTRY_KINDS } from "@baby-stats/models/entries";
+import { ENTRY_KINDS } from "@baby-stats/models/entries-base";
 import { Firestore } from "firebase-admin/firestore";
 import { getCollectionDocs, setCollectionDocs } from "../collections";
 import { parseError } from "../error";

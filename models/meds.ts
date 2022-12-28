@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EntryBase } from "./entries";
+import { EntryBase } from "./entries-base";
 
 export const MedUnit = z.enum(["mg", "g", "ml", "tsp", "tbsp", "units"]);
 export type MedUnit = z.infer<typeof MedUnit>;

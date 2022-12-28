@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ENTRY_ICONS } from "@baby-stats/models/entries";
+  import { ENTRY_ICONS } from "@baby-stats/models/entries-base";
   import type { MedUnit } from "@baby-stats/models/meds";
   import EntryIcon from "../Entry/EntryIcon.svelte";
 

@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-  import { ENTRY_ICONS } from "@baby-stats/models/entries";
+  import { ENTRY_ICONS } from "@baby-stats/models/entries-base";
   import { formatDaystamp, getTimeRangeDiffInMinutes } from "../lib/dates";
   import type { DayEntry } from "../stores/days";
   import Button from "./Button.svelte";

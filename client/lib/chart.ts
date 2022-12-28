@@ -1,6 +1,7 @@
 import { Entry } from "@baby-stats/models/entries";
 import type { TimeRangeAmount } from "@baby-stats/models/time";
 import { collection, getDocs, query, where } from "@firebase/firestore";
+import type { ChartOptions } from "chart.js";
 import { db } from "../firebase";
 
 const DOW = new Map([
@@ -111,5 +112,45 @@ export const getChartData = async (babyId: string, kind: Entry["kind"]) => {
     labels: Array.from(labels),
     data,
     unit: getUnitForKind(kind),
+  };
+};
+
+export const getChartOptions = (kind: Entry["kind"]): ChartOptions => {
+  const titleText = `${toTitleCase(kind)} Chart`;
+  const unit = getUnitForKind(kind);
+
+  return {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: true,
+        text: titleText,
+      },
+      tooltip: {
+        callbacks: {
+          label: (context) => `${context.parsed.y} ${unit}`,
+        },
+      },
+    },
+    scales: {
+      y: {
+        display: true,
+        title: {
+          display: true,
+          text: "Pees",
+        },
+      },
+      x: {
+        display: true,
+        title: {
+          display: true,
+          text: "Date",
+        },
+      },
+    },
   };
 };

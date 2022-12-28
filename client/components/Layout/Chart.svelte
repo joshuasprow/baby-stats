@@ -1,11 +1,6 @@
 <script lang="ts">
-  import {
-    ENTRY_KINDS,
-    type Entry,
-    type EntryKind,
-  } from "@baby-stats/models/entries";
-  import { Pee } from "@baby-stats/models/pees";
-  import type { ChartOptions } from "chart.js";
+  import type { Entry } from "@baby-stats/models/entries";
+  import { ENTRY_KINDS, type EntryKind } from "@baby-stats/models/entries-base";
   import {
     BarElement,
     CategoryScale,
@@ -16,9 +11,10 @@
     Tooltip,
   } from "chart.js";
   import { onMount } from "svelte";
+
+  import type { ChartOptions } from "chart.js";
   import { Bar } from "svelte-chartjs";
-  import type { ZodType } from "zod";
-  import { getChartData } from "../../lib/chart";
+  import { getChartData, getChartOptions } from "../../lib/chart";
 
   Chart.register(
     Title,
@@ -35,6 +31,7 @@
 
   let labels: string[] = [];
   let data: number[] = [];
+  let options: ChartOptions = {};
 
   const updateChartData = async () => {
     try {
@@ -42,6 +39,7 @@
 
       labels = result.labels;
       data = result.data;
+      options = getChartOptions(kind);
     } catch (error) {
       console.error(error);
     }
@@ -58,41 +56,6 @@
   onMount(() => {
     updateChartData();
   });
-
-  const options: ChartOptions = {
-    responsive: true,
-    maintainAspectRatio: true,
-    plugins: {
-      legend: {
-        display: false,
-      },
-      title: {
-        display: true,
-        text: "Pee Chart",
-      },
-      tooltip: {
-        callbacks: {
-          label: (context) => `${context.parsed.y} ${kind}`,
-        },
-      },
-    },
-    scales: {
-      y: {
-        display: true,
-        title: {
-          display: true,
-          text: "Pees",
-        },
-      },
-      x: {
-        display: true,
-        title: {
-          display: true,
-          text: "Date",
-        },
-      },
-    },
-  };
 </script>
 
 <section class="chart-container">
