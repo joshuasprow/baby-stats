@@ -118,6 +118,7 @@ export const getChartData = async (babyId: string, kind: Entry["kind"]) => {
 export const getChartOptions = (kind: Entry["kind"]): ChartOptions => {
   const titleText = `${toTitleCase(kind)} Chart`;
   const unit = getUnitForKind(kind);
+  const titleUnit = toTitleCase(unit);
 
   return {
     responsive: true,
@@ -141,7 +142,7 @@ export const getChartOptions = (kind: Entry["kind"]): ChartOptions => {
         display: true,
         title: {
           display: true,
-          text: "Pees",
+          text: titleUnit,
         },
       },
       x: {
