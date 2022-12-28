@@ -13,7 +13,9 @@
 </script>
 
 <!-- <Main {baby} {days} {user} /> -->
-<Chart />
+{#if baby}
+  <Chart babyId={baby.id} />
+{/if}
 
 {#if baby && user}
   <Footer babyId={baby.id} userId={user.uid} />

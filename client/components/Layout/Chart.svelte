@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { Pee } from "@baby-stats/models/pees";
   import type { ChartOptions } from "chart.js";
   import {
     BarElement,
@@ -9,7 +10,9 @@
     Title,
     Tooltip,
   } from "chart.js";
+  import { onMount } from "svelte";
   import { Bar } from "svelte-chartjs";
+  import { getChartData } from "../../lib/chart";
 
   Chart.register(
     Title,
@@ -19,8 +22,6 @@
     CategoryScale,
     LinearScale,
   );
-
-  import { chart } from "../../stores/chart";
 
   const options: ChartOptions = {
     responsive: true,
@@ -57,22 +58,21 @@
     },
   };
 
-  $: labels = $chart.reduce(
-    (_labels, { group }) => [...Array.from(new Set(_labels).add(group))],
-    [] as string[],
-  );
-  $: labelIndexes = labels.reduce(
-    (map, label, index) => ({ ...map, [label]: index }),
-    {} as Record<string, number>,
-  );
-  $: data = $chart.reduce(
-    (_data, { group, amount }) => {
-      _data[labelIndexes[group]] += amount;
+  export let babyId: string;
 
-      return _data;
-    },
-    labels.map((_) => 0),
-  );
+  let labels: string[] = [];
+  let data: number[] = [];
+
+  onMount(async () => {
+    try {
+      const result = await getChartData(babyId, "pees", Pee);
+
+      labels = result.labels;
+      data = result.data;
+    } catch (error) {
+      console.error(error);
+    }
+  });
 </script>
 
 <section class="chart-container">
