@@ -1,7 +1,6 @@
-import type { Entry } from "@baby-stats/models/entries";
+import { Entry } from "@baby-stats/models/entries";
 import type { TimeRangeAmount } from "@baby-stats/models/time";
 import { collection, getDocs, query, where } from "@firebase/firestore";
-import type { ZodType } from "zod";
 import { db } from "../firebase";
 
 const DOW = new Map([
@@ -13,6 +12,28 @@ const DOW = new Map([
   [5, "Fri"],
   [6, "Sat"],
 ]);
+
+const toTitleCase = (str: string) =>
+  str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
+const getUnitForKind = (kind: Entry["kind"]) => {
+  switch (kind) {
+    case "feeds":
+      return "oz";
+    case "meds":
+      return "meds";
+    case "naps":
+      return "mins";
+    case "pees":
+      return "pees";
+    case "poops":
+      return "poops";
+  }
+};
 
 const formatTimestamp = (timestamp: Entry["timestamp"]) => {
   const date = timestamp.toDate();
@@ -29,6 +50,30 @@ const timeRangeToMinutes = ({ start, end }: TimeRangeAmount) => {
   const endMinutes = end.toMillis() / 1000 / 60;
 
   return endMinutes - startMinutes;
+};
+
+const entryToChartData = (entry: Entry, indexes: Map<string, number>) => {
+  const label = formatTimestamp(entry.timestamp);
+
+  if (!indexes.has(label)) {
+    indexes.set(label, indexes.size);
+  }
+
+  const index = indexes.get(label);
+
+  if (index === undefined) {
+    throw new Error("index is undefined");
+  }
+
+  if (typeof entry.amount === "number") {
+    return { label, index, amount: entry.amount };
+  }
+
+  return {
+    label,
+    index,
+    amount: timeRangeToMinutes(entry.amount),
+  };
 };
 
 export const getChartData = async (babyId: string, kind: Entry["kind"]) => {
@@ -49,29 +94,15 @@ export const getChartData = async (babyId: string, kind: Entry["kind"]) => {
   const data: number[] = [];
 
   for (const doc of snap.docs) {
-    const entry = doc.data() as Entry;
-    const label = formatTimestamp(entry.timestamp);
+    const entry = Entry.parse(doc.data());
+
+    const { label, index, amount } = entryToChartData(entry, indexes);
 
     labels.add(label);
-
-    if (!indexes.has(label)) {
-      indexes.set(label, indexes.size);
-    }
-
-    const index = indexes.get(label);
-
-    if (index === undefined) {
-      throw new Error("index is undefined");
-    }
 
     if (data[index] === undefined) {
       data[index] = 0;
     }
-
-    const amount =
-      typeof entry.amount === "number"
-        ? entry.amount
-        : timeRangeToMinutes(entry.amount);
 
     data[index] += amount;
   }
@@ -79,5 +110,6 @@ export const getChartData = async (babyId: string, kind: Entry["kind"]) => {
   return {
     labels: Array.from(labels),
     data,
+    unit: getUnitForKind(kind),
   };
 };
