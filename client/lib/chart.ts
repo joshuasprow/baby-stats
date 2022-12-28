@@ -1,8 +1,13 @@
 import { Entry } from "@baby-stats/models/entries";
+import type { Feed } from "@baby-stats/models/feeds";
 import type { TimeRangeAmount } from "@baby-stats/models/time";
 import { collection, getDocs, query, where } from "@firebase/firestore";
 import type { ChartOptions } from "chart.js";
 import { db } from "../firebase";
+
+type Source<K extends Entry["kind"]> = K extends "feeds"
+  ? Feed["source"]
+  : null;
 
 const DOW = new Map([
   [0, "Sun"],
@@ -21,10 +26,13 @@ const toTitleCase = (str: string) =>
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 
-const getUnitForKind = (kind: Entry["kind"]) => {
+const getUnitForKind = <K extends Entry["kind"]>(
+  kind: K,
+  source: Source<K>,
+) => {
   switch (kind) {
     case "feeds":
-      return "oz";
+      return source === "bottle" ? "oz" : "mins";
     case "meds":
       return "meds";
     case "naps":
@@ -33,6 +41,8 @@ const getUnitForKind = (kind: Entry["kind"]) => {
       return "pees";
     case "poops":
       return "poops";
+    default:
+      throw new Error(`Unknown kind: ${kind} ${source}`);
   }
 };
 
@@ -51,6 +61,31 @@ const timeRangeToMinutes = ({ start, end }: TimeRangeAmount) => {
   const endMinutes = end.toMillis() / 1000 / 60;
 
   return endMinutes - startMinutes;
+};
+
+const getChartDataDocs = async <K extends Entry["kind"]>(
+  babyId: string,
+  kind: K,
+  source: Source<K>,
+) => {
+  const lastMonth = new Date();
+  lastMonth.setMonth(lastMonth.getMonth() - 1);
+
+  const ref = collection(db, "entries");
+
+  const constraints = [
+    where("babyId", "==", babyId),
+    where("kind", "==", kind),
+    where("timestamp", ">=", lastMonth),
+  ];
+
+  if (kind === "feeds") {
+    constraints.push(where("source", "==", source));
+  }
+
+  const snap = await getDocs(query(ref, ...constraints));
+
+  return snap.docs;
 };
 
 const entryToChartData = (entry: Entry, indexes: Map<string, number>) => {
@@ -77,24 +112,18 @@ const entryToChartData = (entry: Entry, indexes: Map<string, number>) => {
   };
 };
 
-export const getChartData = async (babyId: string, kind: Entry["kind"]) => {
-  const lastMonth = new Date();
-  lastMonth.setMonth(lastMonth.getMonth() - 1);
-
-  const snap = await getDocs(
-    query(
-      collection(db, "entries"),
-      where("babyId", "==", babyId),
-      where("kind", "==", kind),
-      where("timestamp", ">=", lastMonth),
-    ),
-  );
+export const getChartData = async <K extends Entry["kind"]>(
+  babyId: string,
+  kind: K,
+  source: Source<K>,
+) => {
+  const docs = await getChartDataDocs(babyId, kind, source);
 
   const labels = new Set<string>();
   const indexes = new Map<string, number>();
   const data: number[] = [];
 
-  for (const doc of snap.docs) {
+  for (const doc of docs) {
     const entry = Entry.parse(doc.data());
 
     const { label, index, amount } = entryToChartData(entry, indexes);
@@ -111,13 +140,16 @@ export const getChartData = async (babyId: string, kind: Entry["kind"]) => {
   return {
     labels: Array.from(labels),
     data,
-    unit: getUnitForKind(kind),
+    unit: getUnitForKind(kind, source),
   };
 };
 
-export const getChartOptions = (kind: Entry["kind"]): ChartOptions => {
+export const getChartOptions = <K extends Entry["kind"]>(
+  kind: K,
+  source: Source<K>,
+): ChartOptions => {
   const titleText = `${toTitleCase(kind)} Chart`;
-  const unit = getUnitForKind(kind);
+  const unit = getUnitForKind(kind, source);
   const titleUnit = toTitleCase(unit);
 
   return {

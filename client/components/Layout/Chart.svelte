@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { Entry } from "@baby-stats/models/entries";
   import { ENTRY_KINDS, type EntryKind } from "@baby-stats/models/entries-base";
+  import type { Feed } from "@baby-stats/models/feeds";
+  import type { ChartOptions } from "chart.js";
   import {
     BarElement,
     CategoryScale,
@@ -11,10 +13,9 @@
     Tooltip,
   } from "chart.js";
   import { onMount } from "svelte";
-
-  import type { ChartOptions } from "chart.js";
   import { Bar } from "svelte-chartjs";
   import { getChartData, getChartOptions } from "../../lib/chart";
+  import FeedSourceInput from "../Feed/FeedSourceInput.svelte";
 
   Chart.register(
     Title,
@@ -27,7 +28,10 @@
 
   export let babyId: string;
 
-  let kind: Entry["kind"] = "pees";
+  type K = $$Generic<Entry["kind"]>;
+
+  let kind = "pees" as K;
+  let source = null as K extends "feeds" ? Feed["source"] : null;
 
   let labels: string[] = [];
   let data: number[] = [];
@@ -35,11 +39,11 @@
 
   const updateChartData = async () => {
     try {
-      const result = await getChartData(babyId, kind);
+      const result = await getChartData(babyId, kind, source);
 
       labels = result.labels;
       data = result.data;
-      options = getChartOptions(kind);
+      options = getChartOptions(kind, source);
     } catch (error) {
       console.error(error);
     }
@@ -48,7 +52,15 @@
   const handleKindChange = async (event: Event) => {
     const target = event.target as HTMLSelectElement;
 
-    kind = target.value as EntryKind;
+    kind = target.value as K;
+
+    await updateChartData();
+  };
+
+  const handleSourceChange = async (event: CustomEvent<Feed["source"]>) => {
+    if (kind === "feeds") {
+      source = event.detail as typeof source;
+    }
 
     await updateChartData();
   };
@@ -64,6 +76,10 @@
       <option value={k} selected={k === kind}>{k}</option>
     {/each}
   </select>
+
+  {#if kind === "feeds"}
+    <FeedSourceInput loading={false} on:change={handleSourceChange} />
+  {/if}
 
   <Bar
     data={{
