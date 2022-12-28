@@ -1,10 +1,10 @@
 import { Timestamp } from "@firebase/firestore";
 import { z } from "zod";
-import { Feed, FeedAdd } from "./feeds";
-import { Med, MedAdd } from "./meds";
-import { Nap, NapAdd } from "./naps";
-import { Pee, PeeAdd } from "./pees";
-import { Poop, PoopAdd } from "./poops";
+import type { Feed, FeedAdd } from "./feeds";
+import type { Med, MedAdd } from "./meds";
+import type { Nap, NapAdd } from "./naps";
+import type { Pee, PeeAdd } from "./pees";
+import type { Poop, PoopAdd } from "./poops";
 
 export const ENTRY_KINDS = ["feeds", "meds", "naps", "pees", "poops"] as const;
 export const EntryKindEnum = z.enum(ENTRY_KINDS);
