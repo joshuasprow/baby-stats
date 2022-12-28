@@ -4,7 +4,7 @@
   import type { Day } from "../../stores/days";
   import Chart from "./Chart.svelte";
   import Footer from "./Footer.svelte";
-  import Main from "./Main.svelte";
+  // import Main from "./Main.svelte";
   import Sider from "./Sider.svelte";
 
   export let baby: Baby | undefined | null;
@@ -13,9 +13,7 @@
 </script>
 
 <!-- <Main {baby} {days} {user} /> -->
-{#if baby && user}
-  <Chart babyId={baby.id} userId={user.uid} />
-{/if}
+<Chart />
 
 {#if baby && user}
   <Footer babyId={baby.id} userId={user.uid} />
