@@ -31,11 +31,7 @@ const timeRangeToMinutes = ({ start, end }: TimeRangeAmount) => {
   return endMinutes - startMinutes;
 };
 
-export const getChartData = async <E extends Entry>(
-  babyId: string,
-  kind: E["kind"],
-  parser: ZodType<E>,
-) => {
+export const getChartData = async (babyId: string, kind: Entry["kind"]) => {
   const lastMonth = new Date();
   lastMonth.setMonth(lastMonth.getMonth() - 1);
 
@@ -53,7 +49,7 @@ export const getChartData = async <E extends Entry>(
   const data: number[] = [];
 
   for (const doc of snap.docs) {
-    const entry = parser.parse(doc.data());
+    const entry = doc.data() as Entry;
     const label = formatTimestamp(entry.timestamp);
 
     labels.add(label);

@@ -1,4 +1,9 @@
 <script lang="ts">
+  import {
+    ENTRY_KINDS,
+    type Entry,
+    type EntryKind,
+  } from "@baby-stats/models/entries";
   import { Pee } from "@baby-stats/models/pees";
   import type { ChartOptions } from "chart.js";
   import {
@@ -12,6 +17,7 @@
   } from "chart.js";
   import { onMount } from "svelte";
   import { Bar } from "svelte-chartjs";
+  import type { ZodType } from "zod";
   import { getChartData } from "../../lib/chart";
 
   Chart.register(
@@ -22,6 +28,36 @@
     CategoryScale,
     LinearScale,
   );
+
+  export let babyId: string;
+
+  let kind: Entry["kind"] = "pees";
+
+  let labels: string[] = [];
+  let data: number[] = [];
+
+  const updateChartData = async () => {
+    try {
+      const result = await getChartData(babyId, kind);
+
+      labels = result.labels;
+      data = result.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleKindChange = async (event: Event) => {
+    const target = event.target as HTMLSelectElement;
+
+    kind = target.value as EntryKind;
+
+    await updateChartData();
+  };
+
+  onMount(() => {
+    updateChartData();
+  });
 
   const options: ChartOptions = {
     responsive: true,
@@ -36,7 +72,7 @@
       },
       tooltip: {
         callbacks: {
-          label: (context) => `${context.parsed.y} pees`,
+          label: (context) => `${context.parsed.y} ${kind}`,
         },
       },
     },
@@ -57,25 +93,15 @@
       },
     },
   };
-
-  export let babyId: string;
-
-  let labels: string[] = [];
-  let data: number[] = [];
-
-  onMount(async () => {
-    try {
-      const result = await getChartData(babyId, "pees", Pee);
-
-      labels = result.labels;
-      data = result.data;
-    } catch (error) {
-      console.error(error);
-    }
-  });
 </script>
 
 <section class="chart-container">
+  <select on:change={handleKindChange} value={kind}>
+    {#each ENTRY_KINDS as k}
+      <option value={k} selected={k === kind}>{k}</option>
+    {/each}
+  </select>
+
   <Bar
     data={{
       labels,
