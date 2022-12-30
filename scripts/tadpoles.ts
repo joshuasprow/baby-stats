@@ -1,5 +1,8 @@
 import { z } from "zod";
 import data from "./tmp/tadpoles-data.json" assert { type: "json" };
+import { Entry } from "@baby-stats/models/entries";
+import { Timestamp } from "@firebase/firestore";
+import { EntryKind, EntryKindEnum } from "@baby-stats/models/entries-base";
 
 const TpEntryType = z.enum([
   "bathroom",
@@ -22,21 +25,89 @@ const TpEntry = z.object({
   classification: z
     .string()
     .optional()
-    .transform((s) => (s ? s.split(", ") : undefined)),
+    .transform((s) =>
+      s ? s.split(", ").map((c) => c.toLowerCase()) : undefined
+    ),
   measure: z.enum(["oz", "F"]).optional(),
   amount_offered: z.number().optional(),
   quantity: z.string().or(z.number()).optional(),
 });
 type TpEntry = z.infer<typeof TpEntry>;
 
-const entries: TpEntry[] = [];
+const parseBathroomTpType = (classification: TpEntry["classification"]) => {
+  if (!classification) {
+    throw new Error("No classification for bathroom entry");
+  }
 
-loop: for (const event of data.events) {
+  if (classification.includes("dry")) return null;
+
+  const isPee = classification.includes("wet");
+  const isPoop = classification.includes("bm");
+
+  if (isPee && isPoop) {
+    return { pees: EntryKindEnum.Enum.pees, poops: EntryKindEnum.Enum.poops };
+  }
+
+  if (isPee) return EntryKindEnum.Enum.pees;
+  if (isPoop) return EntryKindEnum.Enum.poops;
+
+  throw new Error(
+    `Unknown classification for bathroom entry: ${classification}`
+  );
+};
+
+const parseTpType = ({
+  type,
+  classification,
+}: Pick<TpEntry, "type" | "classification">) => {
+  switch (type) {
+    case "bathroom":
+      return parseBathroomTpType(classification);
+    case "nap":
+      return "naps";
+    case "food":
+      return "feeds";
+    case "medication":
+      return "meds";
+    default:
+      return null;
+  }
+};
+
+const parseTpEntry = (
+  tpEntry: TpEntry
+): Partial<Entry> | Partial<Entry>[] | null => {
+  const kinds = parseTpType(tpEntry);
+
+  if (!kinds) return null;
+
+  const { start_time } = tpEntry;
+
+  if (!start_time) throw new Error("No start time");
+
+  const timestamp = Timestamp.fromMillis(start_time);
+
+  if (typeof kinds === "string") {
+    const entry: Partial<Entry> = {
+      timestamp,
+      kind: kinds,
+    };
+
+    return entry;
+  }
+
+  const pee: Partial<Entry> = { timestamp, kind: kinds.pees };
+  const poop: Partial<Entry> = { timestamp, kind: kinds.poops };
+
+  return [pee, poop];
+};
+
+outer: for (const event of data.events) {
   if (!event.entries) continue;
 
   for (const entry of event.entries) {
     try {
-      const e = TpEntry.parse({
+      const tpEntry = TpEntry.parse({
         parent: entry.parent,
         start_time: entry.start_time,
         end_time: entry.end_time,
@@ -48,17 +119,13 @@ loop: for (const event of data.events) {
         quantity: entry.quantity,
       });
 
-      if (e.type === "bathroom") {
-        console.log(entry);
-      }
+      if (tpEntry.parent) continue;
 
-      entries.push(e);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        console.error(error);
-        console.error(entry);
-        break loop;
-      }
+      parseTpEntry(tpEntry);
+    } catch (e) {
+      console.error(e);
+      console.error(entry);
+      break outer;
     }
   }
 }
