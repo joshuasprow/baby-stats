@@ -2,19 +2,35 @@
   "$schema": "https://turborepo.org/schema.json",
   "pipeline": {
     "@baby-stats/client#build": {
-      "outputs": ["dist/**"]
+      "outputs": [
+        "dist/**"
+      ]
     },
     "@baby-stats/functions#build": {
-      "outputs": ["dist/**"]
+      "outputs": [
+        "dist/**"
+      ]
+    },
+    "@baby-stats/scripts#build": {
+      "outputs": [
+        "dist/**"
+      ]
     },
     "build:all": {
-      "dependsOn": ["@baby-stats/client#build", "@baby-stats/functions#build"]
+      "dependsOn": [
+        "@baby-stats/client#build",
+        "@baby-stats/functions#build"
+      ]
     },
     "@baby-stats/client#deploy": {
-      "dependsOn": ["@baby-stats/client#build"]
+      "dependsOn": [
+        "@baby-stats/client#build"
+      ]
     },
     "@baby-stats/functions#deploy": {
-      "dependsOn": ["@baby-stats/functions#build"]
+      "dependsOn": [
+        "@baby-stats/functions#build"
+      ]
     },
     "deploy:all": {},
     "deploy:rules": {},
@@ -25,12 +41,18 @@
       "outputs": []
     },
     "scripts": {
-      "dependsOn": ["@baby-stats/scripts#build"]
+      "dependsOn": [
+        "@baby-stats/scripts#build"
+      ]
     },
     "stage": {
       "cache": false,
-      "dependsOn": ["build:all"],
-      "outputs": ["dist/**"]
+      "dependsOn": [
+        "build:all"
+      ],
+      "outputs": [
+        "dist/**"
+      ]
     }
   }
 }
