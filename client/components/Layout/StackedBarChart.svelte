@@ -51,6 +51,7 @@
         display: true,
         stacked: "single",
         position: "right",
+        reverse: true,
         title: {
           display: true,
           text: "Minutes",
