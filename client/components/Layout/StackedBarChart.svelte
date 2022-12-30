@@ -1,11 +1,7 @@
 <script lang="ts">
   import type { Entry } from "@baby-stats/models/entries";
-  import {
-    BottleFeed,
-    BreastFeed,
-    type FeedSource,
-  } from "@baby-stats/models/feeds";
-  import type { ChartData, ChartDataset, ChartOptions } from "chart.js";
+  import { Timestamp } from "@firebase/firestore";
+  import type { ChartData, ChartOptions } from "chart.js";
   import {
     BarElement,
     CategoryScale,
@@ -15,9 +11,10 @@
     Title,
     Tooltip,
   } from "chart.js";
+  import { eachDayOfInterval } from "date-fns";
   import { onMount } from "svelte";
   import { Bar } from "svelte-chartjs";
-  import { getChartDataDocs } from "../../lib/chart";
+  import { getChartFeeds } from "../../lib/chart";
   import { getTimeRangeDiffInMinutes } from "../../lib/dates";
 
   Chart.register(
@@ -40,11 +37,24 @@
     scales: {
       x: {
         display: true,
-        stacked: true,
+        stacked: "single",
       },
-      y: {
+      yBottle: {
         display: true,
-        stacked: true,
+        stacked: "single",
+        title: {
+          display: true,
+          text: "Ounces",
+        },
+      },
+      yBreast: {
+        display: true,
+        stacked: "single",
+        position: "right",
+        title: {
+          display: true,
+          text: "Minutes",
+        },
       },
     },
   };
@@ -69,49 +79,75 @@
     return `${dow} ${m}/${d}`;
   };
 
-  const buildLabels = (feeds: (BottleFeed | BreastFeed)[]) => {
+  const buildDatasets = ({
+    dates,
+    bottle,
+    breast,
+  }: Awaited<ReturnType<typeof getChartFeeds>>): ChartData => {
     const labels: string[] = [];
 
-    feeds.forEach((feed) => {
-      labels.push(formatTimestamp(feed.timestamp));
-    });
+    eachDayOfInterval({
+      start: dates.min,
+      end: dates.max,
+    }).forEach((date) =>
+      labels.push(formatTimestamp(Timestamp.fromDate(date))),
+    );
 
-    return labels;
-  };
+    const bottleData: number[] = [];
+    const breastData: number[] = [];
 
-  const buildDataset = <S extends FeedSource>(
-    source: S,
-    feeds: S extends "bottle" ? BottleFeed[] : BreastFeed[],
-  ): ChartDataset => {
-    const label = source === "bottle" ? "Bottle" : "Breast";
+    for (const { amount, timestamp } of bottle) {
+      const label = formatTimestamp(timestamp);
+      const index = labels.indexOf(label);
+
+      if (index === -1) {
+        console.error(`Could not find bottle label ${label} in labels`);
+        continue;
+      }
+
+      const sum = bottleData[index] || 0;
+
+      bottleData[index] = sum + amount;
+    }
+
+    for (const { amount, timestamp } of breast) {
+      const label = formatTimestamp(timestamp);
+      const index = labels.indexOf(label);
+
+      if (index === -1) {
+        console.error(`Could not find breast label ${label} in labels`);
+        continue;
+      }
+
+      const sum = breastData[index] || 0;
+
+      breastData[index] = sum + getTimeRangeDiffInMinutes(amount);
+    }
 
     return {
-      label: `${label} Feeds`,
-      data: feeds.map(({ amount }) => {
-        if (typeof amount === "number") return amount;
-
-        return getTimeRangeDiffInMinutes(amount);
-      }),
-      backgroundColor: source === "bottle" ? "blue" : "red",
+      labels,
+      datasets: [
+        {
+          label: "Bottle Feeds",
+          backgroundColor: "hsla(4, 82%, 56%, 0.5)",
+          data: bottleData,
+          yAxisID: "yBottle",
+        },
+        {
+          label: "Breast Feeds",
+          backgroundColor: "hsla(240, 80%, 56%, 0.5)",
+          data: breastData,
+          yAxisID: "yBreast",
+        },
+      ],
     };
   };
 
   const updateChartData = async () => {
     try {
-      const [bottleDocs, breastDocs] = await Promise.all([
-        getChartDataDocs(babyId, "feeds", "bottle"),
-        getChartDataDocs(babyId, "feeds", "breast"),
-      ]);
+      const feeds = await getChartFeeds(babyId);
 
-      const bottleFeeds = bottleDocs.map((doc) => BottleFeed.parse(doc.data()));
-      const breastFeeds = breastDocs.map((doc) => BreastFeed.parse(doc.data()));
-
-      const labels = buildLabels([...bottleFeeds, ...breastFeeds]);
-
-      const bottleDataset = buildDataset("bottle", bottleFeeds);
-      const breastDataset = buildDataset("breast", breastFeeds);
-
-      data = { labels, datasets: [bottleDataset, breastDataset] };
+      data = buildDatasets(feeds);
 
       console.log(data);
     } catch (error) {

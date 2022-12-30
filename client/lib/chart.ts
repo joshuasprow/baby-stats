@@ -1,5 +1,10 @@
 import { Entry } from "@baby-stats/models/entries";
-import type { Feed } from "@baby-stats/models/feeds";
+import {
+  BottleFeed,
+  BreastFeed,
+  type Feed,
+  type FeedSource,
+} from "@baby-stats/models/feeds";
 import type { TimeRangeAmount } from "@baby-stats/models/time";
 import { collection, getDocs, query, where } from "@firebase/firestore";
 import type { ChartOptions } from "chart.js";
@@ -141,6 +146,64 @@ export const getChartData = async <K extends Entry["kind"]>(
     labels: Array.from(labels),
     data,
     unit: getUnitForKind(kind, source),
+  };
+};
+
+export const getChartFeeds = async (
+  babyId: string,
+): Promise<{
+  dates: { min: Date; max: Date };
+  bottle: BottleFeed[];
+  breast: BreastFeed[];
+}> => {
+  const [bottleDocs, breastDocs] = await Promise.all([
+    getChartDataDocs(babyId, "feeds", "bottle"),
+    getChartDataDocs(babyId, "feeds", "breast"),
+  ]);
+
+  const bottle: BottleFeed[] = [];
+  const breast: BreastFeed[] = [];
+
+  let min: Date | null = null;
+  let max: Date | null = null;
+
+  for (const doc of bottleDocs) {
+    const feed = BottleFeed.parse(doc.data());
+    const date = feed.timestamp.toDate();
+
+    if (min === null || date < min) {
+      min = date;
+    }
+
+    if (max === null || date > max) {
+      max = date;
+    }
+
+    bottle.push(feed);
+  }
+
+  for (const doc of breastDocs) {
+    const feed = BreastFeed.parse(doc.data());
+    const date = feed.timestamp.toDate();
+
+    if (min === null || date < min) {
+      min = date;
+    }
+
+    if (max === null || date > max) {
+      max = date;
+    }
+
+    breast.push(feed);
+  }
+
+  if (min === null) min = new Date();
+  if (max === null) max = new Date();
+
+  return {
+    dates: { min, max },
+    bottle: bottleDocs.map((doc) => BottleFeed.parse(doc.data())),
+    breast: breastDocs.map((doc) => BreastFeed.parse(doc.data())),
   };
 };
 

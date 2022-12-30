@@ -5,7 +5,7 @@
 
   export let babyId: string;
 
-  let chart = "bar" as "bar" | "bubble" | "stackedBar";
+  let chart = "stackedBar" as "bar" | "bubble" | "stackedBar";
 </script>
 
 {#if chart === "bar"}
