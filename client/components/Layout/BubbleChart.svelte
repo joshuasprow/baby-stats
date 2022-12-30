@@ -27,7 +27,7 @@
 
   type K = $$Generic<Entry["kind"]>;
 
-  let kind = "pees" as K;
+  let kind = "naps" as K;
   let source = null as K extends "feeds" ? Feed["source"] : null;
 
   let labels: string[] = [];
@@ -46,7 +46,10 @@
         .map(({ kind, amount, timestamp }) => ({
           x: timestamp.toMillis(),
           y: timestamp.toDate().getHours(),
-          r: (typeof amount === "number" ? amount : 1) * 3,
+          r:
+            typeof amount === "number"
+              ? amount * 4
+              : (amount.end.seconds - amount.start.seconds) / 360,
         }));
     } catch (error) {
       console.error(error);
@@ -92,7 +95,7 @@
   <Bubble
     data={{
       // labels,
-      datasets: [{ label: "Pees", data }],
+      datasets: [{ data }],
     }}
     {options}
   />
