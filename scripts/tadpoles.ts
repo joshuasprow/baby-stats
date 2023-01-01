@@ -3,36 +3,37 @@ import data from "./tmp/tadpoles-data.json" assert { type: "json" };
 import { Entry } from "@baby-stats/models/entries";
 import { Timestamp } from "@firebase/firestore";
 import { EntryKind, EntryKindEnum } from "@baby-stats/models/entries-base";
+import { Entry as TpEntry } from "@baby-stats/models/tadpoles";
 
-const TpEntryType = z.enum([
-  "bathroom",
-  "nap",
-  "note",
-  "food",
-  "activity",
-  "skin_application",
-  "medication",
-  "health",
-]);
-type TpEntryType = z.infer<typeof TpEntryType>;
+// const TpEntryType = z.enum([
+//   "bathroom",
+//   "nap",
+//   "note",
+//   "food",
+//   "activity",
+//   "skin_application",
+//   "medication",
+//   "health",
+// ]);
+// type TpEntryType = z.infer<typeof TpEntryType>;
 
-const TpEntry = z.object({
-  parent: z.boolean().optional(),
-  start_time: z.number().optional(),
-  end_time: z.number().optional(),
-  type: TpEntryType,
-  bathroom_type: z.literal("diaper").optional(),
-  classification: z
-    .string()
-    .optional()
-    .transform((s) =>
-      s ? s.split(", ").map((c) => c.toLowerCase()) : undefined
-    ),
-  measure: z.enum(["oz", "F"]).optional(),
-  amount_offered: z.number().optional(),
-  quantity: z.string().or(z.number()).optional(),
-});
-type TpEntry = z.infer<typeof TpEntry>;
+// const TpEntry = z.object({
+//   parent: z.boolean().optional(),
+//   start_time: z.number().optional(),
+//   end_time: z.number().optional(),
+//   type: TpEntryType,
+//   bathroom_type: z.literal("diaper").optional(),
+//   classification: z
+//     .string()
+//     .optional()
+//     .transform((s) =>
+//       s ? s.split(", ").map((c) => c.toLowerCase()) : undefined
+//     ),
+//   measure: z.enum(["oz", "F"]).optional(),
+//   amount_offered: z.number().optional(),
+//   quantity: z.string().or(z.number()).optional(),
+// });
+// type TpEntry = z.infer<typeof TpEntry>;
 
 const parseBathroomTpType = (classification: TpEntry["classification"]) => {
   if (!classification) {
@@ -123,8 +124,12 @@ outer: for (const event of data.events) {
 
       parseTpEntry(tpEntry);
     } catch (e) {
-      console.error(e);
-      console.error(entry);
+      if (e instanceof z.ZodError) {
+        console.error(e.message);
+        console.error(entry);
+      } else {
+        throw e;
+      }
       break outer;
     }
   }
