@@ -156,7 +156,7 @@ const buildNapEntry = (
   });
 };
 
-const parseTpEntryForKind = (
+const buildEntry = (
   tpEntry: TpEntry,
   kind: EntryKind,
   timestamp: Timestamp
@@ -176,18 +176,18 @@ const parseTpEntryForKind = (
 const parseTpEntry = (value: unknown) => {
   const tpEntry = TpEntry.parse(value);
 
-  if (tpEntry.parent) return null;
+  if (tpEntry.parent) return [];
 
   const kinds = parseTpType(tpEntry);
 
-  if (!kinds.length) return null;
+  if (!kinds.length) return [];
 
   const timestamp = parseStartTime(tpEntry);
 
-  const entries: Partial<EntryAdd>[] = [];
+  const entries: EntryAdd[] = [];
 
   for (const kind of kinds) {
-    const entry = parseTpEntryForKind(tpEntry, kind, timestamp);
+    const entry = buildEntry(tpEntry, kind, timestamp);
 
     if (entry) entries.push(entry);
   }
@@ -195,22 +195,30 @@ const parseTpEntry = (value: unknown) => {
   return entries;
 };
 
-const parseTpEntries = (values: { [key: string]: unknown }[]) => {
+const parseEventEntries = (values: { [key: string]: unknown }[]) => {
+  const entries: EntryAdd[] = [];
+
   for (const value of values) {
     try {
-      parseTpEntry(value);
+      entries.push(...parseTpEntry(value));
     } catch (e) {
       logger.error(e, value);
-      return;
+      return [];
     }
   }
+
+  return entries;
 };
+
+const entries: EntryAdd[] = [];
 
 for (const event of data.events) {
   if (!event.entries) continue;
 
-  parseTpEntries(event.entries);
+  entries.push(...parseEventEntries(event.entries));
 }
+
+console.log(`Found ${entries.length} entries`);
 
 // console.table(entries);
 // console.log(new Set(entries.map((r) => r.type)));
