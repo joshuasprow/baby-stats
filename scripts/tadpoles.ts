@@ -2,6 +2,7 @@ import { EntryAdd } from "@baby-stats/models/entries";
 import { EntryKind, EntryKindEnum } from "@baby-stats/models/entries-base";
 import { FeedAdd } from "@baby-stats/models/feeds";
 import { MedAdd } from "@baby-stats/models/meds";
+import { NapAdd } from "@baby-stats/models/naps";
 import { Entry as TpEntry } from "@baby-stats/models/tadpoles";
 import { Timestamp } from "@firebase/firestore";
 import { parseError } from "./error";
@@ -129,6 +130,32 @@ const buildMedEntry = (
   });
 };
 
+const buildNapEntry = (
+  { id, start_time, end_time }: Pick<TpEntry, "id" | "start_time" | "end_time">,
+  timestamp: Timestamp
+): NapAdd | null => {
+  if (!start_time || typeof start_time !== "number") {
+    // logger.warn(`Invalid start_time for nap entry: [${id}] ${start_time}`);
+    return null;
+  }
+
+  if (!end_time || typeof end_time !== "number") {
+    // logger.warn(`Invalid end_time for nap entry: [${id}] ${end_time}`);
+    return null;
+  }
+
+  return NapAdd.parse({
+    babyId: BABY_ID,
+    userId: USER_ID,
+    kind: KINDS.naps,
+    timestamp,
+    amount: {
+      start: Timestamp.fromMillis(start_time),
+      end: Timestamp.fromMillis(end_time),
+    },
+  });
+};
+
 const parseTpEntryForKind = (
   tpEntry: TpEntry,
   kind: EntryKind,
@@ -139,6 +166,8 @@ const parseTpEntryForKind = (
       return buildFeedEntry(tpEntry, timestamp);
     case KINDS.meds:
       return buildMedEntry(tpEntry, timestamp);
+    case KINDS.naps:
+      return buildNapEntry(tpEntry, timestamp);
     default:
       return null;
   }
