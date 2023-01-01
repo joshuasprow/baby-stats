@@ -1,11 +1,16 @@
-import { Entry } from "@baby-stats/models/entries";
+import { EntryAdd } from "@baby-stats/models/entries";
 import { EntryKind, EntryKindEnum } from "@baby-stats/models/entries-base";
-import { Entry as TpEntry } from "@baby-stats/models/tadpoles";
+import { BottleFeed, FeedAdd } from "@baby-stats/models/feeds";
+import { Entry as TpEntry, EntrySource } from "@baby-stats/models/tadpoles";
 import { Timestamp } from "@firebase/firestore";
 import { parseError } from "./error";
 import data from "./tmp/tadpoles-data.json" assert { type: "json" };
 
+const BABY_ID = "baby-1";
+const USER_ID = "user-1";
+
 const logger = {
+  warn: (message: string) => console.warn(`\x1b[33mWarning:\x1b[0m ${message}`),
   error: (error: unknown, extra = undefined as any) => {
     const e = parseError(error);
 
@@ -72,6 +77,42 @@ const parseStartTime = ({
   return Timestamp.fromMillis(millis);
 };
 
+const buildFeedEntry = (
+  tpEntry: TpEntry,
+  timestamp: Timestamp
+): FeedAdd | null => {
+  if (!tpEntry.quantity || typeof tpEntry.quantity !== "number") {
+    // // TODO: uncomment this
+    // logger.warn(
+    //   `No quantity for feed entry: [${tpEntry.id}] ${tpEntry.quantity}`
+    // );
+    return null;
+  }
+
+  return {
+    babyId: BABY_ID,
+    userId: USER_ID,
+    kind: EntryKindEnum.Enum.feeds,
+    timestamp,
+    source: "bottle",
+    amount: tpEntry.quantity,
+    side: null,
+  };
+};
+
+const parseTpEntryForKind = (
+  tpEntry: TpEntry,
+  kind: EntryKind,
+  timestamp: Timestamp
+): EntryAdd | null => {
+  switch (kind) {
+    case EntryKindEnum.Enum.feeds:
+      return buildFeedEntry(tpEntry, timestamp);
+    default:
+      return null;
+  }
+};
+
 const parseTpEntry = (value: unknown) => {
   const tpEntry = TpEntry.parse(value);
 
@@ -83,15 +124,12 @@ const parseTpEntry = (value: unknown) => {
 
   const timestamp = parseStartTime(tpEntry);
 
-  const entries: Partial<Entry>[] = [];
+  const entries: Partial<EntryAdd>[] = [];
 
   for (const kind of kinds) {
-    const entry: Partial<Entry> = {
-      kind,
-      timestamp,
-    };
+    const entry = parseTpEntryForKind(tpEntry, kind, timestamp);
 
-    entries.push(entry);
+    if (entry) entries.push(entry);
   }
 
   return entries;
