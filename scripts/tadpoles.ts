@@ -74,8 +74,12 @@ const parseStartTime = ({
 };
 
 const parseTpEntry = (
-  tpEntry: TpEntry
+  entry: unknown
 ): Partial<Entry> | Partial<Entry>[] | null => {
+  const tpEntry = TpEntry.parse(entry);
+
+  if (tpEntry.parent) return null;
+
   const kinds = parseTpType(tpEntry);
 
   if (!kinds) return null;
@@ -97,32 +101,21 @@ const parseTpEntry = (
   return [pee, poop];
 };
 
-outer: for (const event of data.events) {
-  if (!event.entries) continue;
-
-  for (const entry of event.entries) {
-    const tpEntry = TpEntry.parse({
-      id: entry.id,
-      parent: entry.parent,
-      start_time: entry.start_time,
-      end_time: entry.end_time,
-      type: entry.type,
-      bathroom_type: entry.bathroom_type,
-      classification: entry.classification,
-      measure: entry.measure,
-      amount_offered: entry.amount_offered,
-      quantity: entry.quantity,
-    });
-
+const parseTpEntries = (entries: { [key: string]: unknown }[]) => {
+  for (const entry of entries) {
     try {
-      if (tpEntry.parent) continue;
-
-      parseTpEntry(tpEntry);
+      parseTpEntry(entry);
     } catch (e) {
-      logger.error(e, tpEntry);
-      break outer;
+      logger.error(e, entry);
+      return;
     }
   }
+};
+
+for (const event of data.events) {
+  if (!event.entries) continue;
+
+  parseTpEntries(event.entries);
 }
 
 // console.table(entries);
