@@ -1,11 +1,13 @@
 import { EntryAdd } from "@baby-stats/models/entries";
 import { EntryKind, EntryKindEnum } from "@baby-stats/models/entries-base";
-import { BottleFeed, FeedAdd } from "@baby-stats/models/feeds";
-import { Entry as TpEntry, EntrySource } from "@baby-stats/models/tadpoles";
+import { FeedAdd } from "@baby-stats/models/feeds";
+import { MedAdd } from "@baby-stats/models/meds";
+import { Entry as TpEntry } from "@baby-stats/models/tadpoles";
 import { Timestamp } from "@firebase/firestore";
 import { parseError } from "./error";
 import data from "./tmp/tadpoles-data.json" assert { type: "json" };
 
+const KINDS = EntryKindEnum.Enum;
 const BABY_ID = "baby-1";
 const USER_ID = "user-1";
 
@@ -35,11 +37,11 @@ const parseBathroomTpType = (
   const isPoop = lowercase.includes("bm");
 
   if (isPee && isPoop) {
-    return [EntryKindEnum.Enum.pees, EntryKindEnum.Enum.poops];
+    return [KINDS.pees, KINDS.poops];
   }
 
-  if (isPee) return [EntryKindEnum.Enum.pees];
-  if (isPoop) return [EntryKindEnum.Enum.poops];
+  if (isPee) return [KINDS.pees];
+  if (isPoop) return [KINDS.poops];
 
   throw new Error(`Unknown classification for bathroom entry: ${lowercase}`);
 };
@@ -78,26 +80,53 @@ const parseStartTime = ({
 };
 
 const buildFeedEntry = (
-  tpEntry: TpEntry,
+  { id, quantity }: Pick<TpEntry, "id" | "quantity">,
   timestamp: Timestamp
 ): FeedAdd | null => {
-  if (!tpEntry.quantity || typeof tpEntry.quantity !== "number") {
-    // // TODO: uncomment this
-    // logger.warn(
-    //   `No quantity for feed entry: [${tpEntry.id}] ${tpEntry.quantity}`
-    // );
+  if (!quantity || typeof quantity !== "number") {
+    // logger.warn(`No quantity for feed entry: [${id}] ${quantity}`);
     return null;
   }
 
-  return {
+  return FeedAdd.parse({
     babyId: BABY_ID,
     userId: USER_ID,
-    kind: EntryKindEnum.Enum.feeds,
+    kind: KINDS.feeds,
     timestamp,
     source: "bottle",
-    amount: tpEntry.quantity,
+    amount: quantity,
     side: null,
-  };
+  });
+};
+
+const buildMedEntry = (
+  {
+    id,
+    measure,
+    name,
+    quantity,
+  }: Pick<TpEntry, "id" | "measure" | "name" | "quantity">,
+  timestamp: Timestamp
+): MedAdd | null => {
+  if (!quantity || typeof quantity !== "number") {
+    // logger.warn(`Invalid quantity for med entry: [${id}] ${quantity}`);
+    return null;
+  }
+
+  if (!name) {
+    // logger.warn(`No name for med entry: [${id}] ${name}`);
+    return null;
+  }
+
+  return MedAdd.parse({
+    babyId: BABY_ID,
+    userId: USER_ID,
+    kind: KINDS.meds,
+    timestamp,
+    amount: quantity,
+    name: name,
+    unit: measure,
+  });
 };
 
 const parseTpEntryForKind = (
@@ -106,8 +135,10 @@ const parseTpEntryForKind = (
   timestamp: Timestamp
 ): EntryAdd | null => {
   switch (kind) {
-    case EntryKindEnum.Enum.feeds:
+    case KINDS.feeds:
       return buildFeedEntry(tpEntry, timestamp);
+    case KINDS.meds:
+      return buildMedEntry(tpEntry, timestamp);
     default:
       return null;
   }
