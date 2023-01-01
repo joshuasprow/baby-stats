@@ -97,12 +97,12 @@ const parseTpEntry = (value: unknown) => {
   return entries;
 };
 
-const parseTpEntries = (entries: { [key: string]: unknown }[]) => {
-  for (const entry of entries) {
+const parseTpEntries = (values: { [key: string]: unknown }[]) => {
+  for (const value of values) {
     try {
-      parseTpEntry(entry);
+      parseTpEntry(value);
     } catch (e) {
-      logger.error(e, entry);
+      logger.error(e, value);
       return;
     }
   }
