@@ -1,5 +1,5 @@
 import { Entry } from "@baby-stats/models/entries";
-import { EntryKindEnum } from "@baby-stats/models/entries-base";
+import { EntryKind, EntryKindEnum } from "@baby-stats/models/entries-base";
 import { Entry as TpEntry } from "@baby-stats/models/tadpoles";
 import { Timestamp } from "@firebase/firestore";
 import { parseError } from "./error";
@@ -15,24 +15,26 @@ const logger = {
   },
 };
 
-const parseBathroomTpType = (classification: TpEntry["classification"]) => {
+const parseBathroomTpType = (
+  classification: TpEntry["classification"]
+): EntryKind[] => {
   if (!classification) {
     throw new Error("No classification for bathroom entry");
   }
 
   const lowercase = classification.toLowerCase();
 
-  if (lowercase.includes("dry")) return null;
+  if (lowercase.includes("dry")) return [];
 
   const isPee = lowercase.includes("wet");
   const isPoop = lowercase.includes("bm");
 
   if (isPee && isPoop) {
-    return { pees: EntryKindEnum.Enum.pees, poops: EntryKindEnum.Enum.poops };
+    return [EntryKindEnum.Enum.pees, EntryKindEnum.Enum.poops];
   }
 
-  if (isPee) return EntryKindEnum.Enum.pees;
-  if (isPoop) return EntryKindEnum.Enum.poops;
+  if (isPee) return [EntryKindEnum.Enum.pees];
+  if (isPoop) return [EntryKindEnum.Enum.poops];
 
   throw new Error(`Unknown classification for bathroom entry: ${lowercase}`);
 };
@@ -40,18 +42,18 @@ const parseBathroomTpType = (classification: TpEntry["classification"]) => {
 const parseTpType = ({
   type,
   classification,
-}: Pick<TpEntry, "type" | "classification">) => {
+}: Pick<TpEntry, "type" | "classification">): EntryKind[] => {
   switch (type) {
     case "bathroom":
       return parseBathroomTpType(classification);
     case "nap":
-      return "naps";
+      return ["naps"];
     case "food":
-      return "feeds";
+      return ["feeds"];
     case "medication":
-      return "meds";
+      return ["meds"];
     default:
-      return null;
+      return [];
   }
 };
 
@@ -61,10 +63,7 @@ const parseStartTime = ({
 }: Pick<TpEntry, "id" | "start_time">) => {
   if (start_time) return Timestamp.fromMillis(start_time);
 
-  if (!id) {
-    console.error({ id, start_time });
-    throw new Error("No id or start time");
-  }
+  if (!id) throw new Error("No id or start time");
 
   const millis = parseInt(id, 10);
 
@@ -73,32 +72,29 @@ const parseStartTime = ({
   return Timestamp.fromMillis(millis);
 };
 
-const parseTpEntry = (
-  entry: unknown
-): Partial<Entry> | Partial<Entry>[] | null => {
-  const tpEntry = TpEntry.parse(entry);
+const parseTpEntry = (value: unknown) => {
+  const tpEntry = TpEntry.parse(value);
 
   if (tpEntry.parent) return null;
 
   const kinds = parseTpType(tpEntry);
 
-  if (!kinds) return null;
+  if (!kinds.length) return null;
 
   const timestamp = parseStartTime(tpEntry);
 
-  if (typeof kinds === "string") {
+  const entries: Partial<Entry>[] = [];
+
+  for (const kind of kinds) {
     const entry: Partial<Entry> = {
+      kind,
       timestamp,
-      kind: kinds,
     };
 
-    return entry;
+    entries.push(entry);
   }
 
-  const pee: Partial<Entry> = { timestamp, kind: kinds.pees };
-  const poop: Partial<Entry> = { timestamp, kind: kinds.poops };
-
-  return [pee, poop];
+  return entries;
 };
 
 const parseTpEntries = (entries: { [key: string]: unknown }[]) => {
