@@ -3,6 +3,8 @@ import { EntryKind, EntryKindEnum } from "@baby-stats/models/entries-base";
 import { FeedAdd } from "@baby-stats/models/feeds";
 import { MedAdd } from "@baby-stats/models/meds";
 import { NapAdd } from "@baby-stats/models/naps";
+import { PeeAdd } from "@baby-stats/models/pees";
+import { PoopAdd } from "@baby-stats/models/poops";
 import { Entry as TpEntry } from "@baby-stats/models/tadpoles";
 import { Timestamp } from "@firebase/firestore";
 import { parseError } from "./error";
@@ -55,11 +57,11 @@ const parseTpType = ({
     case "bathroom":
       return parseBathroomTpType(classification);
     case "nap":
-      return ["naps"];
+      return [KINDS.naps];
     case "food":
-      return ["feeds"];
+      return [KINDS.feeds];
     case "medication":
-      return ["meds"];
+      return [KINDS.meds];
     default:
       return [];
   }
@@ -156,6 +158,42 @@ const buildNapEntry = (
   });
 };
 
+const buildPeeEntry = (
+  { id, quantity }: Pick<TpEntry, "id" | "quantity">,
+  timestamp: Timestamp
+): PeeAdd | null => {
+  if (!quantity || typeof quantity !== "number") {
+    // logger.warn(`Invalid quantity for pee entry: [${id}] ${quantity}`);
+    return null;
+  }
+
+  return PeeAdd.parse({
+    babyId: BABY_ID,
+    userId: USER_ID,
+    kind: KINDS.pees,
+    timestamp,
+    amount: quantity,
+  });
+};
+
+const buildPoopEntry = (
+  { id, quantity }: Pick<TpEntry, "id" | "quantity">,
+  timestamp: Timestamp
+): PoopAdd | null => {
+  if (!quantity || typeof quantity !== "number") {
+    // logger.warn(`Invalid quantity for pee entry: [${id}] ${quantity}`);
+    return null;
+  }
+
+  return PoopAdd.parse({
+    babyId: BABY_ID,
+    userId: USER_ID,
+    kind: KINDS.pees,
+    timestamp,
+    amount: quantity,
+  });
+};
+
 const buildEntry = (
   tpEntry: TpEntry,
   kind: EntryKind,
@@ -168,6 +206,10 @@ const buildEntry = (
       return buildMedEntry(tpEntry, timestamp);
     case KINDS.naps:
       return buildNapEntry(tpEntry, timestamp);
+    case KINDS.pees:
+      return buildPeeEntry(tpEntry, timestamp);
+    case KINDS.poops:
+      return buildPoopEntry(tpEntry, timestamp);
     default:
       return null;
   }
@@ -220,5 +262,7 @@ for (const event of data.events) {
 
 console.log(`Found ${entries.length} entries`);
 
-// console.table(entries);
+console.table(
+  entries.filter((e) => e.kind === KINDS.pees || e.kind === KINDS.poops)
+);
 // console.log(new Set(entries.map((r) => r.type)));
