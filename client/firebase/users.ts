@@ -67,9 +67,12 @@ export const fixAuthUser = async (
 
   const user = await getUserDoc(db, authUser.uid);
 
+  const babies = user ? user.babies : [];
+
   return User.parse({
     ...user,
     uid: authUser.uid,
+    babies,
     email,
     emailVerified: authUser.emailVerified,
     displayName: authUser.displayName,
