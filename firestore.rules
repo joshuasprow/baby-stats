@@ -5,7 +5,7 @@ service cloud.firestore {
   }
 
   function isSprow(request) {
-    return request.auth.token.email.matches('^(jsprow|rachel[.]sprow|quyenjle|claudiajle1005)@gmail[.]com$')
+    return request.auth.token.email.matches('^(jsprow@kvcc[.]edu|(jsprow|rachel[.]sprow|quyenjle|claudiajle1005)@gmail[.]com)$')
   }
   
   match /databases/{database}/documents {

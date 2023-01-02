@@ -5,8 +5,8 @@ import {
   doc,
   getDoc,
   onSnapshot,
+  setDoc,
   Timestamp,
-  updateDoc,
   type Firestore,
 } from "@firebase/firestore";
 import { z } from "zod";
@@ -100,7 +100,7 @@ export const updateUserDoc = async (
 ) => {
   const ref = getUserRef(db, update.uid);
 
-  await updateDoc(ref, update);
+  await setDoc(ref, update);
 };
 
 export const subscribeToUser = (
