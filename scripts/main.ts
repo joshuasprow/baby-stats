@@ -1,10 +1,3 @@
-import dotenv from "dotenv";
-
-dotenv.config();
-
-import admin from "firebase-admin";
-import { _1667346173_mergeEntriesCollections } from "./migrations/1667346173_merge-entries-collections";
-
 const main = async () => {
   await import("./tadpoles");
   // const projectId = process.env.FIRESTORE_PROJECT_ID;
